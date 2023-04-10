@@ -251,7 +251,20 @@ void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string te
         // Rewrite path to use faster GUID lookup
         int g;
         // Matches stuff like this and extracts GUID //Assets[Asset/Values/Standard/GUID='102119']
-        if (sscanf(prop_path.c_str(), "//Assets[Asset/Values/Standard/GUID='%d']", &g) > 0) {
+        if (sscanf(prop_path.c_str(), "@%d", &g) > 0) {
+            const auto match = std::string("@") + std::to_string(g);
+            if (prop_path.rfind(match, 0) == 0) {
+                guid = std::to_string(g);
+                guid_ = std::to_string(g);
+                speculative_path_type_ = SpeculativePathType::VALUES_CONTAINER;
+                prop_path = prop_path.substr(match.length());
+                path_ = "//Values[Standard/GUID='" + guid + "']";
+            }
+            else {
+                context_->Warn("Failed to construct speculative path lookup: '" + prop_path + "'", node_);
+            }
+        }
+        else if (sscanf(prop_path.c_str(), "//Assets[Asset/Values/Standard/GUID='%d']", &g) > 0) {
             if (std::string("//Assets[Asset/Values/Standard/GUID='") + std::to_string(g) + "']"
                 == prop_path) {
                 guid                   = std::to_string(g);

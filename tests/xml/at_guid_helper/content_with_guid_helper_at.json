@@ -1,0 +1,6 @@
+{
+    "name": "Content with GUID Helper @",
+    "expected": [
+        "/AssetList/Groups/Group/Groups/Group/Groups/Group/Assets/Asset/Values[Standard/GUID='1010521']/Shipyard/AssemblyOptions"
+    ]
+}
