@@ -181,8 +181,14 @@ XmlLookup::XmlLookup(const std::string& path,
         template_ = templ;
     }
     else if (explicit_speculative) {
-        guid_ = {};
-        template_ = {};
+        if (!read_path.empty() && read_path.length() >= 2 && read_path[0] == '/' && read_path[1] != '/') {
+            guid_ = guid;
+            template_ = templ;
+        }
+        else {
+            guid_ = {};
+            template_ = {};
+        }
     }
     else {
         guid_ = guid;
