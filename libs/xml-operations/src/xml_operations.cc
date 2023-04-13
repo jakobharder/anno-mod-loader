@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstring>
 #include <fstream>
+#include <map>
 #include <regex>
 
 std::vector<std::string> StrSplit(const std::string& input, char delimiter) {
@@ -25,7 +26,7 @@ std::vector<std::string> StrSplit(const std::string& input, char delimiter) {
     if (last_pos != input.length()) {
         result.emplace_back(input.substr(last_pos, input.length() - last_pos));
     }
-    
+
     return result;
 }
 
@@ -615,16 +616,14 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
         for (pugi::xpath_node xnode : results) {
             pugi::xml_node game_node = xnode.node();
             if (GetType() == XmlOperation::Type::Merge) {
-                if (content_nodes.size() == 1 &&
+                if (!content_nodes.empty() && content_nodes.size() == 1 &&
                     strcmp(content_nodes.begin()->name(), game_node.name()) == 0) {
                     // legacy merge
                     // skip single container if it's named same as the target node
-                    RecursiveMerge(game_node, game_node.parent(), *content_nodes.begin());
+                    RecursiveMerge(game_node.parent(), *content_nodes.begin());
                 }
-                else {
-                    for (auto& node : content_nodes) {
-                        RecursiveMerge(game_node, game_node, node);
-                    }
+                else if (!content_nodes.empty()) {
+                    RecursiveMerge(game_node, *content_nodes.begin());
                 }
             } else if (GetType() == XmlOperation::Type::AddNextSibling) {
                 for (auto &&node : content_nodes) {
@@ -761,18 +760,23 @@ static bool HasNonTextNode(pugi::xml_node node)
     return false;
 }
 
-void XmlOperation::RecursiveMerge(pugi::xml_node root_game_node, pugi::xml_node game_node,
-                                  pugi::xml_node patching_node)
+void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patching_node)
 {
     if (!patching_node) {
         return;
     }
 
-    const auto find_node_with_name = [&root_game_node](pugi::xml_node game_node, auto name) -> pugi::xml_node {
+    const auto find_node_with_name = [](pugi::xml_node game_node, auto name, int index) -> pugi::xml_node {
+        int found = 0;
         auto children = game_node.children();
         for (pugi::xml_node cur_node : children) {
             if (strcmp(cur_node.name(), name) == 0) {
-                return cur_node;
+                if (found == index) {
+                    return cur_node;
+                }
+                else {
+                    found++;
+                }
             }
         }
         return {};
@@ -791,18 +795,19 @@ void XmlOperation::RecursiveMerge(pugi::xml_node root_game_node, pugi::xml_node 
     }
 
     auto root_node = game_node;
-
-    pugi::xml_node prev_game_node;
+    std::map<std::string, int> indexer;
     for (auto cur_node = patching_node; cur_node; cur_node = cur_node.next_sibling()) {
-        game_node = find_node_with_name(root_node, cur_node.name());
+        const auto name = cur_node.name();
+        indexer.try_emplace(name, 0);
+        const int index = indexer[name]++;
+
+        game_node = find_node_with_name(root_node, cur_node.name(), index);
         if (game_node) {
             if (cur_node.type() == pugi::xml_node_type::node_pcdata) {
                 game_node.set_value(cur_node.value());
             } else {
                 MergeProperties(game_node, cur_node);
-                for (auto& child : cur_node.children()) {
-                    RecursiveMerge(root_game_node, game_node, child);
-                }
+                RecursiveMerge(game_node, cur_node.first_child());
             }
         }
         else {

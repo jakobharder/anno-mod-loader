@@ -152,8 +152,7 @@ private:
     {
         return node.attribute(prop_name.c_str()).as_string();
     }
-    void RecursiveMerge(pugi::xml_node root_game_node, pugi::xml_node game_node,
-                        pugi::xml_node patching_node);
+    void RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patching_node);
     void ReadType(pugi::xml_node node);
 
     /// @brief Check Condition XPath. Can use GUID attribute.
