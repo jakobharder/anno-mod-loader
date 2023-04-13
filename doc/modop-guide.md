@@ -4,13 +4,15 @@
 
 ### Type `add`
 
+Adds a new element at the end.
+
 ```xml
 <ModOp GUID="123" Type="add" Path="/Values">
   <Maintenance />
 </ModOp>
 ```
 
-Result: 
+Result:
 ```diff
 <Asset>
   <Values>
@@ -25,13 +27,15 @@ Result:
 
 ### Type `addNextSibling`
 
+Adds an element after the selected one.
+
 ```xml
 <ModOp GUID="123" Type="addNextSibling" Path="/Values/Standard">
   <Maintenance />
 </ModOp>
 ```
 
-Result: 
+Result:
 ```diff
 <Asset>
   <Values>
@@ -44,6 +48,8 @@ Result:
 </Asset>
 ```
 
+A common situation is when you want to insert an item at a specific position.
+
 ```xml
 <ModOp GUID="123" Type="addNextSibling" Path="/Values/ConstructionCategory/BuildingList/Item[Building='1000178']">
   <Item>
@@ -52,7 +58,7 @@ Result:
 </ModOp>
 ```
 
-Result: 
+Result:
 ```diff
 <Asset>
   <Values>
@@ -78,3 +84,28 @@ Result:
   </Values>
 </Asset>
 ```
+
+### Type `addPrevSibling`
+
+Same as `addNextSibling` just before and not after.
+
+### Type `remove`
+
+Remove selected nodes.
+
+```xml
+<ModOp GUID="123" Type="remove" Path="/Values/Cost" />
+```
+
+Result:
+```diff
+<Asset>
+  <Values>
+    <Standard>
+     <GUID>123</GUID>
+    </Standard>
+-   <Cost />
+  </Values>
+</Asset>
+```
+
