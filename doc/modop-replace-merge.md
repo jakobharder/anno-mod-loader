@@ -1,7 +1,7 @@
 # ModOp Type `replace` and `merge`
 
 - [Replace](#modop-type-replace)
-  - [Replace merges and removes](#replace-replaces-and-removes)
+  - [Replace adds, updates and removes](#replace-adds-updates-and-removes)
   - [Best practice: avoid large replace](#best-practice-avoid-large-replace)
 - [Merge](#modop-type-merge)
   - [Merge is order indepenent](#merge-is-order-independent)
@@ -12,7 +12,7 @@
 
 ## ModOp Type `replace`
 
-### Replace replaces and removes
+### Replace adds, updates and removes
 
 Type completely replaces the selected nodes with the content.
 
