@@ -1,7 +1,9 @@
 # ModOp Type `replace` and `merge`
 
 - [Replace](#modop-type-replace)
-  - [Replace adds, updates and removes](#replace-adds-updates-and-removes)
+  - [Replace to swap content](#replace-to-swap-content)
+  - [Replace to remove content](#replace-to-remove-content)
+  - [Replace to remove node](#replace-to-remove-node)
   - [Best practice: avoid large replace](#best-practice-avoid-large-replace)
 - [Merge](#modop-type-merge)
   - [Merge is order indepenent](#merge-is-order-independent)
@@ -12,12 +14,12 @@
 
 ## ModOp Type `replace`
 
-### Replace adds, updates and removes
+### Replace to swap content
 
 Type completely replaces the selected nodes with the content.
 
 ```xml
-<ModOp GUID="123" Type="addNextSibling" Path="/Values/Standard">
+<ModOp GUID="123" Type="replace" Path="/Values/Standard">
   <Standard>
     <GUID>456</GUID>
     <Description>Hello</Description>
@@ -41,14 +43,53 @@ Result:
 ```
 
 Note: the element to be replaced (`Standard` in this example) needs to be mentioned as well.
+
+### Replace to remove content
+
+```xml
+<ModOp GUID="123" Type="replace" Path="/Values/Cost">
+  <Cost />
+</ModOp>
+```
+
+Result:
+```diff
+<Asset>
+  <Values>
+    <Standard>
+     <GUID>123</GUID>
+    </Standard>
+    <Cost>
+-     <Item />
+    </Cost>
+  </Values>
+</Asset>
+```
+
+### Replace to remove node
+
 An empty `replace` is essentially the same as `remove`.
 
 Both ModOps have the same output:
 ```xml
-<ModOp GUID="123" Type="replace" Path="/Values/Standard">
+<ModOp GUID="123" Type="replace" Path="/Values/Cost">
 </ModOp>
 
-<ModOp GUID="123" Type="remove" Path="/Values/Standard" />
+<ModOp GUID="123" Type="remove" Path="/Values/Cost" />
+```
+
+Result:
+```diff
+<Asset>
+  <Values>
+    <Standard>
+     <GUID>123</GUID>
+    </Standard>
+-   <Cost>
+-     <Item />
+-   </Cost>
+  </Values>
+</Asset>
 ```
 
 ### Best Practice: avoid large replace
