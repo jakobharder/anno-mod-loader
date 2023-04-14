@@ -13,14 +13,21 @@
 #include <sstream>
 #include <vector>
 
+bool path_equal(const std::filesystem::path& a, const std::filesystem::path& b) {
+#ifndef _WIN32
+    auto stricmp = [](auto a, auto b) { return strcasecmp(a, b); };
+#endif
+    return stricmp(a.string().c_str(), b.string().c_str()) == 0;
+}
+
 void apply_patch(std::shared_ptr<pugi::xml_document> doc, const fs::path& modPath)
-{    
+{
     const fs::path& patchPath = modPath / "data/config/export/main/asset/assets.xml";
     spdlog::debug("Prepatch: {}", patchPath.string());
 
-    auto operations = XmlOperation::GetXmlOperationsFromFile(patchPath, 
-        "xmltest", 
-        patchPath.lexically_relative(modPath), 
+    auto operations = XmlOperation::GetXmlOperationsFromFile(patchPath,
+        "xmltest",
+        patchPath.lexically_relative(modPath),
         fs::absolute(modPath));
     for (auto& operation : operations) {
         operation.Apply(doc);
@@ -64,7 +71,8 @@ int main(int argc, const char **argv)
     }
 
     const auto mod_path = fs::absolute(params.modPaths.front());
-    const auto game_path = params.patchPath.lexically_relative(mod_path);
+    const auto game_path = fs::absolute(params.patchPath).lexically_relative(mod_path);
+    spdlog::debug("Game Path: {}", game_path.string());
     const auto mod_name = "xmltest";
 
     auto loader = [&mod_path, &mod_name, &patch_content, &game_path, &params](const fs::path& file_path) {
@@ -81,7 +89,7 @@ int main(int argc, const char **argv)
             }
         }
 
-        if (file_path == params.stdinPath) {
+        if (params.useStdin && path_equal(file_path, params.stdinPath)) {
             return std::make_shared<XmlOperationContext>(patch_content.data(), patch_content.size(), file_path, mod_name);
         }
 
@@ -92,7 +100,7 @@ int main(int argc, const char **argv)
         }
         return std::make_shared<XmlOperationContext>(buffer.data(), size, file_path, mod_name);
     };
-    auto context = game_path == params.stdinPath ?
+    auto context = (params.useStdin && path_equal(game_path, params.stdinPath)) ?
         std::make_shared<XmlOperationContext>(patch_content.data(), patch_content.size(), game_path, mod_name, loader) :
         std::make_shared<XmlOperationContext>(game_path, mod_path, mod_name);
     context->SetLoader(loader);
@@ -118,7 +126,7 @@ int main(int argc, const char **argv)
         writer.result.reserve(100 * 1024 * 1024);
         doc->print(writer);
         spdlog::info("Finished writing");
-        
+
         FILE *fp;
         fp = fopen("patched.xml", "w+");
         if (!fp) {
