@@ -1,5 +1,5 @@
 
-#define MODLOADER_VERSION "10"
+#define MODLOADER_VERSION "10.1"
 
 #include "./parseArguments.h"
 
