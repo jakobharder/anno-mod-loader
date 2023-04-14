@@ -217,7 +217,7 @@ pugi::xpath_node_set XmlLookup::Select(std::shared_ptr<pugi::xml_document> doc, 
         }
         return doc->select_nodes(path_.c_str());
     } catch (const pugi::xpath_exception &e) {
-        context_->Error("Failed to parse path '" + path_ + "': " + e.what(), node_);
+        context_->Error("Failed to parse path \"" + path_ + "\": " + e.what(), node_);
     }
 
     return {};
@@ -268,7 +268,7 @@ void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string te
                 path_ = "//Values[Standard/GUID='" + guid + "']";
             }
             else {
-                context_->Warn("Failed to construct speculative path lookup: '" + prop_path + "'", node_);
+                context_->Warn("Failed to construct speculative path lookup: \"" + prop_path + "\"", node_);
             }
         }
         else if (sscanf(prop_path.c_str(), "//Assets[Asset/Values/Standard/GUID='%d']", &g) > 0) {
@@ -289,7 +289,7 @@ void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string te
                 path_ = "//Asset/Values[Standard/GUID='" + guid + "']";
             }
             else {
-                context_->Warn("Failed to construct speculative path lookup: '" + prop_path + "'", node_);
+                context_->Warn("Failed to construct speculative path lookup: \"" + prop_path + "\"", node_);
             }
         }
         else if (sscanf(prop_path.c_str(), "//Values[Standard/GUID='%d']", &g) > 0) {
@@ -302,7 +302,7 @@ void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string te
                 path_ = "//Values[Standard/GUID='" + guid + "']";
             }
             else {
-                context_->Warn("Failed to construct speculative path lookup: '" + prop_path + "'", node_);
+                context_->Warn("Failed to construct speculative path lookup: \"" + prop_path + "\"", node_);
             }
         }
     } else {
@@ -532,8 +532,8 @@ pugi::xpath_node_set XmlLookup::ReadGuidNodes(std::shared_ptr<pugi::xml_document
                 }
             }
         } catch (const pugi::xpath_exception& e) {
-            context_->Error("Speculative path failed to find node with path '" + GetPath() +
-                       "' " + speculative_path_);
+            context_->Error("Speculative path failed to find node with path \"" + GetPath() +
+                       "\" " + speculative_path_);
             context_->Error(e.what());
         }
     }
@@ -554,8 +554,8 @@ pugi::xpath_node_set XmlLookup::ReadTemplateNodes(std::shared_ptr<pugi::xml_docu
                 results = node->select_nodes(speculative_path_.c_str());
             }
         } catch (const pugi::xpath_exception& e) {
-            context_->Error("Speculative path failed to find node with path '" + GetPath() +
-                       "' " + speculative_path_);
+            context_->Error("Speculative path failed to find node with path \"" + GetPath() +
+                       "\" " + speculative_path_);
             context_->Error(e.what());
         }
     }
@@ -590,7 +590,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
     if (type_ != Type::Remove && !content_.IsEmpty()) {
         pugi::xpath_node_set result = content_.Select(doc);
         if (result.empty()) {
-            doc_->Warn("No matching node for path " + path_.GetPath() , node_);
+            doc_->Warn("No matching node for path \"" + path_.GetPath() + "\"", node_);
             return logTime();
         }
         for (auto& node : result)
@@ -605,10 +605,10 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
         auto results = path_.Select(doc, &cachedNode);
         if (results.empty()) {
             if (allow_no_match_) {
-                doc_->Debug("No matching node for Path '{}'", path_.GetPath());
+                doc_->Debug("No matching node for Path \"{}\"", path_.GetPath());
             }
             else {
-                doc_->Warn("No matching node for Path '" + path_.GetPath() + "'", node_);
+                doc_->Warn("No matching node for Path \"" + path_.GetPath() + "\"", node_);
             }
             return logTime();
         }
@@ -647,7 +647,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
             }
         }
     } catch (const pugi::xpath_exception &e) {
-        doc_->Error("Failed to parse path '" + path_.GetPath() + "': " + e.what());
+        doc_->Error("Failed to parse path \"" + path_.GetPath() + "\": " + e.what());
     }
 
     logTime();
