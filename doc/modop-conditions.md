@@ -27,7 +27,7 @@ Use `~` if the condition should be relative to the `GUID` your ModOp is operatin
 
 ```xml
 <ModOp Type="add" GUID="800111"
-  Condition="!~/ExpeditionFeature/FeedOption/FeedOptions[Item/Product='1500010120']"
+  Condition="!~/Values/ExpeditionFeature/FeedOption/FeedOptions[Item/Product='1500010120']"
   Path="/Values/ExpeditionFeature/FeedOption/FeedOptions">
   <Item>
     <MoraleFactor>0.1</MoraleFactor>
