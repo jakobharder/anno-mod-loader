@@ -1,5 +1,13 @@
 # ModOp Conditions
 
+Other docs
+
+- [Simple ModOps](./modop-guide.md)
+- [Replace and Merge](./modop-replace-merge.md)
+- [Examples](./modop-examples.md)
+
+## Conditions
+
 You can use conditions to skip ModOps.
 The ModOp will only be executed when nodes with the path in `Condition` are found - or none exist if you start with `!`.
 

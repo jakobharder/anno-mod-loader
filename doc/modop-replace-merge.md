@@ -1,5 +1,7 @@
 # ModOp Type `replace` and `merge`
 
+Content
+
 - [Replace](#modop-type-replace)
   - [Replace to swap content](#replace-to-swap-content)
   - [Replace to remove content](#replace-to-remove-content)
@@ -11,6 +13,12 @@
   - [Merge does not remove nodes](#merge-does-not-remove-nodes)
   - [Merge does not support lists](#merge-does-not-support-lists)
   - [Merge can be used like `add` or `replace`](#merge-can-be-used-like-add-or-replace)
+
+Other docs
+
+- [Simple ModOps](./modop-guide.md)
+- [Conditions](./modop-conditions.md)
+- [Examples](./modop-examples.md)
 
 ## ModOp Type `replace`
 

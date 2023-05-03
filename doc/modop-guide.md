@@ -1,5 +1,18 @@
 # ModOp Guide
 
+Content
+
+- [add](#type-add)
+- [addNextSibling](#type-addnextsibling)
+- [addPrevSibling](#type-addprevsibling)
+- [remove](#type-remove)
+
+Other docs
+
+- [Replace and Merge](./modop-replace-merge.md)
+- [Conditions](./modop-conditions.md)
+- [Examples](./modop-examples.md)
+
 ## Simple ModOps
 
 ### Type `add`

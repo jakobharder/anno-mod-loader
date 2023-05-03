@@ -105,6 +105,8 @@ Currently supported types:
 Detailed type documentation:
 - [Add, remove, addNextSibling, addPrevSibling](./doc/modop-guide.md)
 - [Replace and merge](./doc/modop-replace-merge.md)
+- [Conditions](./doc/modop-conditions.md)
+- [Examples](./doc/modop-examples.md)
 
 **Step 3)** Add the XML code that you want to have added, merged or as replacement inside the ModOp.
 example:
