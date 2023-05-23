@@ -31,16 +31,29 @@ The ModOp will only be executed when nodes with the path in `Condition` are foun
 
 ## Condition with GUID
 
-Use `~` if the condition should be relative to the `GUID` your ModOp is operating.
+~~Use `~` if the condition should be relative to the `GUID` your ModOp is operating on.~~
+
+Conditions can be relative to the `GUID` your ModOp is operating on by simply using one slash `/` instead of two.
 
 ```xml
 <ModOp Type="add" GUID="800111"
-  Condition="!~/Values/ExpeditionFeature/FeedOption/FeedOptions[Item/Product='1500010120']"
+  Condition="!/Values/ExpeditionFeature/FeedOption/FeedOptions[Item/Product='1500010120']"
   Path="/Values/ExpeditionFeature/FeedOption/FeedOptions">
   <Item>
     <MoraleFactor>0.1</MoraleFactor>
     <Product>1500010120</Product>
   </Item>
+</ModOp>
+```
+
+Use `@` as a short version of `//Values[Standard/GUID='guid']`.
+
+```xml
+<ModOp Type="addNextSibling" GUID="190886"
+       Condition="!@1500010714">
+  <Asset>
+    <!-- ... -->
+  </Asset>
 </ModOp>
 ```
 
@@ -50,9 +63,9 @@ Conditions also work for includes and groups.
 
 ```xml
 <Include File="/products/cheese/assets.include.xml"
-         Condition="!//Values[Standard/GUID='1500010102']" />
+         Condition="!@1500010102" />
 
-<Group Condition="!//Values[Standard/GUID='1500010102']">
+<Group Condition="!@1500010102">
   <ModOp />
 </Group>
 ```

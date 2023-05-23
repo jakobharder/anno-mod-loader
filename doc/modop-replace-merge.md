@@ -11,7 +11,7 @@ Content
   - [Merge is order indepenent](#merge-is-order-independent)
   - [Merge adds missing nodes](#merge-adds-missing-nodes)
   - [Merge does not remove nodes](#merge-does-not-remove-nodes)
-  - [Merge does not support lists](#merge-does-not-support-lists)
+  - [Merge supports lists](#merge-supports-lists) (GU17.1)
   - [Merge can be used like `add` or `replace`](#merge-can-be-used-like-add-or-replace)
 
 Other docs
@@ -185,11 +185,11 @@ Result:
 
 Use `replace` or `remove` instead if you want to remove content.
 
-### Merge does not support lists
+### Merge supports lists
 
-Merging with multiple same name nodes (usually `Item`) is not supported anymore.
+*Since GU17.1*
 
-Relying on index is prone to compatibility issues.
+~~Merging with multiple same name nodes (usually `Item`) is not supported anymore.~~
 
 ```xml
 <ModOp Type="merge" GUID="100780" Path="/Values/Maintenance">
@@ -207,20 +207,30 @@ Relying on index is prone to compatibility issues.
 </ModOp>
 ```
 
-Do individual merges instead:
+Result:
 
-```xml
-<ModOp Type="merge" GUID="100780" Path="/Values/Maintenance/Maintenances/Item[Product='1010017']">
-  <Amount>50000</Amount>
-  <InactiveAmount>30000</InactiveAmount>
-</ModOp>
+```diff
+<Maintenance>
+  <Maintenances>
+    <Item>
+      <Product>1010017</Product>
+-     <Amount>400</Amount>
+-     <InactiveAmount>200</InactiveAmount>
++     <Amount>50000</Amount>
++     <InactiveAmount>30000</InactiveAmount>
+    </Item>
+    <Item>
+-     <Product>1010367</Product>
+-     <Amount>50</Amount>
++     <Product>1010117</Product>
++     <Amount>150</Amount>
+      <ShutdownThreshold>0.5</ShutdownThreshold>
+    </Item>
+  </Maintenances>
+</Maintenance>
 ```
 
-```xml
-<ModOp Type="merge" GUID="100780" Path="/Values/Maintenance/Maintenances/Item[Product='1010367']">
-  <Amount>50</Amount>
-</ModOp>
-```
+But be aware, relying on index is prone to compatibility issues.
 
 ### Merge can be used like `add` or `replace`
 
