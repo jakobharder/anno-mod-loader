@@ -1,0 +1,7 @@
+{
+    "name": "Merge ordered list items 3",
+    "expected": [
+        "//Values/FactoryBase/FactoryInputs/Item[Product='120008' and position()=1]",
+        "//Values/FactoryBase/FactoryInputs/Item[Product='1010241' and position()=2]"
+    ]
+}

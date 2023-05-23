@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstring>
 #include <fstream>
+#include <map>
 #include <regex>
 
 std::vector<std::string> StrSplit(const std::string& input, char delimiter) {
@@ -25,7 +26,7 @@ std::vector<std::string> StrSplit(const std::string& input, char delimiter) {
     if (last_pos != input.length()) {
         result.emplace_back(input.substr(last_pos, input.length() - last_pos));
     }
-    
+
     return result;
 }
 
@@ -181,8 +182,14 @@ XmlLookup::XmlLookup(const std::string& path,
         template_ = templ;
     }
     else if (explicit_speculative) {
-        guid_ = {};
-        template_ = {};
+        if (!read_path.empty() && read_path.length() >= 2 && read_path[0] == '/' && read_path[1] != '/') {
+            guid_ = guid;
+            template_ = templ;
+        }
+        else {
+            guid_ = {};
+            template_ = {};
+        }
     }
     else {
         guid_ = guid;
@@ -210,7 +217,7 @@ pugi::xpath_node_set XmlLookup::Select(std::shared_ptr<pugi::xml_document> doc, 
         }
         return doc->select_nodes(path_.c_str());
     } catch (const pugi::xpath_exception &e) {
-        context_->Error("Failed to parse path '" + path_ + "': " + e.what(), node_);
+        context_->Error("Failed to parse path \"" + path_ + "\": " + e.what(), node_);
     }
 
     return {};
@@ -251,7 +258,20 @@ void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string te
         // Rewrite path to use faster GUID lookup
         int g;
         // Matches stuff like this and extracts GUID //Assets[Asset/Values/Standard/GUID='102119']
-        if (sscanf(prop_path.c_str(), "//Assets[Asset/Values/Standard/GUID='%d']", &g) > 0) {
+        if (sscanf(prop_path.c_str(), "@%d", &g) > 0) {
+            const auto match = std::string("@") + std::to_string(g);
+            if (prop_path.rfind(match, 0) == 0) {
+                guid = std::to_string(g);
+                guid_ = std::to_string(g);
+                speculative_path_type_ = SpeculativePathType::VALUES_CONTAINER;
+                prop_path = prop_path.substr(match.length());
+                path_ = "//Values[Standard/GUID='" + guid + "']";
+            }
+            else {
+                context_->Warn("Failed to construct speculative path lookup: \"" + prop_path + "\"", node_);
+            }
+        }
+        else if (sscanf(prop_path.c_str(), "//Assets[Asset/Values/Standard/GUID='%d']", &g) > 0) {
             if (std::string("//Assets[Asset/Values/Standard/GUID='") + std::to_string(g) + "']"
                 == prop_path) {
                 guid                   = std::to_string(g);
@@ -269,7 +289,7 @@ void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string te
                 path_ = "//Asset/Values[Standard/GUID='" + guid + "']";
             }
             else {
-                context_->Warn("Failed to construct speculative path lookup: '" + prop_path + "'", node_);
+                context_->Warn("Failed to construct speculative path lookup: \"" + prop_path + "\"", node_);
             }
         }
         else if (sscanf(prop_path.c_str(), "//Values[Standard/GUID='%d']", &g) > 0) {
@@ -282,7 +302,7 @@ void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string te
                 path_ = "//Values[Standard/GUID='" + guid + "']";
             }
             else {
-                context_->Warn("Failed to construct speculative path lookup: '" + prop_path + "'", node_);
+                context_->Warn("Failed to construct speculative path lookup: \"" + prop_path + "\"", node_);
             }
         }
     } else {
@@ -512,8 +532,8 @@ pugi::xpath_node_set XmlLookup::ReadGuidNodes(std::shared_ptr<pugi::xml_document
                 }
             }
         } catch (const pugi::xpath_exception& e) {
-            context_->Error("Speculative path failed to find node with path '" + GetPath() +
-                       "' " + speculative_path_);
+            context_->Error("Speculative path failed to find node with path \"" + GetPath() +
+                       "\" " + speculative_path_);
             context_->Error(e.what());
         }
     }
@@ -534,8 +554,8 @@ pugi::xpath_node_set XmlLookup::ReadTemplateNodes(std::shared_ptr<pugi::xml_docu
                 results = node->select_nodes(speculative_path_.c_str());
             }
         } catch (const pugi::xpath_exception& e) {
-            context_->Error("Speculative path failed to find node with path '" + GetPath() +
-                       "' " + speculative_path_);
+            context_->Error("Speculative path failed to find node with path \"" + GetPath() +
+                       "\" " + speculative_path_);
             context_->Error(e.what());
         }
     }
@@ -570,7 +590,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
     if (type_ != Type::Remove && !content_.IsEmpty()) {
         pugi::xpath_node_set result = content_.Select(doc);
         if (result.empty()) {
-            doc_->Warn("No matching node for path " + path_.GetPath() , node_);
+            doc_->Warn("No matching node for path \"" + path_.GetPath() + "\"", node_);
             return logTime();
         }
         for (auto& node : result)
@@ -585,10 +605,10 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
         auto results = path_.Select(doc, &cachedNode);
         if (results.empty()) {
             if (allow_no_match_) {
-                doc_->Debug("No matching node for Path '{}'", path_.GetPath());
+                doc_->Debug("No matching node for Path \"{}\"", path_.GetPath());
             }
             else {
-                doc_->Warn("No matching node for Path '" + path_.GetPath() + "'", node_);
+                doc_->Warn("No matching node for Path \"" + path_.GetPath() + "\"", node_);
             }
             return logTime();
         }
@@ -596,16 +616,14 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
         for (pugi::xpath_node xnode : results) {
             pugi::xml_node game_node = xnode.node();
             if (GetType() == XmlOperation::Type::Merge) {
-                if (content_nodes.size() == 1 &&
+                if (!content_nodes.empty() && content_nodes.size() == 1 &&
                     strcmp(content_nodes.begin()->name(), game_node.name()) == 0) {
                     // legacy merge
                     // skip single container if it's named same as the target node
-                    RecursiveMerge(game_node, game_node.parent(), *content_nodes.begin());
+                    RecursiveMerge(game_node.parent(), *content_nodes.begin());
                 }
-                else {
-                    for (auto& node : content_nodes) {
-                        RecursiveMerge(game_node, game_node, node);
-                    }
+                else if (!content_nodes.empty()) {
+                    RecursiveMerge(game_node, *content_nodes.begin());
                 }
             } else if (GetType() == XmlOperation::Type::AddNextSibling) {
                 for (auto &&node : content_nodes) {
@@ -629,7 +647,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
             }
         }
     } catch (const pugi::xpath_exception &e) {
-        doc_->Error("Failed to parse path '" + path_.GetPath() + "': " + e.what());
+        doc_->Error("Failed to parse path \"" + path_.GetPath() + "\": " + e.what());
     }
 
     logTime();
@@ -742,18 +760,23 @@ static bool HasNonTextNode(pugi::xml_node node)
     return false;
 }
 
-void XmlOperation::RecursiveMerge(pugi::xml_node root_game_node, pugi::xml_node game_node,
-                                  pugi::xml_node patching_node)
+void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patching_node)
 {
     if (!patching_node) {
         return;
     }
 
-    const auto find_node_with_name = [&root_game_node](pugi::xml_node game_node, auto name) -> pugi::xml_node {
+    const auto find_node_with_name = [](pugi::xml_node game_node, auto name, int index) -> pugi::xml_node {
+        int found = 0;
         auto children = game_node.children();
         for (pugi::xml_node cur_node : children) {
             if (strcmp(cur_node.name(), name) == 0) {
-                return cur_node;
+                if (found == index) {
+                    return cur_node;
+                }
+                else {
+                    found++;
+                }
             }
         }
         return {};
@@ -772,18 +795,19 @@ void XmlOperation::RecursiveMerge(pugi::xml_node root_game_node, pugi::xml_node 
     }
 
     auto root_node = game_node;
-
-    pugi::xml_node prev_game_node;
+    std::map<std::string, int> indexer;
     for (auto cur_node = patching_node; cur_node; cur_node = cur_node.next_sibling()) {
-        game_node = find_node_with_name(root_node, cur_node.name());
+        const auto name = cur_node.name();
+        indexer.try_emplace(name, 0);
+        const int index = indexer[name]++;
+
+        game_node = find_node_with_name(root_node, cur_node.name(), index);
         if (game_node) {
             if (cur_node.type() == pugi::xml_node_type::node_pcdata) {
                 game_node.set_value(cur_node.value());
             } else {
                 MergeProperties(game_node, cur_node);
-                for (auto& child : cur_node.children()) {
-                    RecursiveMerge(root_game_node, game_node, child);
-                }
+                RecursiveMerge(game_node, cur_node.first_child());
             }
         }
         else {
