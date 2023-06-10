@@ -105,9 +105,16 @@ int main(int argc, const char **argv)
         std::make_shared<XmlOperationContext>(game_path, mod_path, mod_name);
     context->SetLoader(loader);
 
+    auto start = std::chrono::high_resolution_clock::now();
     auto operations = XmlOperation::GetXmlOperations(context, game_path);
     for (auto& operation : operations) {
         operation.Apply(doc);
+    }
+    {
+        auto end = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        spdlog::debug("Time: {}ms {} ({}:{})", duration, "Group",
+            context->GetGenericPath(), 0);
     }
 
     if (!params.skipOutput) {
