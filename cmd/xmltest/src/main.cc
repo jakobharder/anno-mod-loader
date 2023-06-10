@@ -55,6 +55,9 @@ int main(int argc, const char **argv)
         spdlog::debug("Mod path: {}", path.string());
     }
 
+    // disable debug as we don't want that for prepatch files
+    spdlog::set_level(spdlog::level::info);
+
     std::ifstream file(params.targetPath, std::ios::binary | std::ios::ate);
     std::streamsize size = file.tellg();
     file.seekg(0, std::ios::beg);
@@ -69,6 +72,8 @@ int main(int argc, const char **argv)
     for (auto dep : params.prepatchPaths) {
         apply_patch(doc, dep);
     }
+
+    spdlog::set_level(params.verbose ? spdlog::level::debug : spdlog::level::info);
 
     const auto mod_path = fs::absolute(params.modPaths.front());
     const auto game_path = fs::absolute(params.patchPath).lexically_relative(mod_path);
