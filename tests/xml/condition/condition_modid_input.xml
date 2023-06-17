@@ -1,0 +1,30 @@
+<Test>
+    <Asset>
+        <Values>
+            <Standard>
+                <GUID>1</GUID>
+            </Standard>
+        </Values>
+    </Asset>
+    <Asset>
+        <Values>
+            <Standard>
+                <GUID>2</GUID>
+            </Standard>
+        </Values>
+    </Asset>
+    <Asset>
+        <Values>
+            <Standard>
+                <GUID>3</GUID>
+            </Standard>
+        </Values>
+    </Asset>
+    <Asset>
+        <Values>
+            <Standard>
+                <GUID>4</GUID>
+            </Standard>
+        </Values>
+    </Asset>
+</Test>

@@ -1,0 +1,12 @@
+{
+    "name": "Condition ModID",
+    "modIds": [
+        "test_mod"
+    ],
+    "expected": [
+        "!/Test/Asset/Values[Standard/GUID='1']",
+        "/Test/Asset/Values[Standard/GUID='2']",
+        "/Test/Asset/Values[Standard/GUID='3']",
+        "!/Test/Asset/Values[Standard/GUID='4']"
+    ]
+}

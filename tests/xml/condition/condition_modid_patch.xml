@@ -1,0 +1,6 @@
+<ModOps>
+  <ModOp Type="remove" GUID="1" Condition="#test_mod" />
+  <ModOp Type="remove" GUID="2" Condition="!#test_mod" />
+  <ModOp Type="remove" GUID="3" Condition="#test_mod_not_found" />
+  <ModOp Type="remove" GUID="4" Condition="!#test_mod_not_found" />
+</ModOps>

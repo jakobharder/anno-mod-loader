@@ -178,7 +178,12 @@ XmlLookup::XmlLookup(const std::string& path,
 
     std::string read_path = negative_ ? path.substr(1) : path;
 
-    if (!read_path.empty() && read_path[0] == '~') {
+    if (!read_path.empty() && read_path.front() == '#') {
+        path_ = read_path.substr(1);
+        mod_id_ = true;
+        return;
+    }
+    else if (!read_path.empty() && read_path[0]== '~') {
         read_path = read_path.substr(1);
         guid_ = guid;
         template_ = templ;
@@ -560,7 +565,7 @@ pugi::xpath_node_set XmlLookup::ReadTemplateNodes(std::shared_ptr<pugi::xml_docu
     return results;
 }
 
-void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
+void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::set<std::string>& mod_ids)
 {
     auto start = std::chrono::high_resolution_clock::now();
     auto logTime = [&start, this](const char* group = "ModOp") {
@@ -571,14 +576,14 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
     };
 
     std::optional<pugi::xml_node> cachedNode;
-    if (GetType() == XmlOperation::Type::None || !CheckCondition(doc, cachedNode)) {
+    if (GetType() == XmlOperation::Type::None || !CheckCondition(doc, cachedNode, mod_ids)) {
         return logTime(type_ == Type::Group ? "Group" : "ModOp");
     }
 
     if (type_ == Type::Group) {
         // logTime();
         for (auto& modop : group_) {
-            modop.Apply(doc);
+            modop.Apply(doc, mod_ids);
         }
         logTime("Group");
         return;
@@ -844,15 +849,22 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
     }
 }
 
-bool XmlOperation::CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>& cachedNode)
+bool XmlOperation::CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>& cachedNode,
+    const std::set<std::string>& mod_ids)
 {
     if (condition_.IsEmpty()) {
         return true;
     }
 
-    const auto match_nodes = condition_.Select(doc, &cachedNode, true);
+    bool matching = false;
+    if (condition_.IsModId()) {
+        matching = mod_ids.end() != mod_ids.find(condition_.GetPath());
+    }
+    else {
+        matching = !condition_.Select(doc, &cachedNode, true).empty();
+    }
 
-    if (condition_.IsNegative() != match_nodes.empty()) {
+    if (condition_.IsNegative() == matching) {
         doc_->Debug("Condition not matching {} in {} ({}:{})", condition_.GetPath(), doc_->GetName(),
                    doc_->GetGenericPath(), doc_->GetLine(node_));
         return false;

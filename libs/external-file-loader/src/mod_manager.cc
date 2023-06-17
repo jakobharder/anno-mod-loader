@@ -4,6 +4,7 @@
 
 #include "anno/random_game_functions.h"
 #include "xml_operations.h"
+using namespace xmlops;
 
 #include "absl/strings/str_cat.h"
 #include "spdlog/spdlog.h"
