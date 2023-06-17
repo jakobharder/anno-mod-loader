@@ -8,6 +8,8 @@
 #include <map>
 #include <regex>
 
+namespace xmlops {
+
 std::vector<std::string> StrSplit(const std::string& input, char delimiter) {
     std::vector<std::string> result;
 
@@ -862,4 +864,6 @@ bool XmlOperation::CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::
 XmlOperation::Type XmlOperation::GetType() const
 {
     return type_;
+}
+
 }

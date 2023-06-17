@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 
-namespace annomods
+namespace xmlops
 {
 
 class ModLoadingOrder

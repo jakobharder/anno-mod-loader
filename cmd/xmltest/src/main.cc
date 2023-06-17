@@ -15,6 +15,8 @@
 #include <sstream>
 #include <vector>
 
+using namespace xmlops;
+
 bool path_equal(const std::filesystem::path& a, const std::filesystem::path& b) {
 #ifndef _WIN32
     auto stricmp = [](auto a, auto b) { return strcasecmp(a, b); };
@@ -37,7 +39,7 @@ void apply_patch(std::shared_ptr<pugi::xml_document> doc, const fs::path& modPat
 }
 
 int command_show(const XmltestParameters& params, std::ostream& out) {
-    auto target_doc = xmlops::XmlAutoSerializer::read(params.targetPath);
+    auto target_doc = XmlAutoSerializer::read(params.targetPath);
     const auto xpath = "//Asset[Values/Standard/GUID='" + params.patchPath.string() + "']";
     const auto nodes = target_doc->select_nodes(xpath.c_str());
     for (pugi::xpath_node node : nodes) {
@@ -121,7 +123,7 @@ int command_diff(const XmltestParameters& params, const std::string& patch_conte
     auto prepatched_doc = _get_prepatched(params);
 
     const auto inner_extension = params.patchPath.stem().extension();
-    xmlops::XmlAutoSerializer::fix(doc.get(), params.patchPath.stem());
+    XmlAutoSerializer::fix(doc.get(), params.patchPath.stem());
     if (inner_extension == L".cfg" || inner_extension == L".fc") {
         const std::string open_mode = "<Config>";
         const std::string close_mode = "</Config>";
@@ -160,7 +162,7 @@ int command_patch(const XmltestParameters& params, const std::string& patch_cont
     doc = _patch(doc, params, patch_content);
 
     if (!params.skipOutput) {
-        if (!xmlops::XmlAutoSerializer::write(doc.get(), params.outputFile, true)) {
+        if (!XmlAutoSerializer::write(doc.get(), params.outputFile, true)) {
             printf("Could not open file for writing\n");
         }
     }

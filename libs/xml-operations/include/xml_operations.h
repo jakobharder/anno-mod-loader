@@ -10,6 +10,8 @@
 
 namespace fs = std::filesystem;
 
+namespace xmlops {
+
 class XmlOperationContext
 {
 public:
@@ -161,3 +163,5 @@ private:
     /// @param assetNode Returns GUID asset if found.
     bool CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>& assetNode);
 };
+
+}
