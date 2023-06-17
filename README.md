@@ -3,25 +3,27 @@
 This is a fork of the original mod loader from the great [meow](https://github.com/xforce/anno1800-mod-loader).
 Many thanks to him for creating and maintaining that project for so long.
 
-Read [loader10 changes](./doc/modloader10.md) if you are interested in recent changes to the mod loader.
+Latest Changes:
+ - [Modloader changes with GU17](./doc/modloader10.md)
+ - [Future change proposals](./doc/modloader11.md)
 
-A short introduction for mod creation with the mod loader is given below. For an example zoom extend mod see the `examples` directory.
+You can find beginner friendly tutorials in the community [modding guide](https://github.com/anno-mods/modding-guide#readme).
 
-## Installation
+## Install and Activate Mods
 
 ### Mod Loader
 
-The game already includes it.
+The game includes the modloader as of GU17 it.
 You do not need to install the mod loader.
 
 ### Mods
 
 There are two locations for mods:
 - `This PC\Documents\Anno 1800\mods`
-- In `mods/` within your game installation, 
-  typically `C:\Program Files (x86)\Ubisoft\Ubisoft Game Launcher\games\Anno 1800\mods` 
+- In `mods/` within your game installation,
+  typically `C:\Program Files (x86)\Ubisoft\Ubisoft Game Launcher\games\Anno 1800\mods`
 
-Mods will be loaded in alphabetical order, or by the order they have specified in their mod configuration `modinfo.json`.
+The order of loaded mods is decided by `LoadAfterIds` in `modinfo.json`.
 
 If a mod is found twice, the newest version will be used.
 
@@ -42,14 +44,14 @@ Additional, mods can be disabled with a `activations.json` in the respective `mo
 
 `ModID` from `modinfo.json` is used, and if not specified the folder name of the mod as a fallback.
 
-# Asset modding
+## Asset Modding
 
 In previous anno games there was a way to tell the game to load extacted files from disk instead of loading them  
 from the RDA container. While that made it easier, it's still not a nice way to handle modding large XML files.
 
 This Anno 1800 mod loader supports a few simple 'commands' to easily patch the XML to achieve pretty much whatever you want.
 
-## How to Create a Patch for any XML File from the Game:
+### How to Create a Patch for any XML File from the Game:
 
 **Step 1)** Set up a directory for your mod inside Anno 1800/mods. In the following steps, it is assumed that you have titled your directory "myMod"
 
@@ -67,7 +69,7 @@ This Anno 1800 mod loader supports a few simple 'commands' to easily patch the X
 
 > You can give as many `<ModOp>` as you'd like to and have multiple patch files for different original ones in a single mod.
 
-## How to Write a ModOp
+### How to Write a ModOp
 
 **Step 1)** Look up and select the XML node you want to edit with XPath using the Path argument.
 
@@ -108,18 +110,7 @@ Detailed type documentation:
 - [Conditions](./doc/modop-conditions.md)
 - [Examples](./doc/modop-examples.md)
 
-**Step 3)** Add the XML code that you want to have added, merged or as replacement inside the ModOp.
-example:
-
-```xml
-    <ModOp Type = "replace" GUID = '1337' Path = "/Values/Standard/Name">
-        <Name>ThisIsATestNameForGUID1337</Name>
-    </ModOp>
-```
-
-> This ModOp will replace the node under /Values/Standard/Name of the asset with GUID 1337 with: "`<Name>ThisIsATestNameForGUID1337</Name>`"
-
-## Split XML Patch into Multiple Files
+### Split XML Patch into Multiple Files
 
 You can split your XML patches into multiple files by using `Include` instructions.
 
@@ -138,48 +129,23 @@ Use the extension `*.include.xml` to prevent that.
 
 Otherwise, included XML patches are handled the same way as normal XML patches. Nesting includes is supported.
 
-## Tutorial: Adding a new zoom level
+You can find more help and examples in the community [modding guide](https://github.com/anno-mods/modding-guide#readme).
 
-Put this in a mod folder with the game path
-so this would be in `mods/new-zoom-level/data/config/game/camera.xml`
+## Trouble Shooting
 
-> The mods folder in a default uPlay installation has to be located at `C:\Program Files (x86)\Ubisoft\Ubisoft Game Launcher\games\Anno 1800\mods`
+The game writes a new log file every game start `<User>/Documents/Anno 1800/log/mod-loader.log`. You can find issues and mod loading order there.
 
-```xml
-<ModOp Type="add" Path="/Normal/Presets">
-    <Preset ID="15" Height="140" Pitch="0.875" MinPitch="-0.375" MaxPitch="1.40" Fov="0.56" />
-</ModOp>
-<ModOp Type="merge" Path="/Normal/Settings">
-    <Settings MaxZoomPreset="15"></Settings>
-</ModOp>
-```
-
-You can find more examples in the `examples` directory.
-
-# Debugging
-
-Debugging will not be possible, the game is using Denuvo and VMProtect, I have my own tools that allow me to debug it, but I will not be sharing those publicly.
-
-> You can read a printf aka debug-log about any errors caused by missing nodes, wrong paths or unrecognized node tests in `Anno 1800/logs/mod-loader.log`
-
-To test what a 'patch' you write does to the original game file, you can also use `xml-test`, which will simulate what the game will load.
+To test what a 'patch' you write does to the original game file, you can also use `xmltest.exe`. It will simulate what the game will load.
 
 ```
-xml-test game_camera.xml patch.xml
+xmltest.exe c:\anno\all-rda\assets.xml patch.xml
 ```
 
-> This patches game_camera.xml with patch.xml and writes the result as a patched.xml file in the current directory
+Hint: You can use a plugin called [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools) for Visual Studio Code for more [powerful patch testing](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools#command-compare).
 
-Original whitespace should be pretty much the same, so you can use some diff tool to see exactly what changed.
+## For Developers
 
-## Other files
-
-Other file types can't be 'merged' obviously, so there we just load the version of the last mod that has that file. (Mods are loaded alphabetically).
-For resources it is heavily recommended to use the Anno 1800/data folder.
-
-# Building
-
-You need Bazel, Visual Studio 2022 and that _should_ be it.  
+You need Bazel, Visual Studio 2022 and that _should_ be it.
 You can checkout `azure-pipelines.yml` and see how it's done there.
 
 easy steps to sucess:
@@ -199,7 +165,3 @@ easy steps to sucess:
 - find the DLL in your workingdir \bazel-bin\libs\python35
 
 If you want to work on new features for XML operations, you can use xmltest for testing. As that is using the same code as the actualy file loader.
-
-# Coming soon (maybe)
-
-- Access to the Anno python api, the game has an internal python API, I am not yet at a point where I can say how much you can do with it, but I will be exploring that in the future.
