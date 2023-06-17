@@ -531,7 +531,7 @@ pugi::xpath_node_set XmlLookup::ReadGuidNodes(std::shared_ptr<pugi::xml_document
             }
         } catch (const pugi::xpath_exception& e) {
             context_->Error("Speculative path failed to find node with path \"" + GetPath() +
-                       "\" " + speculative_path_);
+                       "\" " + speculative_path_, node_);
             context_->Error(e.what());
         }
     }
@@ -553,7 +553,7 @@ pugi::xpath_node_set XmlLookup::ReadTemplateNodes(std::shared_ptr<pugi::xml_docu
             }
         } catch (const pugi::xpath_exception& e) {
             context_->Error("Speculative path failed to find node with path \"" + GetPath() +
-                       "\" " + speculative_path_);
+                       "\" " + speculative_path_, node_);
             context_->Error(e.what());
         }
     }
