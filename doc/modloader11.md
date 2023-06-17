@@ -5,6 +5,7 @@ These are proposals and may or may not end up in the game.
 - [Patching InfoTip export.bin](#patching-infotip-exportbin)
 - [Patching .cfg files](#patching-cfg-files)
 - [Patching .fc files](#patching-fc-files)
+- [Link files](#link-files)
 - [Conditions with ModID](#conditions-with-modid)
 - [Wrap ModOp Content](#wrap-modop-content)
 
