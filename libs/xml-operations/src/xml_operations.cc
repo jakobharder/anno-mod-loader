@@ -239,10 +239,6 @@ XmlOperation::XmlOperation(std::shared_ptr<XmlOperationContext> doc, pugi::xml_n
 
     if (type_ != Type::Remove) {
         content_ = XmlLookup{node.attribute("Content").as_string(), guid, templ, true, doc, node};
-        if (!content_.IsEmpty() && nodes_->begin() != nodes_->end()) {
-            doc_->Error("ModOp must be empty when Content is used", node_);
-            nodes_ = {};
-        }
     }
 }
 
@@ -586,6 +582,8 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
         return;
     }
 
+    std::optional<pugi::xml_node> wrapper;
+
     std::vector<pugi::xml_node> content_nodes;
     if (type_ != Type::Remove && !content_.IsEmpty()) {
         pugi::xpath_node_set result = content_.Select(doc);
@@ -593,8 +591,30 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
             doc_->Warn("No matching node for path \"" + path_.GetPath() + "\"", node_);
             return logTime();
         }
-        for (auto& node : result)
-            content_nodes.push_back(node.node());
+        if (!nodes_ || nodes_->begin() != nodes_->end()) {
+            wrapper = doc->append_child("ModOpTemp");
+            for (auto& node : result) {
+                for (auto wrapper_node = nodes_->begin(); wrapper_node != nodes_->end(); wrapper_node++) {
+
+                    wrapper->append_copy(*wrapper_node);
+                }
+                auto inserter = wrapper->select_node(".//ModOpContent");
+                if (!inserter) {
+                    doc_->Warn("ModOps with 'Content' attribute must be empty or contain '<ModOpContent />'", node_);
+                    break;
+                }
+                else {
+                    inserter.parent().insert_copy_after(node.node(), inserter.node());
+                    inserter.parent().remove_child(inserter.node());
+                }
+            }
+            content_nodes.insert(content_nodes.end(), wrapper->children().begin(), wrapper->children().end());
+        }
+        else {
+            for (auto& node : result) {
+                content_nodes.push_back(node.node());
+            }
+        }
     }
     if (content_.IsEmpty() && nodes_) {
         content_nodes.insert(content_nodes.end(), nodes_->begin(), nodes_->end());
@@ -609,6 +629,9 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
             }
             else {
                 doc_->Warn("No matching node for Path \"" + path_.GetPath() + "\"", node_);
+            }
+            if (wrapper) {
+                doc->remove_child(*wrapper);
             }
             return logTime();
         }
@@ -650,6 +673,9 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
         doc_->Error("Failed to parse path \"" + path_.GetPath() + "\": " + e.what());
     }
 
+    if (wrapper) {
+        doc->remove_child(*wrapper);
+    }
     logTime();
 }
 

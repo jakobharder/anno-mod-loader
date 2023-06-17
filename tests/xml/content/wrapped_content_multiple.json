@@ -1,0 +1,9 @@
+{
+    "name": "Wrapped content multiple",
+    "expected": [
+        "!/Test/Target[GUID='0']",
+        "/Test/Target[GUID='1']",
+        "/Test/Target[GUID='2']",
+        "!//ModOpTemp"
+    ]
+}
