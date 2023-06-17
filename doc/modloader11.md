@@ -94,6 +94,13 @@ Note: you can use `<Id>auto</Id>` to automatically assign free ids.
 
 The format is the same as used in the [AnnoFCConverter](https://github.com/jakobharder/AnnoFCConverter).
 
+## Link files
+
+You can link files by adding a text file with the extension `.lnk`.
+The path and name of the file is the link source, the text file contents is the link target.
+
+This is useful to duplicate islands under a different path for example.
+
 ## Conditions with ModID
 
 You can use conditions to check if a mod exists in any patch - not only `assets.xml` patches.
