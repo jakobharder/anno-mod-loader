@@ -1,10 +1,12 @@
 #include "xml_operations.h"
+#include "xml_auto_serializer.h"
 
 #include "absl/strings/str_cat.h"
 #include "pugixml.hpp"
 #include "spdlog/spdlog.h"
 
-#include "parseArguments.h"
+#include "anno_xml.h"
+#include "parse_args.h"
 
 #include <cstdio>
 #include <cstring>
@@ -34,46 +36,31 @@ void apply_patch(std::shared_ptr<pugi::xml_document> doc, const fs::path& modPat
     }
 }
 
-int main(int argc, const char **argv)
-{
-    XmltestParameters params;
-    if (!parseArguments(argc, argv, params)) {
-        return -1;
+int command_show(const XmltestParameters& params, std::ostream& out) {
+    auto target_doc = xmlops::XmlAutoSerializer::read(params.targetPath);
+    const auto xpath = "//Asset[Values/Standard/GUID='" + params.patchPath.string() + "']";
+    const auto nodes = target_doc->select_nodes(xpath.c_str());
+    for (pugi::xpath_node node : nodes) {
+        node.node().print(out, "\t");
+        out << std::endl;
     }
 
-    std::string patch_content;
-    if (params.useStdin) {
-        for (std::string line; std::getline(std::cin, line); ) {
-            patch_content += line + "\n";
-        }
-    }
+    return 0;
+}
 
-    spdlog::set_level(params.verbose ? spdlog::level::debug : spdlog::level::info);
-    spdlog::debug("Target: {}", params.targetPath.string());
-    spdlog::debug("Patch: {}", params.patchPath.string());
-    for (auto& path : params.modPaths) {
-        spdlog::debug("Mod path: {}", path.string());
-    }
-
+std::shared_ptr<pugi::xml_document> _get_prepatched(const XmltestParameters& params) {
     // disable debug as we don't want that for prepatch files
     spdlog::set_level(spdlog::level::info);
-
-    std::ifstream file(params.targetPath, std::ios::binary | std::ios::ate);
-    std::streamsize size = file.tellg();
-    file.seekg(0, std::ios::beg);
-
-    std::string buffer;
-    std::shared_ptr<pugi::xml_document> doc = std::make_shared<pugi::xml_document>();
-    buffer.resize(size);
-    if (file.read(buffer.data(), size)) {
-        doc->load_buffer(buffer.data(), buffer.size());
-    }
-
+    auto doc = xmlops::XmlAutoSerializer::read(params.targetPath);
     for (auto dep : params.prepatchPaths) {
         apply_patch(doc, dep);
     }
-
     spdlog::set_level(params.verbose ? spdlog::level::debug : spdlog::level::info);
+    return doc;
+}
+
+std::shared_ptr<pugi::xml_document> _patch(std::shared_ptr<pugi::xml_document> doc,
+    const XmltestParameters& params, const std::string& patch_content) {
 
     const auto mod_path = fs::absolute(params.modPaths.front());
     const auto game_path = fs::absolute(params.patchPath).lexically_relative(mod_path);
@@ -115,38 +102,97 @@ int main(int argc, const char **argv)
     for (auto& operation : operations) {
         operation.Apply(doc);
     }
-    {
-        auto end = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-        spdlog::debug("Time: {}ms {} ({}:{})", duration, "Group",
-            context->GetGenericPath(), 0);
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    spdlog::debug("Time: {}ms {} ({}:{})", duration, "Group", context->GetGenericPath(), 0);
+    std::cout << fmt::format("ModOp time: {:.3f}s", duration / 1000.0f) << std::endl;
+    return doc;
+}
+
+int command_diff(const XmltestParameters& params, const std::string& patch_content, std::ostream& out) {
+    spdlog::debug("Target: {}", params.targetPath.string());
+    spdlog::debug("Patch: {}", params.patchPath.string());
+    for (auto& path : params.modPaths) {
+        spdlog::debug("Mod path: {}", path.string());
     }
+
+    auto doc = _get_prepatched(params);
+    doc = _patch(doc, params, patch_content);
+    auto prepatched_doc = _get_prepatched(params);
+
+    const auto inner_extension = params.patchPath.stem().extension();
+    xmlops::XmlAutoSerializer::fix(doc.get(), params.patchPath.stem());
+    if (inner_extension == L".cfg" || inner_extension == L".fc") {
+        const std::string open_mode = "<Config>";
+        const std::string close_mode = "</Config>";
+
+        out << "##annodiff##";
+        doc->print(out, "  ");
+
+        out << "##annodiff##";
+        prepatched_doc->print(out, "  ");
+    }
+    else {
+        AnnoXml original(*prepatched_doc);
+        AnnoXml patched(*doc);
+
+        const std::string open_mode = "<" + patched.get_mode() + "s>";
+        const std::string close_mode = "</" + patched.get_mode() + "s>";
+
+        out << "##annodiff##";
+        out << open_mode << std::endl << original.diff(patched) << close_mode << std::endl;
+
+        out << "##annodiff##";
+        out << open_mode << std::endl << original.get_touched() << close_mode << std::endl;
+    }
+
+    return 0;
+}
+
+int command_patch(const XmltestParameters& params, const std::string& patch_content) {
+    spdlog::debug("Target: {}", params.targetPath.string());
+    spdlog::debug("Patch: {}", params.patchPath.string());
+    for (auto& path : params.modPaths) {
+        spdlog::debug("Mod path: {}", path.string());
+    }
+
+    auto doc = _get_prepatched(params);
+    doc = _patch(doc, params, patch_content);
 
     if (!params.skipOutput) {
-        struct xml_string_writer : pugi::xml_writer {
-            std::string result;
-
-            virtual void write(const void *data, size_t size)
-            {
-                absl::StrAppend(&result, std::string_view{(const char *)data, size});
-            }
-        };
-
-        xml_string_writer writer;
-
-        spdlog::info("Start writing");
-        writer.result.reserve(100 * 1024 * 1024);
-        doc->print(writer);
-        spdlog::info("Finished writing");
-
-        FILE *fp;
-        fp = fopen("patched.xml", "w+");
-        if (!fp) {
+        if (!xmlops::XmlAutoSerializer::write(doc.get(), params.outputFile, true)) {
             printf("Could not open file for writing\n");
-            return 0;
         }
-        fwrite(writer.result.data(), 1, writer.result.size(), fp);
-        fclose(fp);
     }
+
+    return 0;
+}
+
+int main(int argc, const char **argv)
+{
+    XmltestParameters params;
+    if (!parseArguments(argc, argv, params)) {
+        return -1;
+    }
+
+    std::string patch_content;
+    if (params.useStdin) {
+        for (std::string line; std::getline(std::cin, line); ) {
+            patch_content += line + "\n";
+        }
+    }
+
+    spdlog::set_level(params.verbose ? spdlog::level::debug : spdlog::level::info);
+
+    if (params.command == XmltestParameters::Command::Show) {
+        return command_show(params, std::cout);
+    }
+    else if (params.command == XmltestParameters::Command::Diff) {
+        return command_diff(params, patch_content, std::cout);
+    }
+    else {
+        return command_patch(params, patch_content);
+    }
+
     return 0;
 }

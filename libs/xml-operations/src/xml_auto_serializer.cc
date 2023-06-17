@@ -48,18 +48,22 @@ void XmlAutoSerializer::fix(pugi::xml_document* doc, const fs::path& file_name) 
     }
 }
 
-void XmlAutoSerializer::write(pugi::xml_document* doc, const fs::path& file_path, bool format) {
+bool XmlAutoSerializer::write(pugi::xml_document* doc, const fs::path& file_path, bool format) {
     std::ofstream file { file_path, std::ios::binary | std::fstream::out };
+    if (!file.is_open()) {
+        return false;
+    }
     write(doc, (std::ostream&)file, file_path, format);
+    return true;
 }
 
 void XmlAutoSerializer::write(pugi::xml_document* doc, std::ostream& stream, const std::filesystem::path& file_name, bool format) {
     if (file_name.filename() == "export.bin") {
         FileDbWriter::fix_counts(doc);
-        return FileDbWriter::write(doc, stream, file_name);
+        FileDbWriter::write(doc, stream, file_name);
     }
     else if (file_name.extension() == ".fc") {
-        return FcWriter::write(doc, stream, file_name);
+        FcWriter::write(doc, stream, file_name);
     }
     else {
         doc->print(stream, format ? "  " : "", format ? pugi::format_default : pugi::format_raw);

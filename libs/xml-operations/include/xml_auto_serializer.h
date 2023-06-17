@@ -21,7 +21,7 @@ public:
     static void fix(pugi::xml_document* doc, const std::filesystem::path& file_path);
 
     /// @brief Detect format from file name. Includes fix() to correct common count, id issues.
-    static void write(pugi::xml_document* doc, const std::filesystem::path& file_path, bool format = false);
+    [[nodiscard]] static bool write(pugi::xml_document* doc, const std::filesystem::path& file_path, bool format = false);
 
     /// @brief Detect format from file name. Includes fix() to correct common count, id issues.
     static void write(pugi::xml_document* doc, std::ostream& stream, const std::filesystem::path& file_name, bool format = false);
