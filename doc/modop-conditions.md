@@ -31,9 +31,11 @@ The ModOp will only be executed when nodes with the path in `Condition` are foun
 
 ## Condition with GUID
 
-~~Use `~` if the condition should be relative to the `GUID` your ModOp is operating on.~~
+Conditions can be relative to the `GUID` your ModOp is operating on.
 
-Conditions can be relative to the `GUID` your ModOp is operating on by simply using one slash `/` instead of two.
+Since GU17.1:  by simply using one slash `/` instead of two.
+
+GU17: Alternatively, start the condition with `~/`. While this is still supported, it is unnecessary.
 
 ```xml
 <ModOp Type="add" GUID="800111"
