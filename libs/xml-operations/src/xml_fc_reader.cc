@@ -45,7 +45,6 @@ std::shared_ptr<pugi::xml_document> FcReader::read(std::istream& stream, const f
         }
         if (ch == '[' && cdata.str() == "CDATA[") {
             int32_t count = reader.read<int32_t>();
-            true_xml << fmt::format("{:d}", count);
             for (int i = 0; i < count / 4; i++) {
                 true_xml << " " << fmt::format("{:d}", reader.read<int32_t>());
             }
@@ -88,13 +87,7 @@ void FcWriter::write(const pugi::xml_document* doc, std::ostream& stream, const 
                     break;
             }
 
-            if (numbers.empty()) {
-                numbers.push_back(0);
-            }
-            else {
-                numbers[0] = (int32_t)((numbers.size() - 1) * sizeof(int32_t));
-            }
-
+            writer.write<int32_t>((int32_t)(numbers.size() * sizeof(int32_t)));
             for (int32_t n : numbers) {
                 writer.write<int32_t>(n);
             }
