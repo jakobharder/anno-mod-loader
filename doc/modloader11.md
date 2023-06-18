@@ -19,7 +19,6 @@ Example:
   <ModOp Type="merge" Path="//InfoTipData[Guid='500934']">
     <InfoElement>
       <VisibilityElement>
-        <ChildCount>2</ChildCount>
         <VisibilityElement />
         <VisibilityElement>
           <ElementType>
@@ -42,7 +41,7 @@ Example:
 
 ```
 
-Note: the global `InfoTipCount` and `TemplateCount` will be adjusted automatically, but you need to ensure `ChildCount`s are correct yourself.
+Note: the counts `InfoTipCount`, `TemplateCount` and `ChildCount` will be adjusted automatically, you don't need to change anything.
 
 The format is the same as used in the [FileDBReader](https://github.com/anno-mods/FileDBReader/blob/master/FileFormats/infotip.xml).
 
@@ -80,20 +79,20 @@ Example:
           <hasValue>1</hasValue>
           <Name>2111001_0</Name>
           <!-- position -->
-          <Id>auto</Id> <!-- use auto -->
+          <Id>$auto</Id> <!-- use auto -->
           <HeightAdaptationMode>1</HeightAdaptationMode>
         </i>
       </Dummies>
-      <Id>auto</Id>
+      <Id>$auto</Id>
     </i>
     <!-- ... -->
   </ModOp>
 </ModOps>
 ```
 
-Note: you can use `<Id>auto</Id>` to automatically assign free ids.
+Note: you can use `$auto` to automatically assign free ids. Use `$auto(0)`, `$auto(1)`, ... if you want to use the same auto id multiple times.
 
-The format is the same as used in the [AnnoFCConverter](https://github.com/jakobharder/AnnoFCConverter).
+The format is the same as used in the [FileDBReader](https://github.com/anno-mods/FileDBReader/blob/master/FileFormats/FcFile.xml).
 
 ## Link files
 
