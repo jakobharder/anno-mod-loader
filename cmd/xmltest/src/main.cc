@@ -24,14 +24,28 @@ bool path_equal(const std::filesystem::path& a, const std::filesystem::path& b) 
     return stricmp(a.string().c_str(), b.string().c_str()) == 0;
 }
 
-void apply_patch(std::shared_ptr<pugi::xml_document> doc, const fs::path& modPath)
+void apply_patch(std::shared_ptr<pugi::xml_document> doc, const fs::path& modPath, const fs::path& patchPath)
 {
-    const fs::path& patchPath = modPath / "data/config/export/main/asset/assets.xml";
-    spdlog::debug("Prepatch: {}", patchPath.string());
+    fs::path mainPatchFile = patchPath;
+    if (patchPath.filename() != "export.bin.xml"
+        && patchPath.stem().extension() != ".fc"
+        && patchPath.stem().extension() != ".cfg") {
+        if (patchPath.filename().string().find("template") == std::string::npos) {
+            mainPatchFile = "data/config/export/main/asset/assets.xml";
+        }
+        else {
+            mainPatchFile = "data/config/export/main/asset/templates.xml";
+        }
+    }
+    const fs::path fullPath = modPath / mainPatchFile;
+    if (!fs::exists(fullPath)) {
+        return;
+    }
+    spdlog::info("Prepatch: {}", fullPath.string());
 
-    auto operations = XmlOperation::GetXmlOperationsFromFile(patchPath,
-        "xmltest",
-        patchPath.lexically_relative(modPath),
+    auto operations = XmlOperation::GetXmlOperationsFromFile(fullPath,
+        modPath.filename().string(),
+        mainPatchFile,
         fs::absolute(modPath));
     for (auto& operation : operations) {
         operation.Apply(doc);
@@ -50,12 +64,13 @@ int command_show(const XmltestParameters& params, std::ostream& out) {
     return 0;
 }
 
-std::shared_ptr<pugi::xml_document> _get_prepatched(const XmltestParameters& params) {
+std::shared_ptr<pugi::xml_document> _get_prepatched(const XmltestParameters& params, bool hide = false) {
     // disable debug as we don't want that for prepatch files
-    spdlog::set_level(spdlog::level::info);
+    spdlog::set_level(hide ? spdlog::level::critical : spdlog::level::info);
     auto doc = xmlops::XmlAutoSerializer::read(params.targetPath);
+    auto patch_game_path = fs::relative(params.patchPath, params.modPaths.front());
     for (auto dep : params.prepatchPaths) {
-        apply_patch(doc, dep);
+        apply_patch(doc, dep, patch_game_path);
     }
     spdlog::set_level(params.verbose ? spdlog::level::debug : spdlog::level::info);
     return doc;
@@ -104,6 +119,9 @@ std::shared_ptr<pugi::xml_document> _patch(std::shared_ptr<pugi::xml_document> d
     for (auto& operation : operations) {
         operation.Apply(doc);
     }
+
+    XmlAutoSerializer::fix(doc.get(), params.patchPath.stem());
+
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     spdlog::debug("Time: {}ms {} ({}:{})", duration, "Group", context->GetGenericPath(), 0);
@@ -120,10 +138,9 @@ int command_diff(const XmltestParameters& params, const std::string& patch_conte
 
     auto doc = _get_prepatched(params);
     doc = _patch(doc, params, patch_content);
-    auto prepatched_doc = _get_prepatched(params);
+    auto prepatched_doc = _get_prepatched(params, true);
 
     const auto inner_extension = params.patchPath.stem().extension();
-    XmlAutoSerializer::fix(doc.get(), params.patchPath.stem());
     if (inner_extension == L".cfg" || inner_extension == L".fc") {
         const std::string open_mode = "<Config>";
         const std::string close_mode = "</Config>";

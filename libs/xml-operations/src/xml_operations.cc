@@ -103,7 +103,7 @@ pugi::xml_node XmlOperationContext::GetRoot() const
 
     auto root = doc_ ? doc_->root() : pugi::xml_node{};
     if (!root) {
-        spdlog::error("Failed to get root element");
+        Error("Failed to get root element");
         return {};
     }
 
