@@ -102,9 +102,28 @@ void FcWriter::fix_ids(pugi::xml_document* doc) {
     int next_id = 0;
     std::from_chars(id_counter.data(), id_counter.data() + id_counter.size(), next_id);
 
-    for (auto node : doc->select_nodes("//Id[text()='auto']")) {
-        next_id++;
-        node.node().first_child().set_value(fmt::format("{:d}", next_id).c_str());
+    std::map<int, int> auto_id_map;
+
+    for (auto node : doc->select_nodes("//Id")) {
+        if (strncmp(node.node().child_value(), "$auto", 5) == 0) {
+            int id;
+            if (sscanf(node.node().child_value(), "$auto(%d)", &id) > 0) {
+                auto already_mapped = auto_id_map.find(id);
+                if (already_mapped == auto_id_map.end()) {
+                    next_id++;
+                    auto_id_map.emplace(id, next_id);
+                    id = next_id;
+                }
+                else {
+                    id = already_mapped->second;
+                }
+            }
+            else {
+                next_id++;
+                id = next_id;
+            }
+            node.node().first_child().set_value(fmt::format("{:d}", id).c_str());
+        }
     }
 
     doc->child("IdCounter").first_child().set_value(fmt::format("{:d}", next_id).c_str());
