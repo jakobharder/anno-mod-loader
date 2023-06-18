@@ -336,6 +336,20 @@ void FileDbWriter::fix_counts(pugi::xml_document* doc) {
 
     doc->child("Content").child("InfoTipCount").first_child().set_value(fmt::format("{:d}", infotips).c_str());
     doc->child("Content").child("TemplateCount").first_child().set_value(fmt::format("{:d}", templates).c_str());
+
+    for (auto node : doc->select_nodes("//ChildCount")) {
+         int visibility_elements = 0;
+         int info_elements = 0;
+         for (auto& element : node.parent().children()) {
+            if (strcmp(element.name(), "VisibilityElement") == 0) {
+                visibility_elements++;
+            }
+            else if (strcmp(element.name(), "InfoElement") == 0) {
+                info_elements++;
+            }
+         }
+         node.node().first_child().set_value(fmt::format("{:d}", std::max(info_elements, visibility_elements)).c_str());
+    }
 }
 
 void FileDbWriter::write_data(pugi::xml_node root) {
