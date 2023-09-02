@@ -352,7 +352,9 @@ The order is as follows:
 2. Mods without `LoadAfterIds` loaded alphabetically.
 3. Mods with `*` loaded in order of `LoadAfterIds`.
 
-Note: Thanks to step 2 the loading order without any `LoadAfterIds` is unchanged.
+A mod without a `*` cannot load after a mod with a `*`.
+
+Note: Step 2 ensures previous behavior as long as there's no `LoadAfterIds`.
 
 ## Mods in sub-folders
 
