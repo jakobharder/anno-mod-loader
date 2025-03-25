@@ -8,6 +8,8 @@
 #include <map>
 #include <regex>
 
+namespace xmlops {
+
 std::vector<std::string> StrSplit(const std::string& input, char delimiter) {
     std::vector<std::string> result;
 
@@ -101,7 +103,7 @@ pugi::xml_node XmlOperationContext::GetRoot() const
 
     auto root = doc_ ? doc_->root() : pugi::xml_node{};
     if (!root) {
-        spdlog::error("Failed to get root element");
+        Error("Failed to get root element");
         return {};
     }
 
@@ -176,7 +178,12 @@ XmlLookup::XmlLookup(const std::string& path,
 
     std::string read_path = negative_ ? path.substr(1) : path;
 
-    if (!read_path.empty() && read_path[0] == '~') {
+    if (!read_path.empty() && read_path.front() == '#') {
+        path_ = read_path.substr(1);
+        mod_id_ = true;
+        return;
+    }
+    else if (!read_path.empty() && read_path[0]== '~') {
         read_path = read_path.substr(1);
         guid_ = guid;
         template_ = templ;
@@ -239,10 +246,6 @@ XmlOperation::XmlOperation(std::shared_ptr<XmlOperationContext> doc, pugi::xml_n
 
     if (type_ != Type::Remove) {
         content_ = XmlLookup{node.attribute("Content").as_string(), guid, templ, true, doc, node};
-        if (!content_.IsEmpty() && nodes_->begin() != nodes_->end()) {
-            doc_->Error("ModOp must be empty when Content is used", node_);
-            nodes_ = {};
-        }
     }
 }
 
@@ -533,7 +536,7 @@ pugi::xpath_node_set XmlLookup::ReadGuidNodes(std::shared_ptr<pugi::xml_document
             }
         } catch (const pugi::xpath_exception& e) {
             context_->Error("Speculative path failed to find node with path \"" + GetPath() +
-                       "\" " + speculative_path_);
+                       "\" " + speculative_path_, node_);
             context_->Error(e.what());
         }
     }
@@ -555,14 +558,14 @@ pugi::xpath_node_set XmlLookup::ReadTemplateNodes(std::shared_ptr<pugi::xml_docu
             }
         } catch (const pugi::xpath_exception& e) {
             context_->Error("Speculative path failed to find node with path \"" + GetPath() +
-                       "\" " + speculative_path_);
+                       "\" " + speculative_path_, node_);
             context_->Error(e.what());
         }
     }
     return results;
 }
 
-void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
+void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::set<std::string>& mod_ids)
 {
     auto start = std::chrono::high_resolution_clock::now();
     auto logTime = [&start, this](const char* group = "ModOp") {
@@ -573,18 +576,20 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
     };
 
     std::optional<pugi::xml_node> cachedNode;
-    if (GetType() == XmlOperation::Type::None || !CheckCondition(doc, cachedNode)) {
+    if (GetType() == XmlOperation::Type::None || !CheckCondition(doc, cachedNode, mod_ids)) {
         return logTime(type_ == Type::Group ? "Group" : "ModOp");
     }
 
     if (type_ == Type::Group) {
         // logTime();
         for (auto& modop : group_) {
-            modop.Apply(doc);
+            modop.Apply(doc, mod_ids);
         }
         logTime("Group");
         return;
     }
+
+    std::optional<pugi::xml_node> wrapper;
 
     std::vector<pugi::xml_node> content_nodes;
     if (type_ != Type::Remove && !content_.IsEmpty()) {
@@ -593,8 +598,30 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
             doc_->Warn("No matching node for path \"" + path_.GetPath() + "\"", node_);
             return logTime();
         }
-        for (auto& node : result)
-            content_nodes.push_back(node.node());
+        if (!nodes_ || nodes_->begin() != nodes_->end()) {
+            wrapper = doc->append_child("ModOpTemp");
+            for (auto& node : result) {
+                for (auto wrapper_node = nodes_->begin(); wrapper_node != nodes_->end(); wrapper_node++) {
+
+                    wrapper->append_copy(*wrapper_node);
+                }
+                auto inserter = wrapper->select_node(".//ModOpContent");
+                if (!inserter) {
+                    doc_->Warn("ModOps with 'Content' attribute must be empty or contain '<ModOpContent />'", node_);
+                    break;
+                }
+                else {
+                    inserter.parent().insert_copy_after(node.node(), inserter.node());
+                    inserter.parent().remove_child(inserter.node());
+                }
+            }
+            content_nodes.insert(content_nodes.end(), wrapper->children().begin(), wrapper->children().end());
+        }
+        else {
+            for (auto& node : result) {
+                content_nodes.push_back(node.node());
+            }
+        }
     }
     if (content_.IsEmpty() && nodes_) {
         content_nodes.insert(content_nodes.end(), nodes_->begin(), nodes_->end());
@@ -609,6 +636,9 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
             }
             else {
                 doc_->Warn("No matching node for Path \"" + path_.GetPath() + "\"", node_);
+            }
+            if (wrapper) {
+                doc->remove_child(*wrapper);
             }
             return logTime();
         }
@@ -650,6 +680,9 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
         doc_->Error("Failed to parse path \"" + path_.GetPath() + "\": " + e.what());
     }
 
+    if (wrapper) {
+        doc->remove_child(*wrapper);
+    }
     logTime();
 }
 
@@ -816,15 +849,22 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
     }
 }
 
-bool XmlOperation::CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>& cachedNode)
+bool XmlOperation::CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>& cachedNode,
+    const std::set<std::string>& mod_ids)
 {
     if (condition_.IsEmpty()) {
         return true;
     }
 
-    const auto match_nodes = condition_.Select(doc, &cachedNode, true);
+    bool matching = false;
+    if (condition_.IsModId()) {
+        matching = mod_ids.end() != mod_ids.find(condition_.GetPath());
+    }
+    else {
+        matching = !condition_.Select(doc, &cachedNode, true).empty();
+    }
 
-    if (condition_.IsNegative() != match_nodes.empty()) {
+    if (condition_.IsNegative() == matching) {
         doc_->Debug("Condition not matching {} in {} ({}:{})", condition_.GetPath(), doc_->GetName(),
                    doc_->GetGenericPath(), doc_->GetLine(node_));
         return false;
@@ -836,4 +876,6 @@ bool XmlOperation::CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::
 XmlOperation::Type XmlOperation::GetType() const
 {
     return type_;
+}
+
 }

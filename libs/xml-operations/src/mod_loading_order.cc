@@ -10,6 +10,8 @@
 
 using namespace std;
 
+namespace xmlops {
+
 void ForSplit(const string& text, const char* delimiter, const function<void(const string&)> forEach)
 {
     size_t last = 0; size_t next = 0;
@@ -40,7 +42,7 @@ vector<string> Split(const string& text, const char* delimiter)
     return result;
 }
 
-annomods::ModLoadingOrder::Version::Version(const std::string& version)
+ModLoadingOrder::Version::Version(const std::string& version)
 {
     auto split = Split(version, ".");
     if (split.size() > 0) {
@@ -54,7 +56,7 @@ annomods::ModLoadingOrder::Version::Version(const std::string& version)
     }
 }
 
-bool annomods::ModLoadingOrder::Version::operator<(const Version& other) const
+bool ModLoadingOrder::Version::operator<(const Version& other) const
 {
     if (major_ == other.major_) {
         if (minor_ == other.minor_) {
@@ -65,7 +67,7 @@ bool annomods::ModLoadingOrder::Version::operator<(const Version& other) const
     return major_ < other.major_;
 }
 
-bool annomods::ModLoadingOrder::Version::operator>(const Version& other) const
+bool ModLoadingOrder::Version::operator>(const Version& other) const
 {
     return other < *this;
 }
@@ -145,7 +147,7 @@ void DependencyGraph::Sort(vector<string>& sorted)
     }
 }
 
-void annomods::ModLoadingOrder::AddMod(const std::string& path,
+void ModLoadingOrder::AddMod(const std::string& path,
     const std::string& name,
     const std::string& id,
     const std::string& version,
@@ -170,7 +172,7 @@ void annomods::ModLoadingOrder::AddMod(const std::string& path,
     }
 }
 
-void annomods::ModLoadingOrder::Sort(vector<ModLoadingOrder::Mod>& ordered)
+void ModLoadingOrder::Sort(vector<ModLoadingOrder::Mod>& ordered)
 {
     HandleDeprecation();
 
@@ -214,7 +216,7 @@ void annomods::ModLoadingOrder::Sort(vector<ModLoadingOrder::Mod>& ordered)
     }
 }
 
-void annomods::ModLoadingOrder::HandleDeprecation()
+void ModLoadingOrder::HandleDeprecation()
 {
     std::map<string, Mod> filtered;
     for (auto& mod : mods_) {
@@ -226,7 +228,9 @@ void annomods::ModLoadingOrder::HandleDeprecation()
     mods_ = filtered;
 }
 
-bool annomods::ModLoadingOrder::IsDeprecated(const std::string& id) const
+bool ModLoadingOrder::IsDeprecated(const std::string& id) const
 {
     return (aliases_.end() != std::find_if(aliases_.begin(), aliases_.end(), [&id](pair<string, string> x) { return x.first == id; }));
+}
+
 }

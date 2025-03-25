@@ -1,0 +1,7 @@
+{
+    "name": "Simple Add Test, No Slash",
+    "expected": [
+        "/Test/Node/Meow",
+        "/Test/Node/Cat"
+    ]
+}

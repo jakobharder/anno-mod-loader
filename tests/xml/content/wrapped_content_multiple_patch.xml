@@ -1,0 +1,5 @@
+<ModOps>
+  <ModOp Type="merge" Path="/Test/Target" Content="/Test/Source/Building/text()">
+    <GUID><ModOpContent /></GUID>
+  </ModOp>
+</ModOps>
