@@ -68,11 +68,6 @@ http_archive(
     ],
 )
 
-local_repository(
-    name = "meow_hook",
-    path = "third_party/meow-hook",
-)
-
 load("@io_bazel//src/main/res:winsdk_configure.bzl", "winsdk_configure")
 winsdk_configure(name = "local_config_winsdk")
 load("@local_config_winsdk//:toolchains.bzl", "register_local_rc_exe_toolchains")
