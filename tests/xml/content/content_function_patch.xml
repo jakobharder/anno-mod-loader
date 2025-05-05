@@ -22,7 +22,7 @@
   <ModOp Type="replace"
     GUID="9"
     Path="/Values/Residence7/ResidentMax"
-    Content="number(/AssetList/Groups/Group/Assets/Asset/Values/Residence7/ResidentMax) + 2">
+    Content="number(Values/Residence7/ResidentMax) + 2">
     <ResidentMax>
       <ModOpContent />
     </ResidentMax>
