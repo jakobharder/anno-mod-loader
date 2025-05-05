@@ -206,25 +206,25 @@ XmlLookup::XmlLookup(const std::string& path,
     ReadPath(read_path, guid_, template_);
 }
 
-pugi::xpath_node_set XmlLookup::Select(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>* assetNode, bool strict) const
+XmlLookup::Result XmlLookup::Select(std::shared_ptr<pugi::xml_document> doc,
+    std::optional<pugi::xml_node>* assetNode) const
 {
-    try {
-        auto results = ReadGuidNodes(doc, assetNode);
-        if (!results.empty() || (strict && !guid_.empty())) {
-            return results;
+    pugi::xpath_query query;
+    auto node = PrepareLookupNode(doc, &query, assetNode);
+    if (node) {
+        if (query.return_type() == pugi::xpath_type_node_set) {
+            return node->select_nodes(query);
         }
-
-        results = ReadTemplateNodes(doc);
-        if (!results.empty() || (strict && !template_.empty())) {
-            return results;
+        else if (query.return_type() == pugi::xpath_type_boolean) {
+            return XmlLookup::Result{ query.evaluate_boolean(*node) };
         }
-
-        if (!guid_.empty() || !template_.empty()) {
-            context_->Debug("Speculative path failed to find node with path {} {}", path_, speculative_path_);
+        else if (query.return_type() == pugi::xpath_type_number ||
+                query.return_type() == pugi::xpath_type_string) {
+            pugi::xml_node wrapper = doc->append_child("ModOpEvalTemp");
+            wrapper.text().set(query.evaluate_string(*node).c_str());
+            auto result = wrapper.select_nodes("self::node()");
+            return XmlLookup::Result{ result, doc, &wrapper };
         }
-        return doc->select_nodes(path_.c_str());
-    } catch (const pugi::xpath_exception &e) {
-        context_->Error("Failed to parse path \"" + path_ + "\": " + e.what(), node_);
     }
 
     return {};
@@ -331,9 +331,6 @@ void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string te
         path_                  = "//Template[Name='" + temp + "']";
     }
 
-    if (prop_path.find("/") != 0) {
-        path_ += "/";
-    }
     path_ += prop_path;
     if (path_ == "/") {
         path_ = "/*";
@@ -520,6 +517,41 @@ std::optional<pugi::xml_node> XmlLookup::FindTemplate(std::shared_ptr<pugi::xml_
     return FindTemplate(temp, doc->root());
 }
 
+std::optional<pugi::xml_node> XmlLookup::PrepareLookupNode(
+    std::shared_ptr<pugi::xml_document> doc,
+    pugi::xpath_query* query,
+    std::optional<pugi::xml_node>* assetNode) const
+{
+    std::optional<pugi::xml_node> root{};
+
+    if (!guid_.empty()) {
+        auto cached = (assetNode && *assetNode) ? FindAsset(guid_, **assetNode) : std::optional<pugi::xml_node>{};
+        auto node = cached ? cached : FindAsset(guid_, doc->root());
+
+        if (assetNode) {
+            *assetNode = node;
+        }
+        root = node;
+    }
+    else if (!template_.empty()) {
+        root = FindTemplate(doc, template_);
+    }
+
+    auto& path = root ? speculative_path_ : path_;
+    if (!root) {
+        root = *doc;
+    }
+
+    try {
+        *query = pugi::xpath_query{ path.c_str() };
+    } catch (const pugi::xpath_exception &e) {
+        context_->Error("Failed to parse path \"" + path_ + "\": " + e.what(), node_);
+        return {};
+    }
+
+    return root;
+}
+
 pugi::xpath_node_set XmlLookup::ReadGuidNodes(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>* assetNode) const
 {
     pugi::xpath_node_set results;
@@ -593,14 +625,14 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::set
 
     std::vector<pugi::xml_node> content_nodes;
     if (type_ != Type::Remove && !content_.IsEmpty()) {
-        pugi::xpath_node_set result = content_.Select(doc);
-        if (result.empty()) {
+        auto result = content_.Select(doc);
+        if (result.IsEmpty()) {
             doc_->Warn("No matching node for path \"" + content_.GetPath() + "\"", node_);
             return logTime();
         }
         if (!nodes_ || nodes_->begin() != nodes_->end()) {
             wrapper = doc->append_child("ModOpTemp");
-            for (auto& node : result) {
+            for (auto& node : result.Nodes()) {
                 for (auto wrapper_node = nodes_->begin(); wrapper_node != nodes_->end(); wrapper_node++) {
 
                     wrapper->append_copy(*wrapper_node);
@@ -618,7 +650,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::set
             content_nodes.insert(content_nodes.end(), wrapper->children().begin(), wrapper->children().end());
         }
         else {
-            for (auto& node : result) {
+            for (auto& node : result.Nodes()) {
                 content_nodes.push_back(node.node());
             }
         }
@@ -630,7 +662,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::set
     try {
         doc_->Debug("Looking up {}", path_.GetPath());
         auto results = path_.Select(doc, &cachedNode);
-        if (results.empty()) {
+        if (results.IsEmpty()) {
             if (allow_no_match_) {
                 doc_->Debug("No matching node for Path \"{}\"", path_.GetPath());
             }
@@ -643,7 +675,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::set
             return logTime();
         }
 
-        for (pugi::xpath_node xnode : results) {
+        for (pugi::xpath_node xnode : results.Nodes()) {
             pugi::xml_node game_node = xnode.node();
             if (GetType() == XmlOperation::Type::Merge) {
                 if (!content_nodes.empty() && content_nodes.size() == 1 &&
@@ -861,7 +893,7 @@ bool XmlOperation::CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::
         matching = mod_ids.end() != mod_ids.find(condition_.GetPath());
     }
     else {
-        matching = !condition_.Select(doc, &cachedNode, true).empty();
+        matching = condition_.Select(doc, &cachedNode).IsMatch();
     }
 
     if (condition_.IsNegative() == matching) {

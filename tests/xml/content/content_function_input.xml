@@ -1,0 +1,35 @@
+<AssetList>
+  <Groups>
+    <Group>
+      <Assets>
+        <Asset>
+          <Template>Text</Template>
+          <Values>
+            <Standard>
+              <GUID>123</GUID>
+            </Standard>
+            <Source>
+              <Building />
+              <Building />
+              <Building />
+            </Source>
+          </Values>
+        </Asset>
+        <Asset>
+          <Template>Text</Template>
+          <Values>
+            <Standard>
+              <GUID>456</GUID>
+            </Standard>
+            <Target>
+              <Count>0</Count>
+            </Target>
+            <TargetWithGuid>
+              <Count>0</Count>
+            </TargetWithGuid>
+          </Values>
+        </Asset>
+      </Assets>
+    </Group>
+  </Groups>
+</AssetList>
