@@ -595,7 +595,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::set
     if (type_ != Type::Remove && !content_.IsEmpty()) {
         pugi::xpath_node_set result = content_.Select(doc);
         if (result.empty()) {
-            doc_->Warn("No matching node for path \"" + path_.GetPath() + "\"", node_);
+            doc_->Warn("No matching node for path \"" + content_.GetPath() + "\"", node_);
             return logTime();
         }
         if (!nodes_ || nodes_->begin() != nodes_->end()) {
