@@ -1,18 +1,9 @@
 [submodule "third_party/spdlog"]
 	path = third_party/spdlog
 	url = https://github.com/gabime/spdlog.git
-[submodule "third_party/ksignals"]
-	path = third_party/ksignals
-	url = https://github.com/xforce/ksignals.git
 [submodule "third_party/json"]
 	path = third_party/json
 	url = https://github.com/nlohmann/json.git
-[submodule "third_party/wil"]
-	path = third_party/wil
-	url = https://github.com/microsoft/wil.git
 [submodule "third_party/pugixml"]
 	path = third_party/pugixml
 	url = https://github.com/zeux/pugixml.git
-[submodule "third_party/pybind11"]
-	path = third_party/pybind11
-	url = https://github.com/pybind/pybind11.git
