@@ -1,6 +1,6 @@
 <ModOps>
   <!-- simple -->
-  <ModOp Type="addAfter"
+  <ModOp Type="replace"
     Path="/AssetList/Groups/Group/Assets/Asset/Values/Target/Count"
     Content="count(/AssetList/Groups/Group/Assets/Asset/Values/Source/Building)">
     <Count>
@@ -9,12 +9,22 @@
   </ModOp>
 
   <!-- GUID -->
-  <ModOp Type="addAfter"
+  <ModOp Type="replace"
     GUID="456"
     Path="/Values/TargetWithGuid/Count"
     Content="count(/AssetList/Groups/Group/Assets/Asset/Values/Source/Building)">
     <Count>
       <ModOpContent />
     </Count>
+  </ModOp>
+
+  <!-- GUID, self-contained -->
+  <ModOp Type="replace"
+    GUID="9"
+    Path="/Values/Residence7/ResidentMax"
+    Content="number(/AssetList/Groups/Group/Assets/Asset/Values/Residence7/ResidentMax) + 2">
+    <ResidentMax>
+      <ModOpContent />
+    </ResidentMax>
   </ModOp>
 </ModOps>
