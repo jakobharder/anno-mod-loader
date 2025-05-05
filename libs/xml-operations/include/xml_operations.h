@@ -69,7 +69,7 @@ public:
         Result(
             pugi::xpath_node_set nodes,
             std::shared_ptr<pugi::xml_document> doc = nullptr,
-            pugi::xml_node* temporary = nullptr) :
+            std::optional<pugi::xml_node> temporary = {}) :
             doc_(doc), nodes_(nodes), temporary_(temporary) {};
         ~Result()
         {
@@ -85,7 +85,7 @@ public:
     private:
         std::shared_ptr<pugi::xml_document> doc_ = nullptr;
         pugi::xpath_node_set nodes_;
-        pugi::xml_node* temporary_ = nullptr;
+        std::optional<pugi::xml_node> temporary_;
         bool boolean_ = false;
     };
 

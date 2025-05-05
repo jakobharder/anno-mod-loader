@@ -2,6 +2,9 @@
   "name": "Content function",
   "expected": [
     "/AssetList/Groups/Group/Assets/Asset/Values/Target[Count='3']",
-    "/AssetList/Groups/Group/Assets/Asset/Values/TargetWithGuid[Count='3']"
+    "/AssetList/Groups/Group/Assets/Asset/Values/TargetWithGuid[Count='3']",
+    "/AssetList/Groups/Group/Assets/Asset/Values/Residence7[ResidentMax='12']",
+    "!//ModOpEval",
+    "!//ModOpTemp"
   ]
 }

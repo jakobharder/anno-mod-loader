@@ -29,6 +29,17 @@
             </TargetWithGuid>
           </Values>
         </Asset>
+        <Asset>
+          <Template>Text</Template>
+          <Values>
+            <Standard>
+              <GUID>9</GUID>
+            </Standard>
+            <Residence7>
+              <ResidentMax>10</ResidentMax>
+            </Residence7>
+          </Values>
+        </Asset>
       </Assets>
     </Group>
   </Groups>

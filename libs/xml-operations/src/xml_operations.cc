@@ -220,10 +220,10 @@ XmlLookup::Result XmlLookup::Select(std::shared_ptr<pugi::xml_document> doc,
         }
         else if (query.return_type() == pugi::xpath_type_number ||
                 query.return_type() == pugi::xpath_type_string) {
-            pugi::xml_node wrapper = doc->append_child("ModOpEvalTemp");
+            pugi::xml_node wrapper = doc->append_child("ModOpEval");
             wrapper.text().set(query.evaluate_string(*node).c_str());
-            auto result = wrapper.select_nodes("self::node()");
-            return XmlLookup::Result{ result, doc, &wrapper };
+            auto result = wrapper.select_nodes("self::node()/text()");
+            return XmlLookup::Result{ result, doc, wrapper };
         }
     }
 
