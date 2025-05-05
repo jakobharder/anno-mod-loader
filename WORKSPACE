@@ -24,48 +24,10 @@ http_archive(
     sha256 = "74d544d96f4a5bb630d465ca8bbcfe231e3594e5aae57e1edbf17a6eb3ca2506",
 )
 
-# abseil-cpp
-http_archive(
-    name = "com_google_absl",
-    strip_prefix = "abseil-cpp-8c0b94e793a66495e0b1f34a5eb26bd7dc672db0",
-    urls = ["https://github.com/abseil/abseil-cpp/archive/8c0b94e793a66495e0b1f34a5eb26bd7dc672db0.zip"],  # Abseil LTS branch, June 2022, Patch 1
-    sha256 = "b9f490fae1c0d89a19073a081c3c588452461e5586e4ae31bc50a8f36339135e",
-)
-
-http_archive(
-    name = "com_github_facebook_zstd",
-    build_file = "@//:zstd.BUILD",
-    strip_prefix = "zstd-e47e674cd09583ff0503f0f6defd6d23d8b718d3",
-    urls = [
-        "https://github.com/facebook/zstd/archive/e47e674cd09583ff0503f0f6defd6d23d8b718d3.tar.gz",
-    ],
-    sha256 = "2a7b7e5d3f8c759894f0fea9917a590733600574d20cb53f3be827c7c62862e1"
-)
-
-http_archive(
-    name = "com_github_curl",
-    sha256 = "3dfdd39ba95e18847965cd3051ea6d22586609d9011d91df7bc5521288987a82",
-    strip_prefix = "curl-7.86.0",
-    urls = [
-        "https://github.com/curl/curl/releases/download/curl-7_86_0/curl-7.86.0.tar.gz",
-        "https://curl.haxx.se/download/curl-7.86.0.tar.gz",
-    ],
-    build_file = "@//:curl.BUILD",
-)
-
 new_local_repository(
     name = "pugixml",
     build_file = "pugixml.BUILD",
     path = "./third_party/pugixml",
-)
-
-http_archive(
-    name = "boringssl",
-    strip_prefix = "boringssl-863837047be74b20f59369b5256c39ad00f015b3",
-    sha256 = "55c19c2db2e8b23fc3d19ad707209f992da5b3b6cfbe3812e6aadcee1786669c",
-    urls = [
-        "https://github.com/google/boringssl/archive/863837047be74b20f59369b5256c39ad00f015b3.zip",
-    ],
 )
 
 load("@io_bazel//src/main/res:winsdk_configure.bzl", "winsdk_configure")

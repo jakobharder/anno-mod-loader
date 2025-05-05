@@ -1,7 +1,6 @@
 #include "xml_operations.h"
 #include "xml_auto_serializer.h"
 
-#include "absl/strings/str_cat.h"
 #include "pugixml.hpp"
 #include "spdlog/spdlog.h"
 

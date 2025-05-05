@@ -10,7 +10,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "//third_party:spdlog",
-        "@com_google_absl//absl/strings",
         "@pugixml",
     ],
 )
