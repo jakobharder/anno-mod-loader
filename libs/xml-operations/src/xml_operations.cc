@@ -381,9 +381,9 @@ void XmlOperation::ReadType(pugi::xml_node node)
     }
     else if (stricmp(type.c_str(), "add") == 0) {
         type_ = Type::Add;
-    } else if (stricmp(type.c_str(), "addNextSibling") == 0) {
+    } else if (stricmp(type.c_str(), "addAfter") == 0) {
         type_ = Type::AddNextSibling;
-    } else if (stricmp(type.c_str(), "addPrevSibling") == 0) {
+    } else if (stricmp(type.c_str(), "addBefore") == 0) {
         type_ = Type::AddPrevSibling;
     } else if (stricmp(type.c_str(), "add") == 0) {
         type_ = Type::Add;
