@@ -61,6 +61,34 @@ private:
 class XmlLookup
 {
 public:
+    class Result
+    {
+    public:
+        Result() {};
+        Result(bool value) : boolean_(value) {};
+        Result(
+            pugi::xpath_node_set nodes,
+            std::shared_ptr<pugi::xml_document> doc = nullptr,
+            pugi::xml_node* temporary = nullptr) :
+            doc_(doc), nodes_(nodes), temporary_(temporary) {};
+        ~Result()
+        {
+            if (temporary_ && doc_) {
+                doc_->remove_child(*temporary_);
+            }
+        };
+
+        bool IsEmpty() const { return nodes_.empty(); };
+        const pugi::xpath_node_set& Nodes() const { return nodes_; };
+        bool IsMatch() const { return boolean_ || !nodes_.empty(); };
+
+    private:
+        std::shared_ptr<pugi::xml_document> doc_ = nullptr;
+        pugi::xpath_node_set nodes_;
+        pugi::xml_node* temporary_ = nullptr;
+        bool boolean_ = false;
+    };
+
     XmlLookup();
     XmlLookup(const std::string& path,
               const std::string& guid,
@@ -71,10 +99,8 @@ public:
 
     /// @brief Select XPath nodes.
     /// @param assetNode Start search here. Resulting asset is stored back.
-    /// @param strict Skip normal XPath selection if GUID or Template is specified.
-    pugi::xpath_node_set Select(std::shared_ptr<pugi::xml_document> doc,
-        std::optional<pugi::xml_node>* assetNode = nullptr,
-        bool strict = false) const;
+    XmlLookup::Result Select(std::shared_ptr<pugi::xml_document> doc,
+        std::optional<pugi::xml_node>* assetNode = nullptr) const;
 
     bool IsEmpty() const { return empty_path_; };
     bool IsNegative() const { return negative_; };
@@ -109,9 +135,14 @@ private:
     std::optional<pugi::xml_node> FindTemplate(const std::string& temp, pugi::xml_node node) const;
     std::optional<pugi::xml_node> FindTemplate(std::shared_ptr<pugi::xml_document> doc, const std::string& templ) const;
 
+    std::optional<pugi::xml_node> PrepareLookupNode(
+        std::shared_ptr<pugi::xml_document> doc,
+        pugi::xpath_query* query,
+        std::optional<pugi::xml_node>* assetNode) const;
+
     /// @brief Select XPath nodes via Values/Standard/GUID.
     /// @param assetNode Start search here. Resulting asset is stored back.
-    pugi::xpath_node_set ReadGuidNodes(std::shared_ptr<pugi::xml_document> doc, 
+    pugi::xpath_node_set ReadGuidNodes(std::shared_ptr<pugi::xml_document> doc,
         std::optional<pugi::xml_node>* assetNode) const;
     pugi::xpath_node_set ReadTemplateNodes(std::shared_ptr<pugi::xml_document> doc) const;
 };
