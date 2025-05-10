@@ -237,10 +237,17 @@ XmlOperation::XmlOperation(std::shared_ptr<XmlOperationContext> doc, pugi::xml_n
 {
     node_     = node;
 
-    path_ = XmlLookup{GetXmlPropString(node, "Path"), guid, templ, false, doc, node};
     ReadType(node);
     if (type_ != Type::Remove) {
         nodes_ = node.children();
+    }
+
+    if (type_ == Type::Asset) {
+        // TODO error if Path, GUID, Template or Property are specified
+        path_ = XmlLookup{"//Groups[1]/Group[1]/Assets[1]", {}, {}, true, doc, node};
+    }
+    else {
+        path_ = XmlLookup{GetXmlPropString(node, "Path"), guid, templ, false, doc, node};
     }
 
     condition_ = XmlLookup{node.attribute("Condition").as_string(), guid, templ, true, doc, node};
@@ -378,7 +385,9 @@ void XmlOperation::ReadType(pugi::xml_node node)
         stricmp(node.name(), "Group") == 0) {
         type_ = Type::Group;
     }
-    else if (stricmp(type.c_str(), "add") == 0) {
+    else if (stricmp(type.c_str(), "asset") == 0) {
+        type_ = Type::Asset;
+    } else if (stricmp(type.c_str(), "add") == 0) {
         type_ = Type::Add;
     } else if (stricmp(type.c_str(), "addAfter") == 0) {
         type_ = Type::AddNextSibling;
@@ -698,6 +707,10 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::set
                     game_node.parent().insert_copy_before(node, game_node);
                 }
             } else if (GetType() == XmlOperation::Type::Add) {
+                for (auto &node : content_nodes) {
+                    game_node.append_copy(node);
+                }
+            } else if (GetType() == XmlOperation::Type::Asset) {
                 for (auto &node : content_nodes) {
                     game_node.append_copy(node);
                 }
