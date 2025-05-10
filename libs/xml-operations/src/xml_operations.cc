@@ -311,8 +311,8 @@ void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string te
             }
         }
     } else {
-        speculative_path_type_ = SpeculativePathType::SINGLE_ASSET;
-        path_                  = "//Asset[Values/Standard/GUID='" + guid + "']";
+        speculative_path_type_ = SpeculativePathType::VALUES_CONTAINER;
+        path_                  = "//Asset[Values/Standard/GUID='" + guid + "']/Values";
     }
 
     if (prop_path.empty()) {

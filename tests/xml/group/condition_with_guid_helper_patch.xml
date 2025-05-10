@@ -1,11 +1,11 @@
 <ModOps>
     <Group Condition="//Values[Standard/GUID='1010522']">
-        <ModOp Type="add" GUID="1010521" Path="/Values">
+        <ModOp Type="add" GUID="1010521">
             <Cost />
         </ModOp>
     </Group>
     <Group Condition="!//Values[Standard/GUID='1500010714']">
-        <ModOp Type="add" GUID="1010521" Path="/Values">
+        <ModOp Type="add" GUID="1010521">
             <Building />
         </ModOp>
     </Group>

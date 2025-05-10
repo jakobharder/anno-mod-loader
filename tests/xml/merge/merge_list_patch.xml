@@ -1,5 +1,5 @@
 <ModOps>
-<ModOp Type="merge" GUID='100780' Path="/Values/Maintenance">
+<ModOp Type="merge" GUID='100780' Path="/Maintenance">
     <Maintenance>
         <Maintenances>
             <Item>

@@ -11,7 +11,7 @@
   <!-- GUID -->
   <ModOp Type="replace"
     GUID="456"
-    Path="/Values/TargetWithGuid/Count"
+    Path="/TargetWithGuid/Count"
     Content="count(/AssetList/Groups/Group/Assets/Asset/Values/Source/Building)">
     <Count>
       <ModOpContent />
@@ -21,8 +21,8 @@
   <!-- GUID, self-contained -->
   <ModOp Type="replace"
     GUID="9"
-    Path="/Values/Residence7/ResidentMax"
-    Content="number(Values/Residence7/ResidentMax) + 2">
+    Path="/Residence7/ResidentMax"
+    Content="number(Residence7/ResidentMax) + 2">
     <ResidentMax>
       <ModOpContent />
     </ResidentMax>
