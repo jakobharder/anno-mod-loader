@@ -1,5 +1,5 @@
 <ModOps>
-  <ModOp Type="merge" GUID="1010285" Path="/Values/FactoryBase">
+  <ModOp Type="merge" GUID="1010285" Path="/FactoryBase">
 		<FactoryInputs>
 			<Item>
 				<Product>120008</Product>
