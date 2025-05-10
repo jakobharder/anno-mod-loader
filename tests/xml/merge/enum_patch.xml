@@ -1,0 +1,7 @@
+<ModOps>
+  <ModOp Type="merge" GUID="1,2,3,4,5" Path="Product">
+    <Product>
+      <AssociatedRegion ModOpEnum="Colony" />
+    </Product>
+  </ModOp>
+</ModOps>
