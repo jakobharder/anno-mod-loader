@@ -1,0 +1,10 @@
+{
+    "name": "Merge enum",
+    "expected": [
+        "//Values[Standard/GUID='1']/Product[AssociatedRegion='Moderate;Colony']",
+        "//Values[Standard/GUID='2']/Product[AssociatedRegion='Moderate;Colony']",
+        "//Values[Standard/GUID='3']/Product[AssociatedRegion='Colony']",
+        "//Values[Standard/GUID='4']/Product[AssociatedRegion='Colony']",
+        "//Values[Standard/GUID='5']/Product[AssociatedRegion='Colony']"
+    ]
+}

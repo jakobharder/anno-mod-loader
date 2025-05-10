@@ -391,14 +391,16 @@ void XmlOperation::ReadType(pugi::xml_node node)
         type_ = Type::AddNextSibling;
     } else if (stricmp(type.c_str(), "addBefore") == 0) {
         type_ = Type::AddPrevSibling;
-    } else if (stricmp(type.c_str(), "add") == 0) {
-        type_ = Type::Add;
     } else if (stricmp(type.c_str(), "remove") == 0) {
         type_ = Type::Remove;
     } else if (stricmp(type.c_str(), "replace") == 0) {
         type_ = Type::Replace;
     } else if (stricmp(type.c_str(), "merge") == 0) {
         type_ = Type::Merge;
+    } else if (stricmp(type.c_str(), "enum") == 0) {
+        type_ = Type::AddEnum;
+    } else if (stricmp(type.c_str(), "removeEnum") == 0) {
+        type_ = Type::RemoveEnum;
     } else {
         type_ = Type::None;
         doc_->Error("Unknown ModOp " + type, node_);
@@ -811,9 +813,31 @@ std::vector<XmlOperation> XmlOperation::GetXmlOperationsFromFile(const fs::path&
     return GetXmlOperations(std::make_shared<XmlOperationContext>(mod_relative_path, mod_path, mod_name), game_path);
 }
 
+void MergeEnum(pugi::xml_node enum_node, const pugi::char_t* insert)
+{
+    // TODO properly tokenize by ;
+    const auto enum_value = std::string_view{ enum_node.child_value() };
+    const size_t found = enum_value.find(insert);
+
+    const bool empty = enum_value.empty();
+    if (empty || found == std::string_view::npos) {
+        const auto new_value = empty ? std::string{ insert } : std::string{ enum_value } + std::string{ ";" } + std::string{ insert };
+
+        if (!enum_node.first_child()) {
+            enum_node.append_child(pugi::xml_node_type::node_pcdata);
+        }
+        enum_node.first_child().set_value(new_value.c_str());
+    }
+}
+
 void MergeProperties(pugi::xml_node game_node, pugi::xml_node patching_node)
 {
     for (pugi::xml_attribute &attr : patching_node.attributes()) {
+        if (stricmp(attr.name(), "ModOpEnum") == 0) {
+            MergeEnum(game_node, attr.as_string());
+            continue;
+        }
+
         if (auto at = game_node.find_attribute(
                 [attr](auto x) { return std::string(x.name()) == attr.name(); });
             at) {
@@ -832,6 +856,22 @@ static bool HasNonTextNode(pugi::xml_node node)
         node = node.next_sibling();
     }
     return false;
+}
+
+void RecursiveExpandEnum(pugi::xml_node node) {
+    for (auto& child : node.children()) {
+        RecursiveExpandEnum(child);
+    }
+
+    if (!node.first_child()) {
+        for (pugi::xml_attribute &attr : node.attributes()) {
+            if (stricmp(attr.name(), "ModOpEnum") == 0) {
+                MergeEnum(node, attr.as_string());
+                node.remove_attribute("ModOpEnum");
+                continue;
+            }
+        }
+    }
 }
 
 void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patching_node)
@@ -885,6 +925,7 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
             }
         }
         else {
+            RecursiveExpandEnum(cur_node);
             root_node.append_copy(cur_node);
         }
     }
