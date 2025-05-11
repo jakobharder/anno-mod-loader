@@ -613,6 +613,9 @@ void XmlOperation::InsertContent(std::vector<pugi::xml_node>& content_nodes, con
         if (inserter) {
             const auto& option_attr = inserter.node().attribute("Path");
             if (!option_attr) {
+                if (inserter.node().attribute("MergeFlags")) {
+                    continue;
+                }
                 // TODO can we do a better location?
                 doc_->Warn("ModOpContent used without 'Path'", node_);
                 continue;
@@ -867,11 +870,6 @@ void MergeEnum(pugi::xml_node enum_node, const pugi::char_t* insert)
 void MergeProperties(pugi::xml_node game_node, pugi::xml_node patching_node)
 {
     for (pugi::xml_attribute &attr : patching_node.attributes()) {
-        if (stricmp(attr.name(), "ModOpEnum") == 0) {
-            MergeEnum(game_node, attr.as_string());
-            continue;
-        }
-
         if (auto at = game_node.find_attribute(
                 [attr](auto x) { return std::string(x.name()) == attr.name(); });
             at) {
@@ -892,16 +890,22 @@ static bool HasNonTextNode(pugi::xml_node node)
     return false;
 }
 
-void RecursiveExpandEnum(pugi::xml_node node) {
-    for (auto& child : node.children()) {
+void RecursiveExpandEnum(pugi::xml_node game_node) {
+    for (auto& child : game_node.children()) {
         RecursiveExpandEnum(child);
     }
 
-    if (!node.first_child()) {
-        for (pugi::xml_attribute &attr : node.attributes()) {
-            if (stricmp(attr.name(), "ModOpEnum") == 0) {
-                MergeEnum(node, attr.as_string());
-                node.remove_attribute("ModOpEnum");
+    if (!game_node.first_child()) {
+        for (pugi::xml_attribute &attr : game_node.attributes()) {
+            if (stricmp(attr.name(), "MergeFlags") == 0) {
+                const auto& text = game_node.parent().child_value();
+                if (strlen(text) > 0) {
+                    MergeEnum(game_node.parent(), attr.as_string());
+                }
+                else {
+                    game_node.parent().append_child(pugi::xml_node_type::node_pcdata).set_value(attr.as_string());
+                }
+                game_node.parent().remove_child(game_node);
                 continue;
             }
         }
@@ -959,8 +963,7 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
             }
         }
         else {
-            RecursiveExpandEnum(cur_node);
-            root_node.append_copy(cur_node);
+            RecursiveExpandEnum(root_node.append_copy(cur_node));
         }
     }
 }
