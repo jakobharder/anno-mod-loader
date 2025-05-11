@@ -192,6 +192,9 @@ private:
     void RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patching_node);
     void ReadType(pugi::xml_node node);
 
+    /// @brief Replace ModOpContent with #option or XPath selection
+    void InsertContent(std::vector<pugi::xml_node>& content_nodes, const std::map<std::string, std::string>& mod_options);
+
     /// @brief Check Condition XPath. Can use GUID attribute.
     //         True when nodes are found.
     //         Can be negated with `!`.
