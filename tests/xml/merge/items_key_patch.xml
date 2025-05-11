@@ -1,0 +1,30 @@
+<ModOps>
+  <ModOp Type="merge" GUID="100780" Path="/Cost/Costs">
+    <Costs>
+      <!-- items without key are allowed at the beginning-->
+      <Item>
+        <Amount>11</Amount>
+      </Item>
+      <!-- exists out of order, merge values -->
+      <Item ModOpPath="Ingredient='1010218'">
+        <Ingredient>1010218</Ingredient>
+        <Amount>14</Amount>
+      </Item>
+      <!-- ignore items without key afterwards -->
+      <!--<Item>
+        <Ingredient>567</Ingredient>
+        <Amount>16</Amount>
+      </Item>-->
+      <!-- exists out of order, merge values -->
+      <Item ModOpPath="Ingredient='1010196'">
+        <Ingredient>1010196</Ingredient>
+        <Amount>12</Amount>
+      </Item>
+      <!-- doesn't exist, add item -->
+      <Item ModOpPath="Ingredient='123'">
+        <Ingredient>123</Ingredient>
+        <Amount>15</Amount>
+      </Item>
+    </Costs>
+  </ModOp>
+</ModOps>

@@ -875,6 +875,7 @@ void MergeProperties(pugi::xml_node game_node, pugi::xml_node patching_node)
             at) {
             game_node.remove_attribute(at);
         }
+
         game_node.append_attribute(attr.name()).set_value(attr.value());
     }
 }
@@ -948,12 +949,42 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
 
     auto root_node = game_node;
     std::map<std::string, int> indexer;
+    bool indexing_allowed = true;
     for (auto cur_node = patching_node; cur_node; cur_node = cur_node.next_sibling()) {
         const auto name = cur_node.name();
         indexer.try_emplace(name, 0);
         const int index = indexer[name]++;
 
-        game_node = find_node_with_name(root_node, cur_node.name(), index);
+        const auto& item_xpath = cur_node.attribute("ModOpPath");
+        if (item_xpath) {
+            indexing_allowed = false;
+
+            // TODO better string format
+            const auto xpath_query = std::string{ cur_node.name() } + "[" + item_xpath.as_string() + "]";
+            cur_node.remove_attribute("ModOpPath");
+            try
+            {
+                const auto& xpath_node = root_node.select_node(xpath_query.c_str());
+                if (xpath_node) {
+                    game_node = xpath_node.node();
+                }
+                else {
+                    game_node = {};
+                }
+            }
+            catch (const std::exception& e)
+            {
+                doc_->Warn("ModOpPath \"" + xpath_query + "\" not found", cur_node);
+            }
+        }
+        else if (!indexing_allowed) {
+            doc_->Warn(std::string{name} + " without ModOpPath is not allowed after ModOpPath usage", cur_node);
+            continue;
+        }
+        else {
+            game_node = find_node_with_name(root_node, cur_node.name(), index);
+        }
+
         if (game_node) {
             if (cur_node.type() == pugi::xml_node_type::node_pcdata) {
                 game_node.set_value(cur_node.value());

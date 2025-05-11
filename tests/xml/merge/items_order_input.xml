@@ -7,10 +7,6 @@
           <Values>
             <Standard>
               <GUID>100780</GUID>
-              <Name>electricity_02 (Oil Power Plant)</Name>
-              <IconFilename>data/ui/2kimages/main/3dicons/icon_electric_works_oil.png</IconFilename>
-              <ID>OilPowerPlant</ID>
-              <InfoDescription>10946</InfoDescription>
             </Standard>
             <Maintenance>
               <Maintenances>
