@@ -1,0 +1,12 @@
+{
+    "name": "Merge items by key",
+    "expected": [
+        "//Values[Standard/GUID='100780']/Cost/Costs/Item[position()=1 and Ingredient='1010017' and Amount='11']",
+        "//Values[Standard/GUID='100780']/Cost/Costs/Item[position()=2 and Ingredient='1010196' and Amount='12']",
+        "//Values[Standard/GUID='100780']/Cost/Costs/Item[position()=3 and Ingredient='1010205' and Amount='3']",
+        "//Values[Standard/GUID='100780']/Cost/Costs/Item[position()=4 and Ingredient='1010218' and Amount='14']",
+        "//Values[Standard/GUID='100780']/Cost/Costs/Item[position()=5 and Ingredient='1010207' and Amount='5']",
+        "//Values[Standard/GUID='100780']/Cost/Costs/Item[position()=6 and Ingredient='1010202' and Amount='6']",
+        "//Values[Standard/GUID='100780']/Cost/Costs/Item[position()=7 and Ingredient='123' and Amount='15']"
+    ]
+}
