@@ -1,0 +1,9 @@
+<ModOps>
+  <ModOp Type="remove" GUID="1" Path="../" Condition="#test_mod" />
+  <ModOp Type="remove" GUID="2" Path="../" Condition="!#test_mod" />
+  <ModOp Type="remove" GUID="3" Path="../" Condition="#test_mod_not_found" />
+  <ModOp Type="remove" GUID="4" Path="../" Condition="!#test_mod_not_found" />
+
+  <ModOp Type="remove" GUID="5" Path="../" Condition="#other_mod.useFeatureA" />
+  <ModOp Type="remove" GUID="6" Path="../" Condition="#other_mod.useFeatureB" />
+</ModOps>

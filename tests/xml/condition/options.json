@@ -1,0 +1,17 @@
+{
+    "name": "Condition ModID",
+    "options": {
+        "test_mod": "true",
+        "other_mod.useFeatureA": "true",
+        "other_mod.useFeatureB": "false"
+    },
+    "expected": [
+        "!/Test/Asset[not(Values)]",
+        "!/Test/Asset/Values[Standard/GUID='1']",
+        "/Test/Asset/Values[Standard/GUID='2']",
+        "/Test/Asset/Values[Standard/GUID='3']",
+        "!/Test/Asset/Values[Standard/GUID='4']",
+        "!/Test/Asset/Values[Standard/GUID='5']",
+        "/Test/Asset/Values[Standard/GUID='6']"
+    ]
+}

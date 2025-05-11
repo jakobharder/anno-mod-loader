@@ -4,6 +4,7 @@
 
 #include <filesystem>
 #include <functional>
+#include <map>
 #include <optional>
 #include <set>
 #include <string>
@@ -157,7 +158,7 @@ public:
 
     Type GetType() const;
 
-    void Apply(std::shared_ptr<pugi::xml_document> doc, const std::set<std::string>& mod_ids = {});
+    void Apply(std::shared_ptr<pugi::xml_document> doc, const std::map<std::string, std::string>& mod_options = {});
 
 public:
     static std::vector<XmlOperation> GetXmlOperations(
@@ -196,7 +197,7 @@ private:
     //         Can be negated with `!`.
     /// @param assetNode Returns GUID asset if found.
     bool CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>& assetNode,
-        const std::set<std::string>& mod_ids);
+        const std::map<std::string, std::string>& mod_options);
 };
 
 }
