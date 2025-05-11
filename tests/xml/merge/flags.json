@@ -1,5 +1,5 @@
 {
-    "name": "Merge enum",
+    "name": "Merge Flags",
     "expected": [
         "//Values[Standard/GUID='1']/Product[AssociatedRegion='Moderate;Colony']",
         "//Values[Standard/GUID='2']/Product[AssociatedRegion='Moderate;Colony']",
