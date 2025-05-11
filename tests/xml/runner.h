@@ -7,6 +7,7 @@
 #include "catch2/catch.hpp"
 
 #include <cstring>
+#include <map>
 #include <memory>
 #include <set>
 #include <sstream>
@@ -35,13 +36,13 @@ public:
         }
     }
 
-    void ApplyPatches(const std::set<std::string>& mod_ids) {
-        for (auto& id: mod_ids) {
-            spdlog::debug("{}", id);
+    void ApplyPatches(const std::map<std::string, std::string>& mod_options) {
+        for (auto& option: mod_options) {
+            spdlog::debug("{}: {}", option.first, option.second);
         }
 
         for (auto& operation : xml_operations_) {
-            operation.Apply(input_doc_, mod_ids);
+            operation.Apply(input_doc_, mod_options);
         }
     }
 
@@ -67,8 +68,8 @@ public:
 
     bool HasIssues() {
         auto log_content = test_log_.str();
-        
-        if (log_content.find("[warning]") != std::string::npos || 
+
+        if (log_content.find("[warning]") != std::string::npos ||
             log_content.find("[error]") != std::string::npos) {
             return true;
         }

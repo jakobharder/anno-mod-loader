@@ -30,13 +30,13 @@ def main():
                                 "\\", "/"), base_name_input.replace("\\", "/"),
                              base_name_patch.replace("\\", "/")))
 
-                    f.write("std::set<std::string> mod_ids;\n")
-                    mod_ids = data.get('modIds')
-                    if mod_ids is not None:
-                        for modid in mod_ids:
-                            f.write("mod_ids.insert(\"" + modid + "\");\n")
+                    f.write("std::map<std::string, std::string> mod_options;\n")
+                    mod_options = data.get('options')
+                    if mod_options is not None:
+                        for option_name, option_value in mod_options.items():
+                            f.write(f'mod_options["{option_name}"] = "{option_value}";\n')
 
-                    f.write("runner.ApplyPatches(mod_ids);\n")
+                    f.write("runner.ApplyPatches(mod_options);\n")
                     f.write("INFO(runner.DumpXml());")
                     f.write("INFO(runner.DumpLog());")
 
