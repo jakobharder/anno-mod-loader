@@ -1,0 +1,103 @@
+<AssetList>
+  <Groups>
+    <Group>
+      <Assets>
+        <Asset>
+          <Template>PowerplantBuilding</Template>
+          <Values>
+            <Standard>
+              <GUID>100780</GUID>
+              <Name>electricity_02 (Oil Power Plant)</Name>
+              <IconFilename>data/ui/2kimages/main/3dicons/icon_electric_works_oil.png</IconFilename>
+              <ID>OilPowerPlant</ID>
+              <InfoDescription>10946</InfoDescription>
+            </Standard>
+            <Maintenance>
+              <Maintenances>
+                <Item>
+                  <Product>1010017</Product>
+                  <Amount>400</Amount>
+                  <InactiveAmount>200</InactiveAmount>
+                </Item>
+                <Item>
+                  <Product>1010117</Product>
+                  <Amount>150</Amount>
+                  <ShutdownThreshold>0.5</ShutdownThreshold>
+                </Item>
+              </Maintenances>
+            </Maintenance>
+          </Values>
+        </Asset>
+        <Asset>
+          <Template>FactoryBuilding7</Template>
+          <Values>
+            <Standard>
+              <GUID>101273</GUID>
+            </Standard>
+            <Infolayer />
+            <UpgradeList />
+            <Factory7 />
+            <FactoryBase>
+              <FactoryInputs>
+                <Item>
+                  <Product>1010240</Product>
+                  <Amount>1</Amount>
+                  <StorageAmount>6</StorageAmount>
+                </Item>
+                <Item>
+                  <Product>120044</Product>
+                  <Amount>1</Amount>
+                  <StorageAmount>6</StorageAmount>
+                </Item>
+              </FactoryInputs>
+              <FactoryOutputs>
+                <Item>
+                  <Product>120037</Product>
+                  <Amount>1</Amount>
+                  <StorageAmount>4</StorageAmount>
+                </Item>
+              </FactoryOutputs>
+              <IsMainFactory>1</IsMainFactory>
+            </FactoryBase>
+            <LogisticNode />
+          </Values>
+        </Asset>
+        <Asset>
+          <Template>FactoryBuilding7</Template>
+          <Values>
+            <Standard>
+              <GUID>1010285</GUID>
+            </Standard>
+            <Infolayer />
+            <UpgradeList />
+            <Factory7 />
+            <FactoryBase>
+              <FactoryInputs>
+                <Item>
+                  <Product>120008</Product>
+                  <Amount>1</Amount>
+                  <StorageAmount>8</StorageAmount>
+                </Item>
+                <Item>
+                  <Product>1010241</Product>
+                  <Amount>1</Amount>
+                  <StorageAmount>4</StorageAmount>
+                </Item>
+              </FactoryInputs>
+              <FactoryOutputs>
+                <Item>
+                  <Product>1010207</Product>
+                  <Amount>1</Amount>
+                  <StorageAmount>2</StorageAmount>
+                </Item>
+              </FactoryOutputs>
+              <CycleTime>60</CycleTime>
+              <IsMainFactory>1</IsMainFactory>
+            </FactoryBase>
+            <LogisticNode />
+          </Values>
+        </Asset>
+      </Assets>
+    </Group>
+  </Groups>
+</AssetList>
