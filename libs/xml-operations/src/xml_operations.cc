@@ -607,6 +607,39 @@ pugi::xpath_node_set XmlLookup::ReadTemplateNodes(std::shared_ptr<pugi::xml_docu
     return results;
 }
 
+void XmlOperation::InsertContent(std::vector<pugi::xml_node>& content_nodes, const std::map<std::string, std::string>& mod_options) {
+    for (auto& content_node : content_nodes) {
+        auto inserter = content_node.select_node(".//ModOpContent");
+        if (inserter) {
+            const auto& option_attr = inserter.node().attribute("Path");
+            if (!option_attr) {
+                // TODO can we do a better location?
+                doc_->Warn("ModOpContent used without 'Path'", node_);
+                continue;
+            }
+
+            const auto& option_path = std::string{ option_attr.as_string() };
+
+            if (0 != option_path.rfind("#", 0)) {
+                // TODO can we do a better location?
+                doc_->Warn(std::string{ option_attr.as_string() } + " must start with #", node_);
+                continue;
+            }
+
+            const auto& option = mod_options.find(option_path.substr(1));
+            if (option == mod_options.end()) {
+                // TODO can we do a better location?
+                doc_->Warn("Option " + option_path + " not found", node_);
+                continue;
+            }
+
+            auto content = inserter.parent().insert_child_after(pugi::xml_node_type::node_pcdata, inserter.node());
+            content.set_value(option->second.c_str());
+            inserter.parent().remove_child(inserter.node());
+        }
+    }
+}
+
 void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::map<std::string, std::string>& mod_options)
 {
     auto start = std::chrono::high_resolution_clock::now();
@@ -668,6 +701,8 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::map
     if (content_.IsEmpty() && nodes_) {
         content_nodes.insert(content_nodes.end(), nodes_->begin(), nodes_->end());
     }
+
+    InsertContent(content_nodes, mod_options);
 
     try {
         doc_->Debug("Looking up {}", path_.GetPath());

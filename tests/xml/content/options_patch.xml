@@ -1,0 +1,12 @@
+<ModOps>
+  <ModOp Type="add" GUID="1">
+    <Building>
+      <Range><ModOpContent Path='#.rangeA' /></Range>
+    </Building>
+  </ModOp>
+  <ModOp Type="merge" GUID="2">
+    <Building>
+      <Range><ModOpContent Path='#other-mod.rangeB' /></Range>
+    </Building>
+  </ModOp>
+</ModOps>

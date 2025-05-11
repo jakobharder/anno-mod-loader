@@ -1,0 +1,11 @@
+{
+    "name": "Content Options",
+    "options": {
+        ".rangeA": "10",
+        "other-mod.rangeB": "12"
+    },
+    "expected": [
+        "/Test/Asset/Values[Standard/GUID='1']/Building[Range='10']",
+        "/Test/Asset/Values[Standard/GUID='2']/Building[Range='12']"
+    ]
+}
