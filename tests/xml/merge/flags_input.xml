@@ -64,6 +64,16 @@
                     </Product>
                   </Values>
                 </Asset>
+                <Asset>
+                  <Values>
+                    <Standard>
+                      <GUID>7</GUID>
+                    </Standard>
+                    <Product>
+                      <AssociatedRegion>Moderate;Colony</AssociatedRegion>
+                    </Product>
+                  </Values>
+                </Asset>
               </Assets>
             </Group>
           </Groups>
