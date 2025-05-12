@@ -1,0 +1,8 @@
+<ModOps>
+  <ModOp Type="add" Property="Building">
+    <Cost />
+  </ModOp>
+  <ModOp Type="add" Property="Factory" Path="Nested">
+    <Cost />
+  </ModOp>
+</ModOps>
