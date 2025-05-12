@@ -20,45 +20,52 @@ public:
     using offset_data_t = std::vector<ptrdiff_t>;
     using include_loader_t = std::function<std::shared_ptr<XmlOperationContext>(const fs::path&)>;
 
-    XmlOperationContext();
     XmlOperationContext(const fs::path& mod_relative_path,
                         const fs::path& mod_base_path,
+                        std::string_view mod_id,
+                        const std::map<std::string, std::string>* variables,
                         std::string_view mod_name = {});
     XmlOperationContext(const char* buffer, size_t size,
                         const fs::path& doc_path,
+                        std::string_view mod_id,
+                        const std::map<std::string, std::string>* variables,
                         std::string_view mod_name = {},
                         std::optional<include_loader_t> include_loader = {});
 
-    std::shared_ptr<XmlOperationContext> OpenInclude(const fs::path& file_path) const;
+    [[nodiscard]] std::shared_ptr<XmlOperationContext> OpenInclude(const fs::path& file_path) const;
 
     void SetLoader(include_loader_t loader) { include_loader_ = loader; }
 
-    size_t GetLine(pugi::xml_node node) const { return GetLine(node.offset_debug()); }
-    size_t GetLine(ptrdiff_t offset) const;
+    [[nodiscard]] size_t GetLine(pugi::xml_node node) const { return GetLine(node.offset_debug()); }
+    [[nodiscard]] size_t GetLine(ptrdiff_t offset) const;
 
-    std::shared_ptr<pugi::xml_document> GetDoc() const { return doc_; }
-    pugi::xml_node GetRoot() const;
-    fs::path GetPath() const { return doc_path_; }
-    const std::string& GetGenericPath() const { return doc_path_; }
-    const std::string& GetName() const { return mod_name_; }
+    [[nodiscard]] std::shared_ptr<pugi::xml_document> GetDoc() const { return doc_; }
+    [[nodiscard]] pugi::xml_node GetRoot() const;
+    [[nodiscard]] fs::path GetPath() const { return doc_path_; }
+    [[nodiscard]] const std::string& GetGenericPath() const { return doc_path_; }
+    [[nodiscard]] const std::string& GetName() const { return mod_name_; }
+    [[nodiscard]] const std::map<std::string, std::string>* GetVariables() const { return variables_; }
 
     template<typename... Args> void Debug(std::string_view msg, const Args &... args) const;
     void Debug(std::string_view msg, pugi::xml_node node) const;
     void Warn(std::string_view msg, pugi::xml_node node = {}) const;
     void Error(std::string_view msg, pugi::xml_node node = {}) const;
 
-    static bool ReadFile(const fs::path& file_path, std::vector<char>& buffer, size_t& size);
+    [[nodiscard]] static bool ReadFile(const fs::path& file_path, std::vector<char>& buffer, size_t& size);
 
 private:
     std::string mod_name_;
     std::filesystem::path mod_base_path_;
+
+    const std::string mod_id_;
+    const std::map<std::string, std::string>* variables_;
 
     std::shared_ptr<pugi::xml_document> doc_;
     offset_data_t offset_data_;
     std::optional<include_loader_t> include_loader_;
     std::string doc_path_;
 
-    static offset_data_t BuildOffsetData(const char* buffer, size_t size);
+    [[nodiscard]] static offset_data_t BuildOffsetData(const char* buffer, size_t size);
 };
 
 class XmlLookup
@@ -81,9 +88,9 @@ public:
             }
         };
 
-        bool IsEmpty() const { return nodes_.empty(); };
-        const pugi::xpath_node_set& Nodes() const { return nodes_; };
-        bool IsMatch() const { return boolean_ || !nodes_.empty(); };
+        [[nodiscard]] bool IsEmpty() const { return nodes_.empty(); };
+        [[nodiscard]] const pugi::xpath_node_set& Nodes() const { return nodes_; };
+        [[nodiscard]] bool IsMatch() const { return boolean_ || !nodes_.empty(); };
 
     private:
         std::shared_ptr<pugi::xml_document> doc_ = nullptr;
@@ -103,13 +110,13 @@ public:
 
     /// @brief Select XPath nodes.
     /// @param assetNode Start search here. Resulting asset is stored back.
-    XmlLookup::Result Select(std::shared_ptr<pugi::xml_document> doc,
+    [[nodiscard]] XmlLookup::Result Select(std::shared_ptr<pugi::xml_document> doc,
         std::optional<pugi::xml_node>* assetNode = nullptr) const;
 
-    bool IsEmpty() const { return empty_path_; };
-    bool IsNegative() const { return negative_; };
-    const std::string& GetPath() const { return path_; };
-    bool IsModId() const { return mod_id_; };
+    [[nodiscard]] bool IsEmpty() const { return empty_path_; };
+    [[nodiscard]] bool IsNegative() const { return negative_; };
+    [[nodiscard]] const std::string& GetPath() const { return path_; };
+    [[nodiscard]] bool IsModId() const { return mod_id_; };
 
 private:
     std::shared_ptr<XmlOperationContext> context_;
@@ -136,37 +143,38 @@ private:
     std::string speculative_path_;
     SpeculativePathType speculative_path_type_ = SpeculativePathType::NONE;
 
+    void ReplaceStaticVariables(std::string& path);
     void ReadPath(std::string path, std::string guid, std::string property, std::string templ);
 
-    std::optional<pugi::xml_node> FindAsset(const std::string& guid, pugi::xml_node node, int speculate_position = 2) const;
-    std::optional<pugi::xml_node> FindTemplate(const std::string& temp, pugi::xml_node node) const;
-    std::optional<pugi::xml_node> FindTemplate(std::shared_ptr<pugi::xml_document> doc, const std::string& templ) const;
+    [[nodiscard]] std::optional<pugi::xml_node> FindAsset(const std::string& guid, pugi::xml_node node, int speculate_position = 2) const;
+    [[nodiscard]] std::optional<pugi::xml_node> FindTemplate(const std::string& temp, pugi::xml_node node) const;
+    [[nodiscard]] std::optional<pugi::xml_node> FindTemplate(std::shared_ptr<pugi::xml_document> doc, const std::string& templ) const;
 
-    std::optional<pugi::xml_node> PrepareLookupNode(
+    [[nodiscard]] std::optional<pugi::xml_node> PrepareLookupNode(
         std::shared_ptr<pugi::xml_document> doc,
         pugi::xpath_query* query,
         std::optional<pugi::xml_node>* assetNode) const;
 
     /// @brief Select XPath nodes via Values/Standard/GUID.
     /// @param assetNode Start search here. Resulting asset is stored back.
-    pugi::xpath_node_set ReadGuidNodes(std::shared_ptr<pugi::xml_document> doc,
+    [[nodiscard]] pugi::xpath_node_set ReadGuidNodes(std::shared_ptr<pugi::xml_document> doc,
         std::optional<pugi::xml_node>* assetNode) const;
-    pugi::xpath_node_set ReadTemplateNodes(std::shared_ptr<pugi::xml_document> doc) const;
+    [[nodiscard]] pugi::xpath_node_set ReadTemplateNodes(std::shared_ptr<pugi::xml_document> doc) const;
 };
 
 class XmlOperation
 {
 public:
-    enum Type { None, Add, AddNextSibling, AddPrevSibling, Remove, Replace, Merge, Group, AddEnum, RemoveEnum };
+    enum Type { None, Add, AddNextSibling, AddPrevSibling, Remove, Replace, Merge, Group };
 
     XmlOperation(std::shared_ptr<XmlOperationContext> doc, pugi::xml_node node,
                  const std::string& guid = "",
                  const std::string& property = "",
                  const std::string& templ = "");
 
-    Type GetType() const;
+    [[nodiscard]] Type GetType() const { return type_; }
 
-    void Apply(std::shared_ptr<pugi::xml_document> doc, const std::map<std::string, std::string>& mod_options = {});
+    void Apply(std::shared_ptr<pugi::xml_document> doc);
 
 public:
     static std::vector<XmlOperation> GetXmlOperations(
@@ -175,7 +183,9 @@ public:
         std::optional<pugi::xml_object_range<pugi::xml_node_iterator>> nodes = {});
     static std::vector<XmlOperation> GetXmlOperationsFromFile(
         const fs::path&     file_path,
-        std::string         mod_name,
+        std::string_view    mod_name,
+        std::string_view    mod_id,
+        const std::map<std::string, std::string>* variables,
         const fs::path&     game_path,
         const fs::path&     mod_path);
 
@@ -197,7 +207,7 @@ private:
 
     std::vector<XmlOperation> group_;
 
-    static std::string GetXmlPropString(pugi::xml_node node, const std::string& prop_name)
+    [[nodiscard]] static std::string GetXmlPropString(pugi::xml_node node, const std::string& prop_name)
     {
         return node.attribute(prop_name.c_str()).as_string();
     }
@@ -207,14 +217,13 @@ private:
     void ReadType(pugi::xml_node node);
 
     /// @brief Replace ModOpContent with #option or XPath selection
-    void InsertContent(std::vector<pugi::xml_node>& content_nodes, const std::map<std::string, std::string>& mod_options);
+    void InsertContent(std::vector<pugi::xml_node>& content_nodes);
 
     /// @brief Check Condition XPath. Can use GUID attribute.
     //         True when nodes are found.
     //         Can be negated with `!`.
     /// @param assetNode Returns GUID asset if found.
-    bool CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>& assetNode,
-        const std::map<std::string, std::string>& mod_options);
+    [[nodiscard]] bool CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>& assetNode);
 };
 
 }

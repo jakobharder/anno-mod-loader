@@ -19,7 +19,8 @@ using namespace xmlops;
 class TestRunner
 {
 public:
-    TestRunner(std::string_view mod_base_path, std::string_view input, std::string_view patch) {
+    TestRunner(std::string_view mod_base_path, std::string_view input, std::string_view patch,
+            const std::map<std::string, std::string>* mod_options) {
         {
             auto sink = std::make_shared<spdlog::sinks::ostream_sink_st>(test_log_);
             auto test_logger = std::make_shared<spdlog::logger>("test_logger", sink);
@@ -28,7 +29,15 @@ public:
             spdlog::set_default_logger(test_logger);
         }
         {
-            xml_operations_ = XmlOperation::GetXmlOperationsFromFile(fs::absolute(patch), "", input, fs::absolute(mod_base_path));
+            for (auto& option : *mod_options) {
+                spdlog::debug("Option ${}={}", option.first, option.second);
+            }
+
+            xml_operations_ = XmlOperation::GetXmlOperationsFromFile(fs::absolute(patch), "",
+                "test-mod",
+                mod_options,
+                input,
+                fs::absolute(mod_base_path));
         }
         {
             input_doc_ = std::make_shared<pugi::xml_document>();
@@ -36,13 +45,9 @@ public:
         }
     }
 
-    void ApplyPatches(const std::map<std::string, std::string>& mod_options) {
-        for (auto& option: mod_options) {
-            spdlog::debug("Option ${}={}", option.first, option.second);
-        }
-
+    void ApplyPatches() {
         for (auto& operation : xml_operations_) {
-            operation.Apply(input_doc_, mod_options);
+            operation.Apply(input_doc_);
         }
     }
 
