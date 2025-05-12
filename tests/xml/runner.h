@@ -38,7 +38,7 @@ public:
 
     void ApplyPatches(const std::map<std::string, std::string>& mod_options) {
         for (auto& option: mod_options) {
-            spdlog::debug("{}: {}", option.first, option.second);
+            spdlog::debug("Option ${}={}", option.first, option.second);
         }
 
         for (auto& operation : xml_operations_) {

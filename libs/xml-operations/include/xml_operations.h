@@ -94,7 +94,7 @@ public:
     XmlLookup(const std::string& path,
               const std::string& guid,
               const std::string& templ,
-              bool explicit_speculative,
+              pugi::xpath_variable_set* variables,
               std::shared_ptr<XmlOperationContext> context,
               pugi::xml_node node);
 
@@ -111,6 +111,7 @@ public:
 private:
     std::shared_ptr<XmlOperationContext> context_;
     pugi::xml_node node_;
+    pugi::xpath_variable_set* variables_;
 
     bool empty_path_;
     bool negative_;
@@ -177,11 +178,14 @@ private:
     bool        allow_no_match_ = false;
     XmlLookup   condition_;
     XmlLookup   content_;
+    pugi::xpath_variable_set variables_;
 
     std::optional<pugi::xml_object_range<pugi::xml_node_iterator>> nodes_;
 
     std::shared_ptr<XmlOperationContext> doc_;
     pugi::xml_node node_;
+    std::string guid_;
+    std::string template_;
 
     std::vector<XmlOperation> group_;
 
@@ -190,6 +194,8 @@ private:
         return node.attribute(prop_name.c_str()).as_string();
     }
     void RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patching_node);
+
+    void CreateQueries();
     void ReadType(pugi::xml_node node);
 
     /// @brief Replace ModOpContent with #option or XPath selection
