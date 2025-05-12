@@ -225,42 +225,6 @@ XmlLookup::XmlLookup(const std::string& path,
     ReadPath(read_path, guid_, property_, template_);
 }
 
-XmlLookup::Result XmlLookup::Select(std::shared_ptr<pugi::xml_document> doc,
-    std::optional<pugi::xml_node>* assetNode) const
-{
-    pugi::xpath_query query;
-    auto node = PrepareLookupNode(doc, &query, assetNode);
-    if (node) {
-        if (query.return_type() == pugi::xpath_type_node_set) {
-            return node->select_nodes(query);
-        }
-        else if (query.return_type() == pugi::xpath_type_boolean) {
-            return XmlLookup::Result{ query.evaluate_boolean(*node) };
-        }
-        else if (query.return_type() == pugi::xpath_type_number ||
-                query.return_type() == pugi::xpath_type_string) {
-            pugi::xml_node wrapper = doc->append_child("ModOpEval");
-            wrapper.text().set(query.evaluate_string(*node).c_str());
-            auto result = wrapper.select_nodes("self::node()/text()");
-            return XmlLookup::Result{ result, doc, wrapper };
-        }
-    }
-
-    return {};
-}
-
-XmlOperation::XmlOperation(std::shared_ptr<XmlOperationContext> doc, pugi::xml_node node,
-                           const std::string& guid,
-                           const std::string& property,
-                           const std::string& templ) : doc_(doc)
-{
-    node_     = node;
-    guid_     = guid;
-    template_ = templ;
-    property_ = property;
-    variables_ = {};
-}
-
 void XmlLookup::ReadPath(std::string prop_path,
                          std::string guid,
                          std::string property,
@@ -388,6 +352,42 @@ void XmlLookup::ReadPath(std::string prop_path,
             speculative_path_ = speculative_path_.substr(1);
         }
     }
+}
+
+XmlLookup::Result XmlLookup::Select(std::shared_ptr<pugi::xml_document> doc,
+    std::optional<pugi::xml_node>* assetNode) const
+{
+    pugi::xpath_query query;
+    auto node = PrepareLookupNode(doc, &query, assetNode);
+    if (node) {
+        if (query.return_type() == pugi::xpath_type_node_set) {
+            return node->select_nodes(query);
+        }
+        else if (query.return_type() == pugi::xpath_type_boolean) {
+            return XmlLookup::Result{ query.evaluate_boolean(*node) };
+        }
+        else if (query.return_type() == pugi::xpath_type_number ||
+                query.return_type() == pugi::xpath_type_string) {
+            pugi::xml_node wrapper = doc->append_child("ModOpEval");
+            wrapper.text().set(query.evaluate_string(*node).c_str());
+            auto result = wrapper.select_nodes("self::node()/text()");
+            return XmlLookup::Result{ result, doc, wrapper };
+        }
+    }
+
+    return {};
+}
+
+XmlOperation::XmlOperation(std::shared_ptr<XmlOperationContext> doc, pugi::xml_node node,
+                           const std::string& guid,
+                           const std::string& property,
+                           const std::string& templ) : doc_(doc)
+{
+    node_     = node;
+    guid_     = guid;
+    template_ = templ;
+    property_ = property;
+    variables_ = {};
 }
 
 void XmlOperation::CreateQueries()
