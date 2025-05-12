@@ -12,6 +12,7 @@
         "/Test/Asset/Values[Standard/GUID='3']",
         "!/Test/Asset/Values[Standard/GUID='4']",
         "!/Test/Asset/Values[Standard/GUID='5']",
-        "/Test/Asset/Values[Standard/GUID='6']"
+        "/Test/Asset/Values[Standard/GUID='6']",
+        "!/Test/Asset/Values[Standard/GUID='7']"
     ]
 }

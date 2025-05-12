@@ -629,14 +629,14 @@ pugi::xpath_node_set XmlLookup::ReadTemplateNodes(std::shared_ptr<pugi::xml_docu
 
 void XmlOperation::InsertContent(std::vector<pugi::xml_node>& content_nodes, const std::map<std::string, std::string>& mod_options) {
     for (auto& content_node : content_nodes) {
-        auto inserter = content_node.select_node(".//ModOpContent");
+        auto inserter = content_node.select_node(".//ModValue");
         if (inserter) {
             const auto& option_attr = inserter.node().attribute("Path");
             if (!option_attr) {
                 if (inserter.node().attribute("MergeFlags")) {
                     continue;
                 }
-                doc_->Warn("ModOpContent used without 'Path'", inserter.node());
+                doc_->Warn("ModValue used without 'Path' or `MergeFlags`", inserter.node());
                 continue;
             }
 
@@ -649,7 +649,7 @@ void XmlOperation::InsertContent(std::vector<pugi::xml_node>& content_nodes, con
 
             const auto& option = mod_options.find(option_path.substr(1));
             if (option == mod_options.end()) {
-                doc_->Warn("Option " + option_path + " not found", inserter.node());
+                doc_->Warn("Variable " + option_path + " not found", inserter.node());
                 continue;
             }
 

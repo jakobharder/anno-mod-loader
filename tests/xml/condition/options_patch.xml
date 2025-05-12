@@ -6,4 +6,6 @@
 
   <ModOp Type="remove" GUID="5" Path="../" Condition="$other-mod.expectTrue" />
   <ModOp Type="remove" GUID="6" Path="../" Condition="$other-mod.expectFalse" />
+
+  <ModOp Type="remove" GUID="7" Path="../" Condition="$other-mod.expectFalse or $other-mod.expectTrue" />
 </ModOps>
