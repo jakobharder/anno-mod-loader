@@ -1,0 +1,8 @@
+{
+    "name": "Property lookup",
+    "expected": [
+        "//Asset/Values[Standard/GUID='1']/Building[Cost]",
+        "//Asset/Values[Standard/GUID='2']/Factory/Nested[Cost]",
+        "//Asset/Values[Standard/GUID='3']/Building[Cost]"
+    ]
+}

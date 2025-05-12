@@ -23,10 +23,10 @@ public:
     XmlOperationContext();
     XmlOperationContext(const fs::path& mod_relative_path,
                         const fs::path& mod_base_path,
-                        std::string     mod_name = {});
+                        std::string_view mod_name = {});
     XmlOperationContext(const char* buffer, size_t size,
                         const fs::path& doc_path,
-                        const std::string& mod_name = {},
+                        std::string_view mod_name = {},
                         std::optional<include_loader_t> include_loader = {});
 
     std::shared_ptr<XmlOperationContext> OpenInclude(const fs::path& file_path) const;
@@ -51,6 +51,8 @@ public:
 
 private:
     std::string mod_name_;
+    std::filesystem::path mod_base_path_;
+
     std::shared_ptr<pugi::xml_document> doc_;
     offset_data_t offset_data_;
     std::optional<include_loader_t> include_loader_;
@@ -93,6 +95,7 @@ public:
     XmlLookup();
     XmlLookup(const std::string& path,
               const std::string& guid,
+              const std::string& property,
               const std::string& templ,
               pugi::xpath_variable_set* variables,
               std::shared_ptr<XmlOperationContext> context,
@@ -117,6 +120,7 @@ private:
     bool negative_;
     std::string path_;
     std::string guid_;
+    std::string property_;
     std::string template_;
     bool mod_id_ = false;
 
@@ -132,7 +136,8 @@ private:
     std::string speculative_path_;
     SpeculativePathType speculative_path_type_ = SpeculativePathType::NONE;
 
-    void ReadPath(std::string prop_path, std::string guid, std::string templ);
+    void ReadPath(std::string path, std::string guid, std::string property, std::string templ);
+
     std::optional<pugi::xml_node> FindAsset(const std::string& guid, pugi::xml_node node, int speculate_position = 2) const;
     std::optional<pugi::xml_node> FindTemplate(const std::string& temp, pugi::xml_node node) const;
     std::optional<pugi::xml_node> FindTemplate(std::shared_ptr<pugi::xml_document> doc, const std::string& templ) const;
@@ -155,7 +160,9 @@ public:
     enum Type { None, Add, AddNextSibling, AddPrevSibling, Remove, Replace, Merge, Group, AddEnum, RemoveEnum };
 
     XmlOperation(std::shared_ptr<XmlOperationContext> doc, pugi::xml_node node,
-                 const std::string& guid = "", const std::string& templ = "");
+                 const std::string& guid = "",
+                 const std::string& property = "",
+                 const std::string& templ = "");
 
     Type GetType() const;
 
@@ -185,6 +192,7 @@ private:
     std::shared_ptr<XmlOperationContext> doc_;
     pugi::xml_node node_;
     std::string guid_;
+    std::string property_;
     std::string template_;
 
     std::vector<XmlOperation> group_;

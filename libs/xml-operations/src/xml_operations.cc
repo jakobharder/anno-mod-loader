@@ -38,31 +38,36 @@ XmlOperationContext::XmlOperationContext() { }
 
 XmlOperationContext::XmlOperationContext(const fs::path& mod_relative_path,
                                          const fs::path& mod_base_path,
-                                         std::string mod_name)
+                                         std::string_view mod_name)
 {
-    if (mod_name.empty()) {
-        mod_name = mod_base_path.filename().string();
-    }
+    mod_name_ = mod_name.empty() ? mod_base_path.filename().string() : mod_name;
+    mod_base_path_ = mod_base_path;
 
-    include_loader_ = [this, &mod_base_path, &mod_name](const fs::path& file_path) {
+    include_loader_ = [this, &mod_base_path](const fs::path& file_path) {
         std::vector<char> buffer;
         size_t size;
         if (!ReadFile(mod_base_path / file_path, buffer, size)) {
             spdlog::error("{}: Failed to open {}",
-                          mod_name,
+                          this->mod_name_,
                           file_path.string());
-            return std::make_shared<XmlOperationContext>();
+            return std::shared_ptr<XmlOperationContext>{};
         }
-        return std::make_shared<XmlOperationContext>(buffer.data(), size, file_path, mod_name, *this->include_loader_);
+        return std::make_shared<XmlOperationContext>(buffer.data(), size, file_path,
+            this->mod_name_, *this->include_loader_);
     };
 
-    *this = *(*include_loader_)(mod_relative_path);
-    mod_name_ = mod_name;
+    const auto loaded = (*include_loader_)(mod_relative_path);
+    if (loaded)
+    {
+        doc_ = loaded->doc_;
+        offset_data_ = loaded->offset_data_;
+        doc_path_ = loaded->doc_path_;
+    }
 }
 
 XmlOperationContext::XmlOperationContext(const char* buffer, size_t size,
                                          const fs::path& doc_path,
-                                         const std::string& mod_name,
+                                         std::string_view mod_name,
                                          std::optional<include_loader_t> include_loader)
 {
     mod_name_ = mod_name;
@@ -71,6 +76,7 @@ XmlOperationContext::XmlOperationContext(const char* buffer, size_t size,
 
     offset_data_ = BuildOffsetData(buffer, size);
     doc_ = std::make_shared<pugi::xml_document>();
+
     auto parse_result = doc_->load_buffer(buffer, size);
     if (!parse_result) {
         spdlog::error("{}: Failed to parse {} (line {}): {}",
@@ -167,6 +173,7 @@ XmlLookup::XmlLookup() { }
 
 XmlLookup::XmlLookup(const std::string& path,
                      const std::string& guid,
+                     const std::string& property,
                      const std::string& templ,
                      pugi::xpath_variable_set* variables,
                      std::shared_ptr<XmlOperationContext> context,
@@ -200,24 +207,22 @@ XmlLookup::XmlLookup(const std::string& path,
         guid_ = guid;
         template_ = templ;
     }
-    else if (true /*explicit_speculative*/) {
+    else {
         if (read_path.length() >= 2 &&
             ((read_path[0] == '/' && read_path[1] == '/') ||
             (read_path[0] == '@'))) {
             guid_ = {};
             template_ = {};
+            property_ = {};
         }
         else {
             guid_ = guid;
             template_ = templ;
+            property_ = property;
         }
     }
-    else {
-        guid_ = guid;
-        template_ = templ;
-    }
 
-    ReadPath(read_path, guid_, template_);
+    ReadPath(read_path, guid_, property_, template_);
 }
 
 XmlLookup::Result XmlLookup::Select(std::shared_ptr<pugi::xml_document> doc,
@@ -245,15 +250,21 @@ XmlLookup::Result XmlLookup::Select(std::shared_ptr<pugi::xml_document> doc,
 }
 
 XmlOperation::XmlOperation(std::shared_ptr<XmlOperationContext> doc, pugi::xml_node node,
-                           const std::string& guid, const std::string& templ) : doc_(doc)
+                           const std::string& guid,
+                           const std::string& property,
+                           const std::string& templ) : doc_(doc)
 {
     node_     = node;
     guid_     = guid;
     template_ = templ;
+    property_ = property;
     variables_ = {};
 }
 
-void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string temp)
+void XmlLookup::ReadPath(std::string prop_path,
+                         std::string guid,
+                         std::string property,
+                         std::string temp)
 {
     if (prop_path.find('&') != std::string::npos)
     {
@@ -261,7 +272,7 @@ void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string te
         prop_path = std::regex_replace(prop_path, std::regex{"&lt;"}, "<");
     }
 
-    if (guid.empty()) {
+    if (guid.empty() && property.empty()) {
         // Rewrite path to use faster GUID lookup
         int g;
         // Matches stuff like this and extracts GUID //Assets[Asset/Values/Standard/GUID='102119']
@@ -312,9 +323,14 @@ void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string te
                 context_->Warn("Failed to construct speculative path lookup: \"" + prop_path + "\"", node_);
             }
         }
-    } else {
+    }
+    else if (!guid.empty()) {
         speculative_path_type_ = SpeculativePathType::VALUES_CONTAINER;
-        path_                  = "//Asset[Values/Standard/GUID='" + guid + "']/Values";
+        path_                  = "//Values[Standard/GUID='" + guid + "']";
+    }
+    else if (!property.empty()) {
+        speculative_path_type_ = SpeculativePathType::VALUES_CONTAINER;
+        path_                  = "//" + property + "[../../Values]";
     }
 
     if (prop_path.empty()) {
@@ -335,7 +351,12 @@ void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string te
         path_                  = "//Template[Name='" + temp + "']";
     }
 
-    path_ += prop_path;
+    if ((!property.empty() || !guid.empty())  && prop_path.at(0) != '/') {
+        path_ += "/" + prop_path;
+    }
+    else {
+        path_ += prop_path;
+    }
     if (path_ == "/") {
         path_ = "/*";
     }
@@ -345,7 +366,7 @@ void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string te
         }
     }
 
-    if (!guid.empty() || !temp.empty()) {
+    if (!guid.empty() || !temp.empty() || !property.empty()) {
         if (speculative_path_type_ == SpeculativePathType::ASSET_CONTAINER
             || speculative_path_type_ == SpeculativePathType::TEMPLATE_CONTAINER) {
             speculative_path_ = "/";
@@ -377,18 +398,18 @@ void XmlOperation::CreateQueries()
     }
 
     const auto& path = GetXmlPropString(node_, "Path");
-    if (type_ == Type::Add && guid_.empty() && template_.empty() && path.empty()) {
-        path_ = XmlLookup{"//Groups[1]/Group[1]/Assets[1]", {}, {}, &variables_, doc_, node_};
+    if (type_ == Type::Add && guid_.empty() && template_.empty() && property_.empty() && path.empty()) {
+        path_ = XmlLookup{"//Groups[1]/Group[1]/Assets[1]", {}, {}, {}, &variables_, doc_, node_};
     }
     else {
-        path_ = XmlLookup{path, guid_, template_, &variables_, doc_, node_};
+        path_ = XmlLookup{path, guid_, property_, template_, &variables_, doc_, node_};
     }
 
-    condition_ = XmlLookup{node_.attribute("Condition").as_string(), guid_, template_, &variables_, doc_, node_};
+    condition_ = XmlLookup{node_.attribute("Condition").as_string(), guid_, property_, template_, &variables_, doc_, node_};
     allow_no_match_ = node_.attribute("AllowNoMatch");
 
     if (type_ != Type::Remove) {
-        content_ = XmlLookup{node_.attribute("Content").as_string(), guid_, template_, &variables_, doc_, node_};
+        content_ = XmlLookup{node_.attribute("Content").as_string(), guid_, property_, template_, &variables_, doc_, node_};
     }
 }
 
@@ -704,32 +725,8 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::map
 
     CreateQueries();
 
-    // variables_ = pugi::xpath_variable_set{};
     for (const auto& option : mod_options) {
-        doc_->Debug("variable {}: {}", option.first.c_str(), option.second.c_str());
-        // variables_.add(option.first.c_str(), pugi::xpath_value_type::xpath_type_boolean);
-        std::string_view value = option.second.c_str();
-        // if (value.compare("true")) {
-
-        // }
         AddTypedVariable(variables_, option.first, option.second);
-        // variables_.set(option.first.c_str(), value.data());
-
-        if (variables_.get("test_mod")) {
-            auto q = pugi::xpath_query{ "$test_mod = true", &variables_ };
-            if (q.return_type() == pugi::xpath_value_type::xpath_type_boolean) {
-                doc_->Debug(q.evaluate_boolean(*doc) ? "true" : "false");
-            }
-            else if (q.return_type() == pugi::xpath_value_type::xpath_type_node_set) {
-                doc_->Debug("xpath_type_node_set");
-            }
-            else if (q.return_type() == pugi::xpath_value_type::xpath_type_number) {
-                doc_->Debug("xpath_type_number");
-            }
-            else if (q.return_type() == pugi::xpath_value_type::xpath_type_string) {
-                doc_->Debug("xpath_type_string");
-            }
-        }
     }
 
     std::optional<pugi::xml_node> cachedNode;
@@ -876,18 +873,22 @@ std::vector<XmlOperation> XmlOperation::GetXmlOperations(
             if (stricmp(node.name(), "ModOp") == 0) {
                 const auto guid = GetXmlPropString(node, "GUID");
                 const auto temp = GetXmlPropString(node, "Template");
+                const auto property = GetXmlPropString(node, "Property");
                 std::vector<std::string> guids;
-                if (!temp.empty() && !guid.empty()) {
-                    doc->Error("Cannot supply both `Template` and `GUID`", node);
+                if (!temp.empty() + !guid.empty() + !property.empty() > 1) {
+                    doc->Error("You can use only one of `GUID`, `Property` or `Template`", node);
                 }
                 if (!guid.empty()) {
                     std::vector<std::string> guids = StrSplit(guid, ',');
                     for (auto g : guids) {
-                        mod_operations.emplace_back(doc, node, g.data(), "");
+                        mod_operations.emplace_back(doc, node, g.data(), "", "");
                     }
                 }
+                else if (!property.empty()) {
+                    mod_operations.emplace_back(doc, node, "", property, "");
+                }
                 else {
-                    mod_operations.emplace_back(doc, node, "", temp);
+                    mod_operations.emplace_back(doc, node, "", "", temp);
                 }
             }
             else if (stricmp(node.name(), "Group") == 0) {

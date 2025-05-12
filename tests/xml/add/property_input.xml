@@ -1,0 +1,29 @@
+<Test>
+  <Asset>
+    <Values>
+      <Standard>
+        <GUID>1</GUID>
+      </Standard>
+      <Building />
+    </Values>
+  </Asset>
+  <Asset>
+    <Values>
+      <Standard>
+        <GUID>2</GUID>
+      </Standard>
+      <Factory>
+        <Nested>
+        </Nested>
+      </Factory>
+    </Values>
+  </Asset>
+  <Asset>
+    <Values>
+      <Standard>
+        <GUID>3</GUID>
+      </Standard>
+      <Building />
+    </Values>
+  </Asset>
+</Test>
