@@ -12,7 +12,7 @@
 
 namespace xmlops {
 
-std::vector<std::string> str_split(const std::string& input, char delimiter) {
+std::vector<std::string> str_split(std::string_view input, char delimiter) {
     std::vector<std::string> result;
 
     int last_pos = 0;
@@ -739,10 +739,9 @@ void XmlOperation::InsertContent(std::vector<pugi::xml_node>& content_nodes) {
         if (inserter) {
             const auto& option_attr = inserter.node().attribute("Path");
             if (!option_attr) {
-                if (inserter.node().attribute("MergeFlags")) {
-                    continue;
+                if (!inserter.node().first_attribute()) {
+                    doc_->Warn("ModValue needs 'Path', 'MergeFlags' or 'RemoveFlags'", inserter.node());
                 }
-                doc_->Warn("ModValue used without 'Path' or `MergeFlags`", inserter.node());
                 continue;
             }
 
@@ -1016,10 +1015,12 @@ std::vector<XmlOperation> XmlOperation::GetXmlOperationsFromFile(const fs::path&
         game_path);
 }
 
-void MergeEnum(pugi::xml_node enum_node, const pugi::char_t* insert, bool remove = false)
+static void MergeFlags(pugi::xml_node node, const pugi::char_t* insert, bool remove = false)
 {
+    const std::string_view originalFlags = node.child_value();
+
     const auto insertFlags = str_split(insert, ';');
-    auto flags = str_split(enum_node.child_value(), ';');
+    auto flags = str_split(originalFlags, ';');
 
     for (const auto& insertFlag : insertFlags) {
         const auto iter = std::find(flags.begin(), flags.end(), insertFlag);
@@ -1032,13 +1033,13 @@ void MergeEnum(pugi::xml_node enum_node, const pugi::char_t* insert, bool remove
         }
     }
 
-    if (!enum_node.first_child()) {
-        enum_node.append_child(pugi::xml_node_type::node_pcdata);
+    if (originalFlags.empty()) {
+        node.prepend_child(pugi::xml_node_type::node_pcdata);
     }
-    enum_node.first_child().set_value(str_join(flags, ';', 50).c_str());
+    node.first_child().set_value(str_join(flags, ';', 50).c_str());
 }
 
-void MergeProperties(pugi::xml_node game_node, pugi::xml_node patching_node)
+static void MergeProperties(pugi::xml_node game_node, pugi::xml_node patching_node)
 {
     for (pugi::xml_attribute &attr : patching_node.attributes()) {
         if (auto at = game_node.find_attribute(
@@ -1062,23 +1063,21 @@ static bool HasNonTextNode(pugi::xml_node node)
     return false;
 }
 
-void RecursiveExpandEnum(pugi::xml_node game_node) {
-    for (auto& child : game_node.children()) {
-        RecursiveExpandEnum(child);
+static void RecursiveMergeFlags(pugi::xml_node game_node) {
+    if (game_node.first_child()) {
+        for (auto& child : game_node.children()) {
+            RecursiveMergeFlags(child);
+        }
     }
-
-    if (!game_node.first_child()) {
+    else {
         for (pugi::xml_attribute &attr : game_node.attributes()) {
-            if (stricmp(attr.name(), "MergeFlags") == 0) {
-                const auto& text = game_node.parent().child_value();
-                if (strlen(text) > 0) {
-                    MergeEnum(game_node.parent(), attr.as_string());
-                }
-                else {
-                    game_node.parent().append_child(pugi::xml_node_type::node_pcdata).set_value(attr.as_string());
-                }
+            if (str_equals_nocase(attr.name(), "Merge") && str_equals_nocase(game_node.name(), "ModFlags")) {
+                MergeFlags(game_node.parent(), attr.as_string());
                 game_node.parent().remove_child(game_node);
-                continue;
+            }
+            else if (str_equals_nocase(attr.name(), "Remove") && str_equals_nocase(game_node.name(), "ModFlags")) {
+                MergeFlags(game_node.parent(), attr.as_string(), true);
+                game_node.parent().remove_child(game_node);
             }
         }
     }
@@ -1165,7 +1164,7 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
             }
         }
         else {
-            RecursiveExpandEnum(root_node.append_copy(cur_node));
+            RecursiveMergeFlags(root_node.append_copy(cur_node));
         }
     }
 }

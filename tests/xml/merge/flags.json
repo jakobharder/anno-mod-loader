@@ -7,6 +7,7 @@
         "//Values[Standard/GUID='4']/Product[AssociatedRegion='Colony']",
         "//Values[Standard/GUID='5']/Product[AssociatedRegion='Colony']",
         "//Values[Standard/GUID='6']/Product[AssociatedRegion='Moderate;Colony']",
+        "//Values[Standard/GUID='7']/Product[AssociatedRegion='Colony']",
         "!//ModOpContent"
     ]
 }
