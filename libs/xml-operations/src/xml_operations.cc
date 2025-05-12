@@ -58,11 +58,14 @@ std::string str_join(const std::vector<std::string>& parts, char delimiter, size
     return result;
 }
 
-bool str_equals_nocase(const std::string& a, const std::string& b) {
-    return a.size() == b.size() &&
-        std::equal(a.begin(), a.end(), b.begin(), [](unsigned char ac, unsigned char bc) {
-               return std::tolower(ac) == std::tolower(bc);
-           });
+static bool str_equals_nocase(std::string_view a, std::string_view b) {
+#ifndef _WIN32
+    auto strnicmp = [](auto a, auto b) { return strncasecmp(a, b); };
+#endif
+    if (a.size() != b.size()) {
+        return false;
+    }
+    return strnicmp(a.data(), b.data(), a.size()) == 0;
 }
 
 XmlOperationContext::XmlOperationContext(const fs::path& mod_relative_path,
@@ -142,17 +145,13 @@ size_t XmlOperationContext::GetLine(ptrdiff_t offset) const
 
 pugi::xml_node XmlOperationContext::GetRoot() const
 {
-#ifndef _WIN32
-    auto stricmp = [](auto a, auto b) { return strcasecmp(a, b); };
-#endif
-
     auto root = doc_ ? doc_->root() : pugi::xml_node{};
     if (!root) {
         Error("Failed to get root element");
         return {};
     }
 
-    if (!root.first_child() || stricmp(root.first_child().name(), "ModOps") != 0) {
+    if (!root.first_child() || !str_equals_nocase(root.first_child().name(), "ModOps")) {
         Error("Doesn't contain ModOps root node");
         return {};
     }
@@ -463,10 +462,10 @@ XmlLookup::Result XmlLookup::Select(std::shared_ptr<pugi::xml_document> doc,
     return {};
 }
 
-XmlOperation::XmlOperation(std::shared_ptr<XmlOperationContext> doc, pugi::xml_node node,
+XmlOperation::XmlOperation(std::shared_ptr<XmlOperationContext> context, pugi::xml_node node,
                            const std::string& guid,
                            const std::string& property,
-                           const std::string& templ) : doc_(doc)
+                           const std::string& templ) : context_(context)
 {
     node_     = node;
     guid_     = guid;
@@ -484,56 +483,48 @@ void XmlOperation::CreateQueries()
 
     const auto& path = GetXmlPropString(node_, "Path");
     if (type_ == Type::Add && guid_.empty() && template_.empty() && property_.empty() && path.empty()) {
-        path_ = XmlLookup{"//Groups[1]/Group[1]/Assets[1]", {}, {}, {}, &variables_, doc_, node_};
+        path_ = XmlLookup{"//Groups[1]/Group[1]/Assets[1]", {}, {}, {}, &variables_, context_, node_};
     }
     else {
-        path_ = XmlLookup{path, guid_, property_, template_, &variables_, doc_, node_};
+        path_ = XmlLookup{path, guid_, property_, template_, &variables_, context_, node_};
     }
 
-    condition_ = XmlLookup{node_.attribute("Condition").as_string(), guid_, property_, template_, &variables_, doc_, node_};
+    condition_ = XmlLookup{node_.attribute("Condition").as_string(), guid_, property_, template_, &variables_, context_, node_};
     allow_no_match_ = node_.attribute("AllowNoMatch");
 
     if (type_ != Type::Remove) {
-        content_ = XmlLookup{node_.attribute("Content").as_string(), guid_, property_, template_, &variables_, doc_, node_};
+        content_ = XmlLookup{node_.attribute("Content").as_string(), guid_, property_, template_, &variables_, context_, node_};
     }
 }
 
 void XmlOperation::ReadType(pugi::xml_node node)
 {
-#ifndef _WIN32
-    auto stricmp = [](auto a, auto b) { return strcasecmp(a, b); };
-#endif
     auto type = GetXmlPropString(node, "Type");
 
-    if (stricmp(node.name(), "Include") == 0 ||
-        stricmp(node.name(), "Group") == 0) {
+    if (str_equals_nocase(node.name(), "Include") ||
+        str_equals_nocase(node.name(), "Group")) {
         type_ = Type::Group;
-    } else if (stricmp(type.c_str(), "add") == 0) {
+    } else if (str_equals_nocase(type.c_str(), "add")) {
         type_ = Type::Add;
-    } else if (stricmp(type.c_str(), "addAfter") == 0) {
+    } else if (str_equals_nocase(type.c_str(), "addAfter")) {
         type_ = Type::AddNextSibling;
-    } else if (stricmp(type.c_str(), "addBefore") == 0) {
+    } else if (str_equals_nocase(type.c_str(), "addBefore")) {
         type_ = Type::AddPrevSibling;
-    } else if (stricmp(type.c_str(), "remove") == 0) {
+    } else if (str_equals_nocase(type.c_str(), "remove")) {
         type_ = Type::Remove;
-    } else if (stricmp(type.c_str(), "replace") == 0) {
+    } else if (str_equals_nocase(type.c_str(), "replace")) {
         type_ = Type::Replace;
-    } else if (stricmp(type.c_str(), "merge") == 0) {
+    } else if (str_equals_nocase(type.c_str(), "merge")) {
         type_ = Type::Merge;
     } else {
         type_ = Type::None;
-        doc_->Error("Unknown ModOp " + type, node_);
+        context_->Error("Unknown ModOp " + type, node_);
     }
 }
 
 std::optional<pugi::xml_node> XmlLookup::FindAsset(const std::string& guid, pugi::xml_node node, int speculate_position) const
 {
-#ifndef _WIN32
-    auto stricmp = [](auto a, auto b) { return strcasecmp(a, b); };
-#endif
-
-    //
-    if (stricmp(node.name(), "Asset") == 0) {
+    if (str_equals_nocase(node.name(), "Asset")) {
         auto values = node.child("Values");
         if (!values) {
             return {};
@@ -554,10 +545,10 @@ std::optional<pugi::xml_node> XmlLookup::FindAsset(const std::string& guid, pugi
         }
         if (speculative_path_type_ == SpeculativePathType::ASSET_CONTAINER) {
             auto parent = node.parent();
-            while (parent && stricmp(parent.name(), "Assets") != 0) {
+            while (parent && !str_equals_nocase(parent.name(), "Assets")) {
                 parent = parent.parent();
             }
-            if (stricmp(parent.name(), "Assets") == 0) {
+            if (str_equals_nocase(parent.name(), "Assets")) {
                 return parent;
             }
             return {};
@@ -604,11 +595,7 @@ std::optional<pugi::xml_node> XmlLookup::FindAsset(const std::string& guid, pugi
 
 std::optional<pugi::xml_node> XmlLookup::FindTemplate(const std::string& temp, pugi::xml_node node) const
 {
-#ifndef _WIN32
-    auto stricmp = [](auto a, auto b) { return strcasecmp(a, b); };
-#endif
-    //
-    if (stricmp(node.name(), "Template") == 0) {
+    if (str_equals_nocase(node.name(), "Template")) {
         auto template_name = node.child("Name");
         if (!template_name) {
             return {};
@@ -620,10 +607,10 @@ std::optional<pugi::xml_node> XmlLookup::FindTemplate(const std::string& temp, p
 
         if (speculative_path_type_ == SpeculativePathType::TEMPLATE_CONTAINER) {
             auto parent = node.parent();
-            while (parent && stricmp(parent.name(), "Templates") != 0) {
+            while (parent && !str_equals_nocase(parent.name(), "Templates")) {
                 parent = parent.parent();
             }
-            if (stricmp(parent.name(), "Templates") == 0) {
+            if (str_equals_nocase(parent.name(), "Templates")) {
                 return parent;
             }
             return {};
@@ -729,7 +716,7 @@ pugi::xpath_node_set XmlLookup::ReadTemplateNodes(std::shared_ptr<pugi::xml_docu
 }
 
 void XmlOperation::InsertContent(std::vector<pugi::xml_node>& content_nodes) {
-    const auto mod_options = doc_->GetVariables();
+    const auto mod_options = context_->GetVariables();
     if (!mod_options) {
         return;
     }
@@ -740,7 +727,7 @@ void XmlOperation::InsertContent(std::vector<pugi::xml_node>& content_nodes) {
             const auto& option_attr = inserter.node().attribute("Path");
             if (!option_attr) {
                 if (!inserter.node().first_attribute()) {
-                    doc_->Warn("ModValue needs 'Path', 'MergeFlags' or 'RemoveFlags'", inserter.node());
+                    context_->Warn("ModValue needs 'Path', 'MergeFlags' or 'RemoveFlags'", inserter.node());
                 }
                 continue;
             }
@@ -748,13 +735,13 @@ void XmlOperation::InsertContent(std::vector<pugi::xml_node>& content_nodes) {
             const auto& option_path = std::string{ option_attr.as_string() };
 
             if (0 != option_path.rfind("$", 0)) {
-                doc_->Warn(std::string{ option_attr.as_string() } + " must start with $", inserter.node());
+                context_->Warn(std::string{ option_attr.as_string() } + " must start with $", inserter.node());
                 continue;
             }
 
             const auto& option = mod_options->find(option_path.substr(1));
             if (option == mod_options->end()) {
-                doc_->Warn("Variable " + option_path + " not found", inserter.node());
+                context_->Warn("Variable " + option_path + " not found", inserter.node());
                 continue;
             }
 
@@ -804,8 +791,8 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
     auto logTime = [&start, this](const char* group = "ModOp") {
         auto end = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-        this->doc_->Debug("Time: {}ms {} ({}:{})", duration, group,
-            this->doc_->GetGenericPath(), this->doc_->GetLine(node_));
+        this->context_->Debug("Time: {}ms {} ({}:{})", duration, group,
+            this->context_->GetGenericPath(), this->context_->GetLine(node_));
     };
 
     CreateQueries();
@@ -830,7 +817,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
     if (type_ != Type::Remove && !content_.IsEmpty()) {
         auto result = content_.Select(doc);
         if (result.IsEmpty()) {
-            doc_->Warn("Content \"" + content_.GetPath() + "\" not found", node_);
+            context_->Warn("Content \"" + content_.GetPath() + "\" not found", node_);
             return logTime();
         }
         if (!nodes_ || nodes_->begin() != nodes_->end()) {
@@ -842,7 +829,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
                 }
                 auto inserter = wrapper->select_node(".//ModOpContent");
                 if (!inserter) {
-                    doc_->Warn("ModOps with 'Content' attribute must be empty or contain '<ModOpContent />'", node_);
+                    context_->Warn("ModOps with 'Content' attribute must be empty or contain '<ModOpContent />'", node_);
                     break;
                 }
                 else {
@@ -865,14 +852,14 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
     InsertContent(content_nodes);
 
     try {
-        doc_->Debug("Looking up {}", path_.GetPath());
+        context_->Debug("Looking up {}", path_.GetPath());
         auto results = path_.Select(doc, &cachedNode);
         if (results.IsEmpty()) {
             if (allow_no_match_) {
-                doc_->Debug("No matching node for Path \"{}\"", path_.GetPath());
+                context_->Debug("No matching node for Path \"{}\"", path_.GetPath());
             }
             else {
-                doc_->Warn("No matching node for Path \"" + path_.GetPath() + "\"", node_);
+                context_->Warn("No matching node for Path \"" + path_.GetPath() + "\"", node_);
             }
             if (wrapper) {
                 doc->remove_child(*wrapper);
@@ -913,8 +900,9 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
                 game_node.parent().remove_child(game_node);
             }
         }
-    } catch (const pugi::xpath_exception &e) {
-        doc_->Error("Failed to parse path \"" + path_.GetPath() + "\": " + e.what());
+    }
+    catch (const pugi::xpath_exception &e) {
+        context_->Error("Failed to parse path \"" + path_.GetPath() + "\": " + e.what());
     }
 
     if (wrapper) {
@@ -928,10 +916,6 @@ std::vector<XmlOperation> XmlOperation::GetXmlOperations(
     const fs::path& game_path,
     std::optional<pugi::xml_object_range<pugi::xml_node_iterator>> nodes)
 {
-#ifndef _WIN32
-    auto stricmp = [](auto a, auto b) { return strcasecmp(a, b); };
-#endif
-
     if (!doc) {
         return {};
     }
@@ -951,7 +935,7 @@ std::vector<XmlOperation> XmlOperation::GetXmlOperations(
                 continue;
             }
 
-            if (stricmp(node.name(), "ModOp") == 0) {
+            if (str_equals_nocase(node.name(), "ModOp")) {
                 const auto guid = GetXmlPropString(node, "GUID");
                 const auto temp = GetXmlPropString(node, "Template");
                 const auto property = GetXmlPropString(node, "Property");
@@ -972,12 +956,12 @@ std::vector<XmlOperation> XmlOperation::GetXmlOperations(
                     mod_operations.emplace_back(doc, node, "", "", temp);
                 }
             }
-            else if (stricmp(node.name(), "Group") == 0) {
+            else if (str_equals_nocase(node.name(), "Group")) {
                 auto group_op = XmlOperation{doc, node};
                 group_op.group_ = GetXmlOperations(doc, game_path, node.children());
                 mod_operations.push_back(group_op);
             }
-            else if (stricmp(node.name(), "Include") == 0) {
+            else if (str_equals_nocase(node.name(), "Include")) {
                 const auto file = GetXmlPropString(node, "File");
                 fs::path relative_include_path;
                 if (file.rfind("/", 0) == 0) {
@@ -1144,11 +1128,11 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
             }
             catch (const std::exception& e)
             {
-                doc_->Warn("ModMergeItem \"" + xpath_query + "\" not found", cur_node);
+                context_->Warn("ModMergeItem \"" + xpath_query + "\" not found", cur_node);
             }
         }
         else if (!indexing_allowed) {
-            doc_->Warn(std::string{name} + " without ModMergeItem is not allowed after ModMergeItem usage", cur_node);
+            context_->Warn(std::string{name} + " without ModMergeItem is not allowed after ModMergeItem usage", cur_node);
             continue;
         }
         else {
@@ -1177,8 +1161,8 @@ bool XmlOperation::CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::
 
     const bool matching = condition_.Select(doc, &cachedNode).IsMatch();
     if (condition_.IsNegative() == matching) {
-        doc_->Debug("Condition {} ({}) doesn't match in {} ({}:{})", condition_.GetPath(), matching, doc_->GetName(),
-                   doc_->GetGenericPath(), doc_->GetLine(node_));
+        context_->Debug("Condition {} ({}) doesn't match in {} ({}:{})", condition_.GetPath(), matching, context_->GetName(),
+                   context_->GetGenericPath(), context_->GetLine(node_));
         return false;
     }
 
