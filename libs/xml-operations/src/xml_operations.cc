@@ -1035,13 +1035,13 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
         indexer.try_emplace(name, 0);
         const int index = indexer[name]++;
 
-        const auto& item_xpath = cur_node.attribute("ModOpPath");
+        const auto& item_xpath = cur_node.attribute("ModMergeItem");
         if (item_xpath) {
             indexing_allowed = false;
 
             // TODO better string format
             const auto xpath_query = std::string{ cur_node.name() } + "[" + item_xpath.as_string() + "]";
-            cur_node.remove_attribute("ModOpPath");
+            cur_node.remove_attribute("ModMergeItem");
             try
             {
                 const auto& xpath_node = root_node.select_node(xpath_query.c_str());
@@ -1054,11 +1054,11 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
             }
             catch (const std::exception& e)
             {
-                doc_->Warn("ModOpPath \"" + xpath_query + "\" not found", cur_node);
+                doc_->Warn("ModMergeItem \"" + xpath_query + "\" not found", cur_node);
             }
         }
         else if (!indexing_allowed) {
-            doc_->Warn(std::string{name} + " without ModOpPath is not allowed after ModOpPath usage", cur_node);
+            doc_->Warn(std::string{name} + " without ModMergeItem is not allowed after ModMergeItem usage", cur_node);
             continue;
         }
         else {

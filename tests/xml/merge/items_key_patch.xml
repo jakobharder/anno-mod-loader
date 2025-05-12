@@ -6,7 +6,7 @@
         <Amount>11</Amount>
       </Item>
       <!-- exists out of order, merge values -->
-      <Item ModOpPath="Ingredient='1010218'">
+      <Item ModMergeItem="Ingredient='1010218'">
         <Ingredient>1010218</Ingredient>
         <Amount>14</Amount>
       </Item>
@@ -16,12 +16,12 @@
         <Amount>16</Amount>
       </Item>-->
       <!-- exists out of order, merge values -->
-      <Item ModOpPath="Ingredient='1010196'">
+      <Item ModMergeItem="Ingredient='1010196'">
         <Ingredient>1010196</Ingredient>
         <Amount>12</Amount>
       </Item>
       <!-- doesn't exist, add item -->
-      <Item ModOpPath="Ingredient='123'">
+      <Item ModMergeItem="Ingredient='123'">
         <Ingredient>123</Ingredient>
         <Amount>15</Amount>
       </Item>
