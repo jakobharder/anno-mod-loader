@@ -6,25 +6,30 @@
         <Amount>11</Amount>
       </Item>
       <!-- exists out of order, merge values -->
-      <Item ModMergeItem="Ingredient='1010218'">
+      <ModItem Merge="Ingredient">
         <Ingredient>1010218</Ingredient>
         <Amount>14</Amount>
-      </Item>
+      </ModItem>
       <!-- ignore items without key afterwards -->
       <!--<Item>
         <Ingredient>567</Ingredient>
         <Amount>16</Amount>
       </Item>-->
       <!-- exists out of order, merge values -->
-      <Item ModMergeItem="Ingredient='1010196'">
+      <ModItem Merge="Ingredient">
         <Ingredient>1010196</Ingredient>
         <Amount>12</Amount>
-      </Item>
+      </ModItem>
       <!-- doesn't exist, add item -->
-      <Item ModMergeItem="Ingredient='123'">
+      <ModItem Merge="Ingredient">
         <Ingredient>123</Ingredient>
         <Amount>15</Amount>
-      </Item>
+      </ModItem>
+      <!-- change the Ingredient -->
+      <ModItem Merge="Ingredient='1010220'">
+        <Ingredient>567</Ingredient>
+        <Amount>17</Amount>
+      </ModItem>
     </Costs>
   </ModOp>
 </ModOps>

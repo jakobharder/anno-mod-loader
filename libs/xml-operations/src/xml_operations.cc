@@ -68,6 +68,15 @@ static bool str_equals_nocase(std::string_view a, std::string_view b) {
     return strnicmp(a.data(), b.data(), a.size()) == 0;
 }
 
+template<typename... Args>
+std::string str_concat(const Args&... args) {
+    size_t total_size = (0 + ... + std::string_view(args).size());
+    std::string result;
+    result.reserve(total_size);
+    (result.append(args), ...);
+    return result;
+}
+
 XmlOperationContext::XmlOperationContext(const fs::path& mod_relative_path,
                                          const fs::path& mod_base_path,
                                          std::string_view mod_id,
@@ -752,39 +761,6 @@ void XmlOperation::InsertContent(std::vector<pugi::xml_node>& content_nodes) {
     }
 }
 
-bool AddTypedVariable(pugi::xpath_variable_set& vars, const std::string& name, const std::string& value) {
-    // Trim the input (optional, but helps with whitespace)
-    auto trimmed = value;
-    trimmed.erase(0, trimmed.find_first_not_of(" \t\n\r"));
-    trimmed.erase(trimmed.find_last_not_of(" \t\n\r") + 1);
-
-    // Try boolean (case-insensitive match)
-    std::string lower;
-    lower.resize(trimmed.size());
-    std::transform(trimmed.begin(), trimmed.end(), lower.begin(), [](unsigned char c) { return std::tolower(c); });
-
-    if (lower == "true" || lower == "false") {
-        bool b = (lower == "true");
-        vars.add(name.c_str(), pugi::xpath_type_boolean);
-        vars.get(name.c_str())->set(b);
-        return true;
-    }
-
-    // Try number (std::from_chars is fast and non-allocating)
-    double number = 0;
-    auto [ptr, ec] = std::from_chars(trimmed.data(), trimmed.data() + trimmed.size(), number);
-    if (ec == std::errc() && ptr == trimmed.data() + trimmed.size()) {
-        vars.add(name.c_str(), pugi::xpath_type_number);
-        vars.get(name.c_str())->set(number);
-        return true;
-    }
-
-    // Fallback: treat as string
-    vars.add(name.c_str(), pugi::xpath_type_string);
-    vars.get(name.c_str())->set(value.c_str());
-    return true;
-}
-
 void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
 {
     auto start = std::chrono::high_resolution_clock::now();
@@ -871,7 +847,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
             pugi::xml_node game_node = xnode.node();
             if (GetType() == XmlOperation::Type::Merge) {
                 if (!content_nodes.empty() && content_nodes.size() == 1 &&
-                    strcmp(content_nodes.begin()->name(), game_node.name()) == 0) {
+                    str_equals_nocase(content_nodes.begin()->name(), game_node.name())) {
                     // legacy merge
                     // skip single container if it's named same as the target node
                     RecursiveMerge(game_node.parent(), *content_nodes.begin());
@@ -1077,7 +1053,7 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
         int found = 0;
         auto children = game_node.children();
         for (pugi::xml_node cur_node : children) {
-            if (strcmp(cur_node.name(), name) == 0) {
+            if (str_equals_nocase(cur_node.name(), name)) {
                 if (found == index) {
                     return cur_node;
                 }
@@ -1109,30 +1085,44 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
         indexer.try_emplace(name, 0);
         const int index = indexer[name]++;
 
-        const auto& item_xpath = cur_node.attribute("ModMergeItem");
-        if (item_xpath) {
-            indexing_allowed = false;
+        if (cur_node.first_attribute() && str_equals_nocase(cur_node.name(), "ModItem")) {
+            if (const auto& item_xpath = cur_node.attribute("Merge"); item_xpath) {
+                indexing_allowed = false;
 
-            // TODO better string format
-            const auto xpath_query = std::string{ cur_node.name() } + "[" + item_xpath.as_string() + "]";
-            cur_node.remove_attribute("ModMergeItem");
-            try
-            {
-                const auto& xpath_node = root_node.select_node(xpath_query.c_str());
-                if (xpath_node) {
-                    game_node = xpath_node.node();
+                // construct "Item[Key='Value']" from either Key or Key='Value'
+                const std::string_view item_xpath_str = item_xpath.as_string();
+                const bool short_path = item_xpath_str.find("=") == std::string_view::npos;
+                std::string xpath_query;
+
+                if (short_path) {
+                    const auto& key_child = cur_node.child(item_xpath_str.data());
+                    const auto& value = std::string{ key_child.child_value() };
+                    xpath_query = str_concat("Item[", item_xpath_str, "='", value, "']");
                 }
                 else {
-                    game_node = {};
+                    xpath_query = str_concat("Item[", item_xpath_str, "]");
+                }
+
+                try {
+                    game_node = root_node.select_node(xpath_query.c_str()).node();
+                }
+                catch (const std::exception& e) {
+                    context_->Warn("ModItem \"" + xpath_query + "\" not found: " + e.what(), cur_node);
+                }
+
+                cur_node.remove_attribute("Merge");
+
+                // when there's no target, cur_node is copied so rename it
+                if (!game_node) {
+                    cur_node.set_name("Item");
                 }
             }
-            catch (const std::exception& e)
-            {
-                context_->Warn("ModMergeItem \"" + xpath_query + "\" not found", cur_node);
+            else {
+                context_->Warn("ModItem needs attribute 'Merge'", cur_node);
             }
         }
         else if (!indexing_allowed) {
-            context_->Warn(std::string{name} + " without ModMergeItem is not allowed after ModMergeItem usage", cur_node);
+            context_->Warn(std::string{name} + " is not allowed after ModItem", cur_node);
             continue;
         }
         else {

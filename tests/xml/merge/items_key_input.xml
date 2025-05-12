@@ -34,6 +34,10 @@
                   <Ingredient>1010202</Ingredient>
                   <Amount>6</Amount>
                 </Item>
+                <Item>
+                  <Ingredient>1010220</Ingredient>
+                  <Amount>7</Amount>
+                </Item>
               </Costs>
             </Cost>
           </Values>
