@@ -25,10 +25,6 @@ def main():
                                                    base_name + "_input.xml")
                     base_name_patch = os.path.join(test_path,
                                                    base_name + "_patch.xml")
-                    f.write("TestRunner runner(\"%s\", \"%s\", \"%s\");\n" %
-                            (os.path.join("tests", "xml", test_type).replace(
-                                "\\", "/"), base_name_input.replace("\\", "/"),
-                             base_name_patch.replace("\\", "/")))
 
                     f.write("std::map<std::string, std::string> mod_options;\n")
                     mod_options = data.get('options')
@@ -36,7 +32,14 @@ def main():
                         for option_name, option_value in mod_options.items():
                             f.write(f'mod_options["{option_name}"] = "{option_value}";\n')
 
-                    f.write("runner.ApplyPatches(mod_options);\n")
+                    f.write("TestRunner runner(\"%s\", \"%s\", \"%s\", &mod_options);\n" %
+                            (os.path.join("tests", "xml", test_type).replace(
+                                "\\", "/"), base_name_input.replace("\\", "/"),
+                             base_name_patch.replace("\\", "/")))
+
+
+
+                    f.write("runner.ApplyPatches();\n")
                     f.write("INFO(runner.DumpXml());")
                     f.write("INFO(runner.DumpLog());")
 

@@ -12,7 +12,7 @@
 
 namespace xmlops {
 
-std::vector<std::string> StrSplit(const std::string& input, char delimiter) {
+std::vector<std::string> str_split(const std::string& input, char delimiter) {
     std::vector<std::string> result;
 
     int last_pos = 0;
@@ -34,25 +34,57 @@ std::vector<std::string> StrSplit(const std::string& input, char delimiter) {
     return result;
 }
 
-XmlOperationContext::XmlOperationContext() { }
+std::string str_join(const std::vector<std::string>& parts, char delimiter, size_t reserve = 0) {
+    if (parts.empty()) {
+        return {};
+    }
+
+    if (reserve == 0) {
+        reserve = (parts.size() - 1);
+        for (const auto& part : parts) {
+            reserve += part.size();
+        }
+    }
+
+    std::string result;
+    result.reserve(reserve);
+
+    result += parts[0];
+    for (size_t i = 1; i < parts.size(); ++i) {
+        result += delimiter;
+        result += parts[i];
+    }
+
+    return result;
+}
+
+bool str_equals_nocase(const std::string& a, const std::string& b) {
+    return a.size() == b.size() &&
+        std::equal(a.begin(), a.end(), b.begin(), [](unsigned char ac, unsigned char bc) {
+               return std::tolower(ac) == std::tolower(bc);
+           });
+}
 
 XmlOperationContext::XmlOperationContext(const fs::path& mod_relative_path,
                                          const fs::path& mod_base_path,
-                                         std::string_view mod_name)
+                                         std::string_view mod_id,
+                                         const std::map<std::string, std::string>* variables,
+                                         std::string_view mod_name) : mod_id_(mod_id)
 {
     mod_name_ = mod_name.empty() ? mod_base_path.filename().string() : mod_name;
     mod_base_path_ = mod_base_path;
+    variables_ = variables;
 
     include_loader_ = [this, &mod_base_path](const fs::path& file_path) {
         std::vector<char> buffer;
         size_t size;
         if (!ReadFile(mod_base_path / file_path, buffer, size)) {
-            spdlog::error("{}: Failed to open {}",
-                          this->mod_name_,
-                          file_path.string());
+            const auto file_path_str = file_path.string();
+            spdlog::error("{}: Failed to open {}", this->mod_name_, file_path_str);
             return std::shared_ptr<XmlOperationContext>{};
         }
         return std::make_shared<XmlOperationContext>(buffer.data(), size, file_path,
+            this->mod_id_, this->variables_,
             this->mod_name_, *this->include_loader_);
     };
 
@@ -67,10 +99,14 @@ XmlOperationContext::XmlOperationContext(const fs::path& mod_relative_path,
 
 XmlOperationContext::XmlOperationContext(const char* buffer, size_t size,
                                          const fs::path& doc_path,
+                                         std::string_view mod_id,
+                                         const std::map<std::string, std::string>* variables,
                                          std::string_view mod_name,
-                                         std::optional<include_loader_t> include_loader)
+                                         std::optional<include_loader_t> include_loader) : mod_id_(mod_id)
 {
     mod_name_ = mod_name;
+    variables_ = variables;
+
     include_loader_ = include_loader;
     doc_path_ = doc_path.generic_string();
 
@@ -132,17 +168,20 @@ void XmlOperationContext::Debug(std::string_view msg, const Args &... args) cons
 
 void XmlOperationContext::Debug(std::string_view msg, pugi::xml_node node) const
 {
-    spdlog::debug("{}: {} ({}:{})", mod_name_, msg, doc_path_, node ? GetLine(node) : 0);
+    const auto line = node ? GetLine(node) : 0;
+    spdlog::debug("{}: {} ({}:{})", mod_name_, msg, doc_path_, line);
 }
 
 void XmlOperationContext::Warn(std::string_view msg, pugi::xml_node node) const
 {
-    spdlog::warn("{}: {} ({}:{})", mod_name_, msg, doc_path_, node ? GetLine(node) : 0);
+    const auto line = node ? GetLine(node) : 0;
+    spdlog::warn("{}: {} ({}:{})", mod_name_, msg, doc_path_, line);
 }
 
 void XmlOperationContext::Error(std::string_view msg, pugi::xml_node node) const
 {
-    spdlog::error("{}: {} ({}:{})", mod_name_, msg, doc_path_, node ? GetLine(node) : 0);
+    const auto line = node ? GetLine(node) : 0;
+    spdlog::error("{}: {} ({}:{})", mod_name_, msg, doc_path_, line);
 }
 
 bool XmlOperationContext::ReadFile(const fs::path& file_path, std::vector<char>& buffer, size_t& size)
@@ -196,6 +235,7 @@ XmlLookup::XmlLookup(const std::string& path,
     }
     else if (!read_path.empty() && read_path.front() == '$') {
         path_ = read_path.substr(0);
+        ReplaceStaticVariables(path_);
 
         const auto var = read_path.substr(1);
         if (!variables_->get(var.c_str())) {
@@ -204,6 +244,7 @@ XmlLookup::XmlLookup(const std::string& path,
         return;
     }
     else if (!read_path.empty() && read_path[0]== '~') {
+        // TODO deprecate
         read_path = read_path.substr(1);
         guid_ = guid;
         template_ = templ;
@@ -223,7 +264,50 @@ XmlLookup::XmlLookup(const std::string& path,
         }
     }
 
+    ReplaceStaticVariables(read_path);
     ReadPath(read_path, guid_, property_, template_);
+}
+
+void XmlLookup::ReplaceStaticVariables(std::string& path)
+{
+    const auto variables = context_->GetVariables();
+    if (!variables) {
+        return;
+    }
+
+    std::regex varRegex(R"(\$[a-zA-Z_][\w\-\.]*)");
+    std::smatch match;
+
+    std::string result;
+    std::string::const_iterator searchStart(path.cbegin());
+
+    while (std::regex_search(searchStart, path.cend(), match, varRegex)) {
+        result.append(searchStart, match[0].first);
+
+        const auto name = match.str().substr(1);
+        const auto& var = variables->find(name);
+
+        if (var == variables->end()) {
+            result += "false()";
+            context_->Debug("Variable \'" + name + "\' not found", node_);
+        }
+        else if (str_equals_nocase(var->second, "false")) {
+            result += "false()";
+        }
+        else if (str_equals_nocase(var->second, "true")) {
+            result += "true()";
+        }
+        else {
+            result += var->second;
+        }
+
+        searchStart = match[0].second;
+    }
+
+    if (!result.empty()) {
+        result.append(searchStart, path.cend());
+        path = std::move(result);
+    }
 }
 
 void XmlLookup::ReadPath(std::string prop_path,
@@ -436,10 +520,6 @@ void XmlOperation::ReadType(pugi::xml_node node)
         type_ = Type::Replace;
     } else if (stricmp(type.c_str(), "merge") == 0) {
         type_ = Type::Merge;
-    } else if (stricmp(type.c_str(), "enum") == 0) {
-        type_ = Type::AddEnum;
-    } else if (stricmp(type.c_str(), "removeEnum") == 0) {
-        type_ = Type::RemoveEnum;
     } else {
         type_ = Type::None;
         doc_->Error("Unknown ModOp " + type, node_);
@@ -648,7 +728,12 @@ pugi::xpath_node_set XmlLookup::ReadTemplateNodes(std::shared_ptr<pugi::xml_docu
     return results;
 }
 
-void XmlOperation::InsertContent(std::vector<pugi::xml_node>& content_nodes, const std::map<std::string, std::string>& mod_options) {
+void XmlOperation::InsertContent(std::vector<pugi::xml_node>& content_nodes) {
+    const auto mod_options = doc_->GetVariables();
+    if (!mod_options) {
+        return;
+    }
+
     for (auto& content_node : content_nodes) {
         auto inserter = content_node.select_node(".//ModValue");
         if (inserter) {
@@ -668,8 +753,8 @@ void XmlOperation::InsertContent(std::vector<pugi::xml_node>& content_nodes, con
                 continue;
             }
 
-            const auto& option = mod_options.find(option_path.substr(1));
-            if (option == mod_options.end()) {
+            const auto& option = mod_options->find(option_path.substr(1));
+            if (option == mod_options->end()) {
                 doc_->Warn("Variable " + option_path + " not found", inserter.node());
                 continue;
             }
@@ -714,7 +799,7 @@ bool AddTypedVariable(pugi::xpath_variable_set& vars, const std::string& name, c
     return true;
 }
 
-void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::map<std::string, std::string>& mod_options)
+void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
 {
     auto start = std::chrono::high_resolution_clock::now();
     auto logTime = [&start, this](const char* group = "ModOp") {
@@ -726,19 +811,15 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::map
 
     CreateQueries();
 
-    for (const auto& option : mod_options) {
-        AddTypedVariable(variables_, option.first, option.second);
-    }
-
     std::optional<pugi::xml_node> cachedNode;
-    if (GetType() == XmlOperation::Type::None || !CheckCondition(doc, cachedNode, mod_options)) {
+    if (GetType() == XmlOperation::Type::None || !CheckCondition(doc, cachedNode)) {
         return logTime(type_ == Type::Group ? "Group" : "ModOp");
     }
 
     if (type_ == Type::Group) {
         // logTime();
         for (auto& modop : group_) {
-            modop.Apply(doc, mod_options);
+            modop.Apply(doc);
         }
         logTime("Group");
         return;
@@ -782,7 +863,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::map
         content_nodes.insert(content_nodes.end(), nodes_->begin(), nodes_->end());
     }
 
-    InsertContent(content_nodes, mod_options);
+    InsertContent(content_nodes);
 
     try {
         doc_->Debug("Looking up {}", path_.GetPath());
@@ -880,7 +961,7 @@ std::vector<XmlOperation> XmlOperation::GetXmlOperations(
                     doc->Error("You can use only one of `GUID`, `Property` or `Template`", node);
                 }
                 if (!guid.empty()) {
-                    std::vector<std::string> guids = StrSplit(guid, ',');
+                    std::vector<std::string> guids = str_split(guid, ',');
                     for (auto g : guids) {
                         mod_operations.emplace_back(doc, node, g.data(), "", "");
                     }
@@ -923,29 +1004,38 @@ std::vector<XmlOperation> XmlOperation::GetXmlOperations(
 }
 
 std::vector<XmlOperation> XmlOperation::GetXmlOperationsFromFile(const fs::path&    file_path,
-                                                                 std::string        mod_name,
+                                                                 std::string_view   mod_name,
+                                                                 std::string_view   mod_id,
+                                                                 const std::map<std::string, std::string>* variables,
                                                                  const fs::path&    game_path,
                                                                  const fs::path&    mod_path)
 {
     const auto mod_relative_path = file_path.lexically_relative(mod_path);
-    return GetXmlOperations(std::make_shared<XmlOperationContext>(mod_relative_path, mod_path, mod_name), game_path);
+    return GetXmlOperations(std::make_shared<XmlOperationContext>
+        (mod_relative_path, mod_path, mod_id, variables, mod_name),
+        game_path);
 }
 
-void MergeEnum(pugi::xml_node enum_node, const pugi::char_t* insert)
+void MergeEnum(pugi::xml_node enum_node, const pugi::char_t* insert, bool remove = false)
 {
-    // TODO properly tokenize by ;
-    const auto enum_value = std::string_view{ enum_node.child_value() };
-    const size_t found = enum_value.find(insert);
+    const auto insertFlags = str_split(insert, ';');
+    auto flags = str_split(enum_node.child_value(), ';');
 
-    const bool empty = enum_value.empty();
-    if (empty || found == std::string_view::npos) {
-        const auto new_value = empty ? std::string{ insert } : std::string{ enum_value } + std::string{ ";" } + std::string{ insert };
+    for (const auto& insertFlag : insertFlags) {
+        const auto iter = std::find(flags.begin(), flags.end(), insertFlag);
 
-        if (!enum_node.first_child()) {
-            enum_node.append_child(pugi::xml_node_type::node_pcdata);
+        if (iter == flags.end() && !remove) {
+            flags.emplace_back(insertFlag);
         }
-        enum_node.first_child().set_value(new_value.c_str());
+        else if (remove) {
+            flags.erase(iter);
+        }
     }
+
+    if (!enum_node.first_child()) {
+        enum_node.append_child(pugi::xml_node_type::node_pcdata);
+    }
+    enum_node.first_child().set_value(str_join(flags, ';', 50).c_str());
 }
 
 void MergeProperties(pugi::xml_node game_node, pugi::xml_node patching_node)
@@ -1080,46 +1170,20 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
     }
 }
 
-bool XmlOperation::CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>& cachedNode,
-    const std::map<std::string, std::string>& mod_options)
+bool XmlOperation::CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>& cachedNode)
 {
     if (condition_.IsEmpty()) {
         return true;
     }
 
-    bool matching = false;
-    // if (condition_.IsModId()) {
-    //     const auto& option = mod_options.find(condition_.GetPath());
-    //     if (option != mod_options.end()) {
-    //         matching = 0 != stricmp(option->second.c_str(), "0")
-    //             && 0 != stricmp(option->second.c_str(), "false");
-
-    //         if (condition_.IsNegative() == matching) {
-    //             doc_->Debug("Condition {} is '{}' in {} ({}:{})", condition_.GetPath(), option->second, doc_->GetName(),
-    //                     doc_->GetGenericPath(), doc_->GetLine(node_));
-    //             return false;
-    //         }
-    //     }
-    //     else {
-    //         matching = false;
-    //     }
-    // }
-    // else {
-        matching = condition_.Select(doc, &cachedNode).IsMatch();
-    // }
-
+    const bool matching = condition_.Select(doc, &cachedNode).IsMatch();
     if (condition_.IsNegative() == matching) {
-        doc_->Debug("Condition {} doesn't match in {} ({}:{})", condition_.GetPath(), doc_->GetName(),
+        doc_->Debug("Condition {} ({}) doesn't match in {} ({}:{})", condition_.GetPath(), matching, doc_->GetName(),
                    doc_->GetGenericPath(), doc_->GetLine(node_));
         return false;
     }
 
     return true;
-}
-
-XmlOperation::Type XmlOperation::GetType() const
-{
-    return type_;
 }
 
 }
