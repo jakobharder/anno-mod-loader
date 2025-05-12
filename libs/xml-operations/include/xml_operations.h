@@ -199,7 +199,7 @@ private:
 
     std::optional<pugi::xml_object_range<pugi::xml_node_iterator>> nodes_;
 
-    std::shared_ptr<XmlOperationContext> doc_;
+    std::shared_ptr<XmlOperationContext> context_;
     pugi::xml_node node_;
     std::string guid_;
     std::string property_;
