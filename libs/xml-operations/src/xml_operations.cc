@@ -2,11 +2,13 @@
 
 #include "spdlog/spdlog.h"
 
+#include <charconv>
 #include <cstdio>
 #include <cstring>
 #include <fstream>
 #include <map>
 #include <regex>
+#include <string>
 
 namespace xmlops {
 
@@ -167,12 +169,13 @@ XmlLookup::XmlLookup() { }
 XmlLookup::XmlLookup(const std::string& path,
                      const std::string& guid,
                      const std::string& templ,
-                     bool explicit_speculative,
+                     pugi::xpath_variable_set* variables,
                      std::shared_ptr<XmlOperationContext> context,
                      pugi::xml_node node)
 {
     context_ = context;
     node_ = node;
+    variables_ = variables;
 
     empty_path_ = path.empty();
     negative_ = !path.empty() && path[0] == '!';
@@ -184,12 +187,21 @@ XmlLookup::XmlLookup(const std::string& path,
         mod_id_ = true;
         return;
     }
+    else if (!read_path.empty() && read_path.front() == '$') {
+        path_ = read_path.substr(0);
+
+        const auto var = read_path.substr(1);
+        if (!variables_->get(var.c_str())) {
+            variables_->set(var.c_str(), false);
+        }
+        return;
+    }
     else if (!read_path.empty() && read_path[0]== '~') {
         read_path = read_path.substr(1);
         guid_ = guid;
         template_ = templ;
     }
-    else if (explicit_speculative) {
+    else if (true /*explicit_speculative*/) {
         if (read_path.length() >= 2 &&
             ((read_path[0] == '/' && read_path[1] == '/') ||
             (read_path[0] == '@'))) {
@@ -237,26 +249,9 @@ XmlOperation::XmlOperation(std::shared_ptr<XmlOperationContext> doc, pugi::xml_n
                            const std::string& guid, const std::string& templ) : doc_(doc)
 {
     node_     = node;
-
-    ReadType(node);
-    if (type_ != Type::Remove) {
-        nodes_ = node.children();
-    }
-
-    const auto& path = GetXmlPropString(node, "Path");
-    if (type_ == Type::Add && guid.empty() && templ.empty() && path.empty()) {
-        path_ = XmlLookup{"//Groups[1]/Group[1]/Assets[1]", {}, {}, true, doc, node};
-    }
-    else {
-        path_ = XmlLookup{path, guid, templ, false, doc, node};
-    }
-
-    condition_ = XmlLookup{node.attribute("Condition").as_string(), guid, templ, true, doc, node};
-    allow_no_match_ = node.attribute("AllowNoMatch");
-
-    if (type_ != Type::Remove) {
-        content_ = XmlLookup{node.attribute("Content").as_string(), guid, templ, true, doc, node};
-    }
+    guid_     = guid;
+    template_ = templ;
+    variables_ = {};
 }
 
 void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string temp)
@@ -372,6 +367,29 @@ void XmlLookup::ReadPath(std::string prop_path, std::string guid, std::string te
         if (speculative_path_.find("/") == 0) {
             speculative_path_ = speculative_path_.substr(1);
         }
+    }
+}
+
+void XmlOperation::CreateQueries()
+{
+    ReadType(node_);
+    if (type_ != Type::Remove) {
+        nodes_ = node_.children();
+    }
+
+    const auto& path = GetXmlPropString(node_, "Path");
+    if (type_ == Type::Add && guid_.empty() && template_.empty() && path.empty()) {
+        path_ = XmlLookup{"//Groups[1]/Group[1]/Assets[1]", {}, {}, &variables_, doc_, node_};
+    }
+    else {
+        path_ = XmlLookup{path, guid_, template_, &variables_, doc_, node_};
+    }
+
+    condition_ = XmlLookup{node_.attribute("Condition").as_string(), guid_, template_, &variables_, doc_, node_};
+    allow_no_match_ = node_.attribute("AllowNoMatch");
+
+    if (type_ != Type::Remove) {
+        content_ = XmlLookup{node_.attribute("Content").as_string(), guid_, template_, &variables_, doc_, node_};
     }
 }
 
@@ -554,8 +572,9 @@ std::optional<pugi::xml_node> XmlLookup::PrepareLookupNode(
     }
 
     try {
-        *query = pugi::xpath_query{ path.c_str() };
-    } catch (const pugi::xpath_exception &e) {
+        *query = pugi::xpath_query{ path.c_str(), variables_ };
+    }
+    catch (const pugi::xpath_exception& e) {
         context_->Error("Failed to parse path \"" + path_ + "\": " + e.what(), node_);
         return {};
     }
@@ -617,23 +636,20 @@ void XmlOperation::InsertContent(std::vector<pugi::xml_node>& content_nodes, con
                 if (inserter.node().attribute("MergeFlags")) {
                     continue;
                 }
-                // TODO can we do a better location?
-                doc_->Warn("ModOpContent used without 'Path'", node_);
+                doc_->Warn("ModOpContent used without 'Path'", inserter.node());
                 continue;
             }
 
             const auto& option_path = std::string{ option_attr.as_string() };
 
-            if (0 != option_path.rfind("#", 0)) {
-                // TODO can we do a better location?
-                doc_->Warn(std::string{ option_attr.as_string() } + " must start with #", node_);
+            if (0 != option_path.rfind("$", 0)) {
+                doc_->Warn(std::string{ option_attr.as_string() } + " must start with $", inserter.node());
                 continue;
             }
 
             const auto& option = mod_options.find(option_path.substr(1));
             if (option == mod_options.end()) {
-                // TODO can we do a better location?
-                doc_->Warn("Option " + option_path + " not found", node_);
+                doc_->Warn("Option " + option_path + " not found", inserter.node());
                 continue;
             }
 
@@ -642,6 +658,39 @@ void XmlOperation::InsertContent(std::vector<pugi::xml_node>& content_nodes, con
             inserter.parent().remove_child(inserter.node());
         }
     }
+}
+
+bool AddTypedVariable(pugi::xpath_variable_set& vars, const std::string& name, const std::string& value) {
+    // Trim the input (optional, but helps with whitespace)
+    auto trimmed = value;
+    trimmed.erase(0, trimmed.find_first_not_of(" \t\n\r"));
+    trimmed.erase(trimmed.find_last_not_of(" \t\n\r") + 1);
+
+    // Try boolean (case-insensitive match)
+    std::string lower;
+    lower.resize(trimmed.size());
+    std::transform(trimmed.begin(), trimmed.end(), lower.begin(), [](unsigned char c) { return std::tolower(c); });
+
+    if (lower == "true" || lower == "false") {
+        bool b = (lower == "true");
+        vars.add(name.c_str(), pugi::xpath_type_boolean);
+        vars.get(name.c_str())->set(b);
+        return true;
+    }
+
+    // Try number (std::from_chars is fast and non-allocating)
+    double number = 0;
+    auto [ptr, ec] = std::from_chars(trimmed.data(), trimmed.data() + trimmed.size(), number);
+    if (ec == std::errc() && ptr == trimmed.data() + trimmed.size()) {
+        vars.add(name.c_str(), pugi::xpath_type_number);
+        vars.get(name.c_str())->set(number);
+        return true;
+    }
+
+    // Fallback: treat as string
+    vars.add(name.c_str(), pugi::xpath_type_string);
+    vars.get(name.c_str())->set(value.c_str());
+    return true;
 }
 
 void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::map<std::string, std::string>& mod_options)
@@ -653,6 +702,36 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::map
         this->doc_->Debug("Time: {}ms {} ({}:{})", duration, group,
             this->doc_->GetGenericPath(), this->doc_->GetLine(node_));
     };
+
+    CreateQueries();
+
+    // variables_ = pugi::xpath_variable_set{};
+    for (const auto& option : mod_options) {
+        doc_->Debug("variable {}: {}", option.first.c_str(), option.second.c_str());
+        // variables_.add(option.first.c_str(), pugi::xpath_value_type::xpath_type_boolean);
+        std::string_view value = option.second.c_str();
+        // if (value.compare("true")) {
+
+        // }
+        AddTypedVariable(variables_, option.first, option.second);
+        // variables_.set(option.first.c_str(), value.data());
+
+        if (variables_.get("test_mod")) {
+            auto q = pugi::xpath_query{ "$test_mod = true", &variables_ };
+            if (q.return_type() == pugi::xpath_value_type::xpath_type_boolean) {
+                doc_->Debug(q.evaluate_boolean(*doc) ? "true" : "false");
+            }
+            else if (q.return_type() == pugi::xpath_value_type::xpath_type_node_set) {
+                doc_->Debug("xpath_type_node_set");
+            }
+            else if (q.return_type() == pugi::xpath_value_type::xpath_type_number) {
+                doc_->Debug("xpath_type_number");
+            }
+            else if (q.return_type() == pugi::xpath_value_type::xpath_type_string) {
+                doc_->Debug("xpath_type_string");
+            }
+        }
+    }
 
     std::optional<pugi::xml_node> cachedNode;
     if (GetType() == XmlOperation::Type::None || !CheckCondition(doc, cachedNode, mod_options)) {
@@ -674,7 +753,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, const std::map
     if (type_ != Type::Remove && !content_.IsEmpty()) {
         auto result = content_.Select(doc);
         if (result.IsEmpty()) {
-            doc_->Warn("No matching node for path \"" + content_.GetPath() + "\"", node_);
+            doc_->Warn("Content \"" + content_.GetPath() + "\" not found", node_);
             return logTime();
         }
         if (!nodes_ || nodes_->begin() != nodes_->end()) {
@@ -1008,25 +1087,25 @@ bool XmlOperation::CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::
     }
 
     bool matching = false;
-    if (condition_.IsModId()) {
-        const auto& option = mod_options.find(condition_.GetPath());
-        if (option != mod_options.end()) {
-            matching = 0 != stricmp(option->second.c_str(), "0")
-                && 0 != stricmp(option->second.c_str(), "false");
+    // if (condition_.IsModId()) {
+    //     const auto& option = mod_options.find(condition_.GetPath());
+    //     if (option != mod_options.end()) {
+    //         matching = 0 != stricmp(option->second.c_str(), "0")
+    //             && 0 != stricmp(option->second.c_str(), "false");
 
-            if (condition_.IsNegative() == matching) {
-                doc_->Debug("Condition {} is '{}' in {} ({}:{})", condition_.GetPath(), option->second, doc_->GetName(),
-                        doc_->GetGenericPath(), doc_->GetLine(node_));
-                return false;
-            }
-        }
-        else {
-            matching = false;
-        }
-    }
-    else {
+    //         if (condition_.IsNegative() == matching) {
+    //             doc_->Debug("Condition {} is '{}' in {} ({}:{})", condition_.GetPath(), option->second, doc_->GetName(),
+    //                     doc_->GetGenericPath(), doc_->GetLine(node_));
+    //             return false;
+    //         }
+    //     }
+    //     else {
+    //         matching = false;
+    //     }
+    // }
+    // else {
         matching = condition_.Select(doc, &cachedNode).IsMatch();
-    }
+    // }
 
     if (condition_.IsNegative() == matching) {
         doc_->Debug("Condition {} doesn't match in {} ({}:{})", condition_.GetPath(), doc_->GetName(),

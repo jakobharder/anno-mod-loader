@@ -2,8 +2,8 @@
     "name": "Condition ModID",
     "options": {
         "test_mod": "true",
-        "other_mod.useFeatureA": "true",
-        "other_mod.useFeatureB": "false"
+        "other-mod.expectTrue": "true",
+        "other-mod.expectFalse": "false"
     },
     "expected": [
         "!/Test/Asset[not(Values)]",
