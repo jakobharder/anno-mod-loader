@@ -1,0 +1,53 @@
+<AssetList>
+  <Groups>
+    <Group>
+      <Groups>
+        <Group>
+          <Groups>
+            <Group>
+              <Assets>
+                <Asset>
+                  <Template>Text</Template>
+                  <Values>
+                    <Standard>
+                      <GUID>123</GUID>
+                    </Standard>
+                    <Shipyard>
+                      <AssemblyOptions />
+                    </Shipyard>
+                  </Values>
+                </Asset>
+                <Asset>
+                  <Template>Text</Template>
+                  <Values>
+                    <Standard>
+                      <GUID>124</GUID>
+                    </Standard>
+                    <Shipyard>
+                      <AssemblyOptions />
+                    </Shipyard>
+                  </Values>
+                </Asset>
+              </Assets>
+            </Group>
+            <Group>
+              <Assets>
+                <Asset>
+                  <Template>Text</Template>
+                  <Values>
+                    <Standard>
+                      <GUID>125</GUID>
+                    </Standard>
+                    <Shipyard>
+                      <AssemblyOptions />
+                    </Shipyard>
+                  </Values>
+                </Asset>
+              </Assets>
+            </Group>
+          </Groups>
+        </Group>
+      </Groups>
+    </Group>
+  </Groups>
+</AssetList>
