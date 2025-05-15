@@ -215,7 +215,9 @@ private:
     {
         return node.attribute(prop_name.c_str()).as_string();
     }
+
     void RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patching_node);
+    void ModOpAdd(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, const std::vector<pugi::xml_node>& content_nodes);
 
     void CreateQueries();
     void ReadType(pugi::xml_node node);

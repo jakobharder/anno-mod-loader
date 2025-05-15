@@ -916,7 +916,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
         }
     }
     catch (const pugi::xpath_exception &e) {
-        context_->Error("Failed to parse path \"" + path_.GetPath() + "\": " + e.what());
+        context_->Error("Failed to select path \"" + path_.GetPath() + "\": " + e.what());
     }
 
     InsertContent(content_nodes);
@@ -943,9 +943,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
                 game_node.parent().insert_copy_before(node, game_node);
             }
         } else if (GetType() == XmlOperation::Type::Add) {
-            for (auto &node : content_nodes) {
-                game_node.append_copy(node);
-            }
+            ModOpAdd(doc, game_node, content_nodes);
         } else if (GetType() == XmlOperation::Type::Remove) {
             game_node.parent().remove_child(game_node);
         } else if (GetType() == XmlOperation::Type::Replace) {
@@ -1214,6 +1212,39 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
         }
         else {
             RecursiveMergeFlags(root_node.append_copy(cur_node));
+        }
+    }
+}
+
+void XmlOperation::ModOpAdd(std::shared_ptr<pugi::xml_document> doc,
+    pugi::xml_node game_node,
+    const std::vector<pugi::xml_node>& content_nodes)
+{
+    for (auto& node : content_nodes) {
+        if (auto base_asset = node.child("BaseAssetGUID"); base_asset) {
+            auto base_guid = base_asset.child_value();
+            auto lookup = XmlLookup{{}, base_guid, {}, {}, nullptr, context_, node_, false};
+
+            context_->Debug("Looking up {}", lookup.GetPath());
+            xmlops::XmlLookup::Result results;
+            try {
+                results = lookup.Select(doc, {});
+            }
+            catch (const pugi::xpath_exception &e) {
+                context_->Error("Failed to select path \"" + lookup.GetPath() + "\": " + e.what());
+                continue;
+            }
+
+            if (results.IsEmpty()) {
+                context_->Warn("BaseAssetGUID not found \"" + lookup.GetPath() + "\"", base_asset);
+            }
+
+            for (auto& base_node : results.Nodes()) {
+                base_node.node().parent().insert_copy_after(node, base_node.node());
+            }
+        }
+        else {
+            game_node.append_copy(node);
         }
     }
 }

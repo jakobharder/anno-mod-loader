@@ -1,28 +1,26 @@
 # ModLoader Changes for Anno 117
 
-- [ModOp Basics](#modop-basics)
-- [Variables](#variables)
-- [Lists and Flags](#lists-and-flags)
-- [XPath](#xpath)
-- [FileOps](#fileops)
-
-## ModOp Basics
-
 The changes are backwards compatible to the modloader used in Anno 1800.
 All new features are on top.
+
+- [ModOp Basics](#modop-basics)
+- [Options](#options)
+- [Inline ModOps](#inline-modops)
+- [XPath](#xpath)
+
+## ModOp Basics
 
 ### Shorter ModOps
 
 ModOps can be shortened with `Merge=<XPath>` instead of the old long form `Type="merge" Path=<XPath>`.
 
-That new shorter way also skips `/Values` of the XPath by default when using `GUID` lookup.
+When using `GUID` lookup with the short style skips `/Values` like the previously introduced `@GUID` notation.
 
 ```xml
 <ModOp GUID="1010372" Merge="Building">
   <AllowChangeVariation>1</AllowChangeVariation>
 </ModOp>
 
-<!-- alternatively using @ notation -->
 <ModOp Merge="@1010372/Building">
   <AllowChangeVariation>1</AllowChangeVariation>
 </ModOp>
@@ -40,6 +38,10 @@ That new shorter way also skips `/Values` of the XPath by default when using `GU
   <AllowChangeVariation>1</AllowChangeVariation>
 </ModOp>
 
+<ModOp Type="merge" Path="@1010372/Building">
+  <AllowChangeVariation>1</AllowChangeVariation>
+</ModOp>
+
 <ModOp Type="replace" GUID="123">
   <Template>Icon</Template>
 </ModOp>
@@ -50,18 +52,18 @@ That new shorter way also skips `/Values` of the XPath by default when using `GU
 
 Short | Legacy | Comment
 --- | --- | ---
-`Add`|`Type="add"`|new: also adds full assets like `addNextSibling` + `GUID`
-`Remove`|`Type="remove"`|as is
-`Append`|`Type="addNextSibling"`|renamed
-`Prepend`|`Type="addPrevSibling"`|renamed
-`Replace`|`Type="replace`|as is
-`Merge`|`Type="merge"`|new: improved flags and list support
+`Assets`| |Similar to `addNextSibling` + `GUID` without `Path`.
+`Add`|`Type="add"`|Same as `Assets` when used without `Path`, `GUID` and `Property`. Otherwise unchanged.
+`Remove`|`Type="remove"`|unchanged
+`Append`|`Type="addNextSibling"`|renamed, otherwise unchanged
+`Prepend`|`Type="addPrevSibling"`|renamed, otherwise unchanged
+`Replace`|`Type="replace`|unchanged
+`Merge`|`Type="merge"`|Includes improved flags and list handling.
 
-### Add Assets without GUID
+### Add Assets - `Assets`
 
 The fastest way to add assets is to use `add` without `GUID` or `Path`.
-
-Note: BaseAssetGUID order is not considered (yet).
+`BaseAssetGUID` order is automatically handled.
 
 ```xml
 <Assets>
@@ -79,14 +81,14 @@ There are additional lookups to make the code faster and more readable.
 - `Property` in `assets.xml`:
   access `Values/<Property>/` of all assets containing a specific property
 
-## Variables
+## Options
 
 Mod checks are now proper XPath elements by using `$mod-id`.
 That means you can combine them like XPath expressions with `and` and `or`.
 E.g. `Condition="$mod-a or $mod-b"`.
 `#mod-id` is not supported anymore, use `$mod-id` instead.
 
-External variables can also be passed using the same mechanism as `$mod-id` condition checks.
+External options can also be passed using the same mechanism as `$mod-id` condition checks.
 Additionally, variables can be used as content for `ModValue`.
 
 The format is `$mod-id.option-name`.
