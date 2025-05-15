@@ -1,3 +1,3 @@
 <ModOps>
-<ModOp Type="remove" Skip="" Path="/Test/Node/Meow" />
+<ModOp Skip="" Remove="/Test/Node/Meow" />
 </ModOps>

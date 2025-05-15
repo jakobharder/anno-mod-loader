@@ -1,5 +1,5 @@
 <ModOps>
-  <ModOp Type="merge" GUID="100780" Path="/Cost/Costs">
+  <ModOp GUID="100780" Merge="Cost/Costs">
     <Costs>
       <!-- items without key are allowed at the beginning-->
       <Item>

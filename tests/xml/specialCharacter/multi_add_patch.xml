@@ -1,8 +1,8 @@
 <ModOps>
-<ModOp Type="addAfter" Path="/Test/Node/Meow[GUID&gt;1]">
+<ModOp Append="/Test/Node/Meow[GUID&gt;1]">
     <Meow><GUID>5</GUID></Meow>
 </ModOp>
-<ModOp Type="addAfter" Path="/Test/Node/Meow[GUID&lt;=1]">
+<ModOp Append="/Test/Node/Meow[GUID&lt;=1]">
     <Meow><GUID>6</GUID></Meow>
 </ModOp>
 </ModOps>

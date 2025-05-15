@@ -1,5 +1,5 @@
 <ModOps>
-<ModOp Type="merge" Path="/Test/Node/Meow">
+<ModOp Merge="/Test/Node/Meow">
     <Meow>10</Meow>
 </ModOp>
 </ModOps>

@@ -1,6 +1,0 @@
-<ModOps>
-    <ModOp Type="add" GUID="1010521"
-           Condition="/Shipyard/AssemblyOptions">
-        <Cost />
-    </ModOp>
-</ModOps>

@@ -1,6 +1,14 @@
 <ModOps>
-    <ModOp Type="add" GUID="1010521"
-           Condition="~/Shipyard/AssemblyOptions">
-        <Cost />
-    </ModOp>
+  <ModOp Add="" GUID="1010521"
+    Condition="Shipyard/AssemblyOptions">
+    <Cost />
+  </ModOp>
+  <ModOp Add="@1010523"
+    Condition="//Values[Standard/GUID='1010522']/Shipyard/AssemblyOptions">
+    <Cost />
+  </ModOp>
+  <ModOp Add="@1010524"
+    Condition="@1010522">
+    <Cost />
+  </ModOp>
 </ModOps>

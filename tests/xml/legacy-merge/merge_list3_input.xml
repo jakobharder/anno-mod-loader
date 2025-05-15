@@ -1,0 +1,41 @@
+<AssetList>
+    <Groups>
+        <Group>
+            <Asset>
+                <Template>FactoryBuilding7</Template>
+                <Values>
+                    <Standard>
+                        <GUID>1010285</GUID>
+                    </Standard>
+                    <Infolayer />
+                    <UpgradeList />
+                    <Factory7 />
+                    <FactoryBase>
+                        <FactoryInputs>
+                            <Item>
+                                <Product>120008</Product>
+                                <Amount>1</Amount>
+                                <StorageAmount>8</StorageAmount>
+                            </Item>
+                            <Item>
+                                <Product>1010241</Product>
+                                <Amount>1</Amount>
+                                <StorageAmount>4</StorageAmount>
+                            </Item>
+                        </FactoryInputs>
+                        <FactoryOutputs>
+                            <Item>
+                                <Product>1010207</Product>
+                                <Amount>1</Amount>
+                                <StorageAmount>2</StorageAmount>
+                            </Item>
+                        </FactoryOutputs>
+                        <CycleTime>60</CycleTime>
+                        <IsMainFactory>1</IsMainFactory>
+                    </FactoryBase>
+                    <LogisticNode />
+                </Values>
+            </Asset>
+        </Group>
+    </Group>
+</AssetList>

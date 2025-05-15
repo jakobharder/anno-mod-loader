@@ -1,6 +1,0 @@
-<ModOps>
-    <ModOp Type="add" GUID="1010521"
-           Condition="//Values[Standard/GUID='1010522']">
-        <Cost />
-    </ModOp>
-</ModOps>

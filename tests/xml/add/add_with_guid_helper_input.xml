@@ -17,6 +17,17 @@
                     </Shipyard>
                   </Values>
                 </Asset>
+                <Asset>
+                  <Template>Text</Template>
+                  <Values>
+                    <Standard>
+                      <GUID>1010522</GUID>
+                    </Standard>
+                    <Shipyard>
+                      <AssemblyOptions></AssemblyOptions>
+                    </Shipyard>
+                  </Values>
+                </Asset>
               </Assets>
             </Group>
           </Groups>

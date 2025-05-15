@@ -1,0 +1,10 @@
+<ModOps>
+    <ModOp Type="merge" GUID="101273" Path="/Values/FactoryBase/FactoryInputs">
+        <Item>
+          <StorageAmount>2</StorageAmount>
+        </Item>
+        <Item>
+          <StorageAmount>4</StorageAmount>
+        </Item>
+      </ModOp>
+</ModOps>

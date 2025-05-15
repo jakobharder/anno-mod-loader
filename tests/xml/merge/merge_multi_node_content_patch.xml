@@ -1,5 +1,5 @@
 <ModOps>
-<ModOp Type="merge" Path="/Test/Node">
+<ModOp Merge="/Test/Node">
     <FullSatisfactionDistance>60</FullSatisfactionDistance>
     <NoSatisfactionDistance>90</NoSatisfactionDistance>
 </ModOp>
