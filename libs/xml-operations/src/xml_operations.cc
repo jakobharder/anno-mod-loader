@@ -492,7 +492,7 @@ void XmlOperation::CreateQueries()
 
     const auto& path = GetXmlPropString(node_, "Path");
     if (type_ == Type::Add && guid_.empty() && template_.empty() && property_.empty() && path.empty()) {
-        path_ = XmlLookup{"//Groups[1]/Group[1]/Assets[1]", {}, {}, {}, &variables_, context_, node_};
+        path_ = XmlLookup{"//Group[1]/Assets[1]", {}, {}, {}, &variables_, context_, node_};
     }
     else {
         path_ = XmlLookup{path, guid_, property_, template_, &variables_, context_, node_};
@@ -825,11 +825,10 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
         content_nodes.insert(content_nodes.end(), nodes_->begin(), nodes_->end());
     }
 
-    InsertContent(content_nodes);
-
+    xmlops::XmlLookup::Result results;
     try {
         context_->Debug("Looking up {}", path_.GetPath());
-        auto results = path_.Select(doc, &cachedNode);
+        results = path_.Select(doc, &cachedNode);
         if (results.IsEmpty()) {
             if (allow_no_match_) {
                 context_->Debug("No matching node for Path \"{}\"", path_.GetPath());
@@ -842,43 +841,46 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
             }
             return logTime();
         }
-
-        for (pugi::xpath_node xnode : results.Nodes()) {
-            pugi::xml_node game_node = xnode.node();
-            if (GetType() == XmlOperation::Type::Merge) {
-                if (!content_nodes.empty() && content_nodes.size() == 1 &&
-                    str_equals_nocase(content_nodes.begin()->name(), game_node.name())) {
-                    // legacy merge
-                    // skip single container if it's named same as the target node
-                    RecursiveMerge(game_node.parent(), *content_nodes.begin());
-                }
-                else if (!content_nodes.empty()) {
-                    RecursiveMerge(game_node, *content_nodes.begin());
-                }
-            } else if (GetType() == XmlOperation::Type::AddNextSibling) {
-                for (auto &&node : content_nodes) {
-                    game_node = game_node.parent().insert_copy_after(node, game_node);
-                }
-            } else if (GetType() == XmlOperation::Type::AddPrevSibling) {
-                for (auto &&node : content_nodes) {
-                    game_node.parent().insert_copy_before(node, game_node);
-                }
-            } else if (GetType() == XmlOperation::Type::Add) {
-                for (auto &node : content_nodes) {
-                    game_node.append_copy(node);
-                }
-            } else if (GetType() == XmlOperation::Type::Remove) {
-                game_node.parent().remove_child(game_node);
-            } else if (GetType() == XmlOperation::Type::Replace) {
-                for (auto &node : content_nodes) {
-                    game_node.parent().insert_copy_after(node, game_node);
-                }
-                game_node.parent().remove_child(game_node);
-            }
-        }
     }
     catch (const pugi::xpath_exception &e) {
         context_->Error("Failed to parse path \"" + path_.GetPath() + "\": " + e.what());
+    }
+
+    InsertContent(content_nodes);
+
+    for (pugi::xpath_node xnode : results.Nodes()) {
+        pugi::xml_node game_node = xnode.node();
+
+        if (GetType() == XmlOperation::Type::Merge) {
+            if (!content_nodes.empty() && content_nodes.size() == 1 &&
+                str_equals_nocase(content_nodes.begin()->name(), game_node.name())) {
+                // legacy merge
+                // skip single container if it's named same as the target node
+                RecursiveMerge(game_node.parent(), *content_nodes.begin());
+            }
+            else if (!content_nodes.empty()) {
+                RecursiveMerge(game_node, *content_nodes.begin());
+            }
+        } else if (GetType() == XmlOperation::Type::AddNextSibling) {
+            for (auto &&node : content_nodes) {
+                game_node = game_node.parent().insert_copy_after(node, game_node);
+            }
+        } else if (GetType() == XmlOperation::Type::AddPrevSibling) {
+            for (auto &&node : content_nodes) {
+                game_node.parent().insert_copy_before(node, game_node);
+            }
+        } else if (GetType() == XmlOperation::Type::Add) {
+            for (auto &node : content_nodes) {
+                game_node.append_copy(node);
+            }
+        } else if (GetType() == XmlOperation::Type::Remove) {
+            game_node.parent().remove_child(game_node);
+        } else if (GetType() == XmlOperation::Type::Replace) {
+            for (auto &node : content_nodes) {
+                game_node.parent().insert_copy_after(node, game_node);
+            }
+            game_node.parent().remove_child(game_node);
+        }
     }
 
     if (wrapper) {

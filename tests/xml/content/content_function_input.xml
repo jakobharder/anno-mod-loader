@@ -40,6 +40,28 @@
             </Residence7>
           </Values>
         </Asset>
+        <Asset>
+          <Template>Text</Template>
+          <Values>
+            <Standard>
+              <GUID>10</GUID>
+            </Standard>
+            <Residence7>
+              <ResidentMax>11</ResidentMax>
+            </Residence7>
+            <Cost>
+              <Item>
+                <Amount>11</Amount>
+              </Item>
+              <Item>
+                <Amount>12</Amount>
+              </Item>
+              <Item>
+                <Amount>13</Amount>
+              </Item>
+            </Cost>
+          </Values>
+        </Asset>
       </Assets>
     </Group>
   </Groups>
