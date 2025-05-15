@@ -1,15 +1,15 @@
 <Test>
-    <Source>
-        <Building>
-            <InfluencedVariationDirection>
-                <Item>
-                    <Direction>0</Direction>
-                    <Type>Mid</Type>
-                </Item>
-            </InfluencedVariationDirection>
-        </Building>
-    </Source>
-    <Target>
-        <Building />
-    </Target>
+  <Source>
+    <Building>
+      <InfluencedVariationDirection>
+        <Item>
+          <Direction>0</Direction>
+          <Type>Mid</Type>
+        </Item>
+      </InfluencedVariationDirection>
+    </Building>
+  </Source>
+  <Target>
+    <Building />
+  </Target>
 </Test>

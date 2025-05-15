@@ -864,7 +864,8 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
             context_->Warn("Content \"" + content_.GetPath() + "\" not found", node_);
             return logTime();
         }
-        if (!nodes_ || nodes_->begin() != nodes_->end()) {
+        bool wrap = !nodes_ || nodes_->begin() != nodes_->end();
+        if (wrap) {
             wrapper = doc->append_child("ModOpTemp");
             for (auto& node : result.Nodes()) {
                 for (auto wrapper_node = nodes_->begin(); wrapper_node != nodes_->end(); wrapper_node++) {
@@ -874,6 +875,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
                 auto inserter = wrapper->select_node(".//ModOpContent");
                 if (!inserter) {
                     context_->Warn("ModOps with 'Content' attribute must be empty or contain '<ModOpContent />'", node_);
+                    wrap = false;
                     break;
                 }
                 else {
@@ -883,7 +885,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
             }
             content_nodes.insert(content_nodes.end(), wrapper->children().begin(), wrapper->children().end());
         }
-        else {
+        if (!wrap) {
             for (auto& node : result.Nodes()) {
                 content_nodes.push_back(node.node());
             }
