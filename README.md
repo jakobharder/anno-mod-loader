@@ -1,7 +1,7 @@
-# Anno 1800 Mod Loader
+# Anno Mod Loader
 
 > [!NOTE]
-> This is a fork of the original mod loader from the great [meow](https://github.com/xforce/anno1800-mod-loader).
+> This is a fork of the original mod loader of the great [meow](https://github.com/xforce/anno1800-mod-loader).
 > 
 > Many thanks to him for creating and maintaining that project for so long.
 
