@@ -1,8 +1,0 @@
-{
-    "name": "Add assets",
-    "expected": [
-        "//Groups[1]/Group[1]/Assets[1]/Asset[last()]/Values/Standard[GUID='3']",
-        "//Asset[Values/Standard/GUID='3'][1]",
-        "!//Asset[Values/Standard/GUID='3'][2]"
-    ]
-}

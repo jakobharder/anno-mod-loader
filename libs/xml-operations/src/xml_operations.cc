@@ -500,12 +500,19 @@ void XmlOperation::ReadType(pugi::xml_node node)
         str_equals_nocase(node.name(), "Group")) {
         type_ = Type::Group;
     }
+    else if (str_equals_nocase(node.name(), "Assets")) {
+        type_ = Type::Add;
+    }
 
     bool path_set = false;
 
     const auto setType = [this, &path_set](Type type, const char* path) {
         if (path_set) {
             context_->Error("Cannot specify \"Path\" twice.", node_);
+            return;
+        }
+        if (type_ != Type::None) {
+            context_->Error("Cannot specify \"Type\" twice.", node_);
             return;
         }
 
@@ -979,7 +986,7 @@ std::vector<XmlOperation> XmlOperation::GetXmlOperations(
                 continue;
             }
 
-            if (str_equals_nocase(node.name(), "ModOp")) {
+            if (str_equals_nocase(node.name(), "ModOp") || str_equals_nocase(node.name(), "Assets")) {
                 const auto guid = GetXmlPropString(node, "GUID");
                 const auto temp = GetXmlPropString(node, "Template");
                 const auto property = GetXmlPropString(node, "Property");
