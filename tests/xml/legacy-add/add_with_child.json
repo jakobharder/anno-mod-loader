@@ -1,0 +1,8 @@
+{
+    "name": "Legacy: Add With Child Test",
+    "expected": [
+        "/Test/Node/Meow",
+        "/Test/Node/Cat",
+        "/Test/Node/Cat/Fur"
+    ]
+}

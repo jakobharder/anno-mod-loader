@@ -1,0 +1,7 @@
+{
+    "name": "Legacy: Merge complex add",
+    "expected": [
+        "!//Values/Maintenance/Maintenances"
+    ],
+    "issuesExpected": "1"
+}

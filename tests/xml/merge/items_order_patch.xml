@@ -1,5 +1,5 @@
 <ModOps>
-  <ModOp Type="merge" GUID="100780" Path="/Maintenance">
+  <ModOp GUID="100780" Merge="Maintenance">
     <Maintenance>
       <Maintenances>
         <Item>
@@ -15,7 +15,7 @@
       </Maintenances>
     </Maintenance>
   </ModOp>
-  <ModOp Type="merge" GUID="101273" Path="/FactoryBase/FactoryInputs">
+  <ModOp GUID="101273" Merge="FactoryBase/FactoryInputs">
     <Item>
       <StorageAmount>2</StorageAmount>
     </Item>
@@ -23,7 +23,7 @@
       <StorageAmount>4</StorageAmount>
     </Item>
   </ModOp>
-  <ModOp Type="merge" GUID="1010285" Path="/FactoryBase">
+  <ModOp GUID="1010285" Merge="FactoryBase">
     <FactoryInputs>
       <Item>
         <Product>120008</Product>

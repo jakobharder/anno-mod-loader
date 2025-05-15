@@ -106,7 +106,8 @@ public:
               const std::string& templ,
               pugi::xpath_variable_set* variables,
               std::shared_ptr<XmlOperationContext> context,
-              pugi::xml_node node);
+              pugi::xml_node node,
+              const bool skip_values);
 
     /// @brief Select XPath nodes.
     /// @param assetNode Start search here. Resulting asset is stored back.
@@ -144,7 +145,7 @@ private:
     SpeculativePathType speculative_path_type_ = SpeculativePathType::NONE;
 
     void ReplaceStaticVariables(std::string& path);
-    void ReadPath(std::string path, std::string guid, std::string property, std::string templ);
+    void ReadPath(std::string path, std::string guid, std::string property, std::string templ, bool skip_values);
 
     [[nodiscard]] std::optional<pugi::xml_node> FindAsset(const std::string& guid, pugi::xml_node node, int speculate_position = 2) const;
     [[nodiscard]] std::optional<pugi::xml_node> FindTemplate(const std::string& temp, pugi::xml_node node) const;
@@ -191,6 +192,9 @@ public:
 
 private:
     Type        type_;
+    bool        skip_values_;
+    std::string path_attribute_;
+
     XmlLookup   path_;
     bool        allow_no_match_ = false;
     XmlLookup   condition_;

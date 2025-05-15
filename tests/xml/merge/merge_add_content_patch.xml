@@ -1,5 +1,5 @@
 <ModOps>
-<ModOp Type="merge" Path="/Test/Node">
+<ModOp Merge="Test/Node">
     <Building>
         <BuildingCategoryName>0</BuildingCategoryName>
         <AssociatedRegions>Moderate;Colony01</AssociatedRegions>
@@ -8,7 +8,7 @@
         <SkinList />
     </Skins>
 </ModOp>
-<ModOp Type="add" Path="/Test/Node/Skins/SkinList">
+<ModOp Add="Test/Node/Skins/SkinList">
     <Item>
         <SkinAssetGuid>1500010407</SkinAssetGuid>
     </Item>

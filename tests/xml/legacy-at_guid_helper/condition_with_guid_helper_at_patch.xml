@@ -1,0 +1,5 @@
+<ModOps>
+    <ModOp Type="add" GUID="1010521" Path="/Values" Condition="@1010522">
+        <Cost />
+    </ModOp>
+</ModOps>

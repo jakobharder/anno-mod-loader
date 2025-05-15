@@ -1,10 +1,10 @@
 <ModOps>
-  <ModOp Type="add" GUID="1">
+  <ModOp Add="@1">
     <Building>
       <Range><ModValue Path='$.rangeA' /></Range>
     </Building>
   </ModOp>
-  <ModOp Type="merge" GUID="2">
+  <ModOp Merge="@2">
     <Building>
       <Range><ModValue Path='$other-mod.rangeB' /></Range>
     </Building>

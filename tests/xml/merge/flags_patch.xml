@@ -1,17 +1,17 @@
 <ModOps>
-  <ModOp Type="merge" GUID="1,2,3,4,5" Path="Product">
+  <ModOp GUID="1,2,3,4,5" Merge="Product">
     <Product>
       <AssociatedRegion><ModFlags Merge="Colony" /></AssociatedRegion>
     </Product>
   </ModOp>
-  <ModOp Type="merge" GUID="6" Path="Product">
+  <ModOp GUID="6" Merge="Product">
     <Product>
       <AssociatedRegion>
         <ModFlags Merge="Colony" />
       </AssociatedRegion>
     </Product>
   </ModOp>
-  <ModOp Type="merge" GUID="7" Path="Product">
+  <ModOp GUID="7" Merge="Product">
     <Product>
       <AssociatedRegion>
         <ModFlags Remove="Moderate" />

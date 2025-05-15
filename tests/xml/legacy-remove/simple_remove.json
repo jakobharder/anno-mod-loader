@@ -1,0 +1,6 @@
+{
+    "name": "Legacy: Simple remove",
+    "expected": [
+        "!/Test/Node/Meow"
+    ]
+}

@@ -225,7 +225,8 @@ XmlLookup::XmlLookup(const std::string& path,
                      const std::string& templ,
                      pugi::xpath_variable_set* variables,
                      std::shared_ptr<XmlOperationContext> context,
-                     pugi::xml_node node)
+                     pugi::xml_node node,
+                     const bool skip_values)
 {
     context_ = context;
     node_ = node;
@@ -273,7 +274,7 @@ XmlLookup::XmlLookup(const std::string& path,
     }
 
     ReplaceStaticVariables(read_path);
-    ReadPath(read_path, guid_, property_, template_);
+    ReadPath(read_path, guid_, property_, template_, skip_values);
 }
 
 void XmlLookup::ReplaceStaticVariables(std::string& path)
@@ -321,7 +322,8 @@ void XmlLookup::ReplaceStaticVariables(std::string& path)
 void XmlLookup::ReadPath(std::string prop_path,
                          std::string guid,
                          std::string property,
-                         std::string temp)
+                         std::string temp,
+                         bool skip_values)
 {
     if (prop_path.find('&') != std::string::npos)
     {
@@ -382,8 +384,14 @@ void XmlLookup::ReadPath(std::string prop_path,
         }
     }
     else if (!guid.empty()) {
-        speculative_path_type_ = SpeculativePathType::VALUES_CONTAINER;
-        path_                  = "//Values[Standard/GUID='" + guid + "']";
+        if (skip_values) {
+            speculative_path_type_ = SpeculativePathType::VALUES_CONTAINER;
+            path_                  = "//Values[Standard/GUID='" + guid + "']";
+        }
+        else {
+            speculative_path_type_ = SpeculativePathType::SINGLE_ASSET;
+            path_                  = "//Asset[Values/Standard/GUID='" + guid + "']";
+        }
     }
     else if (!property.empty()) {
         speculative_path_type_ = SpeculativePathType::VALUES_CONTAINER;
@@ -481,53 +489,113 @@ XmlOperation::XmlOperation(std::shared_ptr<XmlOperationContext> context, pugi::x
     template_ = templ;
     property_ = property;
     variables_ = {};
-}
 
-void XmlOperation::CreateQueries()
-{
     ReadType(node_);
-    if (type_ != Type::Remove) {
-        nodes_ = node_.children();
-    }
-
-    const auto& path = GetXmlPropString(node_, "Path");
-    if (type_ == Type::Add && guid_.empty() && template_.empty() && property_.empty() && path.empty()) {
-        path_ = XmlLookup{"//Group[1]/Assets[1]", {}, {}, {}, &variables_, context_, node_};
-    }
-    else {
-        path_ = XmlLookup{path, guid_, property_, template_, &variables_, context_, node_};
-    }
-
-    condition_ = XmlLookup{node_.attribute("Condition").as_string(), guid_, property_, template_, &variables_, context_, node_};
-    allow_no_match_ = node_.attribute("AllowNoMatch");
-
-    if (type_ != Type::Remove) {
-        content_ = XmlLookup{node_.attribute("Content").as_string(), guid_, property_, template_, &variables_, context_, node_};
-    }
 }
 
 void XmlOperation::ReadType(pugi::xml_node node)
 {
-    auto type = GetXmlPropString(node, "Type");
+    type_ = Type::None;
+    skip_values_ = false;
 
     if (str_equals_nocase(node.name(), "Include") ||
         str_equals_nocase(node.name(), "Group")) {
         type_ = Type::Group;
-    } else if (str_equals_nocase(type.c_str(), "add")) {
-        type_ = Type::Add;
-    } else if (str_equals_nocase(type.c_str(), "addAfter")) {
-        type_ = Type::AddNextSibling;
-    } else if (str_equals_nocase(type.c_str(), "addBefore")) {
-        type_ = Type::AddPrevSibling;
-    } else if (str_equals_nocase(type.c_str(), "remove")) {
-        type_ = Type::Remove;
-    } else if (str_equals_nocase(type.c_str(), "replace")) {
-        type_ = Type::Replace;
-    } else if (str_equals_nocase(type.c_str(), "merge")) {
-        type_ = Type::Merge;
-    } else {
-        type_ = Type::None;
-        context_->Error("Unknown ModOp " + type, node_);
+    }
+
+    bool path_set = false;
+
+    const auto setType = [this, &path_set](Type type, const char* path) {
+        if (path_set) {
+            context_->Error("Cannot specify \"Path\" twice.", node_);
+            return;
+        }
+
+        path_set = true;
+        path_attribute_ = path;
+        skip_values_ = true;
+        type_ = type;
+    };
+
+    for (const auto& attr : node.attributes()) {
+        if (str_equals_nocase(attr.name(), "Type")) {
+            const auto type = attr.as_string();
+
+            if (type_ != Type::None) {
+                context_->Error("Cannot specify \"Type\" twice.", node_);
+                continue;
+            }
+
+            skip_values_ = false;
+            if (str_equals_nocase(type, "add")) {
+                type_ = Type::Add;
+            } else if (str_equals_nocase(type, "addAfter")) {
+                type_ = Type::AddNextSibling;
+            } else if (str_equals_nocase(type, "addBefore")) {
+                type_ = Type::AddPrevSibling;
+            } else if (str_equals_nocase(type, "addNextSibling")) {
+                type_ = Type::AddNextSibling;
+            } else if (str_equals_nocase(type, "addPrevSibling")) {
+                type_ = Type::AddPrevSibling;
+            } else if (str_equals_nocase(type, "remove")) {
+                type_ = Type::Remove;
+            } else if (str_equals_nocase(type, "replace")) {
+                type_ = Type::Replace;
+            } else if (str_equals_nocase(type, "merge")) {
+                type_ = Type::Merge;
+            } else {
+                type_ = Type::None;
+                context_->Error(std::string{ "Unknown ModOp " } + type, node_);
+            }
+        }
+        else if (str_equals_nocase(attr.name(), "Path")) {
+            if (path_set) {
+                context_->Error("Cannot specify \"Path\" twice.", node_);
+                continue;
+            }
+
+            path_attribute_ = attr.as_string();
+        }
+        else if (str_equals_nocase(attr.name(), "Add")) {
+            setType(Type::Add, attr.as_string());
+        }
+        else if (str_equals_nocase(attr.name(), "Append")) {
+            setType(Type::AddNextSibling, attr.as_string());
+        }
+        else if (str_equals_nocase(attr.name(), "Prepend")) {
+            setType(Type::AddPrevSibling, attr.as_string());
+        }
+        else if (str_equals_nocase(attr.name(), "Remove")) {
+            setType(Type::Remove, attr.as_string());
+        }
+        else if (str_equals_nocase(attr.name(), "Replace")) {
+            setType(Type::Replace, attr.as_string());
+        }
+        else if (str_equals_nocase(attr.name(), "Merge")) {
+            setType(Type::Merge, attr.as_string());
+        }
+    }
+}
+
+void XmlOperation::CreateQueries()
+{
+    if (type_ != Type::Remove) {
+        nodes_ = node_.children();
+    }
+
+    const auto& path = path_attribute_;
+    if (type_ == Type::Add && guid_.empty() && template_.empty() && property_.empty() && path.empty()) {
+        path_ = XmlLookup{"//Group[1]/Assets[1]", {}, {}, {}, &variables_, context_, node_, skip_values_};
+    }
+    else {
+        path_ = XmlLookup{path, guid_, property_, template_, &variables_, context_, node_, skip_values_};
+    }
+
+    condition_ = XmlLookup{node_.attribute("Condition").as_string(), guid_, property_, template_, &variables_, context_, node_, skip_values_};
+    allow_no_match_ = node_.attribute("AllowNoMatch");
+
+    if (type_ != Type::Remove) {
+        content_ = XmlLookup{node_.attribute("Content").as_string(), guid_, property_, template_, &variables_, context_, node_, skip_values_};
     }
 }
 

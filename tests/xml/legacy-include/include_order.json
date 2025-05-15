@@ -1,0 +1,6 @@
+{
+    "name": "Legacy: Include with Correct Order",
+    "expected": [
+        "/Test/Node[Cat='3']"
+    ]
+}

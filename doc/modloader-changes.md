@@ -8,42 +8,26 @@
 
 ## ModOp Basics
 
-The available ModOp types are unchanged but some are renamed.
-`add` and `merge` include more functionality explained in other chapters.
+The changes are backwards compatible to the modloader used in Anno 1800.
+All new features are on top.
 
-ModOp | Comment
---- | ---
-`add`|new: also adds full assets like `addNextSibling` + `GUID`
-`remove`|as is
-`addAfter`, `addBefore`|renamed from `addNextSibling`, `addPrevSibling`
-`replace`|as is
-`merge`|new: improved flags and list support
+### Shorter ModOps
 
-### Add Assets without GUID
+ModOps can be shortened with `Merge=<XPath>` instead of the old long form `Type="merge" Path=<XPath>`.
 
-The fastest way to add assets is to use `add` without `GUID` or `Path`.
-
-Note: BaseAssetGUID order is not considered (yet).
+That new shorter way also skips `/Values` of the XPath by default when using `GUID` lookup.
 
 ```xml
-<ModOp Type="add">
-  <Asset>
-    <Template>Text</Template>
-    <Values> <!-- .. --> </Values>
-  </Asset>
-</AddAssets>
-```
-
-### Skipped `Values/`
-
-The `GUID` lookup now starts at `Asset/Values/`, not `Asset/`.
-
-```xml
-<ModOp Type="merge" GUID="1010372" Path="Building">
+<ModOp GUID="1010372" Merge="Building">
   <AllowChangeVariation>1</AllowChangeVariation>
 </ModOp>
 
-<ModOp Type="replace" GUID="123" Path="../Template">
+<!-- alternatively using @ notation -->
+<ModOp Merge="@1010372/Building">
+  <AllowChangeVariation>1</AllowChangeVariation>
+</ModOp>
+
+<ModOp GUID="123" Replace="../Template">
   <Template>Icon</Template>
 </ModOp>
 ```
@@ -61,6 +45,30 @@ The `GUID` lookup now starts at `Asset/Values/`, not `Asset/`.
 </ModOp>
 ```
 </details>
+
+
+ModOp | Comment
+--- | ---
+`add`|new: also adds full assets like `addNextSibling` + `GUID`
+`remove`|as is
+`append`, `prepend`|renamed from `addNextSibling`, `addPrevSibling`
+`replace`|as is
+`merge`|new: improved flags and list support
+
+### Add Assets without GUID
+
+The fastest way to add assets is to use `add` without `GUID` or `Path`.
+
+Note: BaseAssetGUID order is not considered (yet).
+
+```xml
+<ModOp Add="">
+  <Asset>
+    <Template>Text</Template>
+    <Values> <!-- .. --> </Values>
+  </Asset>
+</ModOp>
+```
 
 ### Additional Lookups
 
@@ -87,13 +95,13 @@ You can leave out `mod-id` if the ovariable comes from the same mod shortening t
 ```xml
 <ModOps>
   <!-- as condition -->
-  <ModOp Type="replace" Path="@123/Costs/Influence"
+  <ModOp Replace="@123/Costs/Influence"
     Condition="$use-influence">
     <Influence>3</Influence>
   </ModOp>
 
   <!-- as content -->
-  <ModOp Type="merge" GUID="123">
+  <ModOp Merge="@123">
     <PublicServiceRange><ModValue Path="$other-mod.range"/></PublicServiceRange>
   </ModOp>
 </ModOps>
@@ -153,7 +161,7 @@ Similarily use `Remove` to remove flags.
 ### Example: add a region
 
 ```xml
-<ModOp Type="merge" GUID="114365" Path="Product">
+<ModOp GUID="114365" Merge="Product">
   <Product>
     <ProductionRegions>
       <ModItem Merge="RegionType">
@@ -191,8 +199,8 @@ XPath 1.0 functions like `count()` and `number()` are fully supported now.
 Use `number()` to add to a number instead of replacing it.
 
 ```xml
-<ModOp Type="replace" GUID="1010343"
-  Path="Residence7/ResidentMax"
+<ModOp GUID="1010343"
+  Replace="Residence7/ResidentMax"
   Content="number(Residence7/ResidentMax) + 2">
   <ResidentMax><ModOpContent /></ResidentMax>
 </ModOp>
