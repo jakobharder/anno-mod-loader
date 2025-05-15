@@ -46,14 +46,16 @@ That new shorter way also skips `/Values` of the XPath by default when using `GU
 ```
 </details>
 
+### ModOp Types
 
-ModOp | Comment
---- | ---
-`add`|new: also adds full assets like `addNextSibling` + `GUID`
-`remove`|as is
-`append`, `prepend`|renamed from `addNextSibling`, `addPrevSibling`
-`replace`|as is
-`merge`|new: improved flags and list support
+Short | Legacy | Comment
+--- | --- | ---
+`Add`|`Type="add"`|new: also adds full assets like `addNextSibling` + `GUID`
+`Remove`|`Type="remove"`|as is
+`Append`|`Type="addNextSibling"`|renamed
+`Prepend`|`Type="addPrevSibling"`|renamed
+`Replace`|`Type="replace`|as is
+`Merge`|`Type="merge"`|new: improved flags and list support
 
 ### Add Assets without GUID
 
@@ -62,12 +64,12 @@ The fastest way to add assets is to use `add` without `GUID` or `Path`.
 Note: BaseAssetGUID order is not considered (yet).
 
 ```xml
-<ModOp Add="">
+<Assets>
   <Asset>
     <Template>Text</Template>
     <Values> <!-- .. --> </Values>
   </Asset>
-</ModOp>
+</Assets>
 ```
 
 ### Additional Lookups
