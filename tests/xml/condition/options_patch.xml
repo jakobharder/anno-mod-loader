@@ -1,8 +1,8 @@
 <ModOps>
-  <ModOp GUID="1" Remove="../" Condition="$test_mod" />
-  <ModOp GUID="2" Remove="../" Condition="!$test_mod" />
-  <ModOp GUID="3" Remove="../" Condition="$test_mod_not_found" />
-  <ModOp GUID="4" Remove="../" Condition="!$test_mod_not_found" />
+  <ModOp GUID="1" Remove="../" Condition="#test-mod" />
+  <ModOp GUID="2" Remove="../" Condition="!#test-mod" />
+  <ModOp GUID="3" Remove="../" Condition="#test_mod_not_found" />
+  <ModOp GUID="4" Remove="../" Condition="!#test_mod_not_found" />
 
   <ModOp GUID="5" Remove="../" Condition="$other-mod.expectTrue" />
   <ModOp GUID="6" Remove="../" Condition="$other-mod.expectFalse" />

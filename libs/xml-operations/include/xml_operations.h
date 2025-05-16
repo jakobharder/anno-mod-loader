@@ -45,6 +45,7 @@ public:
     [[nodiscard]] const std::string& GetGenericPath() const { return doc_path_; }
     [[nodiscard]] const std::string& GetName() const { return mod_name_; }
     [[nodiscard]] const std::map<std::string, std::string>* GetVariables() const { return variables_; }
+    [[nodiscard]] const std::string& GetModID() const { return mod_id_; };
 
     template<typename... Args> void Debug(std::string_view msg, const Args &... args) const;
     void Debug(std::string_view msg, pugi::xml_node node) const;

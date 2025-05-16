@@ -83,16 +83,23 @@ There are additional lookups to make the code faster and more readable.
 
 ## Options
 
-Mod checks are now proper XPath elements by using `$mod-id`.
+Conditions allowed to check the existings of another mod.
+
+```xml
+<ModOps>
+  <Group Condition="#other-mod">
+    <!-- do things -->
+  </Group>
+</ModOps>
+```
+
+This system got extended to be part of XPath, and with variables that can be set in an external file.
+
 That means you can combine them like XPath expressions with `and` and `or`.
-E.g. `Condition="$mod-a or $mod-b"`.
-`#mod-id` is not supported anymore, use `$mod-id` instead.
+E.g. `Condition="#mod-a or #mod-b"`.
 
-External options can also be passed using the same mechanism as `$mod-id` condition checks.
-Additionally, variables can be used as content for `ModValue`.
-
-The format is `$mod-id.option-name`.
-You can leave out `mod-id` if the ovariable comes from the same mod shortening the path to `$option-name`.
+The format for variables is `$mod-id.option-name`.
+You can leave out `mod-id` if the variable comes from the same mod shortening the path to `$option-name`.
 
 `ModValue` can be used in all ModOp types.
 

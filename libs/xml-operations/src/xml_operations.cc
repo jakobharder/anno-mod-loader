@@ -237,10 +237,7 @@ XmlLookup::XmlLookup(const std::string& path,
 
     std::string read_path = negative_ ? path.substr(1) : path;
 
-    if (!read_path.empty() && read_path.front() == '#') {
-        read_path[0] = '$';
-    }
-    if (!read_path.empty() && read_path.front() == '$') {
+    if (!read_path.empty() && (read_path.front() == '$' || read_path.front() == '#')) {
         path_ = read_path.substr(0);
         ReplaceStaticVariables(path_);
 
@@ -282,7 +279,9 @@ void XmlLookup::ReplaceStaticVariables(std::string& path)
         return;
     }
 
-    std::regex varRegex(R"(\$[a-zA-Z_][\w\-\.]*)");
+    const auto& mod_id = context_->GetModID();
+
+    std::regex varRegex(R"([\$#][a-zA-Z_][\w\-\.]*)");
     std::smatch match;
 
     std::string result;
@@ -291,12 +290,15 @@ void XmlLookup::ReplaceStaticVariables(std::string& path)
     while (std::regex_search(searchStart, path.cend(), match, varRegex)) {
         result.append(searchStart, match[0].first);
 
-        const auto name = match.str().substr(1);
-        const auto& var = variables->find(name);
+        const auto match_str = match.str();
+        const bool id_check = match_str.rfind("#", 0) == 0;
+        const bool is_local = match_str.find('.') == match_str.npos;
+        const auto full_name = (is_local && !id_check) ? (std::string{mod_id} + "." + match_str.substr(1)) : match_str.substr(1);
 
+        const auto& var = variables->find(full_name);
         if (var == variables->end()) {
             result += "false()";
-            context_->Debug("Variable \'" + name + "\' not found", node_);
+            context_->Debug("Variable \'" + match_str.substr(0, 1) + full_name + "\' not found " + match_str, node_);
         }
         else if (str_equals_nocase(var->second, "false")) {
             result += "false()";
@@ -846,21 +848,33 @@ void XmlOperation::ModValue(std::vector<pugi::xml_node>& content_nodes) {
             }
 
             const auto& option_path = std::string{ option_attr.as_string() };
-
-            if (0 != option_path.rfind("$", 0)) {
-                // context_->Warn(std::string{ option_attr.as_string() } + " must start with $", inserter.node());
+            if (0 != option_path.rfind("$", 0) && 0 != option_path.rfind("#", 0)) {
+                // simply skip them
                 continue;
             }
 
-            const auto& option = mod_options->find(option_path.substr(1));
-            if (option == mod_options->end()) {
-                context_->Warn("Variable " + option_path + " not found", inserter.node());
+            auto lookup = XmlLookup{option_attr.as_string(), {}, {}, {}, &variables_, context_, node_, false};
+
+            context_->Debug("Looking up value \"{}\"", lookup.GetPath());
+            XmlLookup::Result result;
+            try {
+                result = lookup.Select(inserter.parent());
+            }
+            catch (const pugi::xpath_exception &e) {
+                context_->Error("Failed to select path \"" + lookup.GetPath() + "\": " + e.what());
                 continue;
             }
+            if (!result.IsEmpty()) {
+                auto first_node = result.Nodes().begin();
 
-            auto content = inserter.parent().insert_child_after(pugi::xml_node_type::node_pcdata, inserter.node());
-            content.set_value(option->second.c_str());
-            inserter.parent().remove_child(inserter.node());
+                inserter.parent().remove_children();
+                inserter.parent().append_copy(first_node->node());
+
+                first_node++;
+                if (first_node != result.Nodes().end()) {
+                    // TODO only single nodes please
+                }
+            }
         }
     }
 }

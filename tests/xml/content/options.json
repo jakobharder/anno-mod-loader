@@ -1,7 +1,7 @@
 {
     "name": "Content Options",
     "options": {
-        ".rangeA": "10",
+        "test-mod.rangeA": "10",
         "other-mod.rangeB": "12"
     },
     "expected": [
