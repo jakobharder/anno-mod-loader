@@ -1230,6 +1230,8 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
         indexer.try_emplace(name, 0);
         const int index = indexer[name]++;
 
+        bool append_missing = true;
+
         if (cur_node.first_attribute() && str_equals_nocase(cur_node.name(), "ModItem")) {
             if (const auto& item_xpath = cur_node.attribute("Merge"); item_xpath) {
                 indexing_allowed = false;
@@ -1252,6 +1254,7 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
                     game_node = root_node.select_node(xpath_query.c_str()).node();
                 }
                 catch (const std::exception& e) {
+                    // TODO not found is OK, are there other errors?
                     context_->Warn("ModItem \"" + xpath_query + "\" not found: " + e.what(), cur_node);
                 }
 
@@ -1259,7 +1262,49 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
 
                 // when there's no target, cur_node is copied so rename it
                 if (!game_node) {
-                    cur_node.set_name("Item");
+                    if (const auto& append = cur_node.attribute("Append"); append) {
+                        pugi::xml_node inserter;
+
+                        xpath_query = str_concat("Item[", append.as_string(), "]");
+                        cur_node.remove_attribute("Append");
+                        try {
+                            inserter = root_node.select_node(xpath_query.c_str()).node();
+                        }
+                        catch (const std::exception& e) {
+                            // TODO possible?
+                            context_->Warn("ModItem Append=\"" + xpath_query + "\" not found: " + e.what(), cur_node);
+                        }
+                        if (inserter) {
+                            inserter.parent().insert_copy_after(cur_node, inserter).set_name("Item");
+                            append_missing = false;
+                        }
+                        else {
+                            context_->Warn("ModItem Append=\"" + xpath_query + "\" not found", cur_node);
+                        }
+                    }
+                    else if (const auto& prepend = cur_node.attribute("Prepend"); prepend) {
+                        pugi::xml_node inserter;
+
+                        xpath_query = str_concat("Item[", prepend.as_string(), "]");
+                        cur_node.remove_attribute("Prepend");
+                        try {
+                            inserter = root_node.select_node(xpath_query.c_str()).node();
+                        }
+                        catch (const std::exception& e) {
+                            // TODO possible?
+                            context_->Warn("ModItem Append=\"" + xpath_query + "\" not found: " + e.what(), cur_node);
+                        }
+                        if (inserter) {
+                            inserter.parent().insert_copy_before(cur_node, inserter).set_name("Item");
+                            append_missing = false;
+                        }
+                        else {
+                            context_->Warn("ModItem Append=\"" + xpath_query + "\" not found", cur_node);
+                        }
+                    }
+                    else {
+                        cur_node.set_name("Item");
+                    }
                 }
             }
             else {
@@ -1282,8 +1327,11 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
                 RecursiveMerge(game_node, cur_node.first_child());
             }
         }
-        else {
+        else if (append_missing) {
             RecursiveMergeFlags(root_node.append_copy(cur_node));
+        }
+        else {
+            // do nothing
         }
     }
 }
