@@ -48,4 +48,11 @@
       </Standard>
     </Values>
   </Asset>
+  <Asset>
+    <Values>
+      <Standard>
+        <GUID>8</GUID>
+      </Standard>
+    </Values>
+  </Asset>
 </Test>

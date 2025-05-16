@@ -1,12 +1,12 @@
 <ModOps>
   <ModOp Add="@1">
     <Building>
-      <Range><ModValue Path='$rangeA' /></Range>
+      <Range><ModValue Insert='$rangeA' /></Range>
     </Building>
   </ModOp>
   <ModOp Merge="@2">
     <Building>
-      <Range><ModValue Path='$other-mod.rangeB' /></Range>
+      <Range><ModValue Insert='$other-mod.rangeB' /></Range>
     </Building>
   </ModOp>
 </ModOps>

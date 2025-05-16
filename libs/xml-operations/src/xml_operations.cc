@@ -839,7 +839,7 @@ void XmlOperation::ModValue(std::vector<pugi::xml_node>& content_nodes) {
     for (auto& content_node : content_nodes) {
         auto inserter = content_node.select_node(".//ModValue");
         if (inserter) {
-            const auto& option_attr = inserter.node().attribute("Path");
+            const auto& option_attr = inserter.node().attribute("Insert");
             if (!option_attr) {
                 if (!inserter.node().first_attribute()) {
                     context_->Warn("ModValue needs 'Path', 'MergeFlags' or 'RemoveFlags'", inserter.node());
@@ -1149,15 +1149,15 @@ void XmlOperation::RecursiveMergeFlags(pugi::xml_node game_node) {
     }
     else {
         for (pugi::xml_attribute &attr : game_node.attributes()) {
-            if (str_equals_nocase(attr.name(), "Merge") && str_equals_nocase(game_node.name(), "ModFlags")) {
+            if (str_equals_nocase(attr.name(), "Merge") && str_equals_nocase(game_node.name(), "ModValue")) {
                 MergeFlags(game_node.parent(), attr.as_string());
                 game_node.parent().remove_child(game_node);
             }
-            else if (str_equals_nocase(attr.name(), "Remove") && str_equals_nocase(game_node.name(), "ModFlags")) {
+            else if (str_equals_nocase(attr.name(), "Remove") && str_equals_nocase(game_node.name(), "ModValue")) {
                 MergeFlags(game_node.parent(), attr.as_string(), true);
                 game_node.parent().remove_child(game_node);
             }
-            else if (str_equals_nocase(attr.name(), "Path") && str_equals_nocase(game_node.name(), "ModValue")) {
+            else if (str_equals_nocase(attr.name(), "Insert") && str_equals_nocase(game_node.name(), "ModValue")) {
                 auto lookup = XmlLookup{attr.as_string(), {}, {}, {}, &variables_, context_, node_, false};
 
                 context_->Debug("Looking up value \"{}\"", lookup.GetPath());

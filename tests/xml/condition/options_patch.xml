@@ -8,4 +8,6 @@
   <ModOp GUID="6" Remove="../" Condition="$other-mod.expectFalse" />
 
   <ModOp GUID="7" Remove="../" Condition="$other-mod.expectFalse or $other-mod.expectTrue" />
+
+  <ModOp GUID="8" Remove="../" Condition="#test-mod and not(#test_mod_not_found)" />
 </ModOps>
