@@ -155,6 +155,24 @@ In the rare even you want to change the attribute itself in the merge process us
 
 *Note: ModItem is only available within ModOp type `merge`*
 
+### Calculate Numbers - `ModValue`
+
+```xml
+<!-- addition -->
+<ModOp Property="Maintenance" Merge="Workforce">
+  <Workforce><ModValue Path="number(.) + 10" /></Workforce>
+</ModOp>
+
+<!-- division -->
+<ModOp Property="Storage" Merge="Amount">
+  <Amount><ModValue Path="(number(.) - number(.) mod 2) div 2" /></Amount>
+</ModOp>
+```
+
+### Options - `ModValue`
+
+Available operators: `+`, `-`, `*`, `div`, `mod`
+
 ### Merge Flags - `ModFlags`
 
 Use `<ModFlags Merge="Your;Flags" />` to insert one or more flags if not already present, instead of overwriting the existing flags value.

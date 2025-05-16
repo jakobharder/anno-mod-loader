@@ -52,14 +52,61 @@
             <Cost>
               <Item>
                 <Amount>11</Amount>
+                <GUID>1</GUID>
               </Item>
               <Item>
                 <Amount>12</Amount>
+                <GUID>2</GUID>
               </Item>
               <Item>
                 <Amount>13</Amount>
+                <GUID>3</GUID>
               </Item>
             </Cost>
+          </Values>
+        </Asset>
+        <Asset>
+          <Template>Text</Template>
+          <Values>
+            <Standard>
+              <GUID>11</GUID>
+            </Standard>
+            <Maintenance>
+              <Workforce>20</Workforce>
+            </Maintenance>
+          </Values>
+        </Asset>
+        <Asset>
+          <Template>Text</Template>
+          <Values>
+            <Standard>
+              <GUID>12</GUID>
+            </Standard>
+            <Maintenance>
+              <Workforce>25</Workforce>
+            </Maintenance>
+          </Values>
+        </Asset>
+        <Asset>
+          <Template>Text</Template>
+          <Values>
+            <Standard>
+              <GUID>13</GUID>
+            </Standard>
+            <Storage>
+              <Amount>6</Amount>
+            </Storage>
+          </Values>
+        </Asset>
+        <Asset>
+          <Template>Text</Template>
+          <Values>
+            <Standard>
+              <GUID>14</GUID>
+            </Standard>
+            <Storage>
+              <Amount>3</Amount>
+            </Storage>
           </Values>
         </Asset>
       </Assets>

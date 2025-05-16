@@ -78,13 +78,13 @@ public:
         Result(bool value) : boolean_(value) {};
         Result(
             pugi::xpath_node_set nodes,
-            std::shared_ptr<pugi::xml_document> doc = nullptr,
+            pugi::xml_node wrapper_parent = {},
             std::optional<pugi::xml_node> temporary = {}) :
-            doc_(doc), nodes_(nodes), temporary_(temporary) {};
+            wrapper_parent_(wrapper_parent), nodes_(nodes), temporary_(temporary) {};
         ~Result()
         {
-            if (temporary_ && doc_) {
-                doc_->remove_child(*temporary_);
+            if (temporary_ && wrapper_parent_) {
+                wrapper_parent_.remove_child(*temporary_);
             }
         };
 
@@ -93,7 +93,7 @@ public:
         [[nodiscard]] bool IsMatch() const { return boolean_ || !nodes_.empty(); };
 
     private:
-        std::shared_ptr<pugi::xml_document> doc_ = nullptr;
+        pugi::xml_node wrapper_parent_ = {};
         pugi::xpath_node_set nodes_;
         std::optional<pugi::xml_node> temporary_;
         bool boolean_ = false;
@@ -113,6 +113,10 @@ public:
     /// @param assetNode Start search here. Resulting asset is stored back.
     [[nodiscard]] XmlLookup::Result Select(std::shared_ptr<pugi::xml_document> doc,
         std::optional<pugi::xml_node>* assetNode = nullptr) const;
+
+    /// @brief Select XPath nodes.
+    /// @param assetNode Start search here. Resulting asset is stored back.
+    [[nodiscard]] XmlLookup::Result Select(pugi::xml_node node) const;
 
     [[nodiscard]] bool IsEmpty() const { return empty_path_; };
     [[nodiscard]] bool IsNegative() const { return negative_; };
@@ -211,25 +215,31 @@ private:
 
     std::vector<XmlOperation> group_;
 
-    [[nodiscard]] static std::string GetXmlPropString(pugi::xml_node node, const std::string& prop_name)
-    {
-        return node.attribute(prop_name.c_str()).as_string();
-    }
-
-    void RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patching_node);
-    void ModOpAdd(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, const std::vector<pugi::xml_node>& content_nodes);
-
-    void CreateQueries();
-    void ReadType(pugi::xml_node node);
-
-    /// @brief Replace ModOpContent with #option or XPath selection
-    void InsertContent(std::vector<pugi::xml_node>& content_nodes);
-
     /// @brief Check Condition XPath. Can use GUID attribute.
     //         True when nodes are found.
     //         Can be negated with `!`.
     /// @param assetNode Returns GUID asset if found.
     [[nodiscard]] bool CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>& assetNode);
+
+    // Standard ModOps
+
+    void RecursiveMergeFlags(pugi::xml_node game_node);
+    void RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patching_node);
+    void ModOpAdd(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, const std::vector<pugi::xml_node>& content_nodes);
+
+    // Inline ModOps
+
+    /// @brief Replace ModValue with $option or XPath selection
+    void ModValue(std::vector<pugi::xml_node>& content_nodes);
+
+    // Helpers
+
+    void CreateQueries();
+    void ReadType(pugi::xml_node node);
+    [[nodiscard]] static std::string GetXmlPropString(pugi::xml_node node, const std::string& prop_name)
+    {
+        return node.attribute(prop_name.c_str()).as_string();
+    }
 };
 
 }
