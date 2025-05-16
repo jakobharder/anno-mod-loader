@@ -20,7 +20,7 @@ class TestRunner
 {
 public:
     TestRunner(std::string_view mod_base_path, std::string_view input, std::string_view patch,
-            const std::map<std::string, std::string>* mod_options) {
+            std::map<std::string, std::string>* mod_options) {
         {
             auto sink = std::make_shared<spdlog::sinks::ostream_sink_st>(test_log_);
             auto test_logger = std::make_shared<spdlog::logger>("test_logger", sink);
@@ -29,6 +29,8 @@ public:
             spdlog::set_default_logger(test_logger);
         }
         {
+            mod_options->emplace(std::string{"test-mod"}, std::string{"true"});
+
             for (auto& option : *mod_options) {
                 spdlog::debug("Option ${}={}", option.first, option.second);
             }

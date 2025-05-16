@@ -1,7 +1,6 @@
 {
     "name": "Condition ModID",
     "options": {
-        "test_mod": "true",
         "other-mod.expectTrue": "true",
         "other-mod.expectFalse": "false"
     },

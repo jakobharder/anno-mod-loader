@@ -1,7 +1,7 @@
 <ModOps>
   <ModOp Add="@1">
     <Building>
-      <Range><ModValue Path='$.rangeA' /></Range>
+      <Range><ModValue Path='$rangeA' /></Range>
     </Building>
   </ModOp>
   <ModOp Merge="@2">
