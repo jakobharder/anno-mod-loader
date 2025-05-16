@@ -1,9 +1,19 @@
 {
   "name": "Content function",
+  "options": {
+    "content-function.number": "3"
+  },
   "expected": [
     "/AssetList/Groups/Group/Assets/Asset/Values/Target[Count='3']",
     "/AssetList/Groups/Group/Assets/Asset/Values/TargetWithGuid[Count='3']",
     "/AssetList/Groups/Group/Assets/Asset/Values/Residence7[ResidentMax='12']",
+    "//Values[Standard/GUID='10']/Cost/Item[GUID=1 and Amount='21' and Number='3']",
+    "//Values[Standard/GUID='10']/Cost/Item[GUID=2 and Amount='22' and Number='3']",
+    "//Values[Standard/GUID='10']/Cost/Item[GUID=3 and Amount='23' and Number='3']",
+    "//Values[Standard/GUID='11']/Maintenance[Workforce='30']",
+    "//Values[Standard/GUID='12']/Maintenance[Workforce='35']",
+    "//Values[Standard/GUID='13']/Storage[Amount='3']",
+    "//Values[Standard/GUID='14']/Storage[Amount='1']",
     "!//ModOpEval",
     "!//ModOpTemp"
   ]
