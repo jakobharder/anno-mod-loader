@@ -1,12 +1,11 @@
 # ModLoader Changes for Anno 117
 
 The changes are backwards compatible to the modloader used in Anno 1800.
-All new features are on top.
+All new features are provided on top.
 
 - [ModOp Basics](#modop-basics)
 - [ModOp Paths](#modop-paths)
 - [Inline ModOps](#inline-modops)
-- [XPath](#xpath)
 
 ## ModOp Basics
 
@@ -20,7 +19,7 @@ Additional, there are two operations to be used within a `ModOp`:
 - `ModItem`: change merge behavior of individual list items
 - `ModValue`: insert or modify individual values within a `ModOp`.
 
-### Shorter ModOps
+### Short ModOps
 
 ModOps can be shortened with `Merge=<XPath>` instead of the old long form `Type="merge" Path=<XPath>`.
 
@@ -199,16 +198,38 @@ The `options.json` file is read from the `mods/` folder with the following forma
 
 ## Inline ModOps
 
-### Merge Items - `ModItem`
+### Merge Flags - `ModValue`
 
-The default list behavior of `merge` replaces `<Item>` in the same order as listed in the patch.
+Use `<ModValue Merge="Your;Flags" />` to insert one or more flags if not already present, instead of overwriting the existing flags value.
+Similarily use `Remove` to remove flags.
 
-Use `<ModItem Merge="Attribute">` to merge items out of order, or add when there's no match.
-The item is merged with the first item that matches the attribute in `Merge`.
+```xml
+<ModOp Merge="@114365/Product">
+  <AssociatedRegion><ModValue Merge="Moderate" /></AssociatedRegion>
+</ModOp>
+```
 
-In the rare even you want to change the attribute itself in the merge process use `<ModItem Merge="Attribute='Value'">` to select the item.
+<details>
+<summary>The old way</summary>
 
-### Insert Calculated Numbers - `ModValue`
+```xml
+<ModOp Type="add" GUID="114365"
+  Condition="!/Values/Product/AssociatedRegion[contains(text(), 'Moderate')]"
+  Path="/Values/Product/AssociatedRegion">;Moderate</ModOp>
+```
+</details>
+
+### Insert Options - `ModValue`
+
+```xml
+<ModOps>
+  <ModOp Merge="@123">
+    <PublicServiceRange><ModValue Insert="$other-mod.range"/></PublicServiceRange>
+  </ModOp>
+</ModOps>
+```
+
+### Insert Calculations - `ModValue`
 
 ```xml
 <!-- addition -->
@@ -224,33 +245,22 @@ In the rare even you want to change the attribute itself in the merge process us
 
 Available operators: `+`, `-`, `*`, `div`, `mod`
 
-### Insert Options - `ModValue`
+### Merge Items - `ModItem`
 
-```xml
-<ModOps>
-  <ModOp Merge="@123">
-    <PublicServiceRange><ModValue Insert="$other-mod.range"/></PublicServiceRange>
-  </ModOp>
-</ModOps>
-```
+The default list behavior of `merge` replaces `<Item>` in the same order as listed in the patch.
 
-### Merge Flags - `ModValue`
+Use `<ModItem Merge="Attribute">` to merge items out of order, or add when there's no match.
+The item is merged with the first item that matches the attribute in `Merge`.
 
-Use `<ModValue Merge="Your;Flags" />` to insert one or more flags if not already present, instead of overwriting the existing flags value.
-Similarily use `Remove` to remove flags.
-
-### Example: add a region
+In the rare even you want to change the attribute itself in the merge process use `<ModItem Merge="Attribute='Value'">` to select the item.
 
 ```xml
 <ModOp GUID="114365" Merge="Product">
-  <Product>
-    <ProductionRegions>
-      <ModItem Merge="RegionType">
-        <RegionType>Moderate</RegionType>
-      </ModItem>
-    </ProductionRegions>
-    <AssociatedRegion><ModValue Merge="Moderate" /></AssociatedRegion>
-  </Product>
+  <ProductionRegions>
+    <ModItem Merge="RegionType">
+      <RegionType>Moderate</RegionType>
+    </ModItem>
+  </ProductionRegions>
 </ModOp>
 ```
 
@@ -265,9 +275,34 @@ Similarily use `Remove` to remove flags.
     <RegionType>Moderate</RegionType>
   </Item>
 </ModOp>
-<ModOp Type="add" GUID="114365"
-  Condition="!/Values/Product/AssociatedRegion[contains(text(), 'Moderate')]"
-  Path="/Values/Product/AssociatedRegion">;Moderate</ModOp>
 ```
 </details>
 
+#### Append Behavior
+
+By default, missing items will be added to the end of the item list.
+You can change that by defining a `Append` or `Prepend` path.
+
+The default is the same as `Append='last()'`.
+
+```xml
+<ModOp Type="merge" Path="@502017/ProductList/List">
+  <ModItem Merge="Product" Append="Product='1010200'">
+    <Product>1500010836</Product>
+  </ModItem>
+</ModOp>
+```
+
+<details>
+<summary>The old way</summary>
+
+```xml
+<ModOp Type="addNextSibling" GUID="502017"
+  Condition="!~/Values/ProductList/List/Item[Product='1500010836']"
+  Path="/Values/ProductList/List/Item[Product='1010200']">
+  <Item>
+    <Product>1500010836</Product>
+  </Item>
+</ModOp>
+```
+</details>

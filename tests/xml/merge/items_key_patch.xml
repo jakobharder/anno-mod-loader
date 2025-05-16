@@ -30,6 +30,16 @@
         <Ingredient>567</Ingredient>
         <Amount>17</Amount>
       </ModItem>
+      <!-- custom append -->
+      <ModItem Merge="Ingredient" Append="Ingredient='1010196'">
+        <Ingredient>9</Ingredient>
+        <Amount>18</Amount>
+      </ModItem>
+      <!-- custom prepend -->
+      <ModItem Merge="Ingredient" Prepend="Ingredient='1010196'">
+        <Ingredient>10</Ingredient>
+        <Amount>19</Amount>
+      </ModItem>
     </Costs>
   </ModOp>
 </ModOps>
