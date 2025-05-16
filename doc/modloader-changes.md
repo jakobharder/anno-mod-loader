@@ -4,11 +4,21 @@ The changes are backwards compatible to the modloader used in Anno 1800.
 All new features are on top.
 
 - [ModOp Basics](#modop-basics)
-- [Options](#options)
+- [ModOp Paths](#modop-paths)
 - [Inline ModOps](#inline-modops)
 - [XPath](#xpath)
 
 ## ModOp Basics
+
+There are two top-level types of ModOps:
+
+- `ModOp`: normal operations
+- `Group`/`Include`: group operations
+
+Additional, there are two operations to be used within a `ModOp`:
+
+- `ModItem`: change merge behavior of individual list items
+- `ModValue`: insert or modify individual values within a `ModOp`.
 
 ### Shorter ModOps
 
@@ -81,149 +91,13 @@ There are additional lookups to make the code faster and more readable.
 - `Property` in `assets.xml`:
   access `Values/<Property>/` of all assets containing a specific property
 
-## Options
+## ModOp Paths
 
-Conditions allowed to check the existings of another mod.
-
-```xml
-<ModOps>
-  <Group Condition="#other-mod">
-    <!-- do things -->
-  </Group>
-</ModOps>
-```
-
-This system got extended to be part of XPath, and with variables that can be set in an external file.
-
-That means you can combine them like XPath expressions with `and` and `or`.
-E.g. `Condition="#mod-a or #mod-b"`.
-
-The format for variables is `$mod-id.option-name`.
-You can leave out `mod-id` if the variable comes from the same mod shortening the path to `$option-name`.
-
-`ModValue` can be used in all ModOp types.
-
-```xml
-<ModOps>
-  <!-- as condition -->
-  <ModOp Replace="@123/Costs/Influence"
-    Condition="$use-influence">
-    <Influence>3</Influence>
-  </ModOp>
-
-  <!-- as content -->
-  <ModOp Merge="@123">
-    <PublicServiceRange><ModValue Path="$other-mod.range"/></PublicServiceRange>
-  </ModOp>
-</ModOps>
-```
-
-`<user mods folder>/options.json`
-
-```json
-{
-  "#mod-id": {
-    "range": "10",
-    "useInfluence": "true"
-  }
-}
-```
-
-### Defaults
-
-`modinfo.json`:
-
-```json
-{
-  /*..*/
-  "options": {
-    "range": {
-      "default": "10"
-    },
-    "useInfluence": {
-      "default": "true"
-    }
-  }
-}
-```
-
-Note: The mod loader only requires defaults. Additional information like labels, allowed values, type, steps, etc. is not relevant here and thus omitted.
-
-## Inline ModOps
-
-### Merge Items - `ModItem`
-
-The default list behavior of `merge` replaces `<Item>` in the same order as listed in the patch.
-
-Use `<ModItem Merge="Attribute">` to merge items out of order, or add when there's no match.
-The item is merged with the first item that matches the attribute in `Merge`.
-
-In the rare even you want to change the attribute itself in the merge process use `<ModItem Merge="Attribute='Value'">` to select the item.
-
-*Note: ModItem is only available within ModOp type `merge`*
-
-### Calculate Numbers - `ModValue`
-
-```xml
-<!-- addition -->
-<ModOp Property="Maintenance" Merge="Workforce">
-  <Workforce><ModValue Path="number(.) + 10" /></Workforce>
-</ModOp>
-
-<!-- division -->
-<ModOp Property="Storage" Merge="Amount">
-  <Amount><ModValue Path="(number(.) - number(.) mod 2) div 2" /></Amount>
-</ModOp>
-```
-
-### Options - `ModValue`
-
-Available operators: `+`, `-`, `*`, `div`, `mod`
-
-### Merge Flags - `ModFlags`
-
-Use `<ModFlags Merge="Your;Flags" />` to insert one or more flags if not already present, instead of overwriting the existing flags value.
-Similarily use `Remove` to remove flags.
-
-*Note: ModItem is only available within ModOp type `merge`*
-
-### Example: add a region
-
-```xml
-<ModOp GUID="114365" Merge="Product">
-  <Product>
-    <ProductionRegions>
-      <ModItem Merge="RegionType">
-        <RegionType>Moderate</RegionType>
-      </ModItem>
-    </ProductionRegions>
-    <AssociatedRegion><ModFlags Merge="Moderate" /></AssociatedRegion>
-  </Product>
-</ModOp>
-```
-
-<details>
-<summary>The old way</summary>
-
-```xml
-<ModOp Type="add" GUID="114365"
-  Condition="!/Values/Product/ProductionRegions[Item/RegionType='Moderate']"
-  Path="/Values/Product/ProductionRegions">
-  <Item>
-    <RegionType>Moderate</RegionType>
-  </Item>
-</ModOp>
-<ModOp Type="add" GUID="114365"
-  Condition="!/Values/Product/AssociatedRegion[contains(text(), 'Moderate')]"
-  Path="/Values/Product/AssociatedRegion">;Moderate</ModOp>
-```
-</details>
-
-## XPath
+### XPath
 
 XPath 1.0 functions like `count()` and `number()` are fully supported now.
 
-### Example: add a number
+#### Example: add a number
 
 Use `number()` to add to a number instead of replacing it.
 
@@ -255,3 +129,145 @@ Use `number()` to add to a number instead of replacing it.
 <ModOp Type="remove" GUID="1010343" Path="/Values/Number" />
 ```
 </details>
+
+### ModIDs
+
+Conditions allowed to check if a another mod is loaded.
+
+These `#mod-id` expressions are now expanded to `true()` and `false()` to be used within XPath.
+That means you can combine them like XPath expressions with `and` and `or`.
+
+```xml
+<ModOps>
+  <Group Condition="#mod-a and not(#mod-b)">
+    <!-- do things -->
+  </Group>
+</ModOps>
+```
+
+### Options
+
+Additionally, options can be defined in an external `options.json` file.
+These options are accessible as `$mod-id.option-name` in XPath.
+You can leave out `mod-id` if the variable comes from the same mod shortening the path to `$option-name`.
+
+```xml
+<ModOps>
+  <ModOp Replace="@123/Costs/Influence" Condition="$use-influence">
+    <Influence>3</Influence>
+  </ModOp>
+  <ModOp Merge="@123/Service/PublicServiceRange" Condition="$other-mod.range &lt; 20">
+    <PublicServiceRange>20</PublicServiceRange>
+  </ModOp>
+</ModOps>
+```
+
+#### Options file
+
+The `options.json` file is read from the `mods/` folder with the following format:
+
+```json
+{
+  "mod-id": {
+    "range": "10",
+    "useInfluence": "true"
+  }
+}
+```
+
+*Note: future versions will generate the options.json from default values, but for now you have to create it yourself.*
+
+#### Modinfo contains defaults
+
+`modinfo.json`:
+
+```json
+{
+  /*..*/
+  "options": {
+    "range": {
+      "default": "10"
+    },
+    "useInfluence": {
+      "default": "true"
+    }
+  }
+}
+```
+
+*Note: The mod loader only requires defaults. Additional information like labels, allowed values, type, steps, etc. is not relevant here and thus omitted.*
+
+## Inline ModOps
+
+### Merge Items - `ModItem`
+
+The default list behavior of `merge` replaces `<Item>` in the same order as listed in the patch.
+
+Use `<ModItem Merge="Attribute">` to merge items out of order, or add when there's no match.
+The item is merged with the first item that matches the attribute in `Merge`.
+
+In the rare even you want to change the attribute itself in the merge process use `<ModItem Merge="Attribute='Value'">` to select the item.
+
+### Insert Calculated Numbers - `ModValue`
+
+```xml
+<!-- addition -->
+<ModOp Property="Maintenance" Merge="Workforce">
+  <Workforce><ModValue Insert="number(.) + 10" /></Workforce>
+</ModOp>
+
+<!-- division -->
+<ModOp Property="Storage" Merge="Amount">
+  <Amount><ModValue Insert="(number(.) - number(.) mod 2) div 2" /></Amount>
+</ModOp>
+```
+
+Available operators: `+`, `-`, `*`, `div`, `mod`
+
+### Insert Options - `ModValue`
+
+```xml
+<ModOps>
+  <ModOp Merge="@123">
+    <PublicServiceRange><ModValue Insert="$other-mod.range"/></PublicServiceRange>
+  </ModOp>
+</ModOps>
+```
+
+### Merge Flags - `ModValue`
+
+Use `<ModValue Merge="Your;Flags" />` to insert one or more flags if not already present, instead of overwriting the existing flags value.
+Similarily use `Remove` to remove flags.
+
+### Example: add a region
+
+```xml
+<ModOp GUID="114365" Merge="Product">
+  <Product>
+    <ProductionRegions>
+      <ModItem Merge="RegionType">
+        <RegionType>Moderate</RegionType>
+      </ModItem>
+    </ProductionRegions>
+    <AssociatedRegion><ModValue Merge="Moderate" /></AssociatedRegion>
+  </Product>
+</ModOp>
+```
+
+<details>
+<summary>The old way</summary>
+
+```xml
+<ModOp Type="add" GUID="114365"
+  Condition="!/Values/Product/ProductionRegions[Item/RegionType='Moderate']"
+  Path="/Values/Product/ProductionRegions">
+  <Item>
+    <RegionType>Moderate</RegionType>
+  </Item>
+</ModOp>
+<ModOp Type="add" GUID="114365"
+  Condition="!/Values/Product/AssociatedRegion[contains(text(), 'Moderate')]"
+  Path="/Values/Product/AssociatedRegion">;Moderate</ModOp>
+```
+</details>
+

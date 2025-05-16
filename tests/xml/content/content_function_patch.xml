@@ -28,17 +28,17 @@
 
   <!-- items -->
   <ModOp GUID="10" Merge="Cost/Item">
-    <Amount><ModValue Path="number(.) + 10" /></Amount>
-    <Number><ModValue Path="$content-function.number" /></Number>
+    <Amount><ModValue Insert="number(.) + 10" /></Amount>
+    <Number><ModValue Insert="$content-function.number" /></Number>
   </ModOp>
 
   <!-- multiple -->
   <ModOp Property="Maintenance" Merge="Workforce">
-    <Workforce><ModValue Path="number(.) + 10" /></Workforce>
+    <Workforce><ModValue Insert="number(.) + 10" /></Workforce>
   </ModOp>
 
   <!-- division -->
   <ModOp Property="Storage" Merge="Amount">
-    <Amount><ModValue Path="(number(.) - number(.) mod 2) div 2" /></Amount>
+    <Amount><ModValue Insert="(number(.) - number(.) mod 2) div 2" /></Amount>
   </ModOp>
 </ModOps>
