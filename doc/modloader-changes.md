@@ -61,8 +61,8 @@ When using `GUID` lookup with the short style skips `/Values` like the previousl
 
 Short | Legacy | Comment
 --- | --- | ---
-`Assets`| |Similar to `addNextSibling` + `GUID` without `Path`.
-`Add`|`Type="add"`|Same as `Assets` when used without `Path`, `GUID` and `Property`. Otherwise unchanged.
+`Assets`|`Type="add"`|Similar to `addNextSibling` + `GUID` without `Path`.
+`Add`|`Type="add"`|Unchanged, except when used without `Path`, `GUID` and `Property` it acts like `Assets`.
 `Remove`|`Type="remove"`|unchanged
 `Append`|`Type="addNextSibling"`|renamed, otherwise unchanged
 `Prepend`|`Type="addPrevSibling"`|renamed, otherwise unchanged
