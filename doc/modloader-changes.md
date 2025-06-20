@@ -1,17 +1,57 @@
 # ModLoader Changes for Anno 117
 
-The changes are backwards compatible to the modloader used in Anno 1800.
+The ModOp changes are backwards compatible to the modloader used in Anno 1800.
 All new features are provided on top.
 
+There are a few changes in file structure and modinfo.json, some are new or modified, some have changed from optional to mandatory.
+
+- [General Changes](#general-changes)
 - [ModOp Basics](#modop-basics)
 - [ModOp Paths](#modop-paths)
 - [Inline ModOps](#inline-modops)
+- [Advanced Modinfos](#advanced-modinfos)
+
+## General Changes
+
+### Changed Paths
+
+The location of the main `assets.xml` has changed.
+
+Its path is now: `data\base\config\export\assets.xml`.
+
+### Meta Information
+
+Only folders with a `modinfo.json` are considered a mod.
+The mod loader will not load mods without it.
+
+There are a few more informational fields in `modinfo.json`.
+
+```json
+{
+  // ..
+  "Difficulty": "harder",
+  "RequiresNewGame": true,
+  "SafeToRemove": false
+}
+```
+
+|Name|Value|Effect|
+|---|---|---|
+|`Difficulty` (mandatory)|`cheat`|e.g. no construction costs
+|.|`easier`|makes the game easier, e.g. reduced needs consumption
+|.|`unchanged`|is balanced similar as the vanilla game
+|.|`harder`|makes the game harder
+|`RequiresNewGame`|`true` or `false`|only works with a new savegame, for example like river slots (default is `false`)
+|`SafeToRemove`|`true` or `false`|can be removed from a savegame without leaving trails. For example construction menu reordering (default is `false`)
+
+*Note: 'mandatory' means the mod loader prints an error if the entry is missing or wrong.*
 
 ## ModOp Basics
 
 There are two top-level types of ModOps:
 
 - `ModOp`: normal operations
+- `Assets`: simple asset adding
 - `Group`/`Include`: group operations
 
 Additional, there are two operations to be used within a `ModOp`:
@@ -61,8 +101,8 @@ When using `GUID` lookup with the short style skips `/Values` like the previousl
 
 Short | Legacy | Comment
 --- | --- | ---
-`Assets`|`Type="add"`|Similar to `addNextSibling` + `GUID` without `Path`.
-`Add`|`Type="add"`|Unchanged, except when used without `Path`, `GUID` and `Property` it acts like `Assets`.
+`Assets`| |Similar to `addNextSibling` + `GUID` without `Path`.
+`Add`|`Type="add"`|Same as `Assets` when used without `Path`, `GUID` and `Property`. Otherwise unchanged.
 `Remove`|`Type="remove"`|unchanged
 `Append`|`Type="addNextSibling"`|renamed, otherwise unchanged
 `Prepend`|`Type="addPrevSibling"`|renamed, otherwise unchanged
@@ -75,12 +115,14 @@ The fastest way to add assets is to use `add` without `GUID` or `Path`.
 `BaseAssetGUID` order is automatically handled.
 
 ```xml
-<Assets>
-  <Asset>
-    <Template>Text</Template>
-    <Values> <!-- .. --> </Values>
-  </Asset>
-</Assets>
+<ModOps>
+  <Assets>
+    <Asset>
+      <Template>Text</Template>
+      <Values> <!-- .. --> </Values>
+    </Asset>
+  </Assets>
+</ModOps>
 ```
 
 ### Additional Lookups
@@ -182,7 +224,7 @@ The `options.json` file is read from the `mods/` folder with the following forma
 
 ```json
 {
-  /*..*/
+  // ..
   "options": {
     "range": {
       "default": "10"
@@ -286,7 +328,7 @@ You can change that by defining a `Append` or `Prepend` path.
 The default is the same as `Append='last()'`.
 
 ```xml
-<ModOp Type="merge" Path="@502017/ProductList/List">
+<ModOp Merge="@502017/ProductList/List">
   <ModItem Merge="Product" Append="Product='1010200'">
     <Product>1500010836</Product>
   </ModItem>
@@ -306,3 +348,71 @@ The default is the same as `Append='last()'`.
 </ModOp>
 ```
 </details>
+
+## Advanced Modinfos
+
+### Options
+
+Specify user customizable options of a mod (like iModYourAnno tweaks) in `modinfo.json`:
+
+```json
+{
+  // ..
+  "options": {
+    "range": {
+      "label": "Electricity Range",
+      "type": "enum",
+      "default": "10",
+      "values": [ "10", "20", "30" ],
+      "labels": [ "10 Street Range", "20 Street Range", "30 Street Range" ]
+    },
+    "useInfluence": {
+      "label": "Use Influence Cost",
+      "default": "true",
+      "type": "toggle"
+    }
+  }
+}
+```
+
+*Note: Only `default` is relevant for the actual mod loading process.*
+*The rest is information for valid values and descriptions to be used by mod managers modifying the user values in `options.json`.*
+
+### Scripts
+
+Define scripts and commands in `modinfo.json`:
+
+```json
+{
+  // ..
+  "scripts": {
+    "modules": [
+      "mymod/some-script.lua"
+    ],
+    "Init": "SomeScript = require(\"some-script\")",
+    "Tick": "SomeScript:Tick()"
+  }
+}
+```
+
+Be sure to use unique names to not clash with other mods!
+
+`modules` defines where scripts are located.
+
+Event|When
+---|---
+`Init`|after mod loading
+`Load`|load of a save or new game
+`Unload`|unload of the current game
+`Tick`|meta game tick
+
+Content of example `some-script.lua`:
+
+```lua
+local SomeScript = {}
+
+function SomeScript.Tick()
+end
+
+return SomeScript;
+```
