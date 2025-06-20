@@ -28,21 +28,29 @@ There are a few more informational fields in `modinfo.json`.
 
 ```json
 {
+  "Anno": 8,
   // ..
   "Difficulty": "harder",
-  "RequiresNewGame": true,
-  "SafeToRemove": false
+  "GameSetup": {
+    "RequiresNewGame": false,
+    "SafeToRemove": false,
+    "Multiplayer": true,
+    "Campaign": true
+  }
 }
 ```
 
 |Name|Value|Effect|
 |---|---|---|
+|`Anno` (mandatory)|`8`|Only mods with the correction version will be loaded
 |`Difficulty` (mandatory)|`cheat`|e.g. no construction costs
 |.|`easier`|makes the game easier, e.g. reduced needs consumption
 |.|`unchanged`|is balanced similar as the vanilla game
 |.|`harder`|makes the game harder
-|`RequiresNewGame`|`true` or `false`|only works with a new savegame, for example like river slots (default is `false`)
-|`SafeToRemove`|`true` or `false`|can be removed from a savegame without leaving trails. For example construction menu reordering (default is `false`)
+|`RequiresNewGame`|`true` or `false`|only works with a new savegame, for example like river slots.<br/>Default is `false`.
+|`SafeToRemove`|`true` or `false`|can be removed from a savegame without leaving trails. For example construction menu reordering.<br/>Default is `false`.
+|`Multiplayer`|`true` or `false`|can be used in multiplayer games.<br/>Default is `true`.
+|`Campaign`|`true` or `false`|can be used in campaign games.<br/>Default is `true`.
 
 *Note: 'mandatory' means the mod loader prints an error if the entry is missing or wrong.*
 
@@ -416,3 +424,30 @@ end
 
 return SomeScript;
 ```
+
+### Dependencies
+
+The format for dependencies has changed a bit.
+All entries are now grouped under `Dependencies`.
+
+```json
+{
+  // ..
+  "Dependencies": {
+    "Require": [],
+    "Optional": [],
+    "LoadAfter": [],
+    "Deprecate": [],
+    "Incompatible": []
+  }
+}
+```
+
+|Name|Value|Effect|
+|---|---|---|
+|`Require`|List mods and DLCs that are required to use this mod.
+|`Optional`|List mods and DLCs that enable further content in this mod. 
+|`LoadAfter`|List mods to load before this mod.
+|`Deprecate`|List mods that are replaced by this mod.<br/>A warning will be printed in the mod-loader.log. LoadAfter and Require will use the new ID.
+|`Incompatible`|List incompatible mods. A warning will be printed in the mod-loader.log
+
