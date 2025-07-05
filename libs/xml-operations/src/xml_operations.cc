@@ -129,8 +129,8 @@ XmlOperationContext::XmlOperationContext(const char* buffer, size_t size,
     if (!parse_result) {
         const auto line = this->GetLine(parse_result.offset);
         const auto desc = parse_result.description();
-        spdlog::error("{}: Failed to parse {} (line {}): {}",
-                      mod_name, doc_path_, line, desc);
+        spdlog::error("{}: Failed to parse: {} ({}:{})",
+                      mod_name, desc, doc_path_, line);
     }
 }
 
