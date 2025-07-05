@@ -26,7 +26,10 @@ bool path_equal(const std::filesystem::path& a, const std::filesystem::path& b) 
 void apply_patch(std::shared_ptr<pugi::xml_document> doc, const fs::path& modPath, const fs::path& patchPath)
 {
     fs::path mainPatchFile = patchPath;
-    if (patchPath.filename() != "export.bin.xml"
+    if (patchPath.parent_path().filename() == "infotips") {
+        mainPatchFile = "data/infotips/export.bin.xml";
+    }
+    else if (patchPath.filename() != "export.bin.xml"
         && patchPath.stem().extension() != ".fc"
         && patchPath.stem().extension() != ".cfg") {
         if (patchPath.filename().string().find("template") == std::string::npos) {
@@ -42,8 +45,13 @@ void apply_patch(std::shared_ptr<pugi::xml_document> doc, const fs::path& modPat
     }
     spdlog::info("Prepatch: {}", fullPath.string());
 
+    const std::string mod_id = "";
+    std::map<std::string, std::string> variables;
+
     auto operations = XmlOperation::GetXmlOperationsFromFile(fullPath,
-        modPath.filename().string(),
+        mod_id,
+        mod_id,
+        &variables,
         mainPatchFile,
         fs::absolute(modPath));
     for (auto& operation : operations) {
@@ -82,8 +90,10 @@ std::shared_ptr<pugi::xml_document> _patch(std::shared_ptr<pugi::xml_document> d
     const auto game_path = fs::absolute(params.patchPath).lexically_relative(mod_path);
     spdlog::debug("Game Path: {}", game_path.string());
     const auto mod_name = "xmltest";
+    const auto mod_id = "";
+    std::map<std::string, std::string> variables;
 
-    auto loader = [&mod_path, &mod_name, &patch_content, &game_path, &params](const fs::path& file_path) {
+    auto loader = [&mod_path, &mod_id, &variables, &mod_name, &patch_content, &game_path, &params](const fs::path& file_path) {
         std::vector<char> buffer;
         size_t size;
         spdlog::debug("Include: {}", file_path.string());
@@ -98,19 +108,19 @@ std::shared_ptr<pugi::xml_document> _patch(std::shared_ptr<pugi::xml_document> d
         }
 
         if (params.useStdin && path_equal(file_path, params.stdinPath)) {
-            return std::make_shared<XmlOperationContext>(patch_content.data(), patch_content.size(), file_path, mod_name);
+            return std::make_shared<XmlOperationContext>(patch_content.data(), patch_content.size(), file_path, mod_id, &variables, mod_name);
         }
 
         // read found (or just mod_path)
         if (!XmlOperationContext::ReadFile(search_path / file_path, buffer, size)) {
             spdlog::error("{}: Failed to open {}", mod_name, file_path.string());
-            return std::make_shared<XmlOperationContext>();
+            return std::shared_ptr<XmlOperationContext>{};
         }
-        return std::make_shared<XmlOperationContext>(buffer.data(), size, file_path, mod_name);
+        return std::make_shared<XmlOperationContext>(buffer.data(), size, file_path, mod_id, &variables, mod_name);
     };
     auto context = (params.useStdin && path_equal(game_path, params.stdinPath)) ?
-        std::make_shared<XmlOperationContext>(patch_content.data(), patch_content.size(), game_path, mod_name, loader) :
-        std::make_shared<XmlOperationContext>(game_path, mod_path, mod_name);
+        std::make_shared<XmlOperationContext>(patch_content.data(), patch_content.size(), game_path, mod_id, &variables, mod_name, loader) :
+        std::make_shared<XmlOperationContext>(game_path, mod_path, mod_id, &variables, mod_name);
     context->SetLoader(loader);
 
     auto start = std::chrono::high_resolution_clock::now();
