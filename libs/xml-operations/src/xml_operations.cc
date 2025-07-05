@@ -71,9 +71,10 @@ XmlOperationContext::XmlOperationContext(const char* buffer, size_t size,
     doc_ = std::make_shared<pugi::xml_document>();
     auto parse_result = doc_->load_buffer(buffer, size);
     if (!parse_result) {
-        spdlog::error("{}: Failed to parse {} (line {}): {}",
-                      mod_name, doc_path_,
-                      this->GetLine(parse_result.offset), parse_result.description());
+        const auto line = this->GetLine(parse_result.offset);
+        const auto desc = parse_result.description();
+        spdlog::error("{}: Failed to parse: {} ({}:{})",
+                      mod_name, desc, doc_path_, line);
     }
 }
 
