@@ -29,7 +29,14 @@ def main():
                             (os.path.join("tests", "xml", test_type).replace(
                                 "\\", "/"), base_name_input.replace("\\", "/"),
                              base_name_patch.replace("\\", "/")))
-                    f.write("runner.ApplyPatches();\n")
+
+                    f.write("std::set<std::string> mod_ids;\n")
+                    mod_ids = data.get('modIds')
+                    if mod_ids is not None:
+                        for modid in mod_ids:
+                            f.write("mod_ids.insert(\"" + modid + "\");\n")
+
+                    f.write("runner.ApplyPatches(mod_ids);\n")
                     f.write("INFO(runner.DumpXml());")
                     f.write("INFO(runner.DumpLog());")
 

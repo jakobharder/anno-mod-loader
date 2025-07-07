@@ -1,40 +1,47 @@
 
-#define MODLOADER_VERSION "10"
+#define MODLOADER_VERSION "GU17.1"
 
-#include "./parseArguments.h"
+#include "./parse_args.h"
 
 #include <memory>
 #include <string>
 
 using namespace std;
 
-static void printUsage()
+static void printUsage(FILE* out)
 {
-    printf("xmltest using modloader %s\n", MODLOADER_VERSION);
+    fprintf(out, "xmltest using modloader %s\n", MODLOADER_VERSION);
 
-    printf("\nUsage: xmltest.exe [options] target patch\n\n");
-    printf("-m=<path>  Specify mod path. Default: working directory\n");
-    printf("           Multiple are allowed.\n");
-    printf("-i         Read patch content from stdin. Path path is still required.\n");
-    printf("-o         Output file. Default: patched.xml\n");
-    printf("-s         Skip output.\n");
-    printf("-v         Verbose.\n");
+    fprintf(out, "\nUsage: xmltest.exe [options] target-xml patch-xml|GUID\n\n");
+    fprintf(out, "-c=<command>  patch (default): output target-xml with patch-xml applied.\n");
+    fprintf(out, "              show: output asset with GUID from target-xml.\n");
+    fprintf(out, "              diff: output assets before and after patching.\n");
+    fprintf(out, "\n");
+    fprintf(out, "-p=<path>     Apply mods before testing patch-xml.\n");
+    fprintf(out, "              Multiple are allowed.\n");
+    fprintf(out, "-m=<path>     Specify mod path. Default: working directory\n");
+    fprintf(out, "              Multiple are allowed.\n");
+    fprintf(out, "-i=<relpath>  Read patch content from stdin. File is needed for relative path to mod.\n");
+    fprintf(out, "-o            Output file. Default: patched.{xml,fc,cfg,bin}\n");
+    fprintf(out, "-s            Skip output.\n");
+    fprintf(out, "-v            Verbose.\n");
 }
 
 static bool invalidUsage(const std::string& pArg)
 {
     fprintf(stderr, "Invalid argument: %s\n", pArg.c_str());
-    printUsage();
+    printUsage(stderr);
     return false;
 }
 
 bool parseArguments(int argc, const char* argv[], XmltestParameters& params)
 {
     if (argc < 3) {
-        printUsage();
+        printUsage(stderr);
         return false;
     }
 
+    params.command = XmltestParameters::Command::Patch;
     params.skipOutput = false;
     params.useStdin = false;
     params.verbose = false;
@@ -81,6 +88,7 @@ bool parseArguments(int argc, const char* argv[], XmltestParameters& params)
                     lastMode = 'o';
                     break;
                 }
+                case 'c':
                 case 'p':
                 case 'm': {
                     lastMode = pArg[1];
@@ -93,6 +101,21 @@ bool parseArguments(int argc, const char* argv[], XmltestParameters& params)
         }
         else if (lastMode != 0) {
             switch (lastMode) {
+                case 'c': {
+                    if (std::string(pArg) == "patch") {
+                        params.command = XmltestParameters::Command::Patch;
+                    }
+                    else if (std::string(pArg) == "diff") {
+                        params.command = XmltestParameters::Command::Diff;
+                    }
+                    else if (std::string(pArg) == "show") {
+                        params.command = XmltestParameters::Command::Show;
+                    }
+                    else {
+                        return invalidUsage(pArg);
+                    }
+                    break;
+                }
                 case 'o': {
                     params.outputFile = pArg;
                     break;
@@ -129,18 +152,22 @@ bool parseArguments(int argc, const char* argv[], XmltestParameters& params)
     }
 
     if (lastMode != 0) {
-        printUsage();
+        printUsage(stderr);
         return false;
     }
 
     if (params.patchPath.empty()) {
         fprintf(stderr, "Specify target and patch file.\n");
-        printUsage();
+        printUsage(stderr);
         return false;
     }
 
     if (params.modPaths.empty()) {
         params.modPaths.emplace_back(std::filesystem::current_path());
+    }
+
+    if (params.outputFile.empty()) {
+        params.outputFile = "patched" + params.targetPath.extension().string();
     }
 
     return true;

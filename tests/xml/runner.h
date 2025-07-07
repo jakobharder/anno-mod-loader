@@ -6,11 +6,14 @@
 
 #include "catch2/catch.hpp"
 
-#include <vector>
-#include <string_view>
 #include <cstring>
-#include <sstream>
 #include <memory>
+#include <set>
+#include <sstream>
+#include <string_view>
+#include <vector>
+
+using namespace xmlops;
 
 class TestRunner
 {
@@ -32,9 +35,13 @@ public:
         }
     }
 
-    void ApplyPatches() {
-        for (auto &&operation : xml_operations_) {
-            operation.Apply(input_doc_);
+    void ApplyPatches(const std::set<std::string>& mod_ids) {
+        for (auto& id: mod_ids) {
+            spdlog::debug("{}", id);
+        }
+
+        for (auto& operation : xml_operations_) {
+            operation.Apply(input_doc_, mod_ids);
         }
     }
 

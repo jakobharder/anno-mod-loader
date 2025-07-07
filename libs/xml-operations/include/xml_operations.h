@@ -5,10 +5,13 @@
 #include <filesystem>
 #include <functional>
 #include <optional>
+#include <set>
 #include <string>
 #include <vector>
 
 namespace fs = std::filesystem;
+
+namespace xmlops {
 
 class XmlOperationContext
 {
@@ -76,6 +79,7 @@ public:
     bool IsEmpty() const { return empty_path_; };
     bool IsNegative() const { return negative_; };
     const std::string& GetPath() const { return path_; };
+    bool IsModId() const { return mod_id_; };
 
 private:
     std::shared_ptr<XmlOperationContext> context_;
@@ -86,6 +90,7 @@ private:
     std::string path_;
     std::string guid_;
     std::string template_;
+    bool mod_id_ = false;
 
     enum SpeculativePathType {
         NONE,
@@ -121,7 +126,7 @@ public:
 
     Type GetType() const;
 
-    void Apply(std::shared_ptr<pugi::xml_document> doc);
+    void Apply(std::shared_ptr<pugi::xml_document> doc, const std::set<std::string>& mod_ids = {});
 
 public:
     static std::vector<XmlOperation> GetXmlOperations(
@@ -159,5 +164,8 @@ private:
     //         True when nodes are found.
     //         Can be negated with `!`.
     /// @param assetNode Returns GUID asset if found.
-    bool CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>& assetNode);
+    bool CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>& assetNode,
+        const std::set<std::string>& mod_ids);
 };
+
+}

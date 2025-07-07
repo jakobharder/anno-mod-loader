@@ -1,7 +1,8 @@
 {
     "name": "Simple content warning",
     "expected": [
-        "/Test/Target/Building/InfluencedVariationDirection/Item[Type='Mid']"
+        "!/Test/Target/Building/InfluencedVariationDirection/Item[Type='Mid']",
+        "!//ModOpTemp"
     ],
     "issuesExpected": "1"
 }
