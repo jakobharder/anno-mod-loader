@@ -83,7 +83,13 @@ void AnnoXml::parse_assets(pugi::xml_node node) {
         }
         else if (name == "Text") {
             const auto guid_node = child.child("GUID");
-            id = guid_node.text().as_string();
+            if (guid_node) {
+                id = guid_node.text().as_string();
+            }
+            else {
+                const auto lineid_node = child.child("LineId");
+                id = lineid_node.text().as_string();
+            }
         }
         else if (name == "Template") {
             const auto guid_node = child.child("Name");

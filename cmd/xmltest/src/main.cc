@@ -75,6 +75,10 @@ std::shared_ptr<pugi::xml_document> _get_prepatched(const XmltestParameters& par
     // disable debug as we don't want that for prepatch files
     spdlog::set_level(hide ? spdlog::level::critical : spdlog::level::info);
     auto doc = xmlops::XmlAutoSerializer::read(params.targetPath);
+    if (!doc) {
+        return {};
+    }
+
     auto patch_game_path = fs::relative(params.patchPath, params.modPaths.front());
     for (auto dep : params.prepatchPaths) {
         apply_patch(doc, dep, patch_game_path);
@@ -146,6 +150,11 @@ int command_diff(const XmltestParameters& params, const std::string& patch_conte
     }
 
     auto doc = _get_prepatched(params);
+    if (!doc) {
+        out << "Could not find patch target" << std::endl;
+        return 0;
+    }
+
     doc = _patch(doc, params, patch_content);
     auto prepatched_doc = _get_prepatched(params, true);
 
