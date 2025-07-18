@@ -901,6 +901,13 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
         for (auto& modop : group_) {
             modop.Apply(doc);
         }
+        if (!group_.empty() && group_[0].context_ != this->context_) {
+            // special handling for top-level ModOps of an included file
+            // the time is logged twice, once for the include and once for top-level of the original file
+            auto end = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+            this->context_->Debug("Time: {}ms {} ({}:{})", duration, "Group", group_[0].context_->GetGenericPath(), 0);
+        }
         logTime("Group");
         return;
     }
@@ -1066,7 +1073,7 @@ std::vector<XmlOperation> XmlOperation::GetXmlOperations(
 
                 auto group_op = XmlOperation{doc, node};
                 const auto include_context = doc->OpenInclude(relative_include_path);
-                if (include_context->GetGenericPath().empty()) {
+                if (!include_context || include_context->GetGenericPath().empty()) {
                     doc->Error("Include file missing or empty: " + relative_include_path.string(), node);
                 }
                 else {
