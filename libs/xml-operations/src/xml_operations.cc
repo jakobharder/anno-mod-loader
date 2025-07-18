@@ -534,7 +534,7 @@ void XmlOperation::ReadType(pugi::xml_node node)
         type_ = Type::Group;
     }
     else if (str_equals_nocase(node.name(), "Assets")) {
-        type_ = Type::Add;
+        type_ = Type::Assets;
     }
 
     bool path_set = false;
@@ -567,6 +567,8 @@ void XmlOperation::ReadType(pugi::xml_node node)
             skip_values_ = false;
             if (str_equals_nocase(type, "add")) {
                 type_ = Type::Add;
+            } else if (str_equals_nocase(type, "assets")) {
+                type_ = Type::Assets;
             } else if (str_equals_nocase(type, "addAfter")) {
                 type_ = Type::AddNextSibling;
             } else if (str_equals_nocase(type, "addBefore")) {
@@ -613,6 +615,10 @@ void XmlOperation::ReadType(pugi::xml_node node)
             setType(Type::Merge, attr.as_string());
         }
     }
+
+    if (type_ == Type::Add && path_attribute_.empty() && guid_.empty() && property_.empty() && template_.empty()) {
+        type_ = Type::Assets;
+    }
 }
 
 void XmlOperation::CreateQueries()
@@ -621,12 +627,11 @@ void XmlOperation::CreateQueries()
         nodes_ = node_.children();
     }
 
-    const auto& path = path_attribute_;
-    if (type_ == Type::Add && guid_.empty() && template_.empty() && property_.empty() && path.empty()) {
-        path_ = XmlLookup{"//Group[1]/Assets[1]", {}, {}, {}, &variables_, context_, node_, skip_values_};
+    if (type_ == Type::Assets) {
+        path_ = XmlLookup{"/AssetList/Groups[last()]/Group/Assets[last()]", {}, {}, {}, &variables_, context_, node_, skip_values_};
     }
     else {
-        path_ = XmlLookup{path, guid_, property_, template_, &variables_, context_, node_, skip_values_};
+        path_ = XmlLookup{path_attribute_, guid_, property_, template_, &variables_, context_, node_, skip_values_};
     }
 
     condition_ = XmlLookup{node_.attribute("Condition").as_string(), guid_, property_, template_, &variables_, context_, node_, skip_values_};
@@ -1003,6 +1008,8 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
                 game_node.parent().insert_copy_after(node, game_node);
             }
             game_node.parent().remove_child(game_node);
+        } else if (GetType() == XmlOperation::Type::Assets) {
+            ModOpAdd(doc, game_node, content_nodes);
         }
     }
 
@@ -1348,6 +1355,7 @@ void XmlOperation::ModOpAdd(std::shared_ptr<pugi::xml_document> doc,
     const std::vector<pugi::xml_node>& content_nodes)
 {
     for (auto& node : content_nodes) {
+        // TODO if node.name == Asset
         if (auto base_asset = node.child("BaseAssetGUID"); base_asset) {
             auto base_guid = base_asset.child_value();
             auto lookup = XmlLookup{{}, base_guid, {}, {}, nullptr, context_, node_, false};
