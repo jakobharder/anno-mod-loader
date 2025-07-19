@@ -147,18 +147,20 @@ public:
         converter.clear();
         if (file_name.filename() == L"export.bin") {
             default_converter = FileDbAttributeType::Int32;
-            converter.emplace("Text", FileDbAttributeType::Utf16);
+            converter.emplace("Text", FileDbAttributeType::Utf8);
             converter.emplace("Condition", FileDbAttributeType::Utf8);
-            converter.emplace("ValueText", FileDbAttributeType::Utf16);
-            converter.emplace("IconText", FileDbAttributeType::Utf16);
+            converter.emplace("ValueText", FileDbAttributeType::Utf8);
+            converter.emplace("IconText", FileDbAttributeType::Utf8);
             converter.emplace("ExpectedValueFloat", FileDbAttributeType::Float);
             converter.emplace("ExpectedValueBool", FileDbAttributeType::Boolean);
-            converter.emplace("HeadlineText", FileDbAttributeType::Utf16);
-            converter.emplace("SublineText", FileDbAttributeType::Utf16);
-            converter.emplace("ColorText", FileDbAttributeType::Utf16);
-            converter.emplace("Source", FileDbAttributeType::Utf16);
-            converter.emplace("Name", FileDbAttributeType::Utf16);
+            converter.emplace("HeadlineText", FileDbAttributeType::Utf8);
+            converter.emplace("SublineText", FileDbAttributeType::Utf8);
+            converter.emplace("ColorText", FileDbAttributeType::Utf8);
+            converter.emplace("Source", FileDbAttributeType::Utf8);
+            converter.emplace("Name", FileDbAttributeType::Utf8);
             converter.emplace("IsTemplate", FileDbAttributeType::Boolean);
+            converter.emplace("IsWarning", FileDbAttributeType::Boolean);
+            converter.emplace("Indentation", FileDbAttributeType::Boolean);
         }
         else {
             default_converter = FileDbAttributeType::Hex;
@@ -175,12 +177,12 @@ std::map<std::string, FileDbAttributeType> FileDbConverter::converter;
 
 std::shared_ptr<pugi::xml_document> FileDbReader::read(const void* data, size_t size, const fs::path& file_name) {
     std::istringstream memory { std::string(reinterpret_cast<const char*>(data), size) };
-    return FileDbReader::read((std::istream&)memory, file_name);
+    return FileDbReader::read(memory, file_name);
 }
 
 std::shared_ptr<pugi::xml_document> FileDbReader::read(const fs::path& file_path) {
     std::ifstream file { file_path, std::ios::binary | std::ios::ate };
-    return FileDbReader::read((std::istream&)file, file_path);
+    return FileDbReader::read(file, file_path);
 }
 
 std::shared_ptr<pugi::xml_document> FileDbReader::read(std::istream& stream, const fs::path& file_name) {
@@ -266,8 +268,7 @@ void FileDbReader::read_table(int offset)
     for (int i = 0; i < count; i++) {
         ids[i] = read<uint16_t>();
     }
-    for (int i = 0; i < count; i++)
-    {
+    for (int i = 0; i < count; i++) {
         std::stringstream name_stream;
         char ch;
         do {
