@@ -9,8 +9,17 @@ namespace pugi {
 
 namespace xmlops {
 
+enum XmlAutoSerializerFormat {
+    Xml,
+    InfoTips,
+    Fc
+};
+
 class XmlAutoSerializer {
 public:
+    /// @brief Return format from file name.
+    [[nodiscard]] static XmlAutoSerializerFormat getFormat(const std::filesystem::path& file_path);
+
     /// @brief Detect format from file name.
     [[nodiscard]] static std::shared_ptr<pugi::xml_document> read(const std::filesystem::path& file_path);
 
