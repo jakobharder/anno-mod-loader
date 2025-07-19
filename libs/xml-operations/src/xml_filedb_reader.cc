@@ -339,25 +339,29 @@ void FileDbReader::read_table(int offset)
 void FileDbReader::construct_xml(pugi::xml_node* xml_root, Node* db_node) {
     for (auto& db_child : db_node->children) {
         auto name = _names[db_child.id];
-        auto xml_child = xml_root->append_child((name.empty() ? ANONYMOUS_NODE : name).c_str());
+        auto& content = db_child.content;
 
         // nested attribute
         if (FileDbConverter::is_nested(name, xml_root->name()) &&
             db_child.children.size() == 1 && name.compare(_names[db_child.children[0].id]) == 0
             && db_child.children[0].children.empty() && !db_child.children[0].content.empty()
         ) {
-            xml_child.append_child(pugi::node_pcdata).set_value(
-                FileDbConverter::read(db_child.children[0].content, name, xml_root->name()).c_str()
+            content = db_child.children[0].content;
+        }
+
+        if (name.compare("ElementType") == 0) {
+            xml_root->append_attribute("Type").set_value(
+                FileDbConverter::read(content, name, xml_root->name()).c_str()
             );
         }
-        // attribute
-        else if (!db_child.content.empty()) {
+        else if (!content.empty()) {
+            auto xml_child = xml_root->append_child((name.empty() ? ANONYMOUS_NODE : name).c_str());
             xml_child.append_child(pugi::node_pcdata).set_value(
-                FileDbConverter::read(db_child.content, name, xml_root->name()).c_str()
+                FileDbConverter::read(content, name, xml_root->name()).c_str()
             );
         }
-        // element
         else if (!db_child.children.empty()) {
+            auto xml_child = xml_root->append_child((name.empty() ? ANONYMOUS_NODE : name).c_str());
             construct_xml(&xml_child, &db_child);
         }
     }
@@ -422,6 +426,7 @@ void FileDbWriter::fix_counts(pugi::xml_document* doc) {
 
 void FileDbWriter::write_data(pugi::xml_node root) {
 
+    // TODO undo attribute
     // TODO undo nesting
     // TODO undo enum
 
