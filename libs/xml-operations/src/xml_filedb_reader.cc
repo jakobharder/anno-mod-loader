@@ -6,6 +6,7 @@
 #include <locale>
 #include <map>
 #include <memory>
+#include <set>
 #include <sstream>
 #include <stack>
 #include <string_view>
@@ -35,6 +36,25 @@ enum FileDbAttributeType {
     Hex
 };
 
+using EnumeratorInfo = std::vector<std::string>;
+using ElementWithParent = std::pair<std::string_view, std::string_view>;
+
+const EnumeratorInfo VISIBILITY_OPERATORS = {
+    "And", "Or"
+};
+
+const EnumeratorInfo VISIBILITY_RESULT_TYPES = {
+    "Bool", "Int", "Float", "Dataset"
+};
+
+const EnumeratorInfo VISIBILITY_COMPARE_OPERATORS = {
+    "Equal", "Not", "Smaller", "SmallerOrEqual", "GreaterOrEqual", "Greater"
+};
+
+const EnumeratorInfo VISIBILITY_ELEMENT_TYPE = {
+    "None", "Condition", "Operator"
+};
+
 class FileDbConverter {
 public:
     static FileDbAttributeType get_converter(const std::string& name) {
@@ -45,11 +65,31 @@ public:
         return conv->second;
     }
 
-    static std::string read(const std::vector<char>& buffer, const std::string& name) {
-        return read(buffer, get_converter(name));
+    static const EnumeratorInfo* get_enumerator(const ElementWithParent& element) {
+        const auto& enumInfo = enumerator.find(element);
+        if (enumInfo == enumerator.end()) {
+            return nullptr;
+        }
+        return &enumInfo->second;
     }
 
-    static std::string read(const std::vector<char>& buffer, FileDbAttributeType converter) {
+    static bool is_nested(const std::string_view name, const std::string_view parent) {
+        return nester.end() != nester.find(ElementWithParent{name, parent});
+    }
+
+    static std::string read(const std::vector<char>& buffer, const std::string& name, const std::string_view parent) {
+        return read(buffer, get_converter(name), get_enumerator({name, parent}));
+    }
+
+    static std::string read(const std::vector<char>& buffer, FileDbAttributeType converter, const EnumeratorInfo* enumerator) {
+        if (enumerator) {
+            int32_t number = *reinterpret_cast<const int32_t*>(buffer.data());
+            if (number < 0 || number >= enumerator->size()) {
+                number = 0;
+            }
+            return enumerator->at(number);
+        }
+
         switch (converter) {
         case FileDbAttributeType::Boolean: {
             int32_t number = buffer.size() == 4 ?
@@ -145,6 +185,7 @@ public:
 
     static void setup(const fs::path& file_name) {
         converter.clear();
+        enumerator.clear();
         if (file_name.filename() == L"export.bin") {
             default_converter = FileDbAttributeType::Int32;
             converter.emplace("Text", FileDbAttributeType::Utf8);
@@ -161,6 +202,16 @@ public:
             converter.emplace("IsTemplate", FileDbAttributeType::Boolean);
             converter.emplace("IsWarning", FileDbAttributeType::Boolean);
             converter.emplace("Indentation", FileDbAttributeType::Boolean);
+
+            enumerator.emplace(ElementWithParent{"OperatorType", "VisibilityElement"}, VISIBILITY_OPERATORS);
+            enumerator.emplace(ElementWithParent{"ResultType", "VisibilityElement"}, VISIBILITY_RESULT_TYPES);
+            enumerator.emplace(ElementWithParent{"CompareOperator", "VisibilityElement"}, VISIBILITY_COMPARE_OPERATORS);
+            enumerator.emplace(ElementWithParent{"ElementType", "VisibilityElement"}, VISIBILITY_ELEMENT_TYPE);
+
+            nester.emplace(ElementWithParent{"ElementType", "VisibilityElement"});
+            nester.emplace(ElementWithParent{"OperatorType", "VisibilityElement"});
+            nester.emplace(ElementWithParent{"ResultType", "VisibilityElement"});
+            nester.emplace(ElementWithParent{"CompareOperator", "VisibilityElement"});
         }
         else {
             default_converter = FileDbAttributeType::Hex;
@@ -169,11 +220,15 @@ public:
 
 private:
     static FileDbAttributeType default_converter;
-    static std::map<std::string, FileDbAttributeType> converter;
+    static std::map<std::string_view, FileDbAttributeType> converter;
+    static std::map<ElementWithParent, EnumeratorInfo> enumerator;
+    static std::set<ElementWithParent> nester;
 };
 
 FileDbAttributeType FileDbConverter::default_converter;
-std::map<std::string, FileDbAttributeType> FileDbConverter::converter;
+std::map<std::string_view, FileDbAttributeType> FileDbConverter::converter;
+std::map<ElementWithParent, EnumeratorInfo> FileDbConverter::enumerator;
+std::set<ElementWithParent> FileDbConverter::nester;
 
 std::shared_ptr<pugi::xml_document> FileDbReader::read(const void* data, size_t size, const fs::path& file_name) {
     std::istringstream memory { std::string(reinterpret_cast<const char*>(data), size) };
@@ -285,11 +340,23 @@ void FileDbReader::construct_xml(pugi::xml_node* xml_root, Node* db_node) {
     for (auto& db_child : db_node->children) {
         auto name = _names[db_child.id];
         auto xml_child = xml_root->append_child((name.empty() ? ANONYMOUS_NODE : name).c_str());
-        if (!db_child.content.empty()) {
+
+        // nested attribute
+        if (FileDbConverter::is_nested(name, xml_root->name()) &&
+            db_child.children.size() == 1 && name.compare(_names[db_child.children[0].id]) == 0
+            && db_child.children[0].children.empty() && !db_child.children[0].content.empty()
+        ) {
             xml_child.append_child(pugi::node_pcdata).set_value(
-                FileDbConverter::read(db_child.content, name).c_str()
+                FileDbConverter::read(db_child.children[0].content, name, xml_root->name()).c_str()
             );
         }
+        // attribute
+        else if (!db_child.content.empty()) {
+            xml_child.append_child(pugi::node_pcdata).set_value(
+                FileDbConverter::read(db_child.content, name, xml_root->name()).c_str()
+            );
+        }
+        // element
         else if (!db_child.children.empty()) {
             construct_xml(&xml_child, &db_child);
         }
@@ -354,6 +421,9 @@ void FileDbWriter::fix_counts(pugi::xml_document* doc) {
 }
 
 void FileDbWriter::write_data(pugi::xml_node root) {
+
+    // TODO undo nesting
+    // TODO undo enum
 
     int32_t node_id = FIRST_TAG;
     int32_t attrib_id = FIRST_ATTRIB;
