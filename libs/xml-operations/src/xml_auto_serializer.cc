@@ -11,6 +11,18 @@ namespace fs = std::filesystem;
 
 namespace xmlops {
 
+XmlAutoSerializerFormat XmlAutoSerializer::getFormat(const fs::path& file_path) {
+    if (file_path.filename() == "export.bin") {
+      return XmlAutoSerializerFormat::InfoTips;
+    }
+    else if (file_path.extension() == ".fc") {
+        return XmlAutoSerializerFormat::Fc;
+    }
+    else {
+        return XmlAutoSerializerFormat::Xml;
+    }
+}
+
 std::shared_ptr<pugi::xml_document> XmlAutoSerializer::read(const fs::path& file_path) {
     std::ifstream file{ file_path, std::ios::binary | std::ios::ate };
     std::streampos fileSize = file.tellg();

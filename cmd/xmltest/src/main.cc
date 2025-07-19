@@ -61,7 +61,14 @@ void apply_patch(std::shared_ptr<pugi::xml_document> doc, const fs::path& modPat
 
 int command_show(const XmltestParameters& params, std::ostream& out) {
     auto target_doc = XmlAutoSerializer::read(params.targetPath);
-    const auto xpath = "//Asset[Values/Standard/GUID='" + params.patchPath.string() + "']";
+    std::string xpath;
+    if (XmlAutoSerializer::getFormat(params.targetPath) == XmlAutoSerializerFormat::InfoTips) {
+        xpath = "//InfoTipData[Guid='" + params.patchPath.string() + "']";
+    }
+    else {
+        xpath = "//Asset[Values/Standard/GUID='" + params.patchPath.string() + "']";
+    }
+
     const auto nodes = target_doc->select_nodes(xpath.c_str());
     for (pugi::xpath_node node : nodes) {
         node.node().print(out, "\t");
