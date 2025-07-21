@@ -33,16 +33,16 @@ private:
         }
     };
 
-    template<class T> T read() {
+    template<class T> T _read() {
         T result;
         _stream.read(reinterpret_cast<char*>(&result), sizeof(result));
         return result;
     }
 
-    bool read_data();
-    bool read_names(int offset);
-    void read_table(int offset);
-    void construct_xml(pugi::xml_node* xml_root, Node* db_node);
+    [[nodiscard]] bool _read_data();
+    [[nodiscard]] bool _read_names(int offset);
+    void _read_table(int offset);
+    void _construct_xml(pugi::xml_node* xml_root, Node* db_node);
 
     std::istream& _stream;
     size_t _size;
@@ -55,28 +55,33 @@ public:
     static void write(const pugi::xml_document* xml_doc, const std::filesystem::path& file_path);
     static void write(const pugi::xml_document* xml_doc, std::ostream& stream, const std::filesystem::path& file_name);
 
-    static void fix_counts(pugi::xml_document* xml_doc);
-
 private:
+    using IdMap = std::map<std::string, int32_t>;
+    using OrderMap = std::map<int32_t, std::string>;
+
     FileDbWriter(std::ostream& stream) : _stream(stream) {};
 
-    template<class T> void write(T data) {
-        _stream.write(reinterpret_cast<char*>(&data), sizeof(data));
-    }
+    template<typename ...T> void _write(T... data) {
+        (..., _stream.write(reinterpret_cast<char*>(&data), sizeof(data)));
+    };
 
-    void write_data(pugi::xml_node root);
-    void write_data(pugi::xml_node root, int32_t& node_id, int32_t& attrib_id);
-    int write_table(std::map<int32_t, std::string>& names);
+    static void _set_value(pugi::xml_node node, const int number);
 
-    void write_remainder(size_t length);
+    void _write_root(pugi::xml_node root);
+    void _write_node(pugi::xml_node node, int32_t& node_id, int32_t& attrib_id);
+
+    [[nodiscard]] int _write_table(std::map<int32_t, std::string>& names);
+    [[nodiscard]] int32_t _get_id(const std::string& name, IdMap& names, OrderMap& order, int32_t& current_id);
+    void _write_attrib(const std::string& name, const std::vector<char>& buffer, int32_t& attrib_id);
+    void _write_remainder(size_t length);
 
     std::ostream& _stream;
     int _node_count;
-    std::map<std::string, int32_t> _tag_names;
-    std::map<std::string, int32_t> _attrib_names;
+    IdMap _tag_names;
+    IdMap _attrib_names;
 
-    std::map<int32_t, std::string> _tag_order;
-    std::map<int32_t, std::string> _attrib_order;
+    OrderMap _tag_order;
+    OrderMap _attrib_order;
 };
 
 }

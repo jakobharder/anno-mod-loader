@@ -51,7 +51,6 @@ std::shared_ptr<pugi::xml_document> XmlAutoSerializer::read(const void* data, si
 
 void XmlAutoSerializer::fix(pugi::xml_document* doc, const fs::path& file_name) {
     if (file_name.filename() == "export.bin") {
-        FileDbWriter::fix_counts(doc);
     }
     else if (file_name.extension() == ".fc") {
         FcWriter::fix_ids(doc);
@@ -71,7 +70,6 @@ bool XmlAutoSerializer::write(pugi::xml_document* doc, const fs::path& file_path
 
 void XmlAutoSerializer::write(pugi::xml_document* doc, std::ostream& stream, const std::filesystem::path& file_name, bool format) {
     if (file_name.filename() == "export.bin") {
-        FileDbWriter::fix_counts(doc);
         FileDbWriter::write(doc, stream, file_name);
     }
     else if (file_name.extension() == ".fc") {

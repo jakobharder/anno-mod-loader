@@ -1,3 +1,4 @@
+#include <array>
 #include <charconv>
 #include <codecvt>
 #include <functional>
@@ -27,14 +28,7 @@ const int FIRST_TAG = 1;
 const int FIRST_ATTRIB = 32768;
 const std::string ANONYMOUS_NODE = "None";
 
-enum FileDbAttributeType {
-    Boolean,
-    Int32,
-    Float,
-    Utf8,
-    Utf16,
-    Hex
-};
+enum FileDbAttributeType { Boolean, Int32, Float, Utf8, Utf16, Hex };
 
 using EnumeratorInfo = std::vector<std::string>;
 using ElementWithParent = std::pair<std::string_view, std::string_view>;
@@ -52,12 +46,12 @@ const EnumeratorInfo VISIBILITY_COMPARE_OPERATORS = {
 };
 
 const EnumeratorInfo VISIBILITY_ELEMENT_TYPE = {
-    "None", "Condition", "Operator"
+    "None", "Condition", "Group"
 };
 
 class FileDbConverter {
 public:
-    static FileDbAttributeType get_converter(const std::string& name) {
+    static FileDbAttributeType get_converter(const std::string_view name) {
         const auto& conv = converter.find(name);
         if (conv == converter.end()) {
             return default_converter;
@@ -77,7 +71,7 @@ public:
         return nester.end() != nester.find(ElementWithParent{name, parent});
     }
 
-    static std::string read(const std::vector<char>& buffer, const std::string& name, const std::string_view parent) {
+    static std::string read(const std::vector<char>& buffer, const std::string_view name, const std::string_view parent) {
         return read(buffer, get_converter(name), get_enumerator({name, parent}));
     }
 
@@ -128,11 +122,27 @@ public:
         }
     }
 
-    static void write(const char* data, const std::string& name, std::vector<char>& buffer) {
-        write(data, buffer, get_converter(name));
+    static void write(const char* data, const ElementWithParent element, std::vector<char>& buffer) {
+        write(data, buffer, get_converter(element.first), get_enumerator(element));
     }
 
-    static void write(const std::string& value, std::vector<char>& buffer, FileDbAttributeType converter) {
+    static void write(const std::string& value, std::vector<char>& buffer,
+        FileDbAttributeType converter, const EnumeratorInfo* enumerator) {
+
+        if (enumerator) {
+
+            int index = 0; // default is 0
+            for (int i = 0; i < enumerator->size(); i++) {
+                if (value.compare(enumerator->at(i)) == 0) {
+                    index = i;
+                }
+            }
+
+            buffer.resize(4);
+            *reinterpret_cast<int32_t*>(buffer.data()) = index;
+            return;
+        }
+
         switch (converter) {
         case FileDbAttributeType::Boolean: {
             buffer.resize(1);
@@ -183,9 +193,27 @@ public:
         }
     }
 
+    static bool construct_xml(const std::string_view name, pugi::xml_node* xml_root, const std::vector<char>& content) {
+        if (name.compare("ElementType") == 0) {
+            xml_root->append_attribute("Type").set_value(
+                FileDbConverter::read(content, name, xml_root->name()).c_str()
+            );
+            return true;
+        }
+        else if (name.compare("ChildCount") == 0 ||
+            name.compare("InfoTipCount") == 0 ||
+            name.compare("TemplateCount") == 0) {
+            // skip counters
+            return true;
+        }
+
+        return false;
+    }
+
     static void setup(const fs::path& file_name) {
         converter.clear();
         enumerator.clear();
+        nester.clear();
         if (file_name.filename() == L"export.bin") {
             default_converter = FileDbAttributeType::Int32;
             converter.emplace("Text", FileDbAttributeType::Utf8);
@@ -223,6 +251,76 @@ private:
     static std::map<std::string_view, FileDbAttributeType> converter;
     static std::map<ElementWithParent, EnumeratorInfo> enumerator;
     static std::set<ElementWithParent> nester;
+
+    // structural conversions
+public:
+    template<typename WriteAction>
+    static void attributes_and_counts(pugi::xml_node node, WriteAction write_action) {
+        const pugi::xml_attribute attrib = node.attribute("Type");
+        if (attrib) {
+            std::vector<char> buffer;
+            FileDbConverter::write(attrib.value(), ElementWithParent{"ElementType", node.name()}, buffer);
+            write_action("ElementType", buffer);
+        }
+        node.remove_attributes();
+
+        FileDbConverter counter{node.name()};
+        for (auto& child : node.children()) {
+            counter.check(child);
+        }
+        counter._count_elements(write_action);
+    }
+
+    FileDbConverter(const std::string_view name) {
+        if (0 == name.compare("InfoElement")) {
+            _counter_name = "ChildCount";
+        }
+        else if (0 == name.compare("InfoTips")) {
+            _counter_name = "InfoTipCount";
+            _secondary_name = "TemplateCount";
+        }
+        _counter = 0;
+        _secondary = 0;
+    }
+
+    void check(const pugi::xml_node& node) {
+        if (_counter_name.empty()) {
+            return;
+        }
+
+        const auto& name = node.name();
+        if (0 == std::strcmp("InfoElement", name)) {
+            _counter++;
+        }
+        else if (0 == std::strcmp("InfoTipData", name)) {
+            if (0 == std::strcmp("True", node.child_value("IsTemplate"))) {
+                _secondary++;
+            }
+            else {
+                _counter++;
+            }
+        }
+    }
+
+    template<typename WriteAction>
+    void _count_elements(WriteAction write_action) {
+        if (!_counter_name.empty()) {
+            std::vector<char> buffer{sizeof(_counter)};
+            std::memcpy(buffer.data(), &_counter, sizeof(_counter));
+            write_action(_counter_name, buffer);
+        }
+        if (!_secondary_name.empty()) {
+            std::vector<char> buffer{sizeof(_secondary)};
+            std::memcpy(buffer.data(), &_secondary, sizeof(_secondary));
+            write_action(_secondary_name, buffer);
+        }
+    }
+
+private:
+    std::string _counter_name;
+    int _counter;
+    std::string _secondary_name;
+    int _secondary;
 };
 
 FileDbAttributeType FileDbConverter::default_converter;
@@ -246,26 +344,26 @@ std::shared_ptr<pugi::xml_document> FileDbReader::read(std::istream& stream, con
     reader._stream.seekg(0, std::ios::end);
     reader._size = reader._stream.tellg();
     reader._stream.seekg(0, std::ios::beg);
-    if (!reader.read_data() || !reader.read_names(OFFSET_TO_OFFSETS)) {
+    if (!reader._read_data() || !reader._read_names(OFFSET_TO_OFFSETS)) {
         std::cout << "error parsing dom" << std::endl;
         return {};
     }
 
     auto doc = std::make_shared<pugi::xml_document>();
-    pugi::xml_node root = doc->append_child("Content");
-    reader.construct_xml(&root, &reader._root);
+    pugi::xml_node root = doc->append_child("InfoTips");
+    reader._construct_xml(&root, &reader._root);
 
     return doc;
 }
 
-bool FileDbReader::read_data() {
+bool FileDbReader::_read_data() {
     int current_level = 0;
     Node* current_node = &_root;
 
     while (current_level >= 0 && current_node != nullptr)
     {
-        int32_t content_size = read<int32_t>();
-        int32_t id = read<int32_t>();
+        int32_t content_size = _read<int32_t>();
+        int32_t id = _read<int32_t>();
 
         bool terminator = id <= 0;
         bool attrib = id >= FIRST_ATTRIB;
@@ -300,28 +398,28 @@ bool FileDbReader::read_data() {
     return true;
 }
 
-bool FileDbReader::read_names(int offset) {
+bool FileDbReader::_read_names(int offset) {
     _stream.seekg(_size - offset);
 
-    int32_t tag_table = read<int32_t>();
-    int32_t attrib_table = read<int32_t>();
+    int32_t tag_table = _read<int32_t>();
+    int32_t attrib_table = _read<int32_t>();
 
-    read_table(tag_table);
-    read_table(attrib_table);
+    _read_table(tag_table);
+    _read_table(attrib_table);
 
     return true;
 }
 
-void FileDbReader::read_table(int offset)
+void FileDbReader::_read_table(int offset)
 {
     _stream.seekg(offset);
 
-    int32_t count = read<int32_t>();
+    int32_t count = _read<int32_t>();
     std::vector<uint16_t> ids;
     ids.resize(count);
 
     for (int i = 0; i < count; i++) {
-        ids[i] = read<uint16_t>();
+        ids[i] = _read<uint16_t>();
     }
     for (int i = 0; i < count; i++) {
         std::stringstream name_stream;
@@ -336,7 +434,7 @@ void FileDbReader::read_table(int offset)
     }
 }
 
-void FileDbReader::construct_xml(pugi::xml_node* xml_root, Node* db_node) {
+void FileDbReader::_construct_xml(pugi::xml_node* xml_root, Node* db_node) {
     for (auto& db_child : db_node->children) {
         auto name = _names[db_child.id];
         auto& content = db_child.content;
@@ -349,10 +447,8 @@ void FileDbReader::construct_xml(pugi::xml_node* xml_root, Node* db_node) {
             content = db_child.children[0].content;
         }
 
-        if (name.compare("ElementType") == 0) {
-            xml_root->append_attribute("Type").set_value(
-                FileDbConverter::read(content, name, xml_root->name()).c_str()
-            );
+        if (FileDbConverter::construct_xml(name, xml_root, content)) {
+            // done
         }
         else if (!content.empty()) {
             auto xml_child = xml_root->append_child((name.empty() ? ANONYMOUS_NODE : name).c_str());
@@ -362,7 +458,7 @@ void FileDbReader::construct_xml(pugi::xml_node* xml_root, Node* db_node) {
         }
         else if (!db_child.children.empty()) {
             auto xml_child = xml_root->append_child((name.empty() ? ANONYMOUS_NODE : name).c_str());
-            construct_xml(&xml_child, &db_child);
+            _construct_xml(&xml_child, &db_child);
         }
     }
 }
@@ -376,17 +472,15 @@ void FileDbWriter::write(const pugi::xml_document* doc, std::ostream& stream, co
     FileDbConverter::setup(file_name);
 
     FileDbWriter writer{ stream };
-    writer.write_data(doc->child("Content"));
-    int tag_offset = writer.write_table(writer._tag_order);
-    int attrib_offset = writer.write_table(writer._attrib_order);
+    writer._write_root(doc->child("InfoTips"));
+    int tag_offset = writer._write_table(writer._tag_order);
+    int attrib_offset = writer._write_table(writer._attrib_order);
 
     { // v3
-        writer.write<int32_t>(0);
-        writer.write<int32_t>(writer._node_count);
+        writer._write<int32_t>(0, writer._node_count);
     }
 
-    writer.write<int32_t>(tag_offset);
-    writer.write<int32_t>(attrib_offset);
+    writer._write<int32_t>(tag_offset, attrib_offset);
 
     uint8_t magic[] = { 0x08, 0x00, 0x00, 0x00, 0xFD, 0xFF, 0xFF, 0xFF };
     writer._stream.write(reinterpret_cast<char*>(magic), sizeof(magic));
@@ -394,106 +488,61 @@ void FileDbWriter::write(const pugi::xml_document* doc, std::ostream& stream, co
     writer._stream.flush();
 }
 
-void FileDbWriter::fix_counts(pugi::xml_document* doc) {
-    int infotips = 0;
-    int templates = 0;
-
-    for (auto node : doc->select_nodes("/Content/InfoTipData")) {
-        infotips++;
-    }
-    for (auto node : doc->select_nodes("/Content/InfoTipData[IsTemplate='True']")) {
-        templates++;
-        infotips--;
-    }
-
-    doc->child("Content").child("InfoTipCount").first_child().set_value(fmt::format("{:d}", infotips).c_str());
-    doc->child("Content").child("TemplateCount").first_child().set_value(fmt::format("{:d}", templates).c_str());
-
-    for (auto node : doc->select_nodes("//ChildCount")) {
-         int visibility_elements = 0;
-         int info_elements = 0;
-         for (auto& element : node.parent().children()) {
-            if (strcmp(element.name(), "VisibilityElement") == 0) {
-                visibility_elements++;
-            }
-            else if (strcmp(element.name(), "InfoElement") == 0) {
-                info_elements++;
-            }
-         }
-         node.node().first_child().set_value(fmt::format("{:d}", std::max(info_elements, visibility_elements)).c_str());
-    }
+void FileDbWriter::_set_value(pugi::xml_node node, const int number) {
+    std::array<char, 12> buffer;
+    auto [ptr, ec] = std::to_chars(buffer.data(), buffer.data() + buffer.size(), number);
+    node.append_child(pugi::xml_node_type::node_pcdata).set_value(ptr);
 }
 
-void FileDbWriter::write_data(pugi::xml_node root) {
-
-    // TODO undo attribute
-    // TODO undo nesting
-    // TODO undo enum
-
+void FileDbWriter::_write_root(pugi::xml_node root) {
     int32_t node_id = FIRST_TAG;
     int32_t attrib_id = FIRST_ATTRIB;
     _tag_names.emplace(ANONYMOUS_NODE, node_id);
     _attrib_names.emplace(ANONYMOUS_NODE, attrib_id);
 
     _node_count = 1;
-    write_data(root, node_id, attrib_id);
+    _write_node(root, node_id, attrib_id);
 }
 
-void FileDbWriter::write_data(pugi::xml_node node, int32_t& node_id, int32_t& attrib_id) {
+void FileDbWriter::_write_node(pugi::xml_node node, int32_t& node_id, int32_t& attrib_id) {
+    FileDbConverter::attributes_and_counts(node, [this, &attrib_id](const std::string_view name, const std::vector<char>& buffer) {
+        this->_write_attrib(std::string{ name }, buffer, attrib_id);
+    });
+
     for (auto& child : node.children()) {
         _node_count++;
 
         auto has_children = child.begin() != child.end();
         if (has_children && child.first_child().type() == pugi::node_pcdata) {
+
+            if (FileDbConverter::is_nested(child.name(), node.name())) {
+                int32_t id = _get_id(child.name(), _tag_names, _tag_order, node_id);
+                _write<int32_t>(0, id);
+            }
+
             std::vector<char> buffer;
-            FileDbConverter::write(child.child_value(), child.name(), buffer);
-
-            int32_t id;
-            auto reuse_id = _attrib_names.find(child.name());
-            if (reuse_id != _attrib_names.end()) {
-                id = reuse_id->second;
-            }
-            else {
-                _attrib_names.emplace(child.name(), id = ++attrib_id);
-                _attrib_order.emplace(id, child.name());
-            }
-
-            write<int32_t>((int32_t)buffer.size());
-            write<int32_t>(id);
-
-            _stream.write(buffer.data(), buffer.size());
-            write_remainder(buffer.size());
+            FileDbConverter::write(child.child_value(), ElementWithParent{child.name(), node.name()}, buffer);
+            _write_attrib(child.name(), buffer, attrib_id);
         }
-        else /*if (has_children)*/ {
-            int32_t id;
-            auto reuse_id = _tag_names.find(child.name());
-            if (reuse_id != _tag_names.end()) {
-                id = reuse_id->second;
-            }
-            else {
-                _tag_names.emplace(child.name(), id = ++node_id);
-                _tag_order.emplace(id, child.name());
-            }
-
-            write<int32_t>(0);
-            write<int32_t>(id);
-            write_data(child, node_id, attrib_id);
+        else {
+            int32_t id = _get_id(child.name(), _tag_names, _tag_order, node_id);
+            _write<int32_t>(0, id);
+            _write_node(child, node_id, attrib_id);
         }
     }
 
     // close tag
-    write<int32_t>(0);
-    write<int32_t>(0);
+    _write<int32_t>(0, 0);
 }
 
-int FileDbWriter::write_table(std::map<int32_t, std::string>& names) {
+int FileDbWriter::_write_table(std::map<int32_t, std::string>& names) {
     size_t offset = _stream.tellp();
 
-    write<int32_t>((int32_t)names.size());
+    _write<int32_t>((int32_t)names.size());
     size_t written = sizeof(int32_t) + names.size() * sizeof(uint16_t);
 
     for (auto& entry : names) {
-        write<uint16_t>(entry.first);
+        _write<uint16_t>(entry.first);
     }
     for (auto& entry : names) {
         // write including zero
@@ -501,11 +550,33 @@ int FileDbWriter::write_table(std::map<int32_t, std::string>& names) {
         written += entry.second.size() + 1;
     }
 
-    write_remainder(written);
+    _write_remainder(written);
     return (int)offset;
 }
 
-void FileDbWriter::write_remainder(size_t size) {
+int32_t FileDbWriter::_get_id(const std::string& name, IdMap& names, OrderMap& order, int32_t& current_id) {
+    int32_t id;
+    auto reuse_id = names.find(name);
+    if (reuse_id != names.end()) {
+        id = reuse_id->second;
+    }
+    else {
+        names.emplace(name, id = ++current_id);
+        order.emplace(id, name);
+    }
+    return id;
+}
+
+void FileDbWriter::_write_attrib(const std::string& name, const std::vector<char>& buffer, int32_t& attrib_id) {
+    const int32_t id = _get_id(name, _attrib_names, _attrib_order, attrib_id);
+
+    _write<int32_t>(static_cast<int32_t>(buffer.size()), id);
+
+    _stream.write(buffer.data(), buffer.size());
+    _write_remainder(buffer.size());
+}
+
+void FileDbWriter::_write_remainder(size_t size) {
     int unaligned_count = size % ATTRIB_BLOCK_SIZE;
     if (unaligned_count > 0) {
         for (int i = unaligned_count; i < ATTRIB_BLOCK_SIZE; i++) {
