@@ -11,6 +11,8 @@ namespace pugi {
 
 namespace xmlops {
 
+using ElementWithParent = std::pair<std::string_view, std::string_view>;
+
 class FileDbReader {
 public:
     static std::shared_ptr<pugi::xml_document> read(const void* data, size_t size, const std::filesystem::path& file_name);
@@ -56,7 +58,7 @@ public:
     static void write(const pugi::xml_document* xml_doc, std::ostream& stream, const std::filesystem::path& file_name);
 
 private:
-    using IdMap = std::map<std::string, int32_t>;
+    using IdMap = std::map<std::string, int32_t, std::less<>>;
     using OrderMap = std::map<int32_t, std::string>;
 
     FileDbWriter(std::ostream& stream) : _stream(stream) {};
@@ -71,8 +73,8 @@ private:
     void _write_node(pugi::xml_node node, int32_t& node_id, int32_t& attrib_id);
 
     [[nodiscard]] int _write_table(std::map<int32_t, std::string>& names);
-    [[nodiscard]] int32_t _get_id(const std::string& name, IdMap& names, OrderMap& order, int32_t& current_id);
-    void _write_attrib(const std::string& name, const std::vector<char>& buffer, int32_t& attrib_id);
+    [[nodiscard]] int32_t _get_id(const std::string_view name, IdMap& names, OrderMap& order, int32_t& current_id);
+    void _write_attrib(const ElementWithParent element, const std::vector<char>& buffer, int32_t& attrib_id, int32_t& node_id);
     void _write_remainder(size_t length);
 
     std::ostream& _stream;
