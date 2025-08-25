@@ -10,9 +10,9 @@ namespace pugi {
 namespace xmlops {
 
 enum XmlAutoSerializerFormat {
-    Xml,
-    InfoTips,
-    Fc
+    FormatXml,
+    FormatInfoTips,
+    FormatFc
 };
 
 class XmlAutoSerializer {

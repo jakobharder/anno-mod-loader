@@ -25,9 +25,11 @@ bool path_equal(const std::filesystem::path& a, const std::filesystem::path& b) 
 
 void apply_patch(std::shared_ptr<pugi::xml_document> doc, const fs::path& modPath, const fs::path& patchPath)
 {
+    XmlPatchType patch_type = XmlPatchType::Assets;
     fs::path mainPatchFile = patchPath;
     if (patchPath.parent_path().filename() == "infotips") {
         mainPatchFile = "data/infotips/export.bin.xml";
+        patch_type = XmlPatchType::InfoTips;
     }
     else if (patchPath.filename() != "export.bin.xml"
         && patchPath.stem().extension() != ".fc"
@@ -38,6 +40,9 @@ void apply_patch(std::shared_ptr<pugi::xml_document> doc, const fs::path& modPat
         else {
             mainPatchFile = "data/config/export/main/asset/templates.xml";
         }
+    }
+    else if (patchPath.filename() == "export.bin.xml") {
+        patch_type = XmlPatchType::InfoTips;
     }
     const fs::path fullPath = modPath / mainPatchFile;
     if (!fs::exists(fullPath)) {
@@ -55,14 +60,14 @@ void apply_patch(std::shared_ptr<pugi::xml_document> doc, const fs::path& modPat
         mainPatchFile,
         fs::absolute(modPath));
     for (auto& operation : operations) {
-        operation.Apply(doc);
+        operation.Apply(doc, patch_type);
     }
 }
 
 int command_show(const XmltestParameters& params, std::ostream& out) {
     auto target_doc = XmlAutoSerializer::read(params.targetPath);
     std::string xpath;
-    if (XmlAutoSerializer::getFormat(params.targetPath) == XmlAutoSerializerFormat::InfoTips) {
+    if (XmlAutoSerializer::getFormat(params.targetPath) == XmlAutoSerializerFormat::FormatInfoTips) {
         xpath = "//InfoTipData[Guid='" + params.patchPath.string() + "']";
     }
     else {
@@ -134,10 +139,15 @@ std::shared_ptr<pugi::xml_document> _patch(std::shared_ptr<pugi::xml_document> d
         std::make_shared<XmlOperationContext>(game_path, mod_path, mod_id, &variables, mod_name);
     context->SetLoader(loader);
 
+    XmlPatchType patch_type = XmlPatchType::Assets;
+    if (XmlAutoSerializer::getFormat(params.targetPath) == XmlAutoSerializerFormat::FormatInfoTips) {
+        patch_type = XmlPatchType::InfoTips;
+    }
+
     auto start = std::chrono::high_resolution_clock::now();
     auto operations = XmlOperation::GetXmlOperations(context, game_path);
     for (auto& operation : operations) {
-        operation.Apply(doc);
+        operation.Apply(doc, patch_type);
     }
 
     XmlAutoSerializer::fix(doc.get(), params.patchPath.stem());

@@ -14,6 +14,12 @@ namespace fs = std::filesystem;
 
 namespace xmlops {
 
+enum XmlPatchType {
+    Generic, // not used atm
+    Assets,
+    InfoTips
+};
+
 class XmlOperationContext
 {
 public:
@@ -108,7 +114,8 @@ public:
               pugi::xpath_variable_set* variables,
               std::shared_ptr<XmlOperationContext> context,
               pugi::xml_node node,
-              const bool skip_values);
+              const bool skip_values,
+              const XmlPatchType patch_type);
 
     /// @brief Select XPath nodes.
     /// @param assetNode Start search here. Resulting asset is stored back.
@@ -150,7 +157,7 @@ private:
     SpeculativePathType speculative_path_type_ = SpeculativePathType::NONE;
 
     void ReplaceStaticVariables(std::string& path);
-    void ReadPath(std::string path, std::string guid, std::string property, std::string templ, bool skip_values);
+    void ReadPath(std::string path, std::string guid, std::string property, std::string templ, bool skip_values, const XmlPatchType patch_type);
 
     [[nodiscard]] std::optional<pugi::xml_node> FindAsset(const std::string& guid, pugi::xml_node node, int speculate_position = 2) const;
     [[nodiscard]] std::optional<pugi::xml_node> FindTemplate(const std::string& temp, pugi::xml_node node) const;
@@ -180,7 +187,7 @@ public:
 
     [[nodiscard]] Type GetType() const { return type_; }
 
-    void Apply(std::shared_ptr<pugi::xml_document> doc);
+    void Apply(std::shared_ptr<pugi::xml_document> doc, const XmlPatchType patch_type = XmlPatchType::Assets);
 
 public:
     static std::vector<XmlOperation> GetXmlOperations(
@@ -224,8 +231,8 @@ private:
 
     // Standard ModOps
 
-    void RecursiveMergeFlags(pugi::xml_node game_node);
-    void RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patching_node);
+    void RecursiveMergeFlags(pugi::xml_node game_node, const XmlPatchType patch_type);
+    void RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patching_node, const XmlPatchType patch_type);
     void ModOpAdd(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, const std::vector<pugi::xml_node>& content_nodes);
 
     // Inline ModOps
@@ -235,7 +242,7 @@ private:
 
     // Helpers
 
-    void CreateQueries();
+    void CreateQueries(const XmlPatchType patch_type);
     void ReadType(pugi::xml_node node);
     [[nodiscard]] static std::string GetXmlPropString(pugi::xml_node node, const std::string& prop_name)
     {

@@ -10,6 +10,7 @@ There are a few changes in file structure and modinfo.json, some are new or modi
 - [ModOp Paths](#modop-paths)
 - [Inline ModOps](#inline-modops)
 - [Advanced Modinfos](#advanced-modinfos)
+- [InfoTips](#infotips)
 
 ## General Changes
 
@@ -20,6 +21,33 @@ Its path is now: `data\base\config\export\assets.xml`.
 
 Most base game files are also under `data\base` now.
 
+### Localization
+
+Text IDs are based on OasisID now instead of GUIDs.
+
+It's best to use the same ID range as your GUIDs for modding purposes.
+E.g. matching LineID of a building name with the GUID of the building asset.
+
+```xml
+<ModOp Add="/TextExport/Texts[1]">
+  <Text>
+    <Text>Happy Modding</Text>
+    <LineId>2001000000</LineId>
+  </Text>
+</ModOp>
+```
+
+### Safe Ranges
+
+Name | Range
+-- | --
+GUIDs         | 1.337.471.142 - 2.147.483.647
+LineIDs       | 1.337.471.142 - 2.147.483.647
+Personal use  | 2.001.000.000 - 2.001.009.999
+Enums         | will come with future releases
+
+Note: The personal use GUID range may get some log warnings in the future.
+
 ### Meta Information
 
 The `modinfo.json` now supports JSON with comments.
@@ -29,7 +57,7 @@ The mod loader will not load mods without it.
 
 There are a few more informational entries in `modinfo.json`.
 
-```json
+```jsonc
 {
   "Anno": 8,
   // ...
@@ -113,13 +141,13 @@ When using `GUID` lookup with the short style skips `/Values` like the previousl
 
 Short | Legacy | Comment
 --- | --- | ---
-`Assets`| |Similar to `addNextSibling` + `GUID` without `Path`.
-`Add`|`Type="add"`|Same as `Assets` when used without `Path`, `GUID` and `Property`. Otherwise unchanged.
-`Remove`|`Type="remove"`|unchanged
+`Assets`|(`Type="add"`)|Similar to `addNextSibling` + `GUID` without `Path`.
+`Add`|`Type="add"`|Same as `Assets` when used without `Path`, `GUID` and `Property`.<br/>Otherwise unchanged.
 `Append`|`Type="addNextSibling"`|renamed, otherwise unchanged
 `Prepend`|`Type="addPrevSibling"`|renamed, otherwise unchanged
-`Replace`|`Type="replace`|unchanged
 `Merge`|`Type="merge"`|Includes improved flags and list handling.
+`Replace`|`Type="replace`|unchanged
+`Remove`|`Type="remove"`|unchanged
 
 ### Add Assets - `Assets`
 
@@ -137,12 +165,20 @@ The fastest way to add assets is to use `add` without `GUID` or `Path`.
 </ModOps>
 ```
 
-### Additional Lookups
+### Property Lookup
 
-There are additional lookups to make the code faster and more readable.
+You can use a property name for faster lookup and more readable code.
+It will select `Values/<Property>/` of all assets containing that property.
 
-- `Property` in `assets.xml`:
-  access `Values/<Property>/` of all assets containing a specific property
+Note: this will not select assets, that have the property in `templates.xml` but not in `assets.xml` or only in their base asset.
+
+```xml
+<ModOp Property="ModuleOwner" Merge="self::node()[FarmType='PlantFarm']">
+  <ModuleOwner>
+    <ModuleBuildRadius>20</ModuleBuildRadius>
+  </ModuleOwner>
+</ModOp>
+```
 
 ## ModOp Paths
 
@@ -219,7 +255,7 @@ You can leave out `mod-id` if the variable comes from the same mod shortening th
 
 The `options.json` file is read from the `mods/` folder with the following format:
 
-```json
+```jsonc
 {
   "mod-id": {
     "range": "10",
@@ -424,6 +460,9 @@ Specify user customizable options of a mod (like iModYourAnno tweaks) in `modinf
 
 ### Scripts
 
+**Experimental**: This is the first release with notable script features.
+Expect changes with the next versions.
+
 Define scripts and commands in `modinfo.json`:
 
 ```jsonc
@@ -486,3 +525,70 @@ All entries are now grouped under `Dependencies`.
 |`LoadAfter`|List mods to load before this mod.
 |`Deprecate`|List mods that are replaced by this mod.<br/>A warning will be printed in the mod-loader.log. LoadAfter and Require will use the new ID.
 |`Incompatible`|List incompatible mods. A warning will be printed in the mod-loader.log
+
+## InfoTips
+
+### GUID Lookup
+
+You can now use `GUID` and `@` for easier lookup.
+
+```xml
+<ModOp GUID="3762" Remove="/InfoElement[SubText='-6904723732129714876']" />
+
+<ModOp Remove="@3762/InfoElement[SubText='-6904723732129714876']" />
+```
+
+### Improved Readability
+
+There are a few changes to improve readability:
+
+1. Types and Operators have proper names instead of numbers.
+2. ElementType is now an attribute of InfoElement and VisibilityElement.
+3. Nested operators like `CompareOperator` are now more compact.
+4. No `ChildCount`s anymore
+
+```xml
+<InfoElement Type="Container">
+  <VisibilityElement Type="Group">
+    <VisibilityElement Type="Condition">
+      <CompareOperator>Greater</CompareOperator>
+      <!-- .. -->
+    </VisibilityElement>
+  </VisibilityElement>
+  <!-- .. -->
+</InfoElement>
+```
+
+Note: These improvements are not part of [FileDBReader](https://github.com/anno-mods/FileDBReader/blob/master/FileFormats/infotip.xml), except the type and operator names. Keep that in mind when comparing **FileDBReader** and **xmltest** output.
+
+<details>
+<summary>Previous format</summary>
+
+```xml
+<InfoElement>
+  <ElementType>23</ElementType>
+  <ChildCount>1</ChildCount>
+  <VisibilityElement>
+    <ElementType>
+      <ElementType>2</ElementType>
+    <ElementType>
+    <VisibilityElement>
+      <ElementType>
+        <ElementType>1</ElementType>
+      <ElementType>
+      <ChildCount>1</ChildCount>
+      <CompareOperator>
+        <CompareOperator>5</CompareOperator>
+      </CompareOperator>
+      <!-- .. -->
+    </VisibilityElement>
+  </VisibilityElement>
+  <!-- .. -->
+</InfoElement>
+```
+
+</details>
+
+### Text in InfoTips
+
+Reminder: Texts use OasisIDs now (`TextId`) instead of GUIDs (`TextGUID`).
