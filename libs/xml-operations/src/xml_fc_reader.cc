@@ -11,6 +11,7 @@
 #include <spdlog/fmt/fmt.h>
 #include <pugixml.hpp>
 
+namespace fmt_alias = fmt;
 namespace fs = std::filesystem;
 
 #include "xml_fc_reader.h"
@@ -46,7 +47,7 @@ std::shared_ptr<pugi::xml_document> FcReader::read(std::istream& stream, const f
         if (ch == '[' && cdata.str() == "CDATA[") {
             int32_t count = reader.read<int32_t>();
             for (int i = 0; i < count / 4; i++) {
-                true_xml << " " << fmt::format("{:d}", reader.read<int32_t>());
+                true_xml << " " << fmt_alias::format("{:d}", reader.read<int32_t>());
             }
         }
     }
@@ -122,11 +123,11 @@ void FcWriter::fix_ids(pugi::xml_document* doc) {
                 next_id++;
                 id = next_id;
             }
-            node.node().first_child().set_value(fmt::format("{:d}", id).c_str());
+            node.node().first_child().set_value(fmt_alias::format("{:d}", id).c_str());
         }
     }
 
-    doc->child("IdCounter").first_child().set_value(fmt::format("{:d}", next_id).c_str());
+    doc->child("IdCounter").first_child().set_value(fmt_alias::format("{:d}", next_id).c_str());
 }
 
 }
