@@ -13,13 +13,13 @@ namespace xmlops {
 
 XmlAutoSerializerFormat XmlAutoSerializer::getFormat(const fs::path& file_path) {
     if (file_path.filename() == "export.bin") {
-      return XmlAutoSerializerFormat::InfoTips;
+      return XmlAutoSerializerFormat::FormatInfoTips;
     }
     else if (file_path.extension() == ".fc") {
-        return XmlAutoSerializerFormat::Fc;
+        return XmlAutoSerializerFormat::FormatFc;
     }
     else {
-        return XmlAutoSerializerFormat::Xml;
+        return XmlAutoSerializerFormat::FormatXml;
     }
 }
 

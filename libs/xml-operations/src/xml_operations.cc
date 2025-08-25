@@ -226,7 +226,8 @@ XmlLookup::XmlLookup(const std::string& path,
                      pugi::xpath_variable_set* variables,
                      std::shared_ptr<XmlOperationContext> context,
                      pugi::xml_node node,
-                     const bool skip_values)
+                     const bool skip_values,
+                     const XmlPatchType patch_type)
 {
     context_ = context;
     node_ = node;
@@ -269,7 +270,7 @@ XmlLookup::XmlLookup(const std::string& path,
     }
 
     ReplaceStaticVariables(read_path);
-    ReadPath(read_path, guid_, property_, template_, skip_values);
+    ReadPath(read_path, guid_, property_, template_, skip_values, patch_type);
 }
 
 void XmlLookup::ReplaceStaticVariables(std::string& path)
@@ -323,7 +324,8 @@ void XmlLookup::ReadPath(std::string prop_path,
                          std::string guid,
                          std::string property,
                          std::string temp,
-                         bool skip_values)
+                         bool skip_values,
+                         const XmlPatchType patch_type)
 {
     if (prop_path.find('&') != std::string::npos)
     {
@@ -342,7 +344,12 @@ void XmlLookup::ReadPath(std::string prop_path,
                 guid_ = std::to_string(g);
                 speculative_path_type_ = SpeculativePathType::VALUES_CONTAINER;
                 prop_path = prop_path.substr(match.length());
-                path_ = "//Values[Standard/GUID='" + guid + "']";
+                if (patch_type == XmlPatchType::InfoTips) {
+                    path_ = "//InfoTipData[Guid='" + guid + "']";
+                }
+                else {
+                    path_ = "//Values[Standard/GUID='" + guid + "']";
+                }
             }
             else {
                 context_->Warn("Failed to construct speculative path lookup: \"" + prop_path + "\"", node_);
@@ -384,7 +391,11 @@ void XmlLookup::ReadPath(std::string prop_path,
         }
     }
     else if (!guid.empty()) {
-        if (skip_values) {
+        if (patch_type == XmlPatchType::InfoTips) {
+            speculative_path_type_ = SpeculativePathType::VALUES_CONTAINER;
+            path_                  = "//InfoTipData[Guid='" + guid + "']";
+        }
+        else if (skip_values) {
             speculative_path_type_ = SpeculativePathType::VALUES_CONTAINER;
             path_                  = "//Values[Standard/GUID='" + guid + "']";
         }
@@ -621,24 +632,24 @@ void XmlOperation::ReadType(pugi::xml_node node)
     }
 }
 
-void XmlOperation::CreateQueries()
+void XmlOperation::CreateQueries(const XmlPatchType patch_type)
 {
     if (type_ != Type::Remove) {
         nodes_ = node_.children();
     }
 
     if (type_ == Type::Assets) {
-        path_ = XmlLookup{"/AssetList/Groups[last()]/Group[last()]/Assets[last()]", {}, {}, {}, &variables_, context_, node_, skip_values_};
+        path_ = XmlLookup{"/AssetList/Groups[last()]/Group[last()]/Assets[last()]", {}, {}, {}, &variables_, context_, node_, skip_values_, patch_type};
     }
     else {
-        path_ = XmlLookup{path_attribute_, guid_, property_, template_, &variables_, context_, node_, skip_values_};
+        path_ = XmlLookup{path_attribute_, guid_, property_, template_, &variables_, context_, node_, skip_values_, patch_type};
     }
 
-    condition_ = XmlLookup{node_.attribute("Condition").as_string(), guid_, property_, template_, &variables_, context_, node_, skip_values_};
+    condition_ = XmlLookup{node_.attribute("Condition").as_string(), guid_, property_, template_, &variables_, context_, node_, skip_values_, patch_type};
     allow_no_match_ = node_.attribute("AllowNoMatch");
 
     if (type_ != Type::Remove) {
-        content_ = XmlLookup{node_.attribute("Content").as_string(), guid_, property_, template_, &variables_, context_, node_, skip_values_};
+        content_ = XmlLookup{node_.attribute("Content").as_string(), guid_, property_, template_, &variables_, context_, node_, skip_values_, patch_type};
     }
 }
 
@@ -858,7 +869,7 @@ void XmlOperation::ModValue(std::vector<pugi::xml_node>& content_nodes) {
                 continue;
             }
 
-            auto lookup = XmlLookup{option_attr.as_string(), {}, {}, {}, &variables_, context_, node_, false};
+            auto lookup = XmlLookup{option_attr.as_string(), {}, {}, {}, &variables_, context_, node_, false, XmlPatchType::Generic};
 
             context_->Debug("Looking up value \"{}\"", lookup.GetPath());
             XmlLookup::Result result;
@@ -884,7 +895,7 @@ void XmlOperation::ModValue(std::vector<pugi::xml_node>& content_nodes) {
     }
 }
 
-void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
+void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType patch_type)
 {
     auto start = std::chrono::high_resolution_clock::now();
     auto logTime = [&start, this](const char* group = "ModOp") {
@@ -894,7 +905,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
             this->context_->GetGenericPath(), this->context_->GetLine(node_));
     };
 
-    CreateQueries();
+    CreateQueries(patch_type);
 
     std::optional<pugi::xml_node> cachedNode;
     if (GetType() == XmlOperation::Type::None || !CheckCondition(doc, cachedNode)) {
@@ -986,10 +997,10 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc)
                 str_equals_nocase(content_nodes.begin()->name(), game_node.name())) {
                 // legacy merge
                 // skip single container if it's named same as the target node
-                RecursiveMerge(game_node.parent(), *content_nodes.begin());
+                RecursiveMerge(game_node.parent(), *content_nodes.begin(), patch_type);
             }
             else if (!content_nodes.empty()) {
-                RecursiveMerge(game_node, *content_nodes.begin());
+                RecursiveMerge(game_node, *content_nodes.begin(), patch_type);
             }
         } else if (GetType() == XmlOperation::Type::AddNextSibling) {
             for (auto &&node : content_nodes) {
@@ -1155,10 +1166,10 @@ static bool HasNonTextNode(pugi::xml_node node)
     return false;
 }
 
-void XmlOperation::RecursiveMergeFlags(pugi::xml_node game_node) {
+void XmlOperation::RecursiveMergeFlags(pugi::xml_node game_node, const XmlPatchType patch_type) {
     if (game_node.first_child()) {
         for (auto& child : game_node.children()) {
-            RecursiveMergeFlags(child);
+            RecursiveMergeFlags(child, patch_type);
         }
     }
     else {
@@ -1172,7 +1183,7 @@ void XmlOperation::RecursiveMergeFlags(pugi::xml_node game_node) {
                 game_node.parent().remove_child(game_node);
             }
             else if (str_equals_nocase(attr.name(), "Insert") && str_equals_nocase(game_node.name(), "ModValue")) {
-                auto lookup = XmlLookup{attr.as_string(), {}, {}, {}, &variables_, context_, node_, false};
+                auto lookup = XmlLookup{attr.as_string(), {}, {}, {}, &variables_, context_, node_, false, patch_type};
 
                 context_->Debug("Looking up value \"{}\"", lookup.GetPath());
                 XmlLookup::Result result;
@@ -1202,7 +1213,7 @@ void XmlOperation::RecursiveMergeFlags(pugi::xml_node game_node) {
     }
 }
 
-void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patching_node)
+void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patching_node, const XmlPatchType patch_type)
 {
     if (!patching_node) {
         return;
@@ -1338,11 +1349,11 @@ void XmlOperation::RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patch
                 game_node.set_value(cur_node.value());
             } else {
                 MergeProperties(game_node, cur_node);
-                RecursiveMerge(game_node, cur_node.first_child());
+                RecursiveMerge(game_node, cur_node.first_child(), patch_type);
             }
         }
         else if (append_missing) {
-            RecursiveMergeFlags(root_node.append_copy(cur_node));
+            RecursiveMergeFlags(root_node.append_copy(cur_node), patch_type);
         }
         else {
             // do nothing
@@ -1358,7 +1369,7 @@ void XmlOperation::ModOpAdd(std::shared_ptr<pugi::xml_document> doc,
         // TODO if node.name == Asset
         if (auto base_asset = node.child("BaseAssetGUID"); base_asset) {
             auto base_guid = base_asset.child_value();
-            auto lookup = XmlLookup{{}, base_guid, {}, {}, nullptr, context_, node_, false};
+            auto lookup = XmlLookup{{}, base_guid, {}, {}, nullptr, context_, node_, false, XmlPatchType::Assets};
 
             context_->Debug("Looking up {}", lookup.GetPath());
             xmlops::XmlLookup::Result results;
