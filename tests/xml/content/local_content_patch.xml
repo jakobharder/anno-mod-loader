@@ -1,0 +1,23 @@
+<ModOps>
+  <!-- simple -->
+  <!-- <ModOp Type="add" Path="@123" Content="Standard/GUID/text()">
+    <Simple><ModOpContent /></Simple>
+  </ModOp> -->
+
+  <!-- GUID -->
+  <ModOp GUID="123" Add="" Content="Standard/GUID/text()">
+    <GUID><ModOpContent /></GUID>
+  </ModOp>
+
+  <!-- inline -->
+  <ModOp Merge="@123">
+    <Inline><ModValue Insert="../Standard/GUID/text()" /></Inline>
+  </ModOp>
+
+  <!-- property -->
+  <ModOp Property="ItemSocketSet" Merge="../">
+    <ExpeditionAttribute>
+      <FluffText><ModValue Insert="../../ItemSocketSet/SetBuff/text()" /></FluffText>
+    </ExpeditionAttribute>
+  </ModOp>
+</ModOps>

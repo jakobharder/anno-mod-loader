@@ -1,0 +1,9 @@
+{
+  "name": "Local content",
+  "expected": [
+    "//Values[Standard/GUID=GUID]",
+    "//Values[Standard/GUID=Inline]",
+    "//Values[Standard/GUID='124']/ExpeditionAttribute[FluffText='234']",
+    "//Values[Standard/GUID='125']/ExpeditionAttribute[FluffText='567']"
+  ]
+}

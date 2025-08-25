@@ -16,20 +16,24 @@ There are a few changes in file structure and modinfo.json, some are new or modi
 ### Changed Paths
 
 The location of the main `assets.xml` has changed.
-
 Its path is now: `data\base\config\export\assets.xml`.
+
+Most base game files are also under `data\base` now.
 
 ### Meta Information
 
-Only folders with a `modinfo.json` are considered a mod.
+The `modinfo.json` now supports JSON with comments.
+
+Only folders with a `modinfo.json` or `modinfo.jsonc` are considered a mod.
 The mod loader will not load mods without it.
 
-There are a few more informational fields in `modinfo.json`.
+There are a few more informational entries in `modinfo.json`.
 
 ```json
 {
   "Anno": 8,
-  // ..
+  // ...
+  // new entries:
   "Difficulty": "harder",
   "GameSetup": {
     "RequiresNewGame": false,
@@ -45,7 +49,7 @@ There are a few more informational fields in `modinfo.json`.
 |`Anno` (mandatory)|`8`|Only mods with the correction version will be loaded
 |`Difficulty` (mandatory)|`cheat`|e.g. no construction costs
 |.|`easier`|makes the game easier, e.g. reduced needs consumption
-|.|`unchanged`|is balanced similar as the vanilla game
+|.|`unchanged`|is balanced similar as the vanilla game, e.g. new productions or quality of life features like free farmfield placement
 |.|`harder`|makes the game harder
 |`RequiresNewGame`|`true` or `false`|only works with a new savegame, for example like river slots.<br/>Default is `false`.
 |`SafeToRemove`|`true` or `false`|can be removed from a savegame without leaving trails. For example construction menu reordering.<br/>Default is `false`.
@@ -62,7 +66,7 @@ There are two top-level types of ModOps:
 - `Assets`: simple asset adding
 - `Group`/`Include`: group operations
 
-Additional, there are two operations to be used within a `ModOp`:
+Additional, there are two operations to be used within a `ModOp` called inline ModOps:
 
 - `ModItem`: change merge behavior of individual list items
 - `ModValue`: insert or modify individual values within a `ModOp`.
@@ -248,6 +252,8 @@ The `options.json` file is read from the `mods/` folder with the following forma
 
 ## Inline ModOps
 
+Inline ModOps are operators you can use inside the content of a `merge` `ModOp`.
+
 ### Merge Flags - `ModValue`
 
 Use `<ModValue Merge="Your;Flags" />` to insert one or more flags if not already present, instead of overwriting the existing flags value.
@@ -256,6 +262,9 @@ Similarily use `Remove` to remove flags.
 ```xml
 <ModOp Merge="@114365/Product">
   <AssociatedRegion><ModValue Merge="Moderate" /></AssociatedRegion>
+</ModOp>
+<ModOp Merge="@114365/Product">
+  <AssociatedRegion><ModValue Remove="Moderate" /></AssociatedRegion>
 </ModOp>
 ```
 
@@ -266,6 +275,33 @@ Similarily use `Remove` to remove flags.
 <ModOp Type="add" GUID="114365"
   Condition="!/Values/Product/AssociatedRegion[contains(text(), 'Moderate')]"
   Path="/Values/Product/AssociatedRegion">;Moderate</ModOp>
+
+<!-- a generic remove was not possible -->
+```
+</details>
+
+### Insert Local Content
+
+Use `<ModValue Insert="<local path>" />` to copy data from a local path without specifying `GUID`.
+
+```xml
+<ModOp Merge="@123">
+  <Inline><ModValue Insert="../Standard/GUID/text()" /></Inline>
+</ModOp>
+<ModOp Property="ItemSocketSet" Merge="../ExpeditionAttribute">
+    <FluffText><ModValue Insert="../../ItemSocketSet/SetBuff/text()" /></FluffText>
+</ModOp>
+```
+
+<details>
+<summary>The old way</summary>
+
+Previously, copying local content was only possible in combination with a specific `GUID`.
+
+```xml
+<ModOp Type="add" GUID="123" Content="Standard/GUID/text()">
+  <GUID><ModOpContent /></GUID>
+</ModOp>
 ```
 </details>
 
