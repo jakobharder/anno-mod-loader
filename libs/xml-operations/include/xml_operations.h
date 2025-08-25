@@ -118,13 +118,11 @@ public:
               const XmlPatchType patch_type);
 
     /// @brief Select XPath nodes.
+    /// @param lookup_origin local XPath root
     /// @param assetNode Start search here. Resulting asset is stored back.
     [[nodiscard]] XmlLookup::Result Select(std::shared_ptr<pugi::xml_document> doc,
+        std::optional<pugi::xml_node> lookup_origin = {},
         std::optional<pugi::xml_node>* assetNode = nullptr) const;
-
-    /// @brief Select XPath nodes.
-    /// @param assetNode Start search here. Resulting asset is stored back.
-    [[nodiscard]] XmlLookup::Result Select(pugi::xml_node node) const;
 
     [[nodiscard]] bool IsEmpty() const { return empty_path_; };
     [[nodiscard]] bool IsNegative() const { return negative_; };
@@ -165,6 +163,7 @@ private:
 
     [[nodiscard]] std::optional<pugi::xml_node> PrepareLookupNode(
         std::shared_ptr<pugi::xml_document> doc,
+        std::optional<pugi::xml_node> lookup_origin,
         pugi::xpath_query* query,
         std::optional<pugi::xml_node>* assetNode) const;
 
@@ -231,14 +230,14 @@ private:
 
     // Standard ModOps
 
-    void RecursiveMergeFlags(pugi::xml_node game_node, const XmlPatchType patch_type);
-    void RecursiveMerge(pugi::xml_node game_node, pugi::xml_node patching_node, const XmlPatchType patch_type);
-    void ModOpAdd(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, const std::vector<pugi::xml_node>& content_nodes);
+    pugi::xml_node RecursiveMergeFlags(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type, const bool first_level = true);
+    void RecursiveMerge(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, pugi::xml_node patching_node, std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type);
+    void ModOpAdd(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, const std::vector<pugi::xml_node>& content_nodes, std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type);
 
     // Inline ModOps
 
     /// @brief Replace ModValue with $option or XPath selection
-    void ModValue(std::vector<pugi::xml_node>& content_nodes);
+    void ModValue(std::shared_ptr<pugi::xml_document> doc, std::vector<pugi::xml_node>& content_nodes);
 
     // Helpers
 
