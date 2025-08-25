@@ -628,7 +628,7 @@ void XmlOperation::CreateQueries()
     }
 
     if (type_ == Type::Assets) {
-        path_ = XmlLookup{"/AssetList/Groups[last()]/Group/Assets[last()]", {}, {}, {}, &variables_, context_, node_, skip_values_};
+        path_ = XmlLookup{"/AssetList/Groups[last()]/Group[last()]/Assets[last()]", {}, {}, {}, &variables_, context_, node_, skip_values_};
     }
     else {
         path_ = XmlLookup{path_attribute_, guid_, property_, template_, &variables_, context_, node_, skip_values_};

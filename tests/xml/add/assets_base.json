@@ -1,15 +1,15 @@
 {
     "name": "Add assets with BaseAssetGUID",
     "expected": [
-        "//Groups[1]/Group[1]/Assets[1]/Asset[position()=1]/Values/Standard[GUID='123']",
-        "//Groups[1]/Group[1]/Assets[1]/Asset[position()=2]/Values/Standard[GUID='124']",
-        "//Groups[1]/Group[1]/Assets[1]/Asset[position()=3]/Values/Standard[GUID='5']",
-        "//Groups[1]/Group[1]/Assets[1]/Asset[position()=4]/Values/Standard[GUID='3']",
-        "//Groups[1]/Group[1]/Assets[1]/Asset[position()=5]/Values/Standard[GUID='4']",
-        "!//Groups[1]/Group[1]/Assets[1]/Asset[position()=6]",
-        "//Groups[1]/Group[2]/Assets[1]/Asset[position()=1]/Values/Standard[GUID='125']",
-        "//Groups[1]/Group[2]/Assets[1]/Asset[position()=2]/Values/Standard[GUID='1']",
-        "//Groups[1]/Group[2]/Assets[1]/Asset[position()=3]/Values/Standard[GUID='2']",
-        "!//Groups[1]/Group[2]/Assets[1]/Asset[position()=4]"
+        "/AssetList/Groups[1]/Group[2]/Assets[1]/Asset[position()=1]/Values/Standard[GUID='123']",
+        "/AssetList/Groups[1]/Group[2]/Assets[1]/Asset[position()=2]/Values/Standard[GUID='124']",
+        "/AssetList/Groups[1]/Group[2]/Assets[1]/Asset[position()=3]/Values/Standard[GUID='5']",
+        "/AssetList/Groups[1]/Group[2]/Assets[1]/Asset[position()=4]/Values/Standard[GUID='3']",
+        "/AssetList/Groups[1]/Group[2]/Assets[1]/Asset[position()=5]/Values/Standard[GUID='4']",
+        "!/AssetList/Groups[1]/Group[2]/Assets[1]/Asset[position()=6]",
+        "/AssetList/Groups[1]/Group[1]/Assets[1]/Asset[position()=1]/Values/Standard[GUID='125']",
+        "/AssetList/Groups[1]/Group[1]/Assets[1]/Asset[position()=2]/Values/Standard[GUID='1']",
+        "/AssetList/Groups[1]/Group[1]/Assets[1]/Asset[position()=3]/Values/Standard[GUID='2']",
+        "!/AssetList/Groups[1]/Group[1]/Assets[1]/Asset[position()=4]"
     ]
 }
