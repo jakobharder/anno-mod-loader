@@ -166,7 +166,7 @@ void ModLoadingOrder::AddMod(const std::string& path,
 
     bool loadLast = dependencyIDs.end() != std::find(dependencyIDs.begin(), dependencyIDs.end(), "*");
 
-    mods_[id] = Mod{ path, name, id, parsedVersion, dependencyIDs, loadLast };
+    mods_[id] = Mod{path, name, id, parsedVersion, dependencyIDs, {}, loadLast};
     for (auto& alias : deprecationIDs) {
         aliases_.insert({ alias, id });
     }
@@ -220,17 +220,54 @@ void ModLoadingOrder::HandleDeprecation()
 {
     std::map<string, Mod> filtered;
     for (auto& mod : mods_) {
-        if (IsDeprecated(mod.second.id)) continue;
+        const auto& id = mod.first;
 
-        filtered[mod.first] = mod.second;
+        if (IsDeprecated(id, [&id, &filtered, this](const std::string& oldId, const std::string& newId) {
+                if (auto replacerMod = filtered.find(newId);
+                    replacerMod != filtered.end()) {
+                    replacerMod->second.deprecatedIDs.push_back(oldId);
+                } else if (auto replacerMod = mods_.find(newId);
+                           replacerMod != mods_.end()) {
+                    replacerMod->second.deprecatedIDs.push_back(oldId);
+                }
+            })) {
+            continue;
+        }
+
+        filtered[id] = mod.second;
+
+        auto& filteredMod = filtered[id];
+        filteredMod.dependencyIDs.clear();
+
+        for (auto& dependency : mod.second.dependencyIDs) {
+            if (!IsDeprecated(dependency, [&filteredMod](const std::string& oldId, const std::string& newId) {
+                    filteredMod.dependencyIDs.push_back(newId);
+                })) {
+                filteredMod.dependencyIDs.push_back(dependency);
+            }
+        }
     }
 
     mods_ = filtered;
 }
 
-bool ModLoadingOrder::IsDeprecated(const std::string& id) const
+bool ModLoadingOrder::IsDeprecated(const std::string& id,
+    std::function<void(const std::string& oldId, const std::string& newId)> onReplace) const
 {
-    return (aliases_.end() != std::find_if(aliases_.begin(), aliases_.end(), [&id](pair<string, string> x) { return x.first == id; }));
+    bool isDeprecated = false;
+    auto [deprecationItr, deprecationEnd] = aliases_.equal_range(id);
+
+    if (!onReplace)
+    {
+        return deprecationItr != deprecationEnd;
+    }
+
+    for (; deprecationItr != deprecationEnd; deprecationItr++) {
+        isDeprecated = true;
+        onReplace(id, deprecationItr->second);
+    }
+
+    return isDeprecated;
 }
 
 }
