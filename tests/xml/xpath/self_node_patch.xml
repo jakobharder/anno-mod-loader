@@ -1,0 +1,15 @@
+<ModOps>
+  <!-- applies to all, if AnimalFarm exists in one -->
+  <ModOp Property="ModuleOwner" Merge="." Condition=".[FarmType='AnimalFarm']">
+    <ModuleOwner>
+      <ModuleBuildRadius>20</ModuleBuildRadius>
+    </ModuleOwner>
+  </ModOp>
+
+  <!-- applies to PlantFarm -->
+  <ModOp Property="ModuleOwner" Merge=".[FarmType='PlantFarm']">
+    <ModuleOwner>
+      <ModuleBuildRadius>15</ModuleBuildRadius>
+    </ModuleOwner>
+  </ModOp>
+</ModOps>

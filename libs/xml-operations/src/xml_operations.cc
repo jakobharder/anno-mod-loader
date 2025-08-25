@@ -428,7 +428,13 @@ void XmlLookup::ReadPath(std::string prop_path,
     }
 
     if ((!property.empty() || !guid.empty())  && prop_path.at(0) != '/') {
-        path_ += "/" + prop_path;
+        if (prop_path.size() > 1 && prop_path.at(0) == '.' && prop_path.at(1) == '[') {
+            // Support XPath 2.0 style .[Condition] by replacing it with self::node()[Condition]
+            path_ += "/self::node()" + prop_path.substr(1);
+        }
+        else {
+            path_ += "/" + prop_path;
+        }
     }
     else {
         path_ += prop_path;

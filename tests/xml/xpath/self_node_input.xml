@@ -1,0 +1,32 @@
+<Test>
+  <Asset>
+    <Values>
+      <Standard>
+        <GUID>5</GUID>
+      </Standard>
+      <ModuleOwner>
+        <FarmType>AnimalFarm</FarmType>
+      </ModuleOwner>
+    </Values>
+  </Asset>
+  <Asset>
+    <Values>
+      <Standard>
+        <GUID>4</GUID>
+      </Standard>
+      <ModuleOwner>
+        <FarmType>PlantFarm</FarmType>
+      </ModuleOwner>
+    </Values>
+  </Asset>
+    <Asset>
+    <Values>
+      <Standard>
+        <GUID>3</GUID>
+      </Standard>
+      <ModuleOwner>
+        <FarmType>NotAFarm</FarmType>
+      </ModuleOwner>
+    </Values>
+  </Asset>
+</Test>
