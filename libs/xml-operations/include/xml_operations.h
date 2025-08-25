@@ -230,16 +230,18 @@ private:
 
     // Standard ModOps
 
-    pugi::xml_node RecursiveMergeFlags(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type, const bool first_level = true);
-    void RecursiveMerge(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, pugi::xml_node patching_node, std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type);
-    void ModOpAdd(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, const std::vector<pugi::xml_node>& content_nodes, std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type);
+    void ModOpAdd(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, const std::vector<pugi::xml_node>& content_nodes,
+        std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type);
+    void ModOpMerge(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, const std::vector<pugi::xml_node>& content_nodes,
+        std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type);
 
     // Inline ModOps
 
-    /// @brief Replace ModValue with $option or XPath selection
-    void ModValue(std::shared_ptr<pugi::xml_document> doc, std::vector<pugi::xml_node>& content_nodes);
+    pugi::xml_node ModValue(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type, const bool first_level = true);
 
     // Helpers
+
+    void RecursiveMerge(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, pugi::xml_node patching_node, std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type);
 
     void CreateQueries(const XmlPatchType patch_type);
     void ReadType(pugi::xml_node node);

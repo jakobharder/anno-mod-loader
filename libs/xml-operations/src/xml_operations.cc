@@ -854,55 +854,6 @@ pugi::xpath_node_set XmlLookup::ReadTemplateNodes(std::shared_ptr<pugi::xml_docu
     return results;
 }
 
-void XmlOperation::ModValue(std::shared_ptr<pugi::xml_document> doc, std::vector<pugi::xml_node>& content_nodes) {
-    const auto mod_options = context_->GetVariables();
-    if (!mod_options) {
-        return;
-    }
-
-    for (auto& content_node : content_nodes) {
-        auto inserter = content_node.select_node(".//ModValue");
-        if (inserter) {
-            const auto& option_attr = inserter.node().attribute("Insert");
-            if (!option_attr) {
-                if (!inserter.node().first_attribute()) {
-                    context_->Warn("ModValue needs 'Path', 'MergeFlags' or 'RemoveFlags'", inserter.node());
-                }
-                continue;
-            }
-
-            const auto& option_path = std::string{ option_attr.as_string() };
-            if (0 != option_path.rfind("$", 0) && 0 != option_path.rfind("#", 0)) {
-                // simply skip them
-                continue;
-            }
-
-            auto lookup = XmlLookup{option_attr.as_string(), {}, {}, {}, &variables_, context_, node_, false, XmlPatchType::Generic};
-
-            context_->Debug("Looking up value \"{}\"", lookup.GetPath());
-            XmlLookup::Result result;
-            try {
-                result = lookup.Select(doc, inserter.parent());
-            }
-            catch (const pugi::xpath_exception &e) {
-                context_->Error("Failed to select path \"" + lookup.GetPath() + "\": " + e.what());
-                continue;
-            }
-            if (!result.IsEmpty()) {
-                auto first_node = result.Nodes().begin();
-
-                inserter.parent().remove_children();
-                inserter.parent().append_copy(first_node->node());
-
-                first_node++;
-                if (first_node != result.Nodes().end()) {
-                    // TODO only single nodes please
-                }
-            }
-        }
-    }
-}
-
 void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType patch_type)
 {
     auto start = std::chrono::high_resolution_clock::now();
@@ -915,8 +866,8 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
 
     CreateQueries(patch_type);
 
-    std::optional<pugi::xml_node> cachedNode;
-    if (GetType() == XmlOperation::Type::None || !CheckCondition(doc, cachedNode)) {
+    std::optional<pugi::xml_node> cached_node;
+    if (GetType() == XmlOperation::Type::None || !CheckCondition(doc, cached_node)) {
         return logTime(type_ == Type::Group ? "Group" : "ModOp");
     }
 
@@ -977,7 +928,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
     xmlops::XmlLookup::Result results;
     try {
         context_->Debug("Looking up {}", path_.GetPath());
-        results = path_.Select(doc, {}, &cachedNode);
+        results = path_.Select(doc, {}, &cached_node);
         if (results.IsEmpty()) {
             if (allow_no_match_) {
                 context_->Debug("No matching node for Path \"{}\"", path_.GetPath());
@@ -995,39 +946,29 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
         context_->Error("Failed to select path \"" + path_.GetPath() + "\": " + e.what());
     }
 
-    ModValue(doc, content_nodes);
-
     for (pugi::xpath_node xnode : results.Nodes()) {
         pugi::xml_node game_node = xnode.node();
 
         if (GetType() == XmlOperation::Type::Merge) {
-            if (!content_nodes.empty() && content_nodes.size() == 1 &&
-                str_equals_nocase(content_nodes.begin()->name(), game_node.name())) {
-                // legacy merge
-                // skip single container if it's named same as the target node
-                RecursiveMerge(doc, game_node.parent(), *content_nodes.begin(), cachedNode, patch_type);
-            }
-            else if (!content_nodes.empty()) {
-                RecursiveMerge(doc, game_node, *content_nodes.begin(), cachedNode, patch_type);
-            }
+            ModOpMerge(doc, game_node, content_nodes, cached_node, patch_type);
         } else if (GetType() == XmlOperation::Type::AddNextSibling) {
             for (auto &&node : content_nodes) {
                 game_node = game_node.parent().insert_copy_after(node, game_node);
-                RecursiveMergeFlags(doc, game_node, cachedNode, patch_type);
+                ModValue(doc, game_node, cached_node, patch_type);
             }
         } else if (GetType() == XmlOperation::Type::AddPrevSibling) {
             for (auto &&node : content_nodes) {
                 auto result_node = game_node.parent().insert_copy_before(node, game_node);
-                RecursiveMergeFlags(doc, result_node, cachedNode, patch_type);
+                ModValue(doc, result_node, cached_node, patch_type);
             }
         } else if (GetType() == XmlOperation::Type::Add || GetType() == XmlOperation::Type::Assets) {
-            ModOpAdd(doc, game_node, content_nodes, cachedNode, patch_type);
+            ModOpAdd(doc, game_node, content_nodes, cached_node, patch_type);
         } else if (GetType() == XmlOperation::Type::Remove) {
             game_node.parent().remove_child(game_node);
         } else if (GetType() == XmlOperation::Type::Replace) {
             for (auto &node : content_nodes) {
                 auto result_node = game_node.parent().insert_copy_after(node, game_node);
-                RecursiveMergeFlags(doc, game_node, cachedNode, patch_type);
+                ModValue(doc, result_node, cached_node, patch_type);
             }
             game_node.parent().remove_child(game_node);
         }
@@ -1175,14 +1116,14 @@ static bool HasNonTextNode(pugi::xml_node node)
     return false;
 }
 
-pugi::xml_node XmlOperation::RecursiveMergeFlags(std::shared_ptr<pugi::xml_document> doc,
+pugi::xml_node XmlOperation::ModValue(std::shared_ptr<pugi::xml_document> doc,
     pugi::xml_node game_node, std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type,
     const bool first_level) {
     if (game_node.first_child()) {
         auto child = game_node.first_child();
 
         while (child) {
-            child = RecursiveMergeFlags(doc, child, cached_node, patch_type, false);
+            child = ModValue(doc, child, cached_node, patch_type, false);
         }
 
         return game_node.next_sibling();
@@ -1404,7 +1345,7 @@ void XmlOperation::RecursiveMerge(std::shared_ptr<pugi::xml_document> doc,
             }
         }
         else if (append_missing) {
-            RecursiveMergeFlags(doc, root_node.append_copy(cur_node), cached_node, patch_type);
+            ModValue(doc, root_node.append_copy(cur_node), cached_node, patch_type);
         }
         else {
             // do nothing
@@ -1440,13 +1381,29 @@ void XmlOperation::ModOpAdd(std::shared_ptr<pugi::xml_document> doc,
 
             for (auto& base_node : results.Nodes()) {
                 auto result_node = base_node.node().parent().insert_copy_after(node, base_node.node());
-                RecursiveMergeFlags(doc, result_node, cached_node, patch_type);
+                ModValue(doc, result_node, cached_node, patch_type);
             }
         }
         else {
             auto result_node = game_node.append_copy(node);
-            RecursiveMergeFlags(doc, result_node, cached_node, patch_type);
+            ModValue(doc, result_node, cached_node, patch_type);
         }
+    }
+}
+
+void XmlOperation::ModOpMerge(std::shared_ptr<pugi::xml_document> doc,
+    pugi::xml_node game_node,
+    const std::vector<pugi::xml_node>& content_nodes,
+    std::optional<pugi::xml_node>& cached_node,
+    const XmlPatchType patch_type) {
+    if (!content_nodes.empty() && content_nodes.size() == 1 &&
+        str_equals_nocase(content_nodes.begin()->name(), game_node.name())) {
+        // legacy merge
+        // skip single container if it's named same as the target node
+        RecursiveMerge(doc, game_node.parent(), *content_nodes.begin(), cached_node, patch_type);
+    }
+    else if (!content_nodes.empty()) {
+        RecursiveMerge(doc, game_node, *content_nodes.begin(), cached_node, patch_type);
     }
 }
 
