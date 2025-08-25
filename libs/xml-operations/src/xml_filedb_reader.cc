@@ -15,6 +15,7 @@
 #include <spdlog/fmt/fmt.h>
 #include <pugixml.hpp>
 
+namespace fmt_alias = fmt;
 namespace fs = std::filesystem;
 
 #include "xml_filedb_reader.h"
@@ -46,6 +47,35 @@ const EnumeratorInfo VISIBILITY_COMPARE_OPERATORS = {
 
 const EnumeratorInfo VISIBILITY_ELEMENT_TYPE = {
     "None", "Condition", "Group"
+};
+
+const EnumeratorInfo INFO_ELEMENT_TYPE = {
+    "Root",
+    "Headline",
+    "HeadlineWithSubline",
+    "HeadlineItem",
+    "HeadlineColor",
+    "Subheader",
+    "Paragraph",
+    "ParagraphMain",
+    "ParagraphFluff",
+    "TextValue",
+    "TextValueMain",
+    "Shortcut",
+    "Subline",
+    "Image",
+    "ProgressBar",
+    "SeparatorLine",
+    "SeparatorLineCenter",
+    "SeparatorSpace",
+    "List",
+    "Grid",
+    "GridElement",
+    "Section",
+    "Frame",
+    "Container",
+    "Template",
+    "Tooltip"
 };
 
 class FileDbConverter {
@@ -92,15 +122,15 @@ public:
         }
         case FileDbAttributeType::Int32: {
             int32_t number = *reinterpret_cast<const int32_t*>(buffer.data());
-            return fmt::format("{}", number).c_str();
+            return fmt_alias::format("{}", number).c_str();
         }
         case FileDbAttributeType::Int64: {
             int64_t number = *reinterpret_cast<const int64_t*>(buffer.data());
-            return fmt::format("{}", number).c_str();
+            return fmt_alias::format("{}", number).c_str();
         }
         case FileDbAttributeType::Float: {
             float number = *reinterpret_cast<const float*>(buffer.data());
-            return fmt::format("{}", number).c_str();
+            return fmt_alias::format("{}", number).c_str();
         }
         case FileDbAttributeType::Utf8: {
             std::stringstream ss;
@@ -116,7 +146,7 @@ public:
         case FileDbAttributeType::Hex: {
             std::stringstream ss;
             for (char ch : buffer) {
-                ss << fmt::format("{:X}", ch);
+                ss << fmt_alias::format("{:X}", ch);
             }
             return ss.str();
         }
@@ -192,7 +222,7 @@ public:
         case FileDbAttributeType::Hex: {
             // std::stringstream ss;
             // for (char ch : buffer) {
-            //     ss << fmt::format("{:X}", ch);
+            //     ss << fmt_alias::format("{:X}", ch);
             // }
             // return ss.str();
             break;
@@ -240,11 +270,16 @@ public:
             converter.emplace("IsTemplate", FileDbAttributeType::Boolean);
             converter.emplace("IsWarning", FileDbAttributeType::Boolean);
             converter.emplace("Indentation", FileDbAttributeType::Boolean);
+            converter.emplace("IconGUID", FileDbAttributeType::Int64);
+            converter.emplace("ExpectedValueDataset", FileDbAttributeType::Utf8);
+            converter.emplace("WarningTextSource", FileDbAttributeType::Utf8);
+            converter.emplace("Owner", FileDbAttributeType::Utf8);
 
             enumerator.emplace(ElementWithParent{"OperatorType", "VisibilityElement"}, VISIBILITY_OPERATORS);
             enumerator.emplace(ElementWithParent{"ResultType", "VisibilityElement"}, VISIBILITY_RESULT_TYPES);
             enumerator.emplace(ElementWithParent{"CompareOperator", "VisibilityElement"}, VISIBILITY_COMPARE_OPERATORS);
             enumerator.emplace(ElementWithParent{"ElementType", "VisibilityElement"}, VISIBILITY_ELEMENT_TYPE);
+            enumerator.emplace(ElementWithParent{"ElementType", "InfoElement"}, INFO_ELEMENT_TYPE);
 
             nester.emplace(ElementWithParent{"ElementType", "VisibilityElement"});
             nester.emplace(ElementWithParent{"OperatorType", "VisibilityElement"});
@@ -280,28 +315,34 @@ public:
         for (auto& child : node.children()) {
             counter.check(child);
         }
-        counter._count_elements(write_action);
+        counter.write_counts(write_action);
     }
 
     FileDbConverter(const std::string_view name) {
-        if (0 == name.compare("InfoElement") || 0 == name.compare("InfoTipData")) {
+        if (0 == name.compare("InfoElement") || 0 == name.compare("InfoTipData") || 0 == name.compare("VisibilityElement")) {
             _counter_name = "ChildCount";
+            _parent_name  = name;
         }
         else if (0 == name.compare("InfoTips")) {
             _counter_name = "InfoTipCount";
             _secondary_name = "TemplateCount";
+            _parent_name    = name;
+        }
+        else {
+            _parent_name = {};
         }
         _counter = 0;
         _secondary = 0;
     }
 
     void check(const pugi::xml_node& node) {
-        if (_counter_name.empty()) {
+        if (_counter_name.empty() || _parent_name.empty()) {
             return;
         }
 
         const auto& name = node.name();
-        if (0 == std::strcmp("InfoElement", name)) {
+        if (0 == std::strcmp("InfoElement", name) || 
+            (0 == std::strcmp("VisibilityElement", name) && 0 == _parent_name.compare("VisibilityElement"))) {
             _counter++;
         }
         else if (0 == std::strcmp("InfoTipData", name)) {
@@ -315,20 +356,25 @@ public:
     }
 
     template<typename WriteAction>
-    void _count_elements(WriteAction write_action) {
+    void write_counts(WriteAction write_action) {
+        if (_parent_name.empty()) {
+            return;
+        }
+
         if (!_counter_name.empty() && _counter > 0) {
             std::vector<char> buffer(sizeof(_counter));
             std::memcpy(buffer.data(), &_counter, sizeof(_counter));
-            write_action(ElementWithParent{ _counter_name, "InfoTips" }, buffer);
+            write_action(ElementWithParent{ _counter_name, _parent_name }, buffer);
         }
         if (!_secondary_name.empty() && _secondary > 0) {
             std::vector<char> buffer(sizeof(_secondary));
             std::memcpy(buffer.data(), &_secondary, sizeof(_secondary));
-            write_action(ElementWithParent{ _secondary_name, "InfoTips" }, buffer);
+            write_action(ElementWithParent{ _secondary_name, _parent_name }, buffer);
         }
     }
 
 private:
+    std::string _parent_name;
     std::string _counter_name;
     int32_t _counter;
     std::string _secondary_name;
