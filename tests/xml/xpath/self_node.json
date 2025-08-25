@@ -1,0 +1,8 @@
+{
+    "name": "XPath | .[Condition]",
+    "expected": [
+        "/Test/Asset/Values[Standard/GUID='5']/ModuleOwner[ModuleBuildRadius='20']",
+        "/Test/Asset/Values[Standard/GUID='4']/ModuleOwner[ModuleBuildRadius='15']",
+        "/Test/Asset/Values[Standard/GUID='3']/ModuleOwner[ModuleBuildRadius='20']"
+    ]
+}

@@ -88,16 +88,16 @@ There are a few more informational entries in `modinfo.json`.
 
 ## ModOp Basics
 
-There are two top-level types of ModOps:
+There are top-level ModOps:
 
 - `ModOp`: normal operations
-- `Assets`: simple asset adding
 - `Group`/`Include`: group operations
+- `Assets` (new): simple asset adding
 
-Additional, there are two operations to be used within a `ModOp` called inline ModOps:
+Additionally, there are new inline operations to be used within a `merge` `ModOp`:
 
-- `ModItem`: change merge behavior of individual list items
-- `ModValue`: insert or modify individual values within a `ModOp`.
+- `ModItem` (new): change merge behavior of individual list items
+- `ModValue` (new): insert or modify individual values within a `ModOp`.
 
 ### Short ModOps
 
@@ -173,7 +173,7 @@ It will select `Values/<Property>/` of all assets containing that property.
 Note: this will not select assets, that have the property in `templates.xml` but not in `assets.xml` or only in their base asset.
 
 ```xml
-<ModOp Property="ModuleOwner" Merge="self::node()[FarmType='PlantFarm']">
+<ModOp Property="ModuleOwner" Merge=".[FarmType='PlantFarm']">
   <ModuleOwner>
     <ModuleBuildRadius>20</ModuleBuildRadius>
   </ModuleOwner>
@@ -218,6 +218,13 @@ Use `number()` to add to a number instead of replacing it.
 <ModOp Type="remove" GUID="1010343" Path="/Values/Number" />
 ```
 </details>
+
+### Special Self Node Handling
+
+The use of `.[Condition]` is supported at the beginning of a `Path`, e.g. `Property="ModuleOwner" Merge=".[FarmType='PlantFarm']"`.
+
+The usage of `.` before brackets is not allowed in XPath 1.0 but in XPath 2.0.
+The modloader supports it by replacing it with `self::node()[Condition]`.
 
 ### ModIDs
 
