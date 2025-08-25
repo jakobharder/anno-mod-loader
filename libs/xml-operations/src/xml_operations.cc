@@ -1192,8 +1192,12 @@ void XmlOperation::RecursiveMergeFlags(pugi::xml_node game_node, const XmlPatchT
                 }
                 catch (const pugi::xpath_exception &e) {
                     context_->Error("Failed to select path \"" + lookup.GetPath() + "\": " + e.what());
+                    game_node.parent().remove_children();
                     continue;
                 }
+
+                game_node.parent().remove_children();
+
                 if (!result.IsEmpty()) {
                     auto first_node = result.Nodes().begin();
 
