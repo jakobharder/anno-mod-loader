@@ -1152,16 +1152,16 @@ pugi::xml_node XmlOperation::ModValue(std::shared_ptr<pugi::xml_document> doc,
                 }
 
                 if (!content_nodes.empty()) {
-                    auto first_node = content_nodes.begin();
+                    auto node_to_insert = content_nodes.begin();
 
-                    while (first_node != content_nodes.end()) {
-                        // if (!game_node.first_child()) {
-                            inserter = parent.insert_copy_after(*first_node, inserter);
-                        // }
-                        // else {
-                        //     RecursiveMerge(doc, game_node.parent(), *first_node, cached_node, patch_type);
-                        // }
-                        first_node++;
+                    if (!game_node.first_child()) {
+                        for (; node_to_insert != content_nodes.end(); node_to_insert++) {
+                            inserter = parent.insert_copy_after(*node_to_insert, inserter);
+                        }
+                    }
+                    else {
+                        // Note: it's a bit hacky, but we know that a game_node with childs means we're wrapped, and that meands node_to_insert siblings can be merged
+                        RecursiveMerge(doc, game_node.parent(), *node_to_insert, cached_node, patch_type);
                     }
                 }
                 else {

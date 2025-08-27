@@ -9,7 +9,7 @@
         <ItemEffectTargetPool>
           <ModValue Insert="@191455/ItemEffectTargetPool/Item" />
           <ModValue Insert="@191458/ItemEffectTargetPool/Item/GUID">
-            <ModItem Intersect="GUID">
+            <ModItem Merge="GUID">
               <ModOpContent />
             </ModItem>
           </ModValue>
