@@ -296,7 +296,7 @@ void XmlLookup::ReplaceStaticVariables(std::string& path)
         const bool is_local = match_str.find('.') == match_str.npos;
         const auto full_name = (is_local && !id_check) ? (std::string{mod_id} + "." + match_str.substr(1)) : match_str.substr(1);
 
-        const auto& var = variables->find(full_name);
+        const auto var = variables->find(full_name);
         if (var == variables->end()) {
             result += "false()";
             context_->Debug("Variable \'" + match_str.substr(0, 1) + full_name + "\' not found " + match_str, node_);
@@ -315,8 +315,10 @@ void XmlLookup::ReplaceStaticVariables(std::string& path)
     }
 
     if (!result.empty()) {
-        result.append(searchStart, path.cend());
-        path = std::move(result);
+        if (searchStart != path.cend()) {
+            result.append(searchStart, path.cend());
+        }
+        path = result;
     }
 }
 
@@ -888,62 +890,40 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
     }
 
     std::optional<pugi::xml_node> wrapper;
-
     std::vector<pugi::xml_node> content_nodes;
-    if (type_ != Type::Remove && !content_.IsEmpty()) {
-        auto result = content_.Select(doc);
-        if (result.IsEmpty()) {
-            context_->Warn("Content \"" + content_.GetPath() + "\" not found", node_);
-            return logTime();
-        }
-        if (!nodes_ || nodes_->begin() != nodes_->end()) {
-            wrapper = doc->append_child("ModOpTemp");
-            for (auto& node : result.Nodes()) {
-                for (auto wrapper_node = nodes_->begin(); wrapper_node != nodes_->end(); wrapper_node++) {
-
-                    wrapper->append_copy(*wrapper_node);
-                }
-                auto inserter = wrapper->select_node(".//ModOpContent");
-                if (!inserter) {
-                    context_->Warn("ModOps with 'Content' attribute must be empty or contain '<ModOpContent />'", node_);
-                    break;
-                }
-                else {
-                    inserter.parent().insert_copy_after(node.node(), inserter.node());
-                    inserter.parent().remove_child(inserter.node());
-                }
-            }
-            content_nodes.insert(content_nodes.end(), wrapper->children().begin(), wrapper->children().end());
-        }
-        else {
-            for (auto& node : result.Nodes()) {
-                content_nodes.push_back(node.node());
-            }
-        }
-    }
     if (content_.IsEmpty() && nodes_) {
         content_nodes.insert(content_nodes.end(), nodes_->begin(), nodes_->end());
     }
+    else if (GetType() != XmlOperation::Type::Remove
+        && !content_.IsEmpty()
+        && !FetchModOpContent(content_, doc, {}, nodes_, content_nodes, wrapper)) {
+        return logTime();
+    }
 
     xmlops::XmlLookup::Result results;
+    context_->Debug("Looking up {}", path_.GetPath());
     try {
-        context_->Debug("Looking up {}", path_.GetPath());
         results = path_.Select(doc, {}, &cached_node);
-        if (results.IsEmpty()) {
-            if (allow_no_match_) {
-                context_->Debug("No matching node for Path \"{}\"", path_.GetPath());
-            }
-            else {
-                context_->Warn("No matching node for Path \"" + path_.GetPath() + "\"", node_);
-            }
-            if (wrapper) {
-                doc->remove_child(*wrapper);
-            }
-            return logTime();
-        }
     }
     catch (const pugi::xpath_exception &e) {
         context_->Error("Failed to select path \"" + path_.GetPath() + "\": " + e.what());
+        if (wrapper) {
+            doc->remove_child(*wrapper);
+        }
+        return logTime();
+    }
+
+    if (results.IsEmpty()) {
+        if (allow_no_match_) {
+            context_->Debug("No matching node for Path \"{}\"", path_.GetPath());
+        }
+        else {
+            context_->Warn("No matching node for Path \"" + path_.GetPath() + "\"", node_);
+        }
+        if (wrapper) {
+            doc->remove_child(*wrapper);
+        }
+        return logTime();
     }
 
     for (pugi::xpath_node xnode : results.Nodes()) {
@@ -1119,7 +1099,10 @@ static bool HasNonTextNode(pugi::xml_node node)
 pugi::xml_node XmlOperation::ModValue(std::shared_ptr<pugi::xml_document> doc,
     pugi::xml_node game_node, std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type,
     const bool first_level) {
-    if (game_node.first_child()) {
+
+    const bool is_mod_value = game_node.first_attribute() && str_equals_nocase(game_node.name(), "ModValue");
+
+    if (!is_mod_value && game_node.first_child()) {
         auto child = game_node.first_child();
 
         while (child) {
@@ -1128,33 +1111,24 @@ pugi::xml_node XmlOperation::ModValue(std::shared_ptr<pugi::xml_document> doc,
 
         return game_node.next_sibling();
     }
-    else {
+    else if (is_mod_value) {
         for (pugi::xml_attribute &attr : game_node.attributes()) {
-            if (str_equals_nocase(attr.name(), "Merge") && str_equals_nocase(game_node.name(), "ModValue")) {
+            if (str_equals_nocase(attr.name(), "Merge")) {
                 MergeFlags(game_node.parent(), attr.as_string());
-                auto next = game_node.next_sibling();
-                game_node.parent().remove_child(game_node);
-                return next;
+                return RemoveFromParent(game_node);
             }
-            else if (str_equals_nocase(attr.name(), "Remove") && str_equals_nocase(game_node.name(), "ModValue")) {
+            else if (str_equals_nocase(attr.name(), "Remove")) {
                 MergeFlags(game_node.parent(), attr.as_string(), true);
-                auto next = game_node.next_sibling();
-                game_node.parent().remove_child(game_node);
-                return next;
+                return RemoveFromParent(game_node);
             }
-            else if (str_equals_nocase(attr.name(), "Insert") && str_equals_nocase(game_node.name(), "ModValue")) {
+            else if (str_equals_nocase(attr.name(), "Insert")) {
                 auto lookup = XmlLookup{attr.as_string(), {}, {}, {}, &variables_, context_, node_, true, patch_type};
 
-                context_->Debug("Looking up value \"{}\"", lookup.GetPath());
-                XmlLookup::Result result;
-                try {
-                    result = lookup.Select(doc, game_node.parent(), &cached_node);
-                }
-                catch (const pugi::xpath_exception &e) {
-                    context_->Error("Failed to select path \"" + lookup.GetPath() + "\": " + e.what());
-                    auto next = game_node.next_sibling();
-                    game_node.parent().remove_child(next);
-                    return next;
+                std::optional<pugi::xml_node> wrapper;
+                std::vector<pugi::xml_node> content_nodes;
+                // TODO cached_node
+                if (!FetchModOpContent(lookup, doc, game_node.parent(), game_node.children(), content_nodes, wrapper)) {
+                    return RemoveFromParent(game_node);
                 }
 
                 auto parent = game_node.parent();
@@ -1172,21 +1146,21 @@ pugi::xml_node XmlOperation::ModValue(std::shared_ptr<pugi::xml_document> doc,
 
                     if (!has_elements) {
                         for (pugi::xml_node child = parent.first_child(); child; ) {
-                            pugi::xml_node next = child.next_sibling(); // save next before removal
-                            if (child.type() != pugi::node_element)
-                            {
-                                parent.remove_child(child);
-                            }
-                            child = next;
+                            child = child.type() != pugi::node_element ? RemoveFromParent(child) : child.next_sibling();
                         }
                     }
                 }
 
-                if (!result.IsEmpty()) {
-                    auto first_node = result.Nodes().begin();
+                if (!content_nodes.empty()) {
+                    auto first_node = content_nodes.begin();
 
-                    while (first_node != result.Nodes().end()) {
-                        inserter = parent.insert_copy_after(first_node->node(), inserter);
+                    while (first_node != content_nodes.end()) {
+                        // if (!game_node.first_child()) {
+                            inserter = parent.insert_copy_after(*first_node, inserter);
+                        // }
+                        // else {
+                        //     RecursiveMerge(doc, game_node.parent(), *first_node, cached_node, patch_type);
+                        // }
                         first_node++;
                     }
                 }
@@ -1194,14 +1168,18 @@ pugi::xml_node XmlOperation::ModValue(std::shared_ptr<pugi::xml_document> doc,
                     context_->Warn("Nothing matches \"" + lookup.GetPath() + "\"");
                 }
 
-                auto next = game_node.next_sibling();
-                game_node.parent().remove_child(game_node);
-                return next;
+                if (wrapper) {
+                    doc->remove_child(*wrapper);
+                }
+
+                return RemoveFromParent(game_node);
             }
         }
 
         return game_node.next_sibling();
     }
+
+    return {};
 }
 
 void XmlOperation::RecursiveMerge(std::shared_ptr<pugi::xml_document> doc,
@@ -1405,6 +1383,49 @@ void XmlOperation::ModOpMerge(std::shared_ptr<pugi::xml_document> doc,
     else if (!content_nodes.empty()) {
         RecursiveMerge(doc, game_node, *content_nodes.begin(), cached_node, patch_type);
     }
+}
+
+[[nodiscard]] bool XmlOperation::FetchModOpContent(XmlLookup lookup,
+    std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node> lookup_origin,
+    std::optional<pugi::xml_object_range<pugi::xml_node_iterator>> wrapping_nodes,
+    std::vector<pugi::xml_node>& output, std::optional<pugi::xml_node>& output_wrapper) {
+
+    if (lookup.IsEmpty()) {
+        return false;
+    }
+
+    auto result = lookup.Select(doc, lookup_origin);
+    if (result.IsEmpty()) {
+        context_->Warn("Content \"" + lookup.GetPath() + "\" not found", node_); // TODO node_
+        return false;
+    }
+
+    if (!wrapping_nodes || wrapping_nodes->begin() != wrapping_nodes->end()) {
+        output_wrapper = doc->append_child("ModOpTemp");
+        for (auto& node : result.Nodes()) {
+            for (auto wrapper_node = wrapping_nodes->begin(); wrapper_node != wrapping_nodes->end(); wrapper_node++) {
+
+                output_wrapper->append_copy(*wrapper_node);
+            }
+            auto inserter = output_wrapper->select_node(".//ModOpContent");
+            if (!inserter) {
+                context_->Warn("ModOps with 'Content' attribute must be empty or contain '<ModOpContent />'", node_); // TODO node_
+                break;
+            }
+            else {
+                inserter.parent().insert_copy_after(node.node(), inserter.node());
+                inserter.parent().remove_child(inserter.node());
+            }
+        }
+        output.insert(output.end(), output_wrapper->children().begin(), output_wrapper->children().end());
+    }
+    else {
+        for (auto& node : result.Nodes()) {
+            output.push_back(node.node());
+        }
+    }
+
+    return true;
 }
 
 bool XmlOperation::CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>& cachedNode)

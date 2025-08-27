@@ -1,5 +1,5 @@
 {
-  "name": "ModValue error",
+  "name": "ModValue merge list",
   "issuesExpected": "1",
   "expected": [
     "//Values[Standard/GUID='14']/Storage[Amount='3']",
