@@ -8,9 +8,9 @@
         </Standard>
         <ItemEffectTargetPool>
           <ModValue Insert="@191455/ItemEffectTargetPool/Item" />
-          <ModValue Insert="@191458/ItemEffectTargetPool/Item/GUID">
+          <ModValue Insert="@191458/ItemEffectTargetPool/Item">
             <ModItem Merge="GUID">
-              <ModOpContent />
+              <ModValueContent SkipParent="1" />
             </ModItem>
           </ModValue>
         </ItemEffectTargetPool>

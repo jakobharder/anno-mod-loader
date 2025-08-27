@@ -11,12 +11,15 @@
             <ItemEffectTargetPool>
               <Item>
                 <GUID>4</GUID>
+                <Fluff>4</Fluff>
               </Item>
               <Item>
                 <GUID>1</GUID>
+                <Fluff>1</Fluff>
               </Item>
               <Item>
                 <GUID>3</GUID>
+                <Fluff>3</Fluff>
               </Item>
             </ItemEffectTargetPool>
           </Values>
@@ -30,12 +33,15 @@
             <ItemEffectTargetPool>
               <Item>
                 <GUID>4</GUID>
+                <Fluff>40</Fluff>
               </Item>
               <Item>
                 <GUID>2</GUID>
+                <Fluff>20</Fluff>
               </Item>
               <Item>
                 <GUID>1</GUID>
+                <Fluff>10</Fluff>
               </Item>
             </ItemEffectTargetPool>
           </Values>
