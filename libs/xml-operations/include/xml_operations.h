@@ -241,6 +241,11 @@ private:
 
     // Helpers
 
+    /// @return false on no match found or parse errors
+    [[nodiscard]] bool FetchModOpContent(XmlLookup lookup,
+        std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node> lookup_origin,
+        std::optional<pugi::xml_object_range<pugi::xml_node_iterator>> wrapping_nodes,
+        std::vector<pugi::xml_node>& output, std::optional<pugi::xml_node>& output_wrapper);
     void RecursiveMerge(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, pugi::xml_node patching_node, std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type);
 
     void CreateQueries(const XmlPatchType patch_type);
@@ -248,6 +253,14 @@ private:
     [[nodiscard]] static std::string GetXmlPropString(pugi::xml_node node, const std::string& prop_name)
     {
         return node.attribute(prop_name.c_str()).as_string();
+    }
+
+    /// @brief remove node from parent
+    /// @return next sibling before removal
+    [[nodiscard]] static pugi::xml_node RemoveFromParent(const pugi::xml_node node) {
+        const auto next = node.next_sibling();
+        node.parent().remove_child(node);
+        return next;
     }
 };
 
