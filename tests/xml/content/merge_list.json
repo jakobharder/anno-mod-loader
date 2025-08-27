@@ -1,9 +1,10 @@
 {
   "name": "ModValue merge list",
-  "issuesExpected": "1",
   "expected": [
-    "//Values[Standard/GUID='14']/Storage[Amount='3']",
-    "//Values[Standard/GUID='15']/Storage[Amount='3']",
+    "//Values[Standard/GUID='123123123']/ItemEffectTargetPool/Item[GUID='4' and position()=1]",
+    "//Values[Standard/GUID='123123123']/ItemEffectTargetPool/Item[GUID='1' and position()=2]",
+    "//Values[Standard/GUID='123123123']/ItemEffectTargetPool/Item[GUID='3' and position()=3]",
+    "//Values[Standard/GUID='123123123']/ItemEffectTargetPool/Item[GUID='2' and position()=4]",
     "!//ModOpEval",
     "!//ModOpTemp"
   ]

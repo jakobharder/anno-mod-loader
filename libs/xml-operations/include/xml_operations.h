@@ -245,7 +245,8 @@ private:
     [[nodiscard]] bool FetchModOpContent(XmlLookup lookup,
         std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node> lookup_origin,
         std::optional<pugi::xml_object_range<pugi::xml_node_iterator>> wrapping_nodes,
-        std::vector<pugi::xml_node>& output, std::optional<pugi::xml_node>& output_wrapper);
+        std::vector<pugi::xml_node>& output, std::optional<pugi::xml_node>& output_wrapper,
+        const char* content_tag);
     void RecursiveMerge(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, pugi::xml_node patching_node, std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type);
 
     void CreateQueries(const XmlPatchType patch_type);

@@ -77,6 +77,24 @@ std::string str_concat(const Args&... args) {
     return result;
 }
 
+namespace pugihelper {
+
+void copies_after(const pugi::xml_node& nodes_to_insert, pugi::xml_node position_hint) {
+    for (auto insert_child = nodes_to_insert; insert_child && position_hint; insert_child = insert_child.next_sibling()) {
+        position_hint = position_hint.parent().insert_copy_after(insert_child, position_hint);
+    }
+}
+
+void copy_after(const pugi::xml_node& node_to_insert, pugi::xml_node position_hint) {
+    position_hint.parent().insert_copy_after(node_to_insert, position_hint);
+}
+
+void remove(const pugi::xml_node& child_to_remove){
+    child_to_remove.parent().remove_child(child_to_remove);
+}
+
+}
+
 XmlOperationContext::XmlOperationContext(const fs::path& mod_relative_path,
                                          const fs::path& mod_base_path,
                                          std::string_view mod_id,
@@ -896,7 +914,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
     }
     else if (GetType() != XmlOperation::Type::Remove
         && !content_.IsEmpty()
-        && !FetchModOpContent(content_, doc, {}, nodes_, content_nodes, wrapper)) {
+        && !FetchModOpContent(content_, doc, {}, nodes_, content_nodes, wrapper, ".//ModOpContent")) {
         return logTime();
     }
 
@@ -1127,7 +1145,7 @@ pugi::xml_node XmlOperation::ModValue(std::shared_ptr<pugi::xml_document> doc,
                 std::optional<pugi::xml_node> wrapper;
                 std::vector<pugi::xml_node> content_nodes;
                 // TODO cached_node
-                if (!FetchModOpContent(lookup, doc, game_node.parent(), game_node.children(), content_nodes, wrapper)) {
+                if (!FetchModOpContent(lookup, doc, game_node.parent(), game_node.children(), content_nodes, wrapper, ".//ModValueContent")) {
                     return RemoveFromParent(game_node);
                 }
 
@@ -1388,9 +1406,10 @@ void XmlOperation::ModOpMerge(std::shared_ptr<pugi::xml_document> doc,
 [[nodiscard]] bool XmlOperation::FetchModOpContent(XmlLookup lookup,
     std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node> lookup_origin,
     std::optional<pugi::xml_object_range<pugi::xml_node_iterator>> wrapping_nodes,
-    std::vector<pugi::xml_node>& output, std::optional<pugi::xml_node>& output_wrapper) {
+    std::vector<pugi::xml_node>& output, std::optional<pugi::xml_node>& output_wrapper,
+    const char* content_tag) {
 
-    if (lookup.IsEmpty()) {
+    if (lookup.IsEmpty() || !content_tag) {
         return false;
     }
 
@@ -1407,14 +1426,21 @@ void XmlOperation::ModOpMerge(std::shared_ptr<pugi::xml_document> doc,
 
                 output_wrapper->append_copy(*wrapper_node);
             }
-            auto inserter = output_wrapper->select_node(".//ModOpContent");
-            if (!inserter) {
+            auto mod_op_content = output_wrapper->select_node(content_tag);
+            if (!mod_op_content) {
                 context_->Warn("ModOps with 'Content' attribute must be empty or contain '<ModOpContent />'", node_); // TODO node_
                 break;
             }
             else {
-                inserter.parent().insert_copy_after(node.node(), inserter.node());
-                inserter.parent().remove_child(inserter.node());
+                auto skip_parent = mod_op_content.node().attribute("SkipParent");
+                if (skip_parent) {
+                    pugihelper::copies_after(node.node().first_child(), mod_op_content.node());
+                }
+                else {
+                    pugihelper::copy_after(node.node(), mod_op_content.node());
+                }
+
+                pugihelper::remove(mod_op_content.node());
             }
         }
         output.insert(output.end(), output_wrapper->children().begin(), output_wrapper->children().end());
