@@ -237,7 +237,7 @@ private:
 
     // Inline ModOps
 
-    pugi::xml_node ModValue(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type, const bool first_level = true);
+    pugi::xml_node ResolveModValue(std::shared_ptr<pugi::xml_document> doc, pugi::xml_node game_node, std::optional<pugi::xml_node>& cached_node, const XmlPatchType patch_type, const bool first_level = true);
 
     // Helpers
 
@@ -254,14 +254,6 @@ private:
     [[nodiscard]] static std::string GetXmlPropString(pugi::xml_node node, const std::string& prop_name)
     {
         return node.attribute(prop_name.c_str()).as_string();
-    }
-
-    /// @brief remove node from parent
-    /// @return next sibling before removal
-    [[nodiscard]] static pugi::xml_node RemoveFromParent(const pugi::xml_node node) {
-        const auto next = node.next_sibling();
-        node.parent().remove_child(node);
-        return next;
     }
 };
 
