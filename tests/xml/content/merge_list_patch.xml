@@ -17,4 +17,35 @@
       </Values>
     </Asset>
   </ModOp>
+  <Assets>
+    <Asset>
+      <Template>ItemEffectTargetPool</Template>
+      <Values>
+        <Standard>
+          <GUID>456</GUID>
+        </Standard>
+        <ItemEffectTargetPool>
+          <ModValue Insert="@191455/ItemEffectTargetPool/Item">
+            <ModItem Merge="GUID">
+              <ModValueContent SkipParent="1" />
+              <Counter>1</Counter>
+            </ModItem>
+          </ModValue>
+          <ModValue Insert="@191458/ItemEffectTargetPool/Item">
+            <ModItem Merge="GUID">
+              <ModValueContent SkipParent="1" />
+              <Counter><ModValue Insert="concat(.,'1')" /></Counter>
+            </ModItem>
+          </ModValue>
+          <ModValue Insert="@191455/ItemEffectTargetPool/Item">
+            <ModItem Merge="GUID">
+              <ModValueContent SkipParent="1" />
+              <Counter><ModValue Insert="concat(.,'1')" /></Counter>
+            </ModItem>
+          </ModValue>
+        </ItemEffectTargetPool>
+      </Values>
+    </Asset>
+  </Assets>
+  <ModOp Remove="@456/ItemEffectTargetPool/Item[Counter != 111]" AllowNoMatch="1" />
 </ModOps>

@@ -5,6 +5,7 @@
         "/AssetList/Groups[1]/Group[2]/Assets[1]/Asset[position()=1]/Values/Standard[GUID='3']",
         "/AssetList/Groups[1]/Group[2]/Assets[1]/Asset[position()=2]/Values/Standard[GUID='4']",
         "/AssetList/Groups[1]/Group[2]/Assets[1]/Asset[position()=3]/Values/Standard[GUID='5']",
-        "!/AssetList/Groups[1]/Group[1]/Assets[1]/Asset[position()=4]"
+        "/AssetList/Groups[1]/Group[2]/Assets[1]/Asset[position()=4]/Values/Standard[GUID='6']",
+        "!/AssetList/Groups[1]/Group[2]/Assets[1]/Asset[position()=5]"
     ]
 }
