@@ -92,7 +92,7 @@ There are top-level ModOps:
 
 - `ModOp`: normal operations
 - `Group`/`Include`: group operations
-- `Assets` (new): simple asset adding
+- `Asset` (new): simple asset adding
 
 Additionally, there are new inline operations to be used within a `merge` `ModOp`:
 
@@ -141,27 +141,25 @@ When using `GUID` lookup with the short style skips `/Values` like the previousl
 
 Short | Legacy | Comment
 --- | --- | ---
-`Assets`|(`Type="add"`)|Similar to `addNextSibling` + `GUID` without `Path`.
-`Add`|`Type="add"`|Same as `Assets` when used without `Path`, `GUID` and `Property`.<br/>Otherwise unchanged.
+`Asset`|  |Similar to `addNextSibling` + `GUID` without `Path`.
+`Add`|`Type="add"`|unchanged
 `Append`|`Type="addNextSibling"`|renamed, otherwise unchanged
 `Prepend`|`Type="addPrevSibling"`|renamed, otherwise unchanged
 `Merge`|`Type="merge"`|Includes improved flags and list handling.
 `Replace`|`Type="replace`|unchanged
 `Remove`|`Type="remove"`|unchanged
 
-### Add Assets - `Assets`
+### Add Assets - `Asset`
 
-The fastest way to add assets is to use `add` without `GUID` or `Path`.
+The fastest way to add assets is to directly drop them into your file without using a `ModOp` at all.
 `BaseAssetGUID` order is automatically handled.
 
 ```xml
 <ModOps>
-  <Assets>
-    <Asset>
-      <Template>Text</Template>
-      <Values> <!-- .. --> </Values>
-    </Asset>
-  </Assets>
+  <Asset>
+    <Template>Text</Template>
+    <Values> <!-- .. --> </Values>
+  </Asset>
 </ModOps>
 ```
 

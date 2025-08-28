@@ -177,7 +177,7 @@ private:
 class XmlOperation
 {
 public:
-    enum Type { None, Assets, Add, AddNextSibling, AddPrevSibling, Remove, Replace, Merge, Group };
+    enum Type { None, Asset, Assets, Add, AddNextSibling, AddPrevSibling, Remove, Replace, Merge, Group };
 
     XmlOperation(std::shared_ptr<XmlOperationContext> doc, pugi::xml_node node,
                  const std::string& guid = "",

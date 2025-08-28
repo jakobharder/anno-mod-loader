@@ -459,6 +459,9 @@ void XmlOperation::ReadType(pugi::xml_node node)
         pugih::equals(node, "Group")) {
         type_ = Type::Group;
     }
+    else if (pugih::equals(node, "Asset")) {
+        type_ = Type::Asset;
+    }
     else if (pugih::equals(node, "Assets")) {
         type_ = Type::Assets;
     }
@@ -553,7 +556,7 @@ void XmlOperation::CreateQueries(const XmlPatchType patch_type)
         nodes_ = node_.children();
     }
 
-    if (type_ == Type::Assets) {
+    if (type_ == Type::Assets || type_ == Type::Asset) {
         path_ = XmlLookup{"/AssetList/Groups[last()]/Group[last()]/Assets[last()]", {}, {}, {}, &variables_, context_, node_, skip_values_, patch_type};
     }
     else {
@@ -849,6 +852,9 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
             }
         } else if (GetType() == XmlOperation::Type::Add || GetType() == XmlOperation::Type::Assets) {
             ModOpAdd(doc, game_node, content_nodes, cached_node, patch_type);
+        } else if (GetType() == XmlOperation::Type::Asset) {
+            std::vector<pugi::xml_node> asset = { content_nodes[0].parent() };
+            ModOpAdd(doc, game_node, asset, cached_node, patch_type);
         } else if (GetType() == XmlOperation::Type::Remove) {
             pugih::remove(game_node);
         } else if (GetType() == XmlOperation::Type::Replace) {
@@ -890,7 +896,7 @@ std::vector<XmlOperation> XmlOperation::GetXmlOperations(
                 continue;
             }
 
-            if (pugih::equals(node, "ModOp") || pugih::equals(node, "Assets")) {
+            if (pugih::equals(node, "ModOp")) {
                 const auto guid = GetXmlPropString(node, "GUID");
                 const auto temp = GetXmlPropString(node, "Template");
                 const auto property = GetXmlPropString(node, "Property");
@@ -910,6 +916,9 @@ std::vector<XmlOperation> XmlOperation::GetXmlOperations(
                 else {
                     mod_operations.emplace_back(doc, node, "", "", temp);
                 }
+            }
+            else if (pugih::equals(node, "Asset") || pugih::equals(node, "Assets")) {
+                mod_operations.emplace_back(doc, node, "", "", "");
             }
             else if (pugih::equals(node, "Group")) {
                 auto group_op = XmlOperation{doc, node};
