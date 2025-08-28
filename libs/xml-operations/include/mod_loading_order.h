@@ -53,7 +53,7 @@ public:
 
     [[nodiscard]] bool IsDeprecated(const std::string& id,
         std::function<void(const std::string& oldId, const std::string& newId)> onReplace = nullptr) const;
-    
+
 private:
     std::map<std::string, Mod> mods_;
     std::multimap<std::string, std::string> aliases_;

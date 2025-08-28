@@ -1,23 +1,15 @@
 #include "xml_pugi_helper.h"
 
+#include "str_helper.h"
+
 namespace pugih {
 
-bool str::equals_nocase(std::string_view a, std::string_view b) {
-#ifndef _WIN32
-    auto strnicmp = [](auto a, auto b) { return strncasecmp(a, b); };
-#endif
-    if (a.size() != b.size()) {
-        return false;
-    }
-    return strnicmp(a.data(), b.data(), a.size()) == 0;
-}
-
 bool equals(const pugi::xml_node& node, const std::string_view name) {
-  return str::equals_nocase(node.name(), name);
+  return xmlops::str::equals_nocase(node.name(), name);
 }
 
 bool equals(const pugi::xml_attribute& attribute, const std::string_view name) {
-  return str::equals_nocase(attribute.name(), name);
+  return xmlops::str::equals_nocase(attribute.name(), name);
 }
 
 void copies_after(const pugi::xml_node& nodes_to_insert, pugi::xml_node position_hint) {
@@ -43,7 +35,7 @@ pugi::xml_node remove(const pugi::xml_node& child_to_remove){
 void remove_non_element_children(const pugi::xml_node& parent, const char* stop_element) {
   bool has_elements = false;
   for (auto& child : parent.children()) {
-      if (child.type() == pugi::node_element && !str::equals_nocase(child.name(), stop_element)) {
+      if (child.type() == pugi::node_element && !xmlops::str::equals_nocase(child.name(), stop_element)) {
           has_elements = true;
           break;
       }
