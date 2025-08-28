@@ -5,6 +5,10 @@
     "//Values[Standard/GUID='123123123']/ItemEffectTargetPool/Item[GUID='1' and position()=2]",
     "//Values[Standard/GUID='123123123']/ItemEffectTargetPool/Item[GUID='3' and position()=3]",
     "//Values[Standard/GUID='123123123']/ItemEffectTargetPool/Item[GUID='2' and position()=4]",
+    "//Values[Standard/GUID='456']/ItemEffectTargetPool/Item[GUID='4']",
+    "//Values[Standard/GUID='456']/ItemEffectTargetPool/Item[GUID='1']",
+    "!//Values[Standard/GUID='456']/ItemEffectTargetPool/Item[GUID='3']",
+    "!//Values[Standard/GUID='456']/ItemEffectTargetPool/Item[GUID='2']",
     "!//ModOpEval",
     "!//ModOpTemp"
   ]
