@@ -332,7 +332,7 @@ Use `<ModValue Insert="<local path>" />` to copy data from a local path without 
   <Inline><ModValue Insert="../Standard/GUID/text()" /></Inline>
 </ModOp>
 <ModOp Property="ItemSocketSet" Merge="../ExpeditionAttribute">
-    <FluffText><ModValue Insert="../../ItemSocketSet/SetBuff/text()" /></FluffText>
+  <FluffText><ModValue Insert="../../ItemSocketSet/SetBuff/text()" /></FluffText>
 </ModOp>
 ```
 
@@ -435,6 +435,42 @@ The default is the same as `Append='last()'`.
 </ModOp>
 ```
 </details>
+
+### Insert with Wrapper
+
+With `ModValue` in combination `ModItem` + `ModValueContent` you can construct lists with automatic duplicate handling.
+
+```xml
+<!-- .. -->
+<ItemEffectTargetPool>
+  <ModValue Insert="@191455/ItemEffectTargetPool/EffectTargetGUIDs/Item" />
+  <ModValue Insert="@191458/ItemEffectTargetPool/EffectTargetGUIDs/Item/GUID">
+    <ModItem Merge="GUID">
+      <ModValueContent />
+    </ModItem>
+  </ModValue>
+</ItemEffectTargetPool>
+<!-- .. -->
+```
+
+#### SkipParent
+
+Use `SkipParent` if you need to exclude the top-level parent, because you have items with multiple elements.
+
+`SkipParent` also works with `ModOpContent`.
+
+```xml
+<!-- .. -->
+<ItemEffectTargetPool>
+  <ModValue Insert="@191455/ItemEffectTargetPool/EffectTargetGUIDs/Item" />
+  <ModValue Insert="@191458/ItemEffectTargetPool/EffectTargetGUIDs/Item">
+    <ModItem Merge="GUID">
+      <ModValueContent SkipParent="1" />
+    </ModItem>
+  </ModValue>
+</ItemEffectTargetPool>
+<!-- .. -->
+```
 
 ## Advanced Modinfos
 
