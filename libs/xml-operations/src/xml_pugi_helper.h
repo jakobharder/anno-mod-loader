@@ -4,12 +4,6 @@
 
 namespace pugih {
 
-namespace str {
-
-[[nodiscard]] bool equals_nocase(std::string_view a, std::string_view b);
-
-}
-
 [[nodiscard]] bool equals(const pugi::xml_node& node, const std::string_view name);
 [[nodiscard]] bool equals(const pugi::xml_attribute& attribute, const std::string_view name);
 

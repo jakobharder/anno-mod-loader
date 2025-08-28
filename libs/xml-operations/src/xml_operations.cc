@@ -1,6 +1,7 @@
 #include "xml_operations.h"
 
 #include "spdlog/spdlog.h"
+#include "str_helper.h"
 #include "xml_pugi_helper.h"
 
 #include <charconv>
@@ -12,61 +13,6 @@
 #include <string>
 
 namespace xmlops {
-
-std::vector<std::string> str_split(std::string_view input, char delimiter) {
-    std::vector<std::string> result;
-
-    int last_pos = 0;
-    for (int i = 0; i < input.length(); i++) {
-        if (input[i] != delimiter) {
-            continue;
-        }
-
-        if (i - last_pos > 0) {
-            result.emplace_back(input.substr(last_pos, i - last_pos));
-        }
-        last_pos = i + 1;
-    }
-
-    if (last_pos != input.length()) {
-        result.emplace_back(input.substr(last_pos, input.length() - last_pos));
-    }
-
-    return result;
-}
-
-std::string str_join(const std::vector<std::string>& parts, char delimiter, size_t reserve = 0) {
-    if (parts.empty()) {
-        return {};
-    }
-
-    if (reserve == 0) {
-        reserve = (parts.size() - 1);
-        for (const auto& part : parts) {
-            reserve += part.size();
-        }
-    }
-
-    std::string result;
-    result.reserve(reserve);
-
-    result += parts[0];
-    for (size_t i = 1; i < parts.size(); ++i) {
-        result += delimiter;
-        result += parts[i];
-    }
-
-    return result;
-}
-
-template<typename... Args>
-std::string str_concat(const Args&... args) {
-    size_t total_size = (0 + ... + std::string_view(args).size());
-    std::string result;
-    result.reserve(total_size);
-    (result.append(args), ...);
-    return result;
-}
 
 XmlOperationContext::XmlOperationContext(const fs::path& mod_relative_path,
                                          const fs::path& mod_base_path,
@@ -292,10 +238,10 @@ void XmlLookup::ReplaceStaticVariables(std::string& path)
             result += "false()";
             context_->Debug("Variable \'" + match_str.substr(0, 1) + full_name + "\' not found " + match_str, node_);
         }
-        else if (pugih::str::equals_nocase(var->second, "false")) {
+        else if (str::equals_nocase(var->second, "false")) {
             result += "false()";
         }
-        else if (pugih::str::equals_nocase(var->second, "true")) {
+        else if (str::equals_nocase(var->second, "true")) {
             result += "true()";
         }
         else {
@@ -545,23 +491,23 @@ void XmlOperation::ReadType(pugi::xml_node node)
             }
 
             skip_values_ = false;
-            if (pugih::str::equals_nocase(type, "add")) {
+            if (str::equals_nocase(type, "add")) {
                 type_ = Type::Add;
-            } else if (pugih::str::equals_nocase(type, "assets")) {
+            } else if (str::equals_nocase(type, "assets")) {
                 type_ = Type::Assets;
-            } else if (pugih::str::equals_nocase(type, "addAfter")) {
+            } else if (str::equals_nocase(type, "addAfter")) {
                 type_ = Type::AddNextSibling;
-            } else if (pugih::str::equals_nocase(type, "addBefore")) {
+            } else if (str::equals_nocase(type, "addBefore")) {
                 type_ = Type::AddPrevSibling;
-            } else if (pugih::str::equals_nocase(type, "addNextSibling")) {
+            } else if (str::equals_nocase(type, "addNextSibling")) {
                 type_ = Type::AddNextSibling;
-            } else if (pugih::str::equals_nocase(type, "addPrevSibling")) {
+            } else if (str::equals_nocase(type, "addPrevSibling")) {
                 type_ = Type::AddPrevSibling;
-            } else if (pugih::str::equals_nocase(type, "remove")) {
+            } else if (str::equals_nocase(type, "remove")) {
                 type_ = Type::Remove;
-            } else if (pugih::str::equals_nocase(type, "replace")) {
+            } else if (str::equals_nocase(type, "replace")) {
                 type_ = Type::Replace;
-            } else if (pugih::str::equals_nocase(type, "merge")) {
+            } else if (str::equals_nocase(type, "merge")) {
                 type_ = Type::Merge;
             } else {
                 type_ = Type::None;
@@ -953,7 +899,7 @@ std::vector<XmlOperation> XmlOperation::GetXmlOperations(
                     doc->Error("You can use only one of `GUID`, `Property` or `Template`", node);
                 }
                 if (!guid.empty()) {
-                    std::vector<std::string> guids = str_split(guid, ',');
+                    std::vector<std::string> guids = str::split(guid, ',');
                     for (auto g : guids) {
                         mod_operations.emplace_back(doc, node, g.data(), "", "");
                     }
@@ -1012,8 +958,8 @@ static void MergeFlags(pugi::xml_node node, const pugi::char_t* insert, bool rem
 {
     const std::string_view originalFlags = node.child_value();
 
-    const auto insertFlags = str_split(insert, ';');
-    auto flags = str_split(originalFlags, ';');
+    const auto insertFlags = str::split(insert, ';');
+    auto flags = str::split(originalFlags, ';');
 
     for (const auto& insertFlag : insertFlags) {
         const auto iter = std::find(flags.begin(), flags.end(), insertFlag);
@@ -1029,7 +975,7 @@ static void MergeFlags(pugi::xml_node node, const pugi::char_t* insert, bool rem
     if (originalFlags.empty()) {
         node.prepend_child(pugi::xml_node_type::node_pcdata);
     }
-    node.first_child().set_value(str_join(flags, ';', 50).c_str());
+    node.first_child().set_value(str::join(flags, ';', 50).c_str());
 }
 
 static void MergeProperties(pugi::xml_node game_node, pugi::xml_node patching_node)
@@ -1166,10 +1112,10 @@ void XmlOperation::RecursiveMerge(std::shared_ptr<pugi::xml_document> doc,
                 if (short_path) {
                     const auto& key_child = pugih::child(cur_node, item_xpath_str.data());
                     const auto& value = std::string{ key_child.child_value() };
-                    xpath_query = str_concat("Item[", item_xpath_str, "='", value, "']");
+                    xpath_query = str::concat("Item[", item_xpath_str, "='", value, "']");
                 }
                 else {
-                    xpath_query = str_concat("Item[", item_xpath_str, "]");
+                    xpath_query = str::concat("Item[", item_xpath_str, "]");
                 }
 
                 try {
@@ -1187,7 +1133,7 @@ void XmlOperation::RecursiveMerge(std::shared_ptr<pugi::xml_document> doc,
                     if (const auto& append = pugih::attrib(cur_node, "Append"); append) {
                         pugi::xml_node inserter;
 
-                        xpath_query = str_concat("Item[", append.as_string(), "]");
+                        xpath_query = str::concat("Item[", append.as_string(), "]");
                         cur_node.remove_attribute("Append");
                         try {
                             inserter = root_node.select_node(xpath_query.c_str()).node();
@@ -1207,7 +1153,7 @@ void XmlOperation::RecursiveMerge(std::shared_ptr<pugi::xml_document> doc,
                     else if (const auto& prepend = pugih::attrib(cur_node, "Prepend"); prepend) {
                         pugi::xml_node inserter;
 
-                        xpath_query = str_concat("Item[", prepend.as_string(), "]");
+                        xpath_query = str::concat("Item[", prepend.as_string(), "]");
                         cur_node.remove_attribute("Prepend");
                         try {
                             inserter = root_node.select_node(xpath_query.c_str()).node();
