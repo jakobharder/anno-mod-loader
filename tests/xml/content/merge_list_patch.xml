@@ -17,6 +17,8 @@
       </Values>
     </Asset>
   </ModOp>
+
+  <!-- intersect -->
   <Assets>
     <Asset>
       <Template>ItemEffectTargetPool</Template>

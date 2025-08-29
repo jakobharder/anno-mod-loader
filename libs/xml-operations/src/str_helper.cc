@@ -1,5 +1,7 @@
 #include "str_helper.h"
 
+#include <charconv>
+
 namespace xmlops {
 namespace str {
 
@@ -57,6 +59,18 @@ std::string join(const std::vector<std::string>& parts, char delimiter, size_t r
     }
 
     return result;
+}
+
+int fromchars(const std::string_view str, const int default_number) {
+    int value;
+
+    auto [ptr, ec] = std::from_chars(str.data(), str.data() + str.size(), value);
+
+    if (ec == std::errc()) {
+        return value;
+    }
+
+    return default_number;
 }
 
 }

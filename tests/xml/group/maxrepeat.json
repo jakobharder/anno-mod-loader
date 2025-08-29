@@ -1,0 +1,14 @@
+{
+    "name": "Group | MaxRepeat",
+    "expected": [
+        "//Asset[Values/Standard/GUID='1' and position()='1' and Values/Standard/Marked]",
+        "//Asset[Values/Standard/GUID='2' and position()='2' and Values/Standard/Marked]",
+        "//Asset[Values/Standard/GUID='3' and position()='3' and Values/Standard/Marked]",
+        "//Asset[Values/Standard/GUID='4' and position()='4' and not(Values/Standard/Marked)]",
+        "//Asset[Values/Standard/GUID='5' and position()='5' and not(Values/Standard/Marked)]",
+        "//Asset[Values/Standard/GUID='6' and position()='6' and not(Values/Standard/Marked)]",
+        "//Asset[Values/Standard/GUID='7' and position()='7' and Values/Standard/Limited]",
+        "//Asset[Values/Standard/GUID='8' and position()='8' and Values/Standard/Limited]",
+        "!//Asset[Values/Standard/GUID='9']"
+    ]
+}

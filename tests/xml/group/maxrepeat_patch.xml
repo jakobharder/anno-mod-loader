@@ -1,0 +1,39 @@
+<ModOps>
+  <!-- repeat without condition -->
+  <Group MaxRepeat="3">
+    <Asset>
+      <Template>Text</Template>
+      <Values>
+        <Standard>
+          <GUID><ModValue Insert="count(../../../..//Asset)" /></GUID>
+          <Marked />
+        </Standard>
+      </Values>
+    </Asset>
+  </Group>
+
+  <!-- repeat with less elements than the limit -->
+  <Group Condition="count(//Asset[Values/Standard/Marked]) &gt; count(//Asset[not(Values/Standard/Marked)])" MaxRepeat="10">
+    <Asset>
+      <Template>Text</Template>
+      <Values>
+        <Standard>
+          <GUID><ModValue Insert="count(../../../..//Asset)" /></GUID>
+        </Standard>
+      </Values>
+    </Asset>
+  </Group>
+
+  <!-- repeat with more elements than the limit -->
+  <Group Condition="//Asset" MaxRepeat="2">
+    <Asset>
+      <Template>Text</Template>
+      <Values>
+        <Standard>
+          <GUID><ModValue Insert="count(../../../..//Asset)" /></GUID>
+          <Limited />
+        </Standard>
+      </Values>
+    </Asset>
+  </Group>
+</ModOps>

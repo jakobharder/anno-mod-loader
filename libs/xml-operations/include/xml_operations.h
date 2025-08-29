@@ -186,7 +186,7 @@ public:
 
     [[nodiscard]] Type GetType() const { return type_; }
 
-    void Apply(std::shared_ptr<pugi::xml_document> doc, const XmlPatchType patch_type = XmlPatchType::Assets);
+    void Apply(std::shared_ptr<pugi::xml_document> doc, const XmlPatchType patch_type = XmlPatchType::Assets, const bool log_times = true);
 
 public:
     static std::vector<XmlOperation> GetXmlOperations(
@@ -208,6 +208,7 @@ private:
 
     XmlLookup   path_;
     bool        allow_no_match_ = false;
+    int         max_repeat_ = 1;
     XmlLookup   condition_;
     XmlLookup   content_;
     pugi::xpath_variable_set variables_;
