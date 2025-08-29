@@ -20,6 +20,8 @@ std::string concat(const Args&... args) {
     return result;
 }
 
+[[nodiscard]] int fromchars(const std::string_view str, const int default_number);
+
 }
 
 }

@@ -565,6 +565,9 @@ void XmlOperation::CreateQueries(const XmlPatchType patch_type)
 
     condition_ = XmlLookup{pugih::attrib(node_, "Condition").as_string(), guid_, property_, template_, &variables_, context_, node_, skip_values_, patch_type};
     allow_no_match_ = pugih::attrib(node_, "AllowNoMatch");
+    if (const auto max_repeat = pugih::attrib(node_, "MaxRepeat"); max_repeat) {
+        max_repeat_ = std::clamp(str::fromchars(max_repeat.as_string(), 1), 1, 1000);
+    }
 
     if (type_ != Type::Remove) {
         content_ = XmlLookup{pugih::attrib(node_, "Content").as_string(), guid_, property_, template_, &variables_, context_, node_, skip_values_, patch_type};
@@ -765,28 +768,35 @@ pugi::xpath_node_set XmlLookup::ReadTemplateNodes(std::shared_ptr<pugi::xml_docu
     return results;
 }
 
-void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType patch_type)
+void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType patch_type, const bool log_times)
 {
     auto start = std::chrono::high_resolution_clock::now();
-    auto logTime = [&start, this](const char* group = "ModOp") {
-        auto end = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-        this->context_->Debug("Time: {}ms {} ({}:{})", duration, group,
-            this->context_->GetGenericPath(), this->context_->GetLine(node_));
+    auto logTime = [&start, &log_times, this](const char* group = "ModOp") {
+        if (log_times) {
+            auto end = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+            this->context_->Debug("Time: {}ms {} ({}:{})", duration, group,
+                this->context_->GetGenericPath(), this->context_->GetLine(node_));
+        }
     };
 
     CreateQueries(patch_type);
 
     std::optional<pugi::xml_node> cached_node;
     if (GetType() == XmlOperation::Type::None || !CheckCondition(doc, cached_node)) {
-        return logTime(type_ == Type::Group ? "Group" : "ModOp");
+        return logTime(type_ == Type::Group ? "Group" : type_ == Type::Asset ? "Asset" : "ModOp");
     }
 
     if (type_ == Type::Group) {
-        // logTime();
-        for (auto& modop : group_) {
-            modop.Apply(doc);
-        }
+        int remaining_repeats = max_repeat_;
+        do {
+            const bool log_times_group = log_times_group && remaining_repeats == max_repeat_;
+            for (auto& modop : group_) {
+                modop.Apply(doc, patch_type, log_times_group);
+            }
+            remaining_repeats--;
+        } while (remaining_repeats > 0 && CheckCondition(doc, cached_node));
+
         if (!group_.empty() && group_[0].context_ != this->context_) {
             // special handling for top-level ModOps of an included file
             // the time is logged twice, once for the include and once for top-level of the original file
@@ -794,6 +804,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
             this->context_->Debug("Time: {}ms {} ({}:{})", duration, "Group", group_[0].context_->GetGenericPath(), 0);
         }
+
         logTime("Group");
         return;
     }
@@ -806,7 +817,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
     else if (GetType() != XmlOperation::Type::Remove
         && !content_.IsEmpty()
         && !FetchModOpContent(content_, doc, {}, nodes_, content_nodes, wrapper, ".//ModOpContent")) {
-        return logTime();
+        return logTime(type_ == Type::Asset ? "Asset" : "ModOp");
     }
 
     xmlops::XmlLookup::Result results;
@@ -819,7 +830,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
         if (wrapper) {
             doc->remove_child(*wrapper);
         }
-        return logTime();
+        return logTime(type_ == Type::Asset ? "Asset" : "ModOp");
     }
 
     if (results.IsEmpty()) {
@@ -832,7 +843,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
         if (wrapper) {
             doc->remove_child(*wrapper);
         }
-        return logTime();
+        return logTime(type_ == Type::Asset ? "Asset" : "ModOp");
     }
 
     for (pugi::xpath_node xnode : results.Nodes()) {
@@ -869,7 +880,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
     if (wrapper) {
         doc->remove_child(*wrapper);
     }
-    logTime();
+    logTime(type_ == Type::Asset ? "Asset" : "ModOp");
 }
 
 std::vector<XmlOperation> XmlOperation::GetXmlOperations(

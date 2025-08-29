@@ -149,7 +149,7 @@ Short | Legacy | Comment
 `Replace`|`Type="replace`|unchanged
 `Remove`|`Type="remove"`|unchanged
 
-### Add Assets - `Asset`
+### Add Assets
 
 The fastest way to add assets is to directly drop them into your file without using a `ModOp` at all.
 `BaseAssetGUID` order is automatically handled.
@@ -176,6 +176,17 @@ Note: this will not select assets, that have the property in `templates.xml` but
     <ModuleBuildRadius>20</ModuleBuildRadius>
   </ModuleOwner>
 </ModOp>
+```
+
+## Group
+
+You can repeat ModOps until a `Condition` doesn't match anymore with setting `MaxRepeat`.
+The default `MaxRepeat=1` behaves like a normal `Group`.
+
+```xml
+<Group Condition="@123/List/Item" MaxRepeat="10">
+  <!--  -->
+</Group>
 ```
 
 ## ModOp Paths
