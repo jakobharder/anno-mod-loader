@@ -980,27 +980,27 @@ E.g. matching LineID of a building name with the GUID of the building asset.</p>
 <h3 id="modinfo">Modinfo</h3>
 <p>The <code>modinfo.json</code> now supports JSON with comments (you can also name it <code>modinfo.jsonc</code>).</p>
 <p>A game version entry is now mandatory:</p>
-<div class="highlight"><pre><span></span><code>{
-  &quot;Anno&quot;: 8,
-  // ...
-}
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Anno&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span>
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Mods without modinfo and game version won't be loaded</p>
 </div>
 <p>There are a few more informational entries in <code>modinfo.json</code>.</p>
-<div class="highlight"><pre><span></span><code>{
-  &quot;Anno&quot;: 8,
-  // ...
-  // new entries:
-  &quot;Difficulty&quot;: &quot;harder&quot;,
-  &quot;GameSetup&quot;: {
-    &quot;RequiresNewGame&quot;: false,
-    &quot;SafeToRemove&quot;: false,
-    &quot;Multiplayer&quot;: true,
-    &quot;Campaign&quot;: true
-  }
-}
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Anno&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="w">  </span><span class="c1">// new entries:</span>
+<span class="w">  </span><span class="nt">&quot;Difficulty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;harder&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;GameSetup&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;RequiresNewGame&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;SafeToRemove&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;Multiplayer&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;Campaign&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <table>
 <thead>
