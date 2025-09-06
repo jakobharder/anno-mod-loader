@@ -107,7 +107,7 @@ The `modinfo.json` now supports JSON with comments (you can also name it `modinf
 
 A game version entry is now mandatory:
 
-```jsonc
+```json
 {
   "Anno": 8,
   // ...
@@ -118,7 +118,7 @@ A game version entry is now mandatory:
 
 There are a few more informational entries in `modinfo.json`.
 
-```jsonc
+```json
 {
   "Anno": 8,
   // ...

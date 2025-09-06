@@ -11,7 +11,7 @@ These options are accessible as `$mod-id.option-name` in XPath.
 The `options.json` file is read from the `mods/` folder with the following format:
 
 === "117"
-    ```jsonc
+    ```json
     {
       "mod-id": {
         "range": "10",
@@ -25,7 +25,7 @@ The `options.json` file is read from the `mods/` folder with the following forma
 The `modinfo.json` file contains defaults:
 
 === "117"
-    ```jsonc
+    ```json
     {
       // ..
       "options": {
@@ -79,7 +79,7 @@ Use options directly as values using `ModValue Insert`.
 Specify user customizable options of a mod (like iModYourAnno tweaks) in `modinfo.json`:
 
 === "117"
-    ```jsonc
+    ```json
     {
       // ..
       "options": {

@@ -11,17 +11,6 @@ All new features are provided on top.
 
 ## ModOp Basics
 
-There are top-level ModOps:
-
-- `ModOp`: normal operations
-- `Group`/`Include`: group operations
-- `Asset` (new): simple asset adding
-
-Additionally, there are new inline operations to be used within a `merge` `ModOp`:
-
-- `ModItem` (new): change merge behavior of individual list items
-- `ModValue` (new): insert or modify individual values within a `ModOp`.
-
 ### Short ModOps
 
 ModOps can be shortened with `Merge=<XPath>` instead of the old long form `Type="merge" Path=<XPath>`.
@@ -64,8 +53,8 @@ Short | Legacy | Comment
 --- | --- | ---
 `Asset`|  |Similar to `addNextSibling` + `GUID` without `Path`.
 `Add`|`Type="add"`|unchanged
-`Append`|`Type="addNextSibling"`|renamed, otherwise unchanged
-`Prepend`|`Type="addPrevSibling"`|renamed, otherwise unchanged
+`Append`|`Type="addNextSibling"`|unchanged
+`Prepend`|`Type="addPrevSibling"`|unchanged
 `Merge`|`Type="merge"`|Includes improved flags and list handling.
 `Replace`|`Type="replace`|unchanged
 `Remove`|`Type="remove"`|unchanged
@@ -115,7 +104,7 @@ It will select `Values/<Property>/` of all assets containing that property.
 
 Note: this will not select assets, that have the property in `templates.xml` but not in `assets.xml` or only in their base asset.
 
-=== "117"
+=== "117 (short)"
     ```xml
     <ModOp Property="ModuleOwner" Merge=".[FarmType='PlantFarm']">
       <ModuleOwner>
@@ -123,7 +112,7 @@ Note: this will not select assets, that have the property in `templates.xml` but
       </ModuleOwner>
     </ModOp>
     ```
-=== "1800"
+=== "117 & 1800"
     ```xml
     <ModOp Type="merge" Path="//ModuleOwner/[FarmType='PlantFarm']">
       <ModuleOwner>
@@ -138,17 +127,17 @@ Note: this will not select assets, that have the property in `templates.xml` but
 
 You can now use `GUID` and `@` for easier lookup.
 
-=== "@"
+=== "@ (short)"
     ```xml
-    <ModOp Remove="@3762/InfoElement[SubText='-6904723732129714876']" />
+    <ModOp Remove="@3762/InfoElement[1]" />
     ```
-=== "GUID"
+=== "GUID (short)"
     ```xml
-    <ModOp GUID="3762" Remove="/InfoElement[SubText='-6904723732129714876']" />
+    <ModOp GUID="3762" Remove="/InfoElement[1]" />
     ```
-=== "1800"
+=== "XPath (legacy)"
     ```xml
-    <ModOp Type="remove" Path="//InfoTipData[Guid='3762']/InfoElement[SubText='-6904723732129714876']" />
+    <ModOp Type="remove" Path="//InfoTipData[Guid='3762']/InfoElement[1]" />
     ```
 
 ## Loops
@@ -158,11 +147,12 @@ You can now use `GUID` and `@` for easier lookup.
 You can repeat ModOps until a `Condition` doesn't match anymore with setting `MaxRepeat`.
 The default `MaxRepeat=1` behaves like a normal `Group`.
 
-```xml
-<Group Condition="@123/List/Item" MaxRepeat="10">
-  <!--  -->
-</Group>
-```
+=== "117"
+    ```xml
+    <Group Condition="@123/List/Item" MaxRepeat="10">
+      <!--  -->
+    </Group>
+    ```
 
 ## ModOp Paths
 
@@ -174,7 +164,7 @@ XPath 1.0 functions like `count()` and `number()` are fully supported now.
 
 Use `number()` to add to a number instead of replacing it.
 
-=== "117"
+=== "117 (short)"
     ```xml
     <ModOp GUID="1010343"
       Replace="Residence7/ResidentMax"
@@ -183,7 +173,7 @@ Use `number()` to add to a number instead of replacing it.
     </ModOp>
     ```
 
-=== "1800 ⚠️"
+=== "117 & 1800 ⚠️"
     ```xml
     <!-- number table -->
     <ModOp Type="add" GUID="1010343" Path="/Values">
@@ -215,13 +205,14 @@ Conditions allowed to check if a another mod is loaded.
 These `#mod-id` expressions are now expanded to `true()` and `false()` to be used within XPath.
 That means you can combine them like XPath expressions with `and` and `or`.
 
-```xml
-<ModOps>
-  <Group Condition="#mod-a and not(#mod-b)">
-    <!-- do things -->
-  </Group>
-</ModOps>
-```
+=== "117"
+    ```xml
+    <ModOps>
+      <Group Condition="#mod-a and not(#mod-b)">
+        <!-- do things -->
+      </Group>
+    </ModOps>
+    ```
 
 ## Inline ModOps
 
@@ -232,7 +223,7 @@ Inline ModOps are operators you can use inside the content of a `merge` `ModOp`.
 Use `<ModValue Merge="Your;Flags" />` to insert one or more flags if not already present, instead of overwriting the existing flags value.
 Similarily use `Remove` to remove flags.
 
-=== "117"
+=== "117 (short)"
     ```xml
     <ModOp Merge="@114365/Product">
       <AssociatedRegion><ModValue Merge="Moderate" /></AssociatedRegion>
@@ -255,7 +246,7 @@ Similarily use `Remove` to remove flags.
 
 Use `<ModValue Insert="<local path>" />` to copy data from a local path without specifying `GUID`.
 
-=== "117"
+=== "117 (short)"
     ```xml
     <ModOp Merge="@123">
       <Inline><ModValue Insert="../Standard/GUID/text()" /></Inline>
@@ -276,22 +267,17 @@ Use `<ModValue Insert="<local path>" />` to copy data from a local path without 
 
 ### Insert Calculations - `ModValue`
 
-=== "117"
+=== "117 (short)"
     ```xml
     <!-- addition -->
     <ModOp Property="Maintenance" Merge="Workforce">
-      <Workforce><ModValue Insert="number(.) + 10" /></Workforce>
+      <Workforce><ModValue Insert="number(self::node()) + 10" /></Workforce>
     </ModOp>
 
     <!-- division -->
     <ModOp Property="Storage" Merge="Amount">
-      <Amount><ModValue Insert="(number(.) - number(.) mod 2) div 2" /></Amount>
+      <Amount><ModValue Insert="(number(self::node()) - number(self::node()) mod 2) div 2" /></Amount>
     </ModOp>
-    ```
-
-=== "1800 ❌"
-    ```xml
-    <!-- Not supported. -->
     ```
 
 Available operators: `+`, `-`, `*`, `div`, `mod`
@@ -305,7 +291,7 @@ The item is merged with the first item that matches the attribute in `Merge`.
 
 In the rare even you want to change the attribute itself in the merge process use `<ModItem Merge="Attribute='Value'">` to select the item.
 
-=== "117"
+=== "117 (short)"
     ```xml
     <ModOp GUID="114365" Merge="Product">
       <ProductionRegions>
@@ -316,7 +302,7 @@ In the rare even you want to change the attribute itself in the merge process us
     </ModOp>
     ```
 
-=== "1800"
+=== "117 & 1800"
     ```xml
     <ModOp Type="add" GUID="114365"
       Condition="!/Values/Product/ProductionRegions[Item/RegionType='Moderate']"
@@ -334,7 +320,7 @@ You can change that by defining a `Append` or `Prepend` path.
 
 The default is the same as `Append='last()'`.
 
-=== "117"
+=== "117 (short)"
     ```xml
     <ModOp Merge="@502017/ProductList/List">
       <ModItem Merge="Product" Append="Product='1010200'">
@@ -343,7 +329,7 @@ The default is the same as `Append='last()'`.
     </ModOp>
     ```
 
-=== "1800"
+=== "117 & 1800"
     ```xml
     <ModOp Type="addNextSibling" GUID="502017"
       Condition="!~/Values/ProductList/List/Item[Product='1500010836']"
@@ -372,11 +358,6 @@ With `ModValue` in combination `ModItem` + `ModValueContent` you can construct l
     <!-- .. -->
     ```
 
-=== "1800 ❌"
-    ```xml
-    <!-- Not supported. -->
-    ```
-
 #### SkipParent
 
 Use `SkipParent` if you need to exclude the top-level parent, because you have items with multiple elements.
@@ -397,11 +378,6 @@ Use `SkipParent` if you need to exclude the top-level parent, because you have i
     <!-- .. -->
     ```
 
-=== "1800 ❌"
-    ```xml
-    <!-- Not supported. -->
-    ```
-
 ## Advanced Modinfos
 
 ### Scripts
@@ -411,18 +387,19 @@ Expect changes with the next versions.
 
 Define scripts and commands in `modinfo.json`:
 
-```jsonc
-{
-  // ..
-  "scripts": {
-    "modules": [
-      "mymod/some-script.lua"
-    ],
-    "Init": "SomeScript = require(\"some-script\")",
-    "Tick": "SomeScript:Tick()"
-  }
-}
-```
+=== "117"
+    ```json
+    {
+      // ..
+      "scripts": {
+        "modules": [
+          "mymod/some-script.lua"
+        ],
+        "Init": "SomeScript = require(\"some-script\")",
+        "Tick": "SomeScript:Tick()"
+      }
+    }
+    ```
 
 Be sure to use unique names to not clash with other mods!
 
@@ -451,18 +428,30 @@ return SomeScript;
 The format for dependencies has changed a bit.
 All entries are now grouped under `Dependencies`.
 
-```jsonc
-{
-  // ..
-  "Dependencies": {
-    "Require": [],
-    "Optional": [],
-    "LoadAfter": [],
-    "Deprecate": [],
-    "Incompatible": []
-  }
-}
-```
+=== "117"
+    ```json
+    {
+      // ..
+      "Dependencies": {
+        "Require": [],
+        "Optional": [],
+        "LoadAfter": [],
+        "Deprecate": [],
+        "Incompatible": []
+      }
+    }
+    ```
+=== "1800"
+    ```json
+    {
+      // ..
+      "ModDependencies": [],
+      "OptionalDependencies": [],
+      "LoadAfterIds": [],
+      "DeprecateIds": [],
+      "IncompatibleIds": []
+    }
+    ```
 
 |Name|Description
 |---|---
