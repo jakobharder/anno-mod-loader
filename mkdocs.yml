@@ -2,7 +2,7 @@ site_name: Anno Mod Loader
 site_url: https://jakobharder.github.io/anno-mod-loader
 
 plugins:
-  - gh-admonitions
+  - search
 
 theme:
   name: material
