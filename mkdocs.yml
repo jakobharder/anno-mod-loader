@@ -4,6 +4,10 @@ site_url: https://jakobharder.github.io/anno-mod-loader
 plugins:
   - search
 
+nav:
+  - Changes: index.md
+  - New Features: new-features-117.md
+
 theme:
   name: material
   palette:
@@ -22,3 +26,4 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
+  - footnotes
