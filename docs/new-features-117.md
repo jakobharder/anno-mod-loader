@@ -7,7 +7,6 @@ All new features are provided on top.
 - [ModOp Paths](#modop-paths)
 - [Inline ModOps](#inline-modops)
 - [Advanced Modinfos](#advanced-modinfos)
-- [InfoTips](#infotips)
 
 ## ModOp Basics
 
