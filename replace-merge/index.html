@@ -1,0 +1,1221 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jakobharder.github.io/anno-mod-loader/replace-merge/">
+      
+      
+        <link rel="prev" href="../basic-modops/">
+      
+      
+        <link rel="next" href="../groups/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Replace & Merge - Anno Mod Loader</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#modop-type-replace-and-merge" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Anno Mod Loader" class="md-header__button md-logo" aria-label="Anno Mod Loader" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Anno Mod Loader
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Replace & Merge
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_1">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Anno Mod Loader" class="md-nav__button md-logo" aria-label="Anno Mod Loader" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Anno Mod Loader
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Changes in 117
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Changes in 117
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Important Changes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../new-features-117/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    New Features
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    ModOps
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            ModOps
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basic-modops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Basic ModOps
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Replace & Merge
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Replace & Merge
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#modop-type-replace" class="md-nav__link">
+    <span class="md-ellipsis">
+      ModOp Type replace
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ModOp Type replace">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replace-to-swap-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replace to swap content
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replace-to-remove-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replace to remove content
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replace-to-remove-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replace to remove node
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-practice-avoid-large-replace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practice: avoid large replace
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modop-type-merge" class="md-nav__link">
+    <span class="md-ellipsis">
+      ModOp Type merge
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ModOp Type merge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#merge-is-order-independent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge is order independent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge-adds-missing-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge adds missing nodes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge-does-not-remove-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge does not remove nodes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge-supports-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge supports lists
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge-can-be-used-like-add-or-replace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge can be used like add or replace
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../groups/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Grouping
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Conditions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modop-examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Examples
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    XPath
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            XPath
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://devhints.io/xpath" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cheat Sheet
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Features
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Features
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../options/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Options
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../infotips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    InfoTips
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#modop-type-replace" class="md-nav__link">
+    <span class="md-ellipsis">
+      ModOp Type replace
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ModOp Type replace">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replace-to-swap-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replace to swap content
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replace-to-remove-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replace to remove content
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replace-to-remove-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replace to remove node
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-practice-avoid-large-replace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practice: avoid large replace
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modop-type-merge" class="md-nav__link">
+    <span class="md-ellipsis">
+      ModOp Type merge
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ModOp Type merge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#merge-is-order-independent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge is order independent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge-adds-missing-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge adds missing nodes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge-does-not-remove-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge does not remove nodes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge-supports-lists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge supports lists
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge-can-be-used-like-add-or-replace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge can be used like add or replace
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="modop-type-replace-and-merge">ModOp Type <code>replace</code> and <code>merge</code></h1>
+<h2 id="modop-type-replace">ModOp Type <code>replace</code></h2>
+<h3 id="replace-to-swap-content">Replace to swap content</h3>
+<p>Type completely replaces the selected nodes with the content.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;replace&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Standard&gt;</span>
+<span class="w">    </span><span class="nt">&lt;GUID&gt;</span>456<span class="nt">&lt;/GUID&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Description&gt;</span>Hello<span class="nt">&lt;/Description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Standard&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+<p>Result:
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="gd">-     &lt;GUID&gt;123&lt;/GUID&gt;</span>
+<span class="gd">-     &lt;Name&gt;some name&lt;/Name&gt;</span>
+<span class="gi">+     &lt;GUID&gt;456&lt;/GUID&gt;</span>
+<span class="gi">+     &lt;Description&gt;Hello&lt;/Description&gt;</span>
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span>   &lt;Cost /&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div></p>
+<p>Note: the element to be replaced (<code>Standard</code> in this example) needs to be mentioned as well.</p>
+<h3 id="replace-to-remove-content">Replace to remove content</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;replace&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Cost&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Cost</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+<p>Result:
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>    &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span>   &lt;Cost&gt;
+<span class="gd">-     &lt;Item /&gt;</span>
+<span class="w"> </span>   &lt;/Cost&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div></p>
+<h3 id="replace-to-remove-node">Replace to remove node</h3>
+<p>An empty <code>replace</code> is essentially the same as <code>remove</code>.</p>
+<p>Both ModOps have the same output:
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;replace&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Cost&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+
+<span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;remove&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Cost&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+</code></pre></div></p>
+<p>Result:
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>    &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="gd">-   &lt;Cost&gt;</span>
+<span class="gd">-     &lt;Item /&gt;</span>
+<span class="gd">-   &lt;/Cost&gt;</span>
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div></p>
+<h3 id="best-practice-avoid-large-replace">Best Practice: avoid large replace</h3>
+<p>Imagine you want to do a change in a production chain.
+It is better to insert, merge or do a very small replace instead of replacing the whole chain to not overwrite other mods doing little changes in the same location.</p>
+<h2 id="modop-type-merge">ModOp Type <code>merge</code></h2>
+<h3 id="merge-is-order-independent">Merge is order independent</h3>
+<p>The order of nodes do not matter anymore for successful merges.
+Before you had to have the exact same order as the game.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;merge&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Building&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;AllowChangeDirection&gt;</span>1<span class="nt">&lt;/AllowChangeDirection&gt;</span>
+<span class="w">  </span><span class="nt">&lt;AllowChangeVariation&gt;</span>1<span class="nt">&lt;/AllowChangeVariation&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+<p>Result:
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span>   &lt;Building&gt;
+<span class="gd">-     &lt;AllowChangeVariation&gt;0&lt;/AllowChangeVariation&gt;</span>
+<span class="gd">-     &lt;AllowChangeDirection&gt;0&lt;/AllowChangeDirection&gt;</span>
+<span class="gi">+     &lt;AllowChangeVariation&gt;1&lt;/AllowChangeVariation&gt;</span>
+<span class="gi">+     &lt;AllowChangeDirection&gt;1&lt;/AllowChangeDirection&gt;</span>
+<span class="w"> </span>   &lt;/Building&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div></p>
+<h3 id="merge-adds-missing-nodes">Merge adds missing nodes</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;merge&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Building&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;AllowChangeVariation&gt;</span>1<span class="nt">&lt;/AllowChangeVariation&gt;</span>
+<span class="w">  </span><span class="nt">&lt;BuildModeStartVariation&gt;</span>0<span class="nt">&lt;/BuildModeStartVariation&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+<p>Result:
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span>   &lt;Building&gt;
+<span class="gd">-     &lt;AllowChangeVariation&gt;0&lt;/AllowChangeVariation&gt;</span>
+<span class="gi">+     &lt;AllowChangeVariation&gt;1&lt;/AllowChangeVariation&gt;</span>
+<span class="gi">+     &lt;BuildModeStartVariation&gt;0&lt;/BuildModeStartVariation&gt;</span>
+<span class="w"> </span>   &lt;/Building&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div></p>
+<h3 id="merge-does-not-remove-nodes">Merge does not remove nodes</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;merge&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Building</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+<p>Result:
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span>   &lt;Building&gt;
+<span class="w"> </span>    &lt;AllowChangeVariation&gt;1&lt;/AllowChangeVariation&gt;
+<span class="w"> </span>   &lt;/Building&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div></p>
+<p>Use <code>replace</code> or <code>remove</code> instead if you want to remove content.</p>
+<h3 id="merge-supports-lists">Merge supports lists</h3>
+<p><em>Since GU17.1</em></p>
+<p>~~Merging with multiple same name nodes (usually <code>Item</code>) is not supported anymore.~~</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;merge&quot;</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;100780&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Maintenance&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenances&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Item&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Product&gt;</span>1010017<span class="nt">&lt;/Product&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Amount&gt;</span>50000<span class="nt">&lt;/Amount&gt;</span>
+<span class="w">      </span><span class="nt">&lt;InactiveAmount&gt;</span>30000<span class="nt">&lt;/InactiveAmount&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Item&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Item&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Product&gt;</span>1010367<span class="nt">&lt;/Product&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Amount&gt;</span>50<span class="nt">&lt;/Amount&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Item&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Maintenances&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+<p>Result:</p>
+<div class="highlight"><pre><span></span><code>&lt;Maintenance&gt;
+<span class="w"> </span> &lt;Maintenances&gt;
+<span class="w"> </span>   &lt;Item&gt;
+<span class="w"> </span>     &lt;Product&gt;1010017&lt;/Product&gt;
+<span class="gd">-     &lt;Amount&gt;400&lt;/Amount&gt;</span>
+<span class="gd">-     &lt;InactiveAmount&gt;200&lt;/InactiveAmount&gt;</span>
+<span class="gi">+     &lt;Amount&gt;50000&lt;/Amount&gt;</span>
+<span class="gi">+     &lt;InactiveAmount&gt;30000&lt;/InactiveAmount&gt;</span>
+<span class="w"> </span>   &lt;/Item&gt;
+<span class="w"> </span>   &lt;Item&gt;
+<span class="gd">-     &lt;Product&gt;1010367&lt;/Product&gt;</span>
+<span class="gd">-     &lt;Amount&gt;50&lt;/Amount&gt;</span>
+<span class="gi">+     &lt;Product&gt;1010117&lt;/Product&gt;</span>
+<span class="gi">+     &lt;Amount&gt;150&lt;/Amount&gt;</span>
+<span class="w"> </span>     &lt;ShutdownThreshold&gt;0.5&lt;/ShutdownThreshold&gt;
+<span class="w"> </span>   &lt;/Item&gt;
+<span class="w"> </span> &lt;/Maintenances&gt;
+&lt;/Maintenance&gt;
+</code></pre></div>
+<p>But be aware, relying on index is prone to compatibility issues.</p>
+<h3 id="merge-can-be-used-like-add-or-replace">Merge can be used like <code>add</code> or <code>replace</code></h3>
+<p>The following to merge operations lead to the same result.</p>
+<p>Used like add, will only add if not there already:
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;merge&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Building&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;AllowChangeVariation&gt;</span>1<span class="nt">&lt;/AllowChangeVariation&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div></p>
+<p>Used like replace including the last path element (i.e. <code>Building</code>):
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;merge&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Building&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Building&gt;</span>
+<span class="w">    </span><span class="nt">&lt;AllowChangeVariation&gt;</span>1<span class="nt">&lt;/AllowChangeVariation&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Building&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div></p>
+<p>You need to use the second approach in some rare cases when parent and child element have the same name - which happens in localizations for example (<code>Texts/Text/Text/GUID</code>).
+It only applies if there is exactly one top-level element in the ModOp that has the same name as the last path element.</p>
+<p><em>Note the following changed behavior since modloader10 / GU17.</em></p>
+<p>The following ModOp doesn't update <code>AllowChangeVariation</code> anymore.
+Yes, it did before...
+It will instead add the node to <code>Values</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;merge&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Building&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;AllowChangeVariation&gt;</span>1<span class="nt">&lt;/AllowChangeVariation&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Building&gt;</span>
+<span class="w">    </span><span class="nt">&lt;BuildModeStartVariation&gt;</span>0<span class="nt">&lt;/BuildModeStartVariation&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Building&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+<p>Result:
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span>   &lt;Building&gt;
+<span class="w"> </span>     &lt;AllowChangeVariation&gt;0&lt;/AllowChangeVariation&gt;
+<span class="gi">+     &lt;BuildModeStartVariation&gt;0&lt;/BuildModeStartVariation&gt;</span>
+<span class="gi">+     &lt;Building&gt;</span>
+<span class="gi">+       &lt;AllowChangeVariation&gt;1&lt;/AllowChangeVariation&gt;</span>
+<span class="gi">+     &lt;/Building&gt;</span>
+<span class="w"> </span>   &lt;/Building&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>

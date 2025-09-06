@@ -8,22 +8,28 @@
       
       
       
+        <link rel="canonical" href="https://jakobharder.github.io/anno-mod-loader/basic-modops/">
       
       
+        <link rel="prev" href="../new-features-117/">
       
-      <link rel="icon" href="/anno-mod-loader/assets/images/favicon.png">
+      
+        <link rel="next" href="../replace-merge/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
     
     
       
-        <title>Anno Mod Loader</title>
+        <title>Basic ModOps - Anno Mod Loader</title>
       
     
     
-      <link rel="stylesheet" href="/anno-mod-loader/assets/stylesheets/main.7e37652d.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
       
         
-        <link rel="stylesheet" href="/anno-mod-loader/assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -42,7 +48,7 @@
       
     
     
-    <script>__md_scope=new URL("/anno-mod-loader/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -67,6 +73,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#modop-guide" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -79,7 +90,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/anno-mod-loader/." title="Anno Mod Loader" class="md-header__button md-logo" aria-label="Anno Mod Loader" data-md-component="logo">
+    <a href=".." title="Anno Mod Loader" class="md-header__button md-logo" aria-label="Anno Mod Loader" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -99,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              Basic ModOps
             
           </span>
         </div>
@@ -195,7 +206,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/anno-mod-loader/." title="Anno Mod Loader" class="md-nav__button md-logo" aria-label="Anno Mod Loader" data-md-component="logo">
+    <a href=".." title="Anno Mod Loader" class="md-nav__button md-logo" aria-label="Anno Mod Loader" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -256,7 +267,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/anno-mod-loader/." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -279,7 +290,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/anno-mod-loader/new-features-117/" class="md-nav__link">
+      <a href="../new-features-117/" class="md-nav__link">
         
   
   
@@ -306,8 +317,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -318,11 +331,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
@@ -338,7 +351,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             ModOps
@@ -349,10 +362,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/anno-mod-loader/basic-modops/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Basic ModOps
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -363,6 +398,77 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#simple-modops" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simple ModOps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Simple ModOps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type add
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-addnextsibling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type addNextSibling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-addprevsibling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type addPrevSibling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-remove" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type remove
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -375,7 +481,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/anno-mod-loader/replace-merge/" class="md-nav__link">
+      <a href="../replace-merge/" class="md-nav__link">
         
   
   
@@ -398,7 +504,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/anno-mod-loader/groups/" class="md-nav__link">
+      <a href="../groups/" class="md-nav__link">
         
   
   
@@ -421,7 +527,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/anno-mod-loader/conditions/" class="md-nav__link">
+      <a href="../conditions/" class="md-nav__link">
         
   
   
@@ -444,7 +550,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/anno-mod-loader/modop-examples/" class="md-nav__link">
+      <a href="../modop-examples/" class="md-nav__link">
         
   
   
@@ -590,7 +696,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/anno-mod-loader/options/" class="md-nav__link">
+      <a href="../options/" class="md-nav__link">
         
   
   
@@ -613,7 +719,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/anno-mod-loader/infotips/" class="md-nav__link">
+      <a href="../infotips/" class="md-nav__link">
         
   
   
@@ -653,6 +759,67 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#simple-modops" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simple ModOps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Simple ModOps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type add
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-addnextsibling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type addNextSibling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-addprevsibling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type addPrevSibling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-remove" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type remove
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -664,8 +831,107 @@
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+
+<h1 id="modop-guide">ModOp Guide</h1>
+<h2 id="simple-modops">Simple ModOps</h2>
+<h3 id="type-add">Type <code>add</code></h3>
+<p>Adds a new element at the end.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;add&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+<p>Result:
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span>   &lt;Cost /&gt;
+<span class="gi">+   &lt;Maintenance /&gt;</span>
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div></p>
+<h3 id="type-addnextsibling">Type <code>addNextSibling</code></h3>
+<p>Adds an element after the selected one.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;addNextSibling&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+<p>Result:
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="gi">+   &lt;Maintenance /&gt;</span>
+<span class="w"> </span>   &lt;Cost /&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div></p>
+<p>A common situation is when you want to insert an item at a specific position.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;addNextSibling&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/ConstructionCategory/BuildingList/Item[Building=&#39;1000178&#39;]&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Item&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Building&gt;</span>123<span class="nt">&lt;/Building&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Item&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+<p>Result:
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span>   &lt;ConstructionCategory&gt;
+<span class="w"> </span>     &lt;BuildingList&gt;
+<span class="w"> </span>       &lt;Item&gt;
+<span class="w"> </span>         &lt;Building&gt;1000178&lt;/Building&gt;
+<span class="w"> </span>       &lt;/Item&gt;
+<span class="gi">+       &lt;Item&gt;</span>
+<span class="gi">+         &lt;Building&gt;123&lt;/Building&gt;</span>
+<span class="gi">+       &lt;/Item&gt;</span>
+<span class="w"> </span>       &lt;Item&gt;
+<span class="w"> </span>         &lt;Building&gt;1010372&lt;/Building&gt;
+<span class="w"> </span>       &lt;/Item&gt;
+<span class="w"> </span>       &lt;Item&gt;
+<span class="w"> </span>         &lt;Building&gt;1010343&lt;/Building&gt;
+<span class="w"> </span>       &lt;/Item&gt;
+<span class="w"> </span>     &lt;/BuildingList&gt;
+<span class="w"> </span>   &lt;/ConstructionCategory&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div></p>
+<h3 id="type-addprevsibling">Type <code>addPrevSibling</code></h3>
+<p>Same as <code>addNextSibling</code> just before and not after.</p>
+<h3 id="type-remove">Type <code>remove</code></h3>
+<p>Remove selected nodes.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;remove&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Cost&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+</code></pre></div>
+<p>Result:
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>    &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="gd">-   &lt;Cost /&gt;</span>
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -701,10 +967,10 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "/anno-mod-loader/", "features": ["navigation.sections"], "search": "/anno-mod-loader/assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="/anno-mod-loader/assets/javascripts/bundle.92b07e13.min.js"></script>
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
       
     
   </body>
