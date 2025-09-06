@@ -9,8 +9,9 @@ nav:
     - Important Changes: index.md
     - New Features: new-features-117.md
   - ModOps:
-    - Basic ModOps: basic-modops.md
-    - "Replace & Merge": replace-merge.md
+    - Intro: modop-intro.md
+    - Basic: basic-modops.md
+    - Merge: merge.md
     - Grouping: groups.md
     - Conditions: conditions.md
     - Examples: modop-examples.md

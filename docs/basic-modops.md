@@ -1,111 +1,296 @@
-# ModOp Guide
+# Basic ModOps
 
-## Simple ModOps
+## Replace
 
-### Type `add`
+=== "117 (short)"
+    ```xml
+    <ModOp Replace="@123/Standard/Name">
+      <Name>new name</Name>
+    </ModOp>
+    ```
 
-Adds a new element at the end.
+=== "117 & 1800"
+    ```xml
+    <ModOp GUID="123" Type="replace"
+           Path="/Values/Standard">
+      <Name>new name</Name>
+    </ModOp>
+    ```
 
-```xml
-<ModOp GUID="123" Type="add" Path="/Values">
-  <Maintenance />
-</ModOp>
-```
+=== "Result"
+    ```diff
+    <Asset>
+      <Values>
+        <Standard>
+          <GUID>123</GUID>
+    -     <Name>old name</Name>
+    +     <Name>new name</Name>
+        </Standard>
+        <Cost />
+      </Values>
+    </Asset>
+    ```
 
-Result:
-```diff
-<Asset>
-  <Values>
-    <Standard>
-      <GUID>123</GUID>
-    </Standard>
-    <Cost />
-+   <Maintenance />
-  </Values>
-</Asset>
-```
+Replace is not limited to single elements.
+Elements containing elements can be replaced as well.
 
-### Type `addNextSibling`
+=== "117 (short)"
+    ```xml
+    <ModOp Replace="@123/Standard">
+      <Standard>
+        <GUID>456</GUID>
+        <Description>description</Description>
+      </Standard>
+    </ModOp>
+    ```
 
-Adds an element after the selected one.
+=== "117 & 1800"
+    ```xml
+    <ModOp GUID="123" Type="replace" Path="/Values/Standard">
+      <Standard>
+        <GUID>456</GUID>
+        <Description>description</Description>
+      </Standard>
+    </ModOp>
+    ```
 
-```xml
-<ModOp GUID="123" Type="addNextSibling" Path="/Values/Standard">
-  <Maintenance />
-</ModOp>
-```
+=== "Result"
+    ```diff
+    <Asset>
+      <Values>
+        <Standard>
+    -     <GUID>123</GUID>
+    -     <Name>name</Name>
+    +     <GUID>456</GUID>
+    +     <Description>description</Description>
+        </Standard>
+        <Cost />
+      </Values>
+    </Asset>
+    ```
 
-Result:
-```diff
-<Asset>
-  <Values>
-    <Standard>
-      <GUID>123</GUID>
-    </Standard>
-+   <Maintenance />
-    <Cost />
-  </Values>
-</Asset>
-```
+!!! note "An empty replace is the same as remove."
+
+## Merge
+
+Adds the content, or replaces if it already exists.
+
+=== "117 (short)"
+    ```xml
+    <ModOp Merge="@123/Standard">
+      <Name>Hello</Name>
+    </ModOp>
+    ```
+
+=== "117 & 1800"
+    ```xml
+    <ModOp GUID="123" Type="merge"
+           Path="/Values/Standard">
+      <Name>Hello</Name>
+    </ModOp>
+    ```
+
+=== "Result"
+    ```diff
+    <Asset>
+      <Values>
+        <Standard>
+          <GUID>123</GUID>
+    -     <Name>some name</Name>
+    +     <Name>Hello</Name>
+        </Standard>
+        <Cost />
+      </Values>
+    </Asset>
+    ```
+
+!!! warning "Special case: element name = parent name"
+    === "Problem"
+        ```xml
+          <Text>
+            <LineId>123</LineId>
+            <Text>old text</Text>
+          </Text>
+        ```
+
+    === "117"
+        ```xml
+        <ModOp Merge="@123/Text">
+          <Text>
+            <Text>new text</Text>
+          </Text>
+        </ModOp>
+        ```
+
+    === "Result"
+          ```diff
+          <Text>
+            <LineId>123</LineId>
+          -   <Text>old text</Text>
+          +   <Text>new text</Text>
+          </Text>
+          ```
+
+## Add
+
+Adds the content at the end insider of the selection.
+
+=== "117 (short)"
+    ```xml
+    <ModOp Add="@123">
+      <Maintenance />
+    </ModOp>
+    ```
+
+=== "117 & 1800"
+    ```xml
+    <ModOp GUID="123" Type="add" Path="/Values">
+      <Maintenance />
+    </ModOp>
+    ```
+
+=== "Result"
+    ```diff
+    <Asset>
+      <Values>
+        <Standard>
+          <GUID>123</GUID>
+        </Standard>
+        <Cost />
+    +   <Maintenance />
+      </Values>
+    </Asset>
+    ```
+
+## Append
+
+Adds the content after the selection.
+
+=== "117 (short)"
+    ```xml
+    <ModOp Append="@123/Standard">
+      <Maintenance />
+    </ModOp>
+    ```
+
+=== "117 & 1800"
+    ```xml
+    <ModOp GUID="123" Type="addNextSibling" Path="/Values/Standard">
+      <Maintenance />
+    </ModOp>
+    ```
+
+=== "Result"
+    ```diff
+    <Asset>
+      <Values>
+        <Standard>
+          <GUID>123</GUID>
+        </Standard>
+    +   <Maintenance />
+        <Cost />
+      </Values>
+    </Asset>
+    ```
 
 A common situation is when you want to insert an item at a specific position.
 
-```xml
-<ModOp GUID="123" Type="addNextSibling" Path="/Values/ConstructionCategory/BuildingList/Item[Building='1000178']">
-  <Item>
-    <Building>123</Building>
-  </Item>
-</ModOp>
-```
+=== "117 (short)"
+    ```xml
+    <ModOp Append="@123/ConstructionCategory/BuildingList/Item[Building='1000178']">
+      <Item>
+        <Building>123</Building>
+      </Item>
+    </ModOp>
+    ```
 
-Result:
-```diff
-<Asset>
-  <Values>
-    <Standard>
-      <GUID>123</GUID>
-    </Standard>
-    <ConstructionCategory>
-      <BuildingList>
-        <Item>
-          <Building>1000178</Building>
-        </Item>
-+       <Item>
-+         <Building>123</Building>
-+       </Item>
-        <Item>
-          <Building>1010372</Building>
-        </Item>
-        <Item>
-          <Building>1010343</Building>
-        </Item>
-      </BuildingList>
-    </ConstructionCategory>
-  </Values>
-</Asset>
-```
+=== "117 & 1800"
+    ```xml
+    <ModOp GUID="123" Type="addNextSibling"
+           Path="/Values/ConstructionCategory/BuildingList/Item[Building='1000178']">
+      <Item>
+        <Building>123</Building>
+      </Item>
+    </ModOp>
+    ```
 
-### Type `addPrevSibling`
+=== "Result"
+    ```diff
+    <Asset>
+      <Values>
+        <Standard>
+          <GUID>123</GUID>
+        </Standard>
+        <ConstructionCategory>
+          <BuildingList>
+            <Item>
+              <Building>1000178</Building>
+            </Item>
+    +       <Item>
+    +         <Building>123</Building>
+    +       </Item>
+            <Item>
+              <Building>1010372</Building>
+            </Item>
+          </BuildingList>
+        </ConstructionCategory>
+      </Values>
+    </Asset>
+    ```
 
-Same as `addNextSibling` just before and not after.
+## Prepend
 
-### Type `remove`
+Prepend works the same as `Append` except that it adds the content before the selection.
 
-Remove selected nodes.
+=== "117 (short)"
+    ```xml
+    <ModOp Prepend="@123/Standard">
+      <Maintenance />
+    </ModOp>
+    ```
 
-```xml
-<ModOp GUID="123" Type="remove" Path="/Values/Cost" />
-```
+=== "117 & 1800"
+    ```xml
+    <ModOp GUID="123" Type="addPreviousSibling" Path="/Values/Standard">
+      <Maintenance />
+    </ModOp>
+    ```
 
-Result:
-```diff
-<Asset>
-  <Values>
-    <Standard>
-     <GUID>123</GUID>
-    </Standard>
--   <Cost />
-  </Values>
-</Asset>
-```
+=== "Result"
+    ```diff
+    <Asset>
+      <Values>
+    +   <Maintenance />
+        <Standard>
+          <GUID>123</GUID>
+        </Standard>
+        <Cost />
+      </Values>
+    </Asset>
+    ```
 
+## Remove
+
+Removes the selected elements.
+
+=== "117 (short)"
+    ```xml
+    <ModOp Remove="@123/Cost" />
+    ```
+
+=== "117 & 1800"
+    ```xml
+    <ModOp GUID="123" Type="remove" Path="/Values/Cost" />
+    ```
+
+=== "Result"
+    ```diff
+    <Asset>
+      <Values>
+        <Standard>
+          <GUID>123</GUID>
+        </Standard>
+    -   <Cost />
+      </Values>
+    </Asset>
+    ```

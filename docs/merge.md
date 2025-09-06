@@ -1,93 +1,6 @@
-# ModOp Type `replace` and `merge`
+# Merge ModOp
 
-## ModOp Type `replace`
-
-### Replace to swap content
-
-Type completely replaces the selected nodes with the content.
-
-```xml
-<ModOp GUID="123" Type="replace" Path="/Values/Standard">
-  <Standard>
-    <GUID>456</GUID>
-    <Description>Hello</Description>
-  </Standard>
-</ModOp>
-```
-
-Result:
-```diff
-<Asset>
-  <Values>
-    <Standard>
--     <GUID>123</GUID>
--     <Name>some name</Name>
-+     <GUID>456</GUID>
-+     <Description>Hello</Description>
-    </Standard>
-    <Cost />
-  </Values>
-</Asset>
-```
-
-Note: the element to be replaced (`Standard` in this example) needs to be mentioned as well.
-
-### Replace to remove content
-
-```xml
-<ModOp GUID="123" Type="replace" Path="/Values/Cost">
-  <Cost />
-</ModOp>
-```
-
-Result:
-```diff
-<Asset>
-  <Values>
-    <Standard>
-     <GUID>123</GUID>
-    </Standard>
-    <Cost>
--     <Item />
-    </Cost>
-  </Values>
-</Asset>
-```
-
-### Replace to remove node
-
-An empty `replace` is essentially the same as `remove`.
-
-Both ModOps have the same output:
-```xml
-<ModOp GUID="123" Type="replace" Path="/Values/Cost">
-</ModOp>
-
-<ModOp GUID="123" Type="remove" Path="/Values/Cost" />
-```
-
-Result:
-```diff
-<Asset>
-  <Values>
-    <Standard>
-     <GUID>123</GUID>
-    </Standard>
--   <Cost>
--     <Item />
--   </Cost>
-  </Values>
-</Asset>
-```
-
-### Best Practice: avoid large replace
-
-Imagine you want to do a change in a production chain.
-It is better to insert, merge or do a very small replace instead of replacing the whole chain to not overwrite other mods doing little changes in the same location.
-
-## ModOp Type `merge`
-
-### Merge is order independent
+## Merge is order independent
 
 The order of nodes do not matter anymore for successful merges.
 Before you had to have the exact same order as the game.
@@ -116,7 +29,7 @@ Result:
 </Asset>
 ```
 
-### Merge adds missing nodes
+## Merge adds missing nodes
 
 ```xml
 <ModOp GUID="123" Type="merge" Path="/Values/Building">
@@ -141,7 +54,7 @@ Result:
 </Asset>
 ```
 
-### Merge does not remove nodes
+## Merge does not remove nodes
 
 ```xml
 <ModOp GUID="123" Type="merge" Path="/Values">
@@ -157,7 +70,7 @@ Result:
       <GUID>123</GUID>
     </Standard>
     <Building>
-     <AllowChangeVariation>1</AllowChangeVariation>
+      <AllowChangeVariation>1</AllowChangeVariation>
     </Building>
   </Values>
 </Asset>
@@ -165,11 +78,7 @@ Result:
 
 Use `replace` or `remove` instead if you want to remove content.
 
-### Merge supports lists
-
-*Since GU17.1*
-
-~~Merging with multiple same name nodes (usually `Item`) is not supported anymore.~~
+## Merge supports lists
 
 ```xml
 <ModOp Type="merge" GUID="100780" Path="/Values/Maintenance">
@@ -212,7 +121,7 @@ Result:
 
 But be aware, relying on index is prone to compatibility issues.
 
-### Merge can be used like `add` or `replace`
+## Merge can be used like `add` or `replace`
 
 The following to merge operations lead to the same result.
 

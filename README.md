@@ -1,22 +1,14 @@
 # Anno Mod Loader
 
-> [!NOTE]
-> This is a fork of the original mod loader of the great [meow](https://github.com/xforce/anno1800-mod-loader).
-> 
-> Many thanks to him for creating and maintaining that project for so long.
+> [!IMPORTANT]
+> [Documentation](https://jakobharder.github.io/anno-mod-loader)
+>
+> You can find beginner friendly tutorials in the community [modding guide](https://github.com/anno-mods/modding-guide#readme).
 
-Latest Changes:
- - [Modloader changes with GU17](./doc/modloader10.md)
- - [Modloader changes with GU18](./doc/modloader11.md)
-
-You can find beginner friendly tutorials in the community [modding guide](https://github.com/anno-mods/modding-guide#readme).
+This is a fork of the original mod loader of the great [meow](https://github.com/xforce/anno1800-mod-loader).
+Many thanks to him for creating and maintaining that project for so long.
 
 ## Install and Activate Mods
-
-### Mod Loader
-
-The game includes the modloader as of GU17 it.
-You do not need to install the mod loader.
 
 ### Mods
 
@@ -45,72 +37,6 @@ Additional, mods can be disabled with a `activations.json` in the respective `mo
 ```
 
 `ModID` from `modinfo.json` is used, and if not specified the folder name of the mod as a fallback.
-
-## Asset Modding
-
-In previous anno games there was a way to tell the game to load extacted files from disk instead of loading them  
-from the RDA container. While that made it easier, it's still not a nice way to handle modding large XML files.
-
-This Anno 1800 mod loader supports a few simple 'commands' to easily patch the XML to achieve pretty much whatever you want.
-
-### How to Create a Patch for any XML File from the Game:
-
-**Step 1)** Set up a directory for your mod inside Anno 1800/mods. In the following steps, it is assumed that you have titled your directory "myMod"
-
-**Step 2)** inside of myMod, you recreate the exact file structure that the base game uses. A patched assets.xml file would have to be under the following path: `Anno 1800/mods/myMod/data/config/export/main/asset/assets.xml`
-
-**Step 3)** Your XML document is expected to have the following structure:
-
-```xml
-<ModOps>
-    <ModOp>
-        <!-- Whatever Change you want to do -->
-    </ModOp>
-</ModOps>
-```
-
-> You can give as many `<ModOp>` as you'd like to and have multiple patch files for different original ones in a single mod.
-
-### How to Write a ModOp
-
-**Step 1)** Look up and select the XML node you want to edit with XPath using the Path argument.
-
-Example:
-
-```xml
-<ModOp Path = "/Templates/Group[Name = 'Objects']/Template[Name = 'Residence7']/Properties">
-```
-
-For the assets file, you can also use the GUID argument. This selects all the child nodes of the asset with the given GUID as new roots for your xPath for cleaner code and is also much faster, performance-wise.
-
-Example:
-
-```xml
-    Standard way:               <ModOp Path = "//Asset[Values/Standard/GUID = '1137']/Values/Standard/Name">
-
-    Better, with GUID arg:      <ModOp GUID = '1337' Path = "/Values/Standard/Name">
-```
-
-**Step 2)** Give a type for a ModOp, to change the selected node.
-
-Currently supported types:
-
-```
-- Merge                 Replaces all given child nodes or Arguments
-- Remove                Removes the selected Node
-- Add                   Adds inside the selected Node
-- Replace               Replaces the selected Node
-- AddNextSibling        Adds a sibling directly after the selected node
-- AddPrevSibling        Adds a sibling directly in front of the selected node
-```
-
-> This was just a quick initial implementation (~3h), very open for discussions on how to make that better or do something entirely different
-
-Detailed type documentation:
-- [Add, remove, addNextSibling, addPrevSibling](./doc/modop-guide.md)
-- [Replace and merge](./doc/modop-replace-merge.md)
-- [Conditions](./doc/modop-conditions.md)
-- [Examples](./doc/modop-examples.md)
 
 ### Split XML Patch into Multiple Files
 
