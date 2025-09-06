@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://jakobharder.github.io/anno-mod-loader/replace-merge/">
+        <link rel="canonical" href="https://jakobharder.github.io/anno-mod-loader/merge/">
       
       
         <link rel="prev" href="../basic-modops/">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Replace & Merge - Anno Mod Loader</title>
+        <title>Merge - Anno Mod Loader</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#modop-type-replace-and-merge" class="md-skip">
+        <a href="#merge-modop" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Replace & Merge
+              Merge
             
           </span>
         </div>
@@ -365,12 +365,35 @@
   
   
     <li class="md-nav__item">
+      <a href="../modop-intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Intro
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../basic-modops/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Basic ModOps
+    Basic
     
   </span>
   
@@ -402,7 +425,7 @@
   
   
   <span class="md-ellipsis">
-    Replace & Merge
+    Merge
     
   </span>
   
@@ -415,7 +438,7 @@
   
   
   <span class="md-ellipsis">
-    Replace & Merge
+    Merge
     
   </span>
   
@@ -438,67 +461,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#modop-type-replace" class="md-nav__link">
-    <span class="md-ellipsis">
-      ModOp Type replace
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ModOp Type replace">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#replace-to-swap-content" class="md-nav__link">
-    <span class="md-ellipsis">
-      Replace to swap content
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#replace-to-remove-content" class="md-nav__link">
-    <span class="md-ellipsis">
-      Replace to remove content
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#replace-to-remove-node" class="md-nav__link">
-    <span class="md-ellipsis">
-      Replace to remove node
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#best-practice-avoid-large-replace" class="md-nav__link">
-    <span class="md-ellipsis">
-      Best Practice: avoid large replace
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modop-type-merge" class="md-nav__link">
-    <span class="md-ellipsis">
-      ModOp Type merge
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ModOp Type merge">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#merge-is-order-independent" class="md-nav__link">
     <span class="md-ellipsis">
       Merge is order independent
@@ -506,8 +468,8 @@
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#merge-adds-missing-nodes" class="md-nav__link">
     <span class="md-ellipsis">
       Merge adds missing nodes
@@ -515,8 +477,8 @@
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#merge-does-not-remove-nodes" class="md-nav__link">
     <span class="md-ellipsis">
       Merge does not remove nodes
@@ -524,8 +486,8 @@
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#merge-supports-lists" class="md-nav__link">
     <span class="md-ellipsis">
       Merge supports lists
@@ -533,18 +495,13 @@
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#merge-can-be-used-like-add-or-replace" class="md-nav__link">
     <span class="md-ellipsis">
       Merge can be used like add or replace
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -829,67 +786,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#modop-type-replace" class="md-nav__link">
-    <span class="md-ellipsis">
-      ModOp Type replace
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ModOp Type replace">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#replace-to-swap-content" class="md-nav__link">
-    <span class="md-ellipsis">
-      Replace to swap content
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#replace-to-remove-content" class="md-nav__link">
-    <span class="md-ellipsis">
-      Replace to remove content
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#replace-to-remove-node" class="md-nav__link">
-    <span class="md-ellipsis">
-      Replace to remove node
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#best-practice-avoid-large-replace" class="md-nav__link">
-    <span class="md-ellipsis">
-      Best Practice: avoid large replace
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modop-type-merge" class="md-nav__link">
-    <span class="md-ellipsis">
-      ModOp Type merge
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ModOp Type merge">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#merge-is-order-independent" class="md-nav__link">
     <span class="md-ellipsis">
       Merge is order independent
@@ -897,8 +793,8 @@
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#merge-adds-missing-nodes" class="md-nav__link">
     <span class="md-ellipsis">
       Merge adds missing nodes
@@ -906,8 +802,8 @@
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#merge-does-not-remove-nodes" class="md-nav__link">
     <span class="md-ellipsis">
       Merge does not remove nodes
@@ -915,8 +811,8 @@
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#merge-supports-lists" class="md-nav__link">
     <span class="md-ellipsis">
       Merge supports lists
@@ -924,18 +820,13 @@
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#merge-can-be-used-like-add-or-replace" class="md-nav__link">
     <span class="md-ellipsis">
       Merge can be used like add or replace
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -955,73 +846,8 @@
 
 
 
-<h1 id="modop-type-replace-and-merge">ModOp Type <code>replace</code> and <code>merge</code></h1>
-<h2 id="modop-type-replace">ModOp Type <code>replace</code></h2>
-<h3 id="replace-to-swap-content">Replace to swap content</h3>
-<p>Type completely replaces the selected nodes with the content.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;replace&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard&quot;</span><span class="nt">&gt;</span>
-<span class="w">  </span><span class="nt">&lt;Standard&gt;</span>
-<span class="w">    </span><span class="nt">&lt;GUID&gt;</span>456<span class="nt">&lt;/GUID&gt;</span>
-<span class="w">    </span><span class="nt">&lt;Description&gt;</span>Hello<span class="nt">&lt;/Description&gt;</span>
-<span class="w">  </span><span class="nt">&lt;/Standard&gt;</span>
-<span class="nt">&lt;/ModOp&gt;</span>
-</code></pre></div>
-<p>Result:
-<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
-<span class="w"> </span> &lt;Values&gt;
-<span class="w"> </span>   &lt;Standard&gt;
-<span class="gd">-     &lt;GUID&gt;123&lt;/GUID&gt;</span>
-<span class="gd">-     &lt;Name&gt;some name&lt;/Name&gt;</span>
-<span class="gi">+     &lt;GUID&gt;456&lt;/GUID&gt;</span>
-<span class="gi">+     &lt;Description&gt;Hello&lt;/Description&gt;</span>
-<span class="w"> </span>   &lt;/Standard&gt;
-<span class="w"> </span>   &lt;Cost /&gt;
-<span class="w"> </span> &lt;/Values&gt;
-&lt;/Asset&gt;
-</code></pre></div></p>
-<p>Note: the element to be replaced (<code>Standard</code> in this example) needs to be mentioned as well.</p>
-<h3 id="replace-to-remove-content">Replace to remove content</h3>
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;replace&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Cost&quot;</span><span class="nt">&gt;</span>
-<span class="w">  </span><span class="nt">&lt;Cost</span><span class="w"> </span><span class="nt">/&gt;</span>
-<span class="nt">&lt;/ModOp&gt;</span>
-</code></pre></div>
-<p>Result:
-<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
-<span class="w"> </span> &lt;Values&gt;
-<span class="w"> </span>   &lt;Standard&gt;
-<span class="w"> </span>    &lt;GUID&gt;123&lt;/GUID&gt;
-<span class="w"> </span>   &lt;/Standard&gt;
-<span class="w"> </span>   &lt;Cost&gt;
-<span class="gd">-     &lt;Item /&gt;</span>
-<span class="w"> </span>   &lt;/Cost&gt;
-<span class="w"> </span> &lt;/Values&gt;
-&lt;/Asset&gt;
-</code></pre></div></p>
-<h3 id="replace-to-remove-node">Replace to remove node</h3>
-<p>An empty <code>replace</code> is essentially the same as <code>remove</code>.</p>
-<p>Both ModOps have the same output:
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;replace&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Cost&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;/ModOp&gt;</span>
-
-<span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;remove&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Cost&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
-</code></pre></div></p>
-<p>Result:
-<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
-<span class="w"> </span> &lt;Values&gt;
-<span class="w"> </span>   &lt;Standard&gt;
-<span class="w"> </span>    &lt;GUID&gt;123&lt;/GUID&gt;
-<span class="w"> </span>   &lt;/Standard&gt;
-<span class="gd">-   &lt;Cost&gt;</span>
-<span class="gd">-     &lt;Item /&gt;</span>
-<span class="gd">-   &lt;/Cost&gt;</span>
-<span class="w"> </span> &lt;/Values&gt;
-&lt;/Asset&gt;
-</code></pre></div></p>
-<h3 id="best-practice-avoid-large-replace">Best Practice: avoid large replace</h3>
-<p>Imagine you want to do a change in a production chain.
-It is better to insert, merge or do a very small replace instead of replacing the whole chain to not overwrite other mods doing little changes in the same location.</p>
-<h2 id="modop-type-merge">ModOp Type <code>merge</code></h2>
-<h3 id="merge-is-order-independent">Merge is order independent</h3>
+<h1 id="merge-modop">Merge ModOp</h1>
+<h2 id="merge-is-order-independent">Merge is order independent</h2>
 <p>The order of nodes do not matter anymore for successful merges.
 Before you had to have the exact same order as the game.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;merge&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Building&quot;</span><span class="nt">&gt;</span>
@@ -1044,7 +870,7 @@ Before you had to have the exact same order as the game.</p>
 <span class="w"> </span> &lt;/Values&gt;
 &lt;/Asset&gt;
 </code></pre></div></p>
-<h3 id="merge-adds-missing-nodes">Merge adds missing nodes</h3>
+<h2 id="merge-adds-missing-nodes">Merge adds missing nodes</h2>
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;merge&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Building&quot;</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="nt">&lt;AllowChangeVariation&gt;</span>1<span class="nt">&lt;/AllowChangeVariation&gt;</span>
 <span class="w">  </span><span class="nt">&lt;BuildModeStartVariation&gt;</span>0<span class="nt">&lt;/BuildModeStartVariation&gt;</span>
@@ -1064,7 +890,7 @@ Before you had to have the exact same order as the game.</p>
 <span class="w"> </span> &lt;/Values&gt;
 &lt;/Asset&gt;
 </code></pre></div></p>
-<h3 id="merge-does-not-remove-nodes">Merge does not remove nodes</h3>
+<h2 id="merge-does-not-remove-nodes">Merge does not remove nodes</h2>
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;merge&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values&quot;</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="nt">&lt;Building</span><span class="w"> </span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/ModOp&gt;</span>
@@ -1076,15 +902,13 @@ Before you had to have the exact same order as the game.</p>
 <span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
 <span class="w"> </span>   &lt;/Standard&gt;
 <span class="w"> </span>   &lt;Building&gt;
-<span class="w"> </span>    &lt;AllowChangeVariation&gt;1&lt;/AllowChangeVariation&gt;
+<span class="w"> </span>     &lt;AllowChangeVariation&gt;1&lt;/AllowChangeVariation&gt;
 <span class="w"> </span>   &lt;/Building&gt;
 <span class="w"> </span> &lt;/Values&gt;
 &lt;/Asset&gt;
 </code></pre></div></p>
 <p>Use <code>replace</code> or <code>remove</code> instead if you want to remove content.</p>
-<h3 id="merge-supports-lists">Merge supports lists</h3>
-<p><em>Since GU17.1</em></p>
-<p>~~Merging with multiple same name nodes (usually <code>Item</code>) is not supported anymore.~~</p>
+<h2 id="merge-supports-lists">Merge supports lists</h2>
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;merge&quot;</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;100780&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Maintenance&quot;</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="nt">&lt;Maintenances&gt;</span>
 <span class="w">    </span><span class="nt">&lt;Item&gt;</span>
@@ -1120,7 +944,7 @@ Before you had to have the exact same order as the game.</p>
 &lt;/Maintenance&gt;
 </code></pre></div>
 <p>But be aware, relying on index is prone to compatibility issues.</p>
-<h3 id="merge-can-be-used-like-add-or-replace">Merge can be used like <code>add</code> or <code>replace</code></h3>
+<h2 id="merge-can-be-used-like-add-or-replace">Merge can be used like <code>add</code> or <code>replace</code></h2>
 <p>The following to merge operations lead to the same result.</p>
 <p>Used like add, will only add if not there already:
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;merge&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Building&quot;</span><span class="nt">&gt;</span>

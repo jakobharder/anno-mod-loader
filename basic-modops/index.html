@@ -11,10 +11,10 @@
         <link rel="canonical" href="https://jakobharder.github.io/anno-mod-loader/basic-modops/">
       
       
-        <link rel="prev" href="../new-features-117/">
+        <link rel="prev" href="../modop-intro/">
       
       
-        <link rel="next" href="../replace-merge/">
+        <link rel="next" href="../merge/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Basic ModOps - Anno Mod Loader</title>
+        <title>Basic - Anno Mod Loader</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#modop-guide" class="md-skip">
+        <a href="#basic-modops" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Basic ModOps
+              Basic
             
           </span>
         </div>
@@ -362,6 +362,29 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../modop-intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Intro
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -379,7 +402,7 @@
   
   
   <span class="md-ellipsis">
-    Basic ModOps
+    Basic
     
   </span>
   
@@ -392,7 +415,7 @@
   
   
   <span class="md-ellipsis">
-    Basic ModOps
+    Basic
     
   </span>
   
@@ -415,53 +438,56 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#simple-modops" class="md-nav__link">
+  <a href="#replace" class="md-nav__link">
     <span class="md-ellipsis">
-      Simple ModOps
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Simple ModOps">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#type-add" class="md-nav__link">
-    <span class="md-ellipsis">
-      Type add
+      Replace
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#type-addnextsibling" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#merge" class="md-nav__link">
     <span class="md-ellipsis">
-      Type addNextSibling
+      Merge
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#type-addprevsibling" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#add" class="md-nav__link">
     <span class="md-ellipsis">
-      Type addPrevSibling
+      Add
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#type-remove" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#append" class="md-nav__link">
     <span class="md-ellipsis">
-      Type remove
+      Append
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#prepend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prepend
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remove" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remove
+    </span>
+  </a>
   
 </li>
       
@@ -481,12 +507,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../replace-merge/" class="md-nav__link">
+      <a href="../merge/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Replace & Merge
+    Merge
     
   </span>
   
@@ -769,53 +795,56 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#simple-modops" class="md-nav__link">
+  <a href="#replace" class="md-nav__link">
     <span class="md-ellipsis">
-      Simple ModOps
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Simple ModOps">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#type-add" class="md-nav__link">
-    <span class="md-ellipsis">
-      Type add
+      Replace
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#type-addnextsibling" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#merge" class="md-nav__link">
     <span class="md-ellipsis">
-      Type addNextSibling
+      Merge
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#type-addprevsibling" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#add" class="md-nav__link">
     <span class="md-ellipsis">
-      Type addPrevSibling
+      Add
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#type-remove" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#append" class="md-nav__link">
     <span class="md-ellipsis">
-      Type remove
+      Append
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#prepend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prepend
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remove" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remove
+    </span>
+  </a>
   
 </li>
       
@@ -835,15 +864,158 @@
 
 
 
-<h1 id="modop-guide">ModOp Guide</h1>
-<h2 id="simple-modops">Simple ModOps</h2>
-<h3 id="type-add">Type <code>add</code></h3>
-<p>Adds a new element at the end.</p>
+<h1 id="basic-modops">Basic ModOps</h1>
+<h2 id="replace">Replace</h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">117 (short)</label><label for="__tabbed_1_2">117 &amp; 1800</label><label for="__tabbed_1_3">Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Replace=</span><span class="s">&quot;@123/Standard/Name&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Name&gt;</span>new<span class="w"> </span>name<span class="nt">&lt;/Name&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;replace&quot;</span>
+<span class="w">       </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Name&gt;</span>new<span class="w"> </span>name<span class="nt">&lt;/Name&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="gd">-     &lt;Name&gt;old name&lt;/Name&gt;</span>
+<span class="gi">+     &lt;Name&gt;new name&lt;/Name&gt;</span>
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span>   &lt;Cost /&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Replace is not limited to single elements.
+Elements containing elements can be replaced as well.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">117 (short)</label><label for="__tabbed_2_2">117 &amp; 1800</label><label for="__tabbed_2_3">Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Replace=</span><span class="s">&quot;@123/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Standard&gt;</span>
+<span class="w">    </span><span class="nt">&lt;GUID&gt;</span>456<span class="nt">&lt;/GUID&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Description&gt;</span>description<span class="nt">&lt;/Description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Standard&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;replace&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Standard&gt;</span>
+<span class="w">    </span><span class="nt">&lt;GUID&gt;</span>456<span class="nt">&lt;/GUID&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Description&gt;</span>description<span class="nt">&lt;/Description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Standard&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="gd">-     &lt;GUID&gt;123&lt;/GUID&gt;</span>
+<span class="gd">-     &lt;Name&gt;name&lt;/Name&gt;</span>
+<span class="gi">+     &lt;GUID&gt;456&lt;/GUID&gt;</span>
+<span class="gi">+     &lt;Description&gt;description&lt;/Description&gt;</span>
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span>   &lt;Cost /&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">An empty replace is the same as remove.</p>
+</div>
+<h2 id="merge">Merge</h2>
+<p>Adds the content, or replaces if it already exists.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">117 (short)</label><label for="__tabbed_3_2">117 &amp; 1800</label><label for="__tabbed_3_3">Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Merge=</span><span class="s">&quot;@123/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Name&gt;</span>Hello<span class="nt">&lt;/Name&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;merge&quot;</span>
+<span class="w">       </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Name&gt;</span>Hello<span class="nt">&lt;/Name&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="gd">-     &lt;Name&gt;some name&lt;/Name&gt;</span>
+<span class="gi">+     &lt;Name&gt;Hello&lt;/Name&gt;</span>
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span>   &lt;Cost /&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Special case: element name = parent name</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Problem</label><label for="__tabbed_4_2">117</label><label for="__tabbed_4_3">Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="nt">&lt;Text&gt;</span>
+<span class="w">    </span><span class="nt">&lt;LineId&gt;</span>123<span class="nt">&lt;/LineId&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Text&gt;</span>old<span class="w"> </span>text<span class="nt">&lt;/Text&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Text&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Merge=</span><span class="s">&quot;@123/Text&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Text&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Text&gt;</span>new<span class="w"> </span>text<span class="nt">&lt;/Text&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Text&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Text&gt;
+<span class="w"> </span> &lt;LineId&gt;123&lt;/LineId&gt;
+<span class="gd">-   &lt;Text&gt;old text&lt;/Text&gt;</span>
+<span class="gi">+   &lt;Text&gt;new text&lt;/Text&gt;</span>
+&lt;/Text&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+</div>
+<h2 id="add">Add</h2>
+<p>Adds the content at the end insider of the selection.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">117 (short)</label><label for="__tabbed_5_2">117 &amp; 1800</label><label for="__tabbed_5_3">Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Add=</span><span class="s">&quot;@123&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;add&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values&quot;</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/ModOp&gt;</span>
 </code></pre></div>
-<p>Result:
+</div>
+<div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>&lt;Asset&gt;
 <span class="w"> </span> &lt;Values&gt;
 <span class="w"> </span>   &lt;Standard&gt;
@@ -853,14 +1025,27 @@
 <span class="gi">+   &lt;Maintenance /&gt;</span>
 <span class="w"> </span> &lt;/Values&gt;
 &lt;/Asset&gt;
-</code></pre></div></p>
-<h3 id="type-addnextsibling">Type <code>addNextSibling</code></h3>
-<p>Adds an element after the selected one.</p>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h2 id="append">Append</h2>
+<p>Adds the content after the selection.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:3"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><input id="__tabbed_6_3" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">117 (short)</label><label for="__tabbed_6_2">117 &amp; 1800</label><label for="__tabbed_6_3">Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Append=</span><span class="s">&quot;@123/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;addNextSibling&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard&quot;</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/ModOp&gt;</span>
 </code></pre></div>
-<p>Result:
+</div>
+<div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>&lt;Asset&gt;
 <span class="w"> </span> &lt;Values&gt;
 <span class="w"> </span>   &lt;Standard&gt;
@@ -870,15 +1055,31 @@
 <span class="w"> </span>   &lt;Cost /&gt;
 <span class="w"> </span> &lt;/Values&gt;
 &lt;/Asset&gt;
-</code></pre></div></p>
+</code></pre></div>
+</div>
+</div>
+</div>
 <p>A common situation is when you want to insert an item at a specific position.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;addNextSibling&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/ConstructionCategory/BuildingList/Item[Building=&#39;1000178&#39;]&quot;</span><span class="nt">&gt;</span>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:3"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><input id="__tabbed_7_3" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">117 (short)</label><label for="__tabbed_7_2">117 &amp; 1800</label><label for="__tabbed_7_3">Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Append=</span><span class="s">&quot;@123/ConstructionCategory/BuildingList/Item[Building=&#39;1000178&#39;]&quot;</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="nt">&lt;Item&gt;</span>
 <span class="w">    </span><span class="nt">&lt;Building&gt;</span>123<span class="nt">&lt;/Building&gt;</span>
 <span class="w">  </span><span class="nt">&lt;/Item&gt;</span>
 <span class="nt">&lt;/ModOp&gt;</span>
 </code></pre></div>
-<p>Result:
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;addNextSibling&quot;</span>
+<span class="w">       </span><span class="na">Path=</span><span class="s">&quot;/Values/ConstructionCategory/BuildingList/Item[Building=&#39;1000178&#39;]&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Item&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Building&gt;</span>123<span class="nt">&lt;/Building&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Item&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>&lt;Asset&gt;
 <span class="w"> </span> &lt;Values&gt;
 <span class="w"> </span>   &lt;Standard&gt;
@@ -895,30 +1096,69 @@
 <span class="w"> </span>       &lt;Item&gt;
 <span class="w"> </span>         &lt;Building&gt;1010372&lt;/Building&gt;
 <span class="w"> </span>       &lt;/Item&gt;
-<span class="w"> </span>       &lt;Item&gt;
-<span class="w"> </span>         &lt;Building&gt;1010343&lt;/Building&gt;
-<span class="w"> </span>       &lt;/Item&gt;
 <span class="w"> </span>     &lt;/BuildingList&gt;
 <span class="w"> </span>   &lt;/ConstructionCategory&gt;
 <span class="w"> </span> &lt;/Values&gt;
 &lt;/Asset&gt;
-</code></pre></div></p>
-<h3 id="type-addprevsibling">Type <code>addPrevSibling</code></h3>
-<p>Same as <code>addNextSibling</code> just before and not after.</p>
-<h3 id="type-remove">Type <code>remove</code></h3>
-<p>Remove selected nodes.</p>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h2 id="prepend">Prepend</h2>
+<p>Prepend works the same as <code>Append</code> except that it adds the content before the selection.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:3"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><input id="__tabbed_8_3" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="__tabbed_8_1">117 (short)</label><label for="__tabbed_8_2">117 &amp; 1800</label><label for="__tabbed_8_3">Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Prepend=</span><span class="s">&quot;@123/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;addPreviousSibling&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="gi">+   &lt;Maintenance /&gt;</span>
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span>   &lt;Cost /&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<h2 id="remove">Remove</h2>
+<p>Removes the selected elements.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:3"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><input id="__tabbed_9_3" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="__tabbed_9_1">117 (short)</label><label for="__tabbed_9_2">117 &amp; 1800</label><label for="__tabbed_9_3">Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Remove=</span><span class="s">&quot;@123/Cost&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;remove&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Cost&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
 </code></pre></div>
-<p>Result:
+</div>
+<div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>&lt;Asset&gt;
 <span class="w"> </span> &lt;Values&gt;
 <span class="w"> </span>   &lt;Standard&gt;
-<span class="w"> </span>    &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
 <span class="w"> </span>   &lt;/Standard&gt;
 <span class="gd">-   &lt;Cost /&gt;</span>
 <span class="w"> </span> &lt;/Values&gt;
 &lt;/Asset&gt;
-</code></pre></div></p>
+</code></pre></div>
+</div>
+</div>
+</div>
 
 
 
