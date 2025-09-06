@@ -2,6 +2,35 @@
 
 There are a few changes in file structure and modinfo.json that are mandatory.
 
+### Mod Folders and Activations
+
+The locations of the mod folders for manual installation are unchanged.
+
+- `<user>/Anno 117/mods/`
+- `<install>/Anno 117/mods/`
+
+You can change the activation of a mod in two ways:
+
+- Prefix entry with `#` in `<user>/Anno 117/active-profile.txt`
+- Prefix folder with `-` *(not recommended while the game is running)*
+
+!!! warning "Profiles are not available in the demo"
+
+The loader adds all detected mods to this list in `active-profile.txt`:
+
+```ini
+## Disable a mod:
+## - Add a `#` before it.
+##
+## Disable mods not listed:
+## - Add `#` before `EnableNewMods` to automatically disable new mods.
+## - That's useful if you want to backup your activation list as a mod profile.
+EnableNewMods
+
+# infinite-money-ubi
+infinite-materials-ubi
+```
+
 ### Safe Ranges
 
 !!! info "Reserve your [GUID range](https://github.com/anno-mods/GuidRanges) for Anno 117"

@@ -2,48 +2,10 @@
 
 These are proposals and may or may not end up in the game.
 
-- [Patching InfoTip export.bin](#patching-infotip-exportbin)
 - [Patching .cfg files](#patching-cfg-files)
 - [Patching .fc files](#patching-fc-files)
 - [Link files](#link-files)
-- [Conditions with ModID](#conditions-with-modid)
 - [Wrap ModOp Content](#wrap-modop-content)
-
-## Patching InfoTip export.bin
-
-You can patch `data/infotips/export.bin` by adding an `export.bin.xml` patch file to your mod.
-
-Example:
-```xml
-<ModOps>
-  <ModOp Type="merge" Path="//InfoTipData[Guid='500934']">
-    <InfoElement>
-      <VisibilityElement>
-        <VisibilityElement />
-        <VisibilityElement>
-          <ElementType>
-            <ElementType>1</ElementType>
-          </ElementType>
-          <CompareOperator>
-            <CompareOperator>1</CompareOperator>
-          </CompareOperator>
-          <ResultType>
-            <ResultType>1</ResultType>
-          </ResultType>
-          <ExpectedValueInt>102284</ExpectedValueInt>
-          <Condition>[Selection Object GUID]</Condition>
-        </VisibilityElement>
-      </VisibilityElement>
-    </InfoElement>
-    <!-- ... -->
-  </ModOp>
-</ModOps>
-
-```
-
-Note: the counts `InfoTipCount`, `TemplateCount` and `ChildCount` will be adjusted automatically, you don't need to change anything.
-
-The format is the same as used in the [FileDBReader](https://github.com/anno-mods/FileDBReader/blob/master/FileFormats/infotip.xml).
 
 ## Patching .cfg files
 
@@ -100,23 +62,6 @@ You can link files by adding a text file with the extension `.lnk`.
 The path and name of the file is the link source, the text file contents is the link target.
 
 This is useful to duplicate islands under a different path for example.
-
-## Conditions with ModID
-
-You can use conditions to check if a mod exists in any patch - not only `assets.xml` patches.
-
-It doesn't matter whether the mod is loaded before or after this mod.
-Use `LoadAfterIds` to ensure it's loaded before your mod.
-
-```xml
-<Group Condition="#NewWorldDocklands">
-  <ModOp Type="add" Path="@1404422070/ModuleOwner/ConstructionOptions">
-    <Item>
-      <ModuleGUID>1500010080</ModuleGUID>
-    </Item>
-  </ModOp>
-<Group>
-```
 
 ## Wrap ModOp `Content`
 

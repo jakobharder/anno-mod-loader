@@ -464,8 +464,8 @@ All entries are now grouped under `Dependencies`.
 }
 ```
 
-|Name|Value|Effect|
-|---|---|---|
+|Name|Description
+|---|---
 |`Require`|List mods and DLCs that are required to use this mod.
 |`Optional`|List mods and DLCs that enable further content in this mod.
 |`LoadAfter`|List mods to load before this mod.
