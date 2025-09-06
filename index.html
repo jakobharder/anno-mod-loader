@@ -317,6 +317,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#mod-folders-and-activations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mod Folders and Activations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#safe-ranges" class="md-nav__link">
     <span class="md-ellipsis">
       Safe Ranges
@@ -784,6 +793,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#mod-folders-and-activations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mod Folders and Activations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#safe-ranges" class="md-nav__link">
     <span class="md-ellipsis">
       Safe Ranges
@@ -846,6 +864,32 @@
 
 <h1 id="changes-with-anno-117">Changes with Anno 117</h1>
 <p>There are a few changes in file structure and modinfo.json that are mandatory.</p>
+<h3 id="mod-folders-and-activations">Mod Folders and Activations</h3>
+<p>The locations of the mod folders for manual installation are unchanged.</p>
+<ul>
+<li><code>&lt;user&gt;/Anno 117/mods/</code></li>
+<li><code>&lt;install&gt;/Anno 117/mods/</code></li>
+</ul>
+<p>You can change the activation of a mod in two ways:</p>
+<ul>
+<li>Prefix entry with <code>#</code> in <code>&lt;user&gt;/Anno 117/active-profile.txt</code></li>
+<li>Prefix folder with <code>-</code> <em>(not recommended while the game is running)</em></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Profiles are not available in the demo</p>
+</div>
+<p>The loader adds all detected mods to this list in <code>active-profile.txt</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">## Disable a mod:</span>
+<span class="c1">## - Add a `#` before it.</span>
+<span class="c1">##</span>
+<span class="c1">## Disable mods not listed:</span>
+<span class="c1">## - Add `#` before `EnableNewMods` to automatically disable new mods.</span>
+<span class="c1">## - That&#39;s useful if you want to backup your activation list as a mod profile.</span>
+<span class="na">EnableNewMods</span>
+
+<span class="c1"># infinite-money-ubi</span>
+<span class="na">infinite-materials-ubi</span>
+</code></pre></div>
 <h3 id="safe-ranges">Safe Ranges</h3>
 <div class="admonition info">
 <p class="admonition-title">Reserve your <a href="https://github.com/anno-mods/GuidRanges">GUID range</a> for Anno 117</p>
