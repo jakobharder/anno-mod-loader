@@ -7,6 +7,7 @@ All new features are provided on top.
 - [ModOp Paths](#modop-paths)
 - [Inline ModOps](#inline-modops)
 - [Advanced Modinfos](#advanced-modinfos)
+- [Options](./options.md)
 
 ## ModOp Basics
 
@@ -222,58 +223,6 @@ That means you can combine them like XPath expressions with `and` and `or`.
 </ModOps>
 ```
 
-### Options
-
-Additionally, options can be defined in an external `options.json` file.
-These options are accessible as `$mod-id.option-name` in XPath.
-You can leave out `mod-id` if the variable comes from the same mod shortening the path to `$option-name`.
-
-```xml
-<ModOps>
-  <ModOp Replace="@123/Costs/Influence" Condition="$use-influence">
-    <Influence>3</Influence>
-  </ModOp>
-  <ModOp Merge="@123/Service/PublicServiceRange" Condition="$other-mod.range &lt; 20">
-    <PublicServiceRange>20</PublicServiceRange>
-  </ModOp>
-</ModOps>
-```
-
-#### Options file
-
-The `options.json` file is read from the `mods/` folder with the following format:
-
-```jsonc
-{
-  "mod-id": {
-    "range": "10",
-    "useInfluence": "true"
-  }
-}
-```
-
-*Note: future versions will generate the options.json from default values, but for now you have to create it yourself.*
-
-#### Modinfo contains defaults
-
-`modinfo.json`:
-
-```jsonc
-{
-  // ..
-  "options": {
-    "range": {
-      "default": "10"
-    },
-    "useInfluence": {
-      "default": "true"
-    }
-  }
-}
-```
-
-*Note: The mod loader only requires defaults. Additional information like labels, allowed values, type, steps, etc. is not relevant here and thus omitted.*
-
 ## Inline ModOps
 
 Inline ModOps are operators you can use inside the content of a `merge` `ModOp`.
@@ -324,23 +273,6 @@ Use `<ModValue Insert="<local path>" />` to copy data from a local path without 
       <GUID><ModOpContent /></GUID>
     </ModOp>
     ```
-
-### Insert Options - `ModValue`
-
-=== "117"
-    ```xml
-    <ModOps>
-      <ModOp Merge="@123">
-        <PublicServiceRange><ModValue Insert="$other-mod.range"/></PublicServiceRange>
-      </ModOp>
-    </ModOps>
-    ```
-
-=== "1800 ❌"
-    ```xml
-    <!-- Not supported. -->
-    ```
-
 
 ### Insert Calculations - `ModValue`
 
@@ -471,33 +403,6 @@ Use `SkipParent` if you need to exclude the top-level parent, because you have i
     ```
 
 ## Advanced Modinfos
-
-### Options
-
-Specify user customizable options of a mod (like iModYourAnno tweaks) in `modinfo.json`:
-
-```jsonc
-{
-  // ..
-  "options": {
-    "range": {
-      "label": "Electricity Range",
-      "type": "enum",
-      "default": "10",
-      "values": [ "10", "20", "30" ],
-      "labels": [ "10 Street Range", "20 Street Range", "30 Street Range" ]
-    },
-    "useInfluence": {
-      "label": "Use Influence Cost",
-      "default": "true",
-      "type": "toggle"
-    }
-  }
-}
-```
-
-*Note: Only `default` is relevant for the actual mod loading process.*
-*The rest is information for valid values and descriptions to be used by mod managers modifying the user values in `options.json`.*
 
 ### Scripts
 

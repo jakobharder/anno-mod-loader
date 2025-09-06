@@ -5,11 +5,12 @@ plugins:
   - search
 
 nav:
-  - "Changes 117":
+  - "Changes in 117":
     - Important Changes: index.md
     - New Features: new-features-117.md
-  - ModOps:
+  - Features:
     - Conditions: conditions.md
+    - "Options": options.md
 
 theme:
   name: material
@@ -24,9 +25,6 @@ theme:
     accent: indigo
   features:
     - navigation.sections
-
-extra_css:
-  - stylesheets/extra.css
 
 markdown_extensions:
   - admonition
