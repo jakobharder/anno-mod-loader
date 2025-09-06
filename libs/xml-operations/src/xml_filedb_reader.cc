@@ -15,10 +15,10 @@
 #include <spdlog/fmt/fmt.h>
 #include <pugixml.hpp>
 
+#include "xml_filedb_reader.h"
+
 namespace fmt_alias = fmt;
 namespace fs = std::filesystem;
-
-#include "xml_filedb_reader.h"
 
 namespace xmlops {
 

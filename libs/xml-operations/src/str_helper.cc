@@ -1,13 +1,14 @@
 #include "str_helper.h"
 
 #include <charconv>
+#include <strings.h>
 
 namespace xmlops {
 namespace str {
 
 bool equals_nocase(std::string_view a, std::string_view b) {
 #ifndef _WIN32
-    auto strnicmp = [](auto a, auto b) { return strncasecmp(a, b); };
+    auto strnicmp = [](auto a, auto b, auto size) { return strncasecmp(a, b, size); };
 #endif
     if (a.size() != b.size()) {
         return false;
@@ -18,8 +19,8 @@ bool equals_nocase(std::string_view a, std::string_view b) {
 std::vector<std::string> split(std::string_view input, char delimiter) {
     std::vector<std::string> result;
 
-    int last_pos = 0;
-    for (int i = 0; i < input.length(); i++) {
+    size_t last_pos = 0;
+    for (size_t i = 0; i < input.length(); i++) {
         if (input[i] != delimiter) {
             continue;
         }
