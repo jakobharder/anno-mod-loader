@@ -13,7 +13,7 @@ This works in any patch - not only `assets.xml` patches.
 It doesn't matter whether the mod is loaded before or after this mod.
 Use `LoadAfterIds` to ensure it's loaded before your mod.
 
-=== "117 / 1800"
+=== "117 & 1800"
     ```xml
     <Group Condition="#mod-id">
       <!-- Apply ModOps if `mod-id` is active. -->
@@ -33,7 +33,7 @@ That means you can combine them like XPath expressions with `and` and `or`.
       <!-- ... -->
     </Group>
     ```
-=== "1800"
+=== "117 & 1800"
     ```xml
     <Group Condition="#mod-a">
       <Group Condition="!#mod-b">
@@ -45,7 +45,7 @@ That means you can combine them like XPath expressions with `and` and `or`.
 
 ## With XPath
 
-=== "117 / 1800"
+=== "117 & 1800"
     ```xml
     <Group Condition="//Values[Standard/GUID='1500010714']">
       <!-- Apply ModOps if asset 1500010714 exists. -->
@@ -61,7 +61,7 @@ That means you can combine them like XPath expressions with `and` and `or`.
 Use `@` as a short version of `//Values[Standard/GUID='guid']`.
 This works only at the start of an XPath.
 
-=== "117 / 1800"
+=== "117 & 1800"
     ```xml
     <Group Condition="@1500010714">
       <!-- Apply ModOps if asset 1500010714 exists. -->
@@ -86,7 +86,7 @@ Conditions can be relative to the `GUID` your ModOp is operating on.
       </Item>
     </ModOp>
     ```
-=== "1800"
+=== "117 & 1800"
     ```xml
     <ModOp Type="add" GUID="800111"
       Condition="!/Values/Property/List[Item/Product='1500010120']"
@@ -97,29 +97,26 @@ Conditions can be relative to the `GUID` your ModOp is operating on.
     </ModOp>
     ```
 
-## Loops
+## Skip
 
-!!! warning "Not available in demo"
+!!! info "You only need this feature for iModYourAnno tweaks."
 
-You can repeat ModOps until a `Condition` doesn't match anymore with setting `MaxRepeat`.
-The default `MaxRepeat=1` behaves like a normal `Group`.
+The attribute `Skip` can be used with `Group` and `Include` to ignore that operation.
 
-=== "117"
-    ```xml
-    <Group Condition="@123/List/Item" MaxRepeat="10">
-      <!--  -->
-    </Group>
-    ```
-=== "1800 ❌"
-    ```xml
-    <!-- not supported -->
-    ```
+```xml
+<ModOps>
+  <Include File="/feature.include.xml" Skip="1" />
+</ModOps>
+```
+
+Note: the skip happens when the attribute `Skip` is present.
+It doesn't matter if you write `Skip="1"`, `Skip="True"` or even `Skip="0"` - all of them lead to skipping the include.
 
 ## Best Practice: Prefer Negative Conditions
 
 The following two ModOps will lead to the same result, but have a stark difference.
 
-=== "117 / 1800"
+=== "117 & 1800"
     ```xml
     <!-- negative condition -->
     <ModOp Type="add" GUID="800111"
@@ -147,7 +144,7 @@ It's better to use conditions in many cases, as conditions still allow some warn
 
 Adding a product only once to a list with `AllowNoMatch`:
 
-=== "117 / 1800"
+=== "117 & 1800"
     ```xml
     <ModOp Type="add" GUID="120055"
           Path="/Values/List[not(Item/Product='1500010102')]"

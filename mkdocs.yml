@@ -8,9 +8,17 @@ nav:
   - "Changes in 117":
     - Important Changes: index.md
     - New Features: new-features-117.md
-  - Features:
+  - ModOps:
+    - Basic ModOps: basic-modops.md
+    - "Replace & Merge": replace-merge.md
+    - Grouping: groups.md
     - Conditions: conditions.md
-    - "Options": options.md
+    - Examples: modop-examples.md
+  - XPath:
+    - Cheat Sheet: https://devhints.io/xpath
+  - Features:
+    - Options: options.md
+    - InfoTips: infotips.md
 
 theme:
   name: material

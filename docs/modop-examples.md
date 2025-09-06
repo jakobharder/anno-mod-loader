@@ -1,11 +1,5 @@
 # ModOp Examples
 
-Other docs
-
-- [Simple ModOps](./modop-guide.md)
-- [Replace and Merge](./modop-replace-merge.md)
-- [Conditions](./modop-conditions.md)
-
 ## Increase a number without overwriting already larger numbers
 
 Example: Set harbor radius 40 but only if nobody did it before (i.e. Increased Harbor Area).
@@ -35,8 +29,6 @@ The difference is: if there is any error in the Condition path itself - be it a 
 
 On the other hand, the negative check with `!` skips if an conditions exists exactly how you expect it.
 Meaning it will execute if there is something unexpected, leading to warnings in the end.
-
-*Psalm 172, 3, Lion*
 
 ## Add yourself to all buffs another target has
 

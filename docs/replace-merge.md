@@ -1,25 +1,5 @@
 # ModOp Type `replace` and `merge`
 
-Content
-
-- [Replace](#modop-type-replace)
-  - [Replace to swap content](#replace-to-swap-content)
-  - [Replace to remove content](#replace-to-remove-content)
-  - [Replace to remove node](#replace-to-remove-node)
-  - [Best practice: avoid large replace](#best-practice-avoid-large-replace)
-- [Merge](#modop-type-merge)
-  - [Merge is order indepenent](#merge-is-order-independent)
-  - [Merge adds missing nodes](#merge-adds-missing-nodes)
-  - [Merge does not remove nodes](#merge-does-not-remove-nodes)
-  - [Merge supports lists](#merge-supports-lists) (GU17.1)
-  - [Merge can be used like `add` or `replace`](#merge-can-be-used-like-add-or-replace)
-
-Other docs
-
-- [Simple ModOps](./modop-guide.md)
-- [Conditions](./modop-conditions.md)
-- [Examples](./modop-examples.md)
-
 ## ModOp Type `replace`
 
 ### Replace to swap content
