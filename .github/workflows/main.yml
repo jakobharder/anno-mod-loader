@@ -17,26 +17,28 @@ jobs:
         with:
           submodules: "recursive"
 
+      - uses: bazelbuild/setup-bazelisk@v3
+
       - name: Build
         run: |
           bazel build //... -c opt
+          bazel build //cmd/xmltest:xmltest2 -c opt
 
       - name: Test
         run: bazel test //tests/xml:xml-tests -c opt
 
-      - name: Package
-        run: |
-          tar -c -a -f xmltest.zip -C  bazel-bin/cmd/xmltest/ *.exe
-          tar -c -a -f loader.zip -C third_party/Python35/bin/ python35_ubi.dll -C ../../../bazel-bin/libs/python35/ *.dll
-          tar -c -a -f loader-dbg.zip -C  bazel-bin/libs/python35/ *.pdb
+      - name: Locate binary
+        run: bazel cquery --output=label_kind //cmd/xmltest:xmltest2
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: package
-          path: |
-            xmltest.zip
-            loader.zip
-            loader-dbg.zip
+      # - name: Package
+      #   run: |
+      #     tar -c -a -f xmltest.zip -C bazel-bin/cmd/xmltest *.exe
+
+      # - uses: actions/upload-artifact@v4
+      #   with:
+      #     name: package
+      #     path: |
+      #       xmltest.zip
 
   build-linux:
     runs-on: ubuntu-latest
@@ -44,6 +46,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: "recursive"
+
+      - uses: bazelbuild/setup-bazelisk@v3
 
       - name: Build
         run: |
