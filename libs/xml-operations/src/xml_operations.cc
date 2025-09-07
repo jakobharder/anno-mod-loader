@@ -78,8 +78,10 @@ std::shared_ptr<XmlOperationContext> XmlOperationContext::OpenInclude(const fs::
     }
 
     auto include = (*include_loader_)(file_path);
-    include->mod_name_ = mod_name_;
-    include->include_loader_ = this->include_loader_;
+    if (include) {
+        include->mod_name_ = mod_name_;
+        include->include_loader_ = this->include_loader_;
+    }
     return include;
 }
 
