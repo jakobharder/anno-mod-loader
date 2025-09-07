@@ -11,4 +11,18 @@
     Condition="@1010522">
     <Cost />
   </ModOp>
+  <Asset Condition="@456">
+    <Values>
+      <Standard>
+        <GUID>123</GUID>
+      </Standard>
+    </Values>
+  </Asset>
+  <Asset Condition="@1010524">
+    <Values>
+      <Standard>
+        <GUID>456</GUID>
+      </Standard>
+    </Values>
+  </Asset>
 </ModOps>

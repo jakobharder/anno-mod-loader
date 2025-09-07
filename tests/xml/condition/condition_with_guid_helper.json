@@ -3,6 +3,9 @@
     "expected": [
         "//Asset/Values[Standard/GUID='1010521']/Cost",
         "//Asset/Values[Standard/GUID='1010523']/Cost",
-        "//Asset/Values[Standard/GUID='1010524']/Cost"
+        "//Asset/Values[Standard/GUID='1010524']/Cost",
+        "!//Asset/Values[Standard/GUID='123']",
+        "//Asset/Values[Standard/GUID='456']",
+        "//Asset/Values[Standard/GUID='456' and not (../@Condition)]"
     ]
 }

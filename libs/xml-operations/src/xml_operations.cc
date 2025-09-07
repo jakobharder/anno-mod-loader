@@ -864,6 +864,10 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
         } else if (GetType() == XmlOperation::Type::Add || GetType() == XmlOperation::Type::Assets) {
             ModOpAdd(doc, game_node, content_nodes, cached_node, patch_type);
         } else if (GetType() == XmlOperation::Type::Asset) {
+            // remove attributes like Condition
+            pugi::xml_node parent = content_nodes[0].parent();
+            parent.remove_attributes();
+
             std::vector<pugi::xml_node> asset = { content_nodes[0].parent() };
             ModOpAdd(doc, game_node, asset, cached_node, patch_type);
         } else if (GetType() == XmlOperation::Type::Remove) {

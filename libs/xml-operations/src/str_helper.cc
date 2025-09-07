@@ -1,7 +1,9 @@
 #include "str_helper.h"
 
 #include <charconv>
+#ifndef _WIN32
 #include <strings.h>
+#endif
 
 namespace xmlops {
 namespace str {
