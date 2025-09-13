@@ -1,4 +1,4 @@
-site_name: Anno Mod Loader
+site_name: Anno Mod Loader Reference
 site_url: https://jakobharder.github.io/anno-mod-loader
 
 plugins:
@@ -34,6 +34,7 @@ theme:
     accent: indigo
   features:
     - navigation.sections
+    - content.code.copy
 
 markdown_extensions:
   - admonition

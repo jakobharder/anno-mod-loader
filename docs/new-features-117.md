@@ -292,13 +292,11 @@ The item is merged with the first item that matches the attribute in `Merge`.
 In the rare even you want to change the attribute itself in the merge process use `<ModItem Merge="Attribute='Value'">` to select the item.
 
 === "117 (short)"
-    ```xml
-    <ModOp GUID="114365" Merge="Product">
-      <ProductionRegions>
-        <ModItem Merge="RegionType">
-          <RegionType>Moderate</RegionType>
-        </ModItem>
-      </ProductionRegions>
+    ```xml hl_lines="2"
+    <ModOp GUID="114365" Merge="Product/ProductionRegions">
+      <ModItem Merge="RegionType">
+        <RegionType>Moderate</RegionType>
+      </ModItem>
     </ModOp>
     ```
 
@@ -321,7 +319,7 @@ You can change that by defining a `Append` or `Prepend` path.
 The default is the same as `Append='last()'`.
 
 === "117 (short)"
-    ```xml
+    ```xml hl_lines="2"
     <ModOp Merge="@502017/ProductList/List">
       <ModItem Merge="Product" Append="Product='1010200'">
         <Product>1500010836</Product>
@@ -345,7 +343,7 @@ The default is the same as `Append='last()'`.
 With `ModValue` in combination `ModItem` + `ModValueContent` you can construct lists with automatic duplicate handling.
 
 === "117"
-    ```xml
+    ```xml hl_lines="5 6 7"
     <!-- .. -->
     <ItemEffectTargetPool>
       <ModValue Insert="@191455/ItemEffectTargetPool/EffectTargetGUIDs/Item" />
@@ -365,7 +363,7 @@ Use `SkipParent` if you need to exclude the top-level parent, because you have i
 `SkipParent` also works with `ModOpContent`.
 
 === "117"
-    ```xml
+    ```xml hl_lines="6"
     <!-- .. -->
     <ItemEffectTargetPool>
       <ModValue Insert="@191455/ItemEffectTargetPool/EffectTargetGUIDs/Item" />

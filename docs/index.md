@@ -2,23 +2,25 @@
 
 There are a few changes in file structure and modinfo.json that are mandatory.
 
-### Mod Folders and Activations
+### Mod Folders
 
 The locations of the mod folders for manual installation are unchanged.
 
 - `<user>/Anno 117/mods/`
 - `<install>/Anno 117/mods/`
 
+### Mod Profiles
+
+!!! warning "Profiles are not available in the demo"
+
 You can change the activation of a mod in two ways:
 
 - Prefix entry with `#` in `<user>/Anno 117/active-profile.txt`
 - Prefix folder with `-` *(not recommended while the game is running)*
 
-!!! warning "Profiles are not available in the demo"
+The loader adds all detected mods to the active profile:
 
-The loader adds all detected mods to this list in `active-profile.txt`:
-
-```ini
+```ini title="active-profile.txt"
 ## Disable a mod:
 ## - Add a `#` before it.
 ##
@@ -33,7 +35,10 @@ infinite-materials-ubi
 
 ### Safe Ranges
 
-!!! info "Reserve your [GUID range](https://github.com/anno-mods/GuidRanges) for Anno 117"
+!!! info inline end "Reserve your range"
+    Open a PR on [GuidRanges](https://github.com/anno-mods/GuidRanges) or ask on [Discord](https://discord.gg/CUq2zQdV).
+
+The GUID ranges safe to use for mods have not changed.
 
 Name | Range
 -- | --
@@ -107,7 +112,7 @@ The `modinfo.json` now supports JSON with comments (you can also name it `modinf
 
 A game version entry is now mandatory:
 
-```json
+```json title="modinfo.jsonc"
 {
   "Anno": 8,
   // ...
@@ -118,7 +123,7 @@ A game version entry is now mandatory:
 
 There are a few more informational entries in `modinfo.json`.
 
-```json
+```json title="modinfo.jsonc"
 {
   "Anno": 8,
   // ...
