@@ -6,17 +6,17 @@ plugins:
 
 nav:
   - Overview: index.md
-  - "Changes in 117":
-    - Important Changes: changes-117.md
-    - New Features: new-features-117.md
-  - ModOps:
-    - Intro: modop-intro.md
-    - Basic: basic-modops.md
-    - Merge: merge.md
-    - Grouping: groups.md
-    - Conditions: conditions.md
-    - Examples: modop-examples.md
+  #- "Changes in 117":
+  - Important Changes: changes-117.md
+  - New Features: new-features-117.md
   - Features:
+    - ModOps:
+      - modops/index.md
+      - Basic: modops/basics.md
+      - Merge: modops/merge.md
+      - Grouping: modops/groups.md
+      - Conditions: modops/conditions.md
+      - Examples: modops/examples.md
     - Options: options.md
     - InfoTips: infotips.md
   - XPath:
@@ -38,6 +38,7 @@ theme:
     - content.code.copy
     - navigation.footer
     - header.autohide
+    - navigation.indexes
     # - navigation.tabs
 
 markdown_extensions:

@@ -22,37 +22,37 @@
 
 <div class="grid cards" markdown>
 
--   [__Get Started__](./modop-intro.md)
+-   [__Get Started__](./modops/index.md)
 
     ---
 
     Get started with the basics of XML ModOp patch files.
 
--   [__Basic__](./basic-modops.md)
+-   [__Basic__](./modops/basics.md)
 
     ---
 
     Overview of the basic ModOp types.
 
--   [__Merge__](./merge.md)
+-   [__Merge__](./modops/merge.md)
 
     ---
 
     Learn advanced techniques for `merge` ModOps.
 
--   [__Grouping__](./groups.md)
+-   [__Grouping__](./modops/groups.md)
 
     ---
 
     How to organize ModOps using groups, external includes, and loops.
 
--   [__Conditions__](./conditions.md)
+-   [__Conditions__](./modops/conditions.md)
 
     ---
 
     Apply ModOps conditionally using XPath, options, or mod IDs.
 
--   [__Examples__](./modop-examples.md)
+-   [__Examples__](./modops/examples.md)
 
     ---
 
@@ -60,7 +60,7 @@
 
 </div>
 
-## Further Features
+## Additional Features
 
 <div class="grid cards" markdown>
 

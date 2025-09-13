@@ -25,17 +25,15 @@ Anno 117 uses attributes to make InfoElements and VisibilityElements much more c
 
 === "117"
     ```xml
-    <ModOp Add="@500934">
-      <InfoElement Type="Container">
-        <VisibilityElement Type="Group">
-          <VisibilityElement Type="Condition">
-            <CompareOperator>Greater</CompareOperator>
-            <!-- .. -->
-          </VisibilityElement>
+    <InfoElement Type="Container">
+      <VisibilityElement Type="Group">
+        <VisibilityElement Type="Condition">
+          <CompareOperator>Greater</CompareOperator>
+          <!-- .. -->
         </VisibilityElement>
-        <!-- .. -->
-      </InfoElement>
-    </ModOp>
+      </VisibilityElement>
+      <!-- .. -->
+    </InfoElement>
     ```
 
     !!! info "The counts `InfoTipCount`, `TemplateCount` and `ChildCount` are hidden in XML."
@@ -46,28 +44,26 @@ Anno 117 uses attributes to make InfoElements and VisibilityElements much more c
 
 === "1800"
     ```xml
-    <ModOp Type="add" Path="//InfoTipData[Guid='500934']">
-      <InfoElement>
-        <ElementType>23</ElementType>
-        <ChildCount>1</ChildCount>
+    <InfoElement>
+      <ElementType>23</ElementType>
+      <ChildCount>1</ChildCount>
+      <VisibilityElement>
+        <ElementType>
+          <ElementType>2</ElementType>
+        <ElementType>
         <VisibilityElement>
           <ElementType>
-            <ElementType>2</ElementType>
+            <ElementType>1</ElementType>
           <ElementType>
-          <VisibilityElement>
-            <ElementType>
-              <ElementType>1</ElementType>
-            <ElementType>
-            <ChildCount>1</ChildCount>
-            <CompareOperator>
-              <CompareOperator>5</CompareOperator>
-            </CompareOperator>
-            <!-- .. -->
-          </VisibilityElement>
+          <ChildCount>1</ChildCount>
+          <CompareOperator>
+            <CompareOperator>5</CompareOperator>
+          </CompareOperator>
+          <!-- .. -->
         </VisibilityElement>
-        <!-- .. -->
-      </InfoElement>
-    </ModOp>
+      </VisibilityElement>
+      <!-- .. -->
+    </InfoElement>
     ```
 
     !!! info "The counts `InfoTipCount`, `TemplateCount` and `ChildCount` will be adjusted automatically, you don't need to change anything."
