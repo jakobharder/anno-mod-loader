@@ -2,42 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/</loc>
-         <lastmod>2025-09-06</lastmod>
+         <lastmod>2025-09-13</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/basic-modops/</loc>
-         <lastmod>2025-09-06</lastmod>
+         <lastmod>2025-09-13</lastmod>
+    </url>
+    <url>
+         <loc>https://jakobharder.github.io/anno-mod-loader/changes-117/</loc>
+         <lastmod>2025-09-13</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/conditions/</loc>
-         <lastmod>2025-09-06</lastmod>
+         <lastmod>2025-09-13</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/groups/</loc>
-         <lastmod>2025-09-06</lastmod>
+         <lastmod>2025-09-13</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/infotips/</loc>
-         <lastmod>2025-09-06</lastmod>
+         <lastmod>2025-09-13</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/merge/</loc>
-         <lastmod>2025-09-06</lastmod>
+         <lastmod>2025-09-13</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/modop-examples/</loc>
-         <lastmod>2025-09-06</lastmod>
+         <lastmod>2025-09-13</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/modop-intro/</loc>
-         <lastmod>2025-09-06</lastmod>
+         <lastmod>2025-09-13</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/new-features-117/</loc>
-         <lastmod>2025-09-06</lastmod>
+         <lastmod>2025-09-13</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/options/</loc>
-         <lastmod>2025-09-06</lastmod>
+         <lastmod>2025-09-13</lastmod>
     </url>
 </urlset>
