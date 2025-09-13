@@ -1,4 +1,4 @@
-# ModOp Intro
+# Get Started with ModOps
 
 ## Basic Structure
 

@@ -5,8 +5,9 @@ plugins:
   - search
 
 nav:
+  - Overview: index.md
   - "Changes in 117":
-    - Important Changes: index.md
+    - Important Changes: changes-117.md
     - New Features: new-features-117.md
   - ModOps:
     - Intro: modop-intro.md
@@ -15,11 +16,11 @@ nav:
     - Grouping: groups.md
     - Conditions: conditions.md
     - Examples: modop-examples.md
-  - XPath:
-    - Cheat Sheet: https://devhints.io/xpath
   - Features:
     - Options: options.md
     - InfoTips: infotips.md
+  - XPath:
+    - Cheat Sheet: https://devhints.io/xpath
 
 theme:
   name: material
@@ -35,6 +36,9 @@ theme:
   features:
     - navigation.sections
     - content.code.copy
+    - navigation.footer
+    - header.autohide
+    # - navigation.tabs
 
 markdown_extensions:
   - admonition
@@ -43,3 +47,5 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
   - footnotes
+  - attr_list
+  - md_in_html
