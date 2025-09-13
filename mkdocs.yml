@@ -12,7 +12,7 @@ nav:
   - Features:
     - ModOps:
       - modops/index.md
-      - Basic: modops/basics.md
+      - Basic Types: modops/basics.md
       - Merge: modops/merge.md
       - Grouping: modops/groups.md
       - Conditions: modops/conditions.md
@@ -50,3 +50,5 @@ markdown_extensions:
   - footnotes
   - attr_list
   - md_in_html
+  - toc:
+      permalink: true

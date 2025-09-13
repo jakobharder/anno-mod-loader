@@ -1,8 +1,8 @@
-# Basic ModOps
+# Basic ModOp Types
 
 ## Replace
 
-Replaces the selected element.
+Replaces the selection.
 
 === "117 (short)"
     ```xml
@@ -13,8 +13,7 @@ Replaces the selected element.
 
 === "117 & 1800"
     ```xml
-    <ModOp GUID="123" Type="replace"
-           Path="/Values/Standard">
+    <ModOp GUID="123" Type="replace" Path="/Values/Standard">
       <Name>new name</Name>
     </ModOp>
     ```
@@ -28,7 +27,6 @@ Replaces the selected element.
     -     <Name>old name</Name>
     +     <Name>new name</Name>
         </Standard>
-        <Cost />
       </Values>
     </Asset>
     ```
@@ -66,7 +64,6 @@ Elements containing elements can be replaced as well.
     +     <GUID>456</GUID>
     +     <Description>description</Description>
         </Standard>
-        <Cost />
       </Values>
     </Asset>
     ```
@@ -100,7 +97,7 @@ Elements containing elements can be replaced as well.
 
 ## Add
 
-Adds the content at the end insider of the selection.
+Adds the content at the end inside of the selection.
 
 === "117 (short)"
     ```xml
@@ -123,7 +120,6 @@ Adds the content at the end insider of the selection.
         <Standard>
           <GUID>123</GUID>
         </Standard>
-        <Cost />
     +   <Maintenance />
       </Values>
     </Asset>
@@ -139,15 +135,20 @@ Adds the content, or replaces it if it already exists.
 === "117 (short)"
     ```xml
     <ModOp Merge="@123/Standard">
-      <Name>Hello</Name>
+      <Standard>
+        <Name>new name</Name>
+        <Description>desc</Description>
+      </Standard>
     </ModOp>
     ```
 
 === "117 & 1800"
     ```xml
-    <ModOp GUID="123" Type="merge"
-           Path="/Values/Standard">
-      <Name>Hello</Name>
+    <ModOp GUID="123" Type="merge" Path="/Values/Standard">
+      <Standard>
+        <Name>new name</Name>
+        <Description>desc</Description>
+      </Standard>
     </ModOp>
     ```
 
@@ -157,17 +158,49 @@ Adds the content, or replaces it if it already exists.
       <Values>
         <Standard>
           <GUID>123</GUID>
-    -     <Name>some name</Name>
-    +     <Name>Hello</Name>
+    -     <Name>old name</Name>
+    +     <Name>new name</Name>
+    +     <Description>desc</Description>
         </Standard>
-        <Cost />
       </Values>
     </Asset>
     ```
 
-!!! warning "Special case: element name = parent name"
-    `Add` works inside of a node, `Replace` with the node itself.
-    `Merge` does both based on context, but in case the child name and the parent name are the same it always works on the node like `Replace`.
+??? warning "You may leave out the top-level element (here `Standard`) in most situations"
+    The following is shorter and has to the same result.
+
+    === "117 (short)"
+        ```xml
+        <ModOp Merge="@123/Standard">
+          <Name>new name</Name>
+          <Description>desc</Description>
+        </ModOp>
+        ```
+
+    === "117 & 1800"
+        ```xml
+        <ModOp GUID="123" Type="merge" Path="/Values/Standard">
+          <Name>new name</Name>
+          <Description>desc</Description>
+        </ModOp>
+        ```
+
+    === "Result"
+        ```diff
+        <Asset>
+          <Values>
+            <Standard>
+              <GUID>123</GUID>
+        -     <Name>old name</Name>
+        +     <Name>new name</Name>
+        +     <Description>desc</Description>
+            </Standard>
+          </Values>
+        </Asset>
+        ```
+
+    Only when the selected element has a child with the same name, you must use the long way.
+    In doubt, always use the long way.
 
     === "Problem"
         ```xml hl_lines="1 3"
@@ -327,3 +360,6 @@ Removes the selected elements.
       </Values>
     </Asset>
     ```
+
+!!! warning "Removing an not existing element leads to warning"
+    As with all ModOps, there will be a warning if the selected element path does not exist.
