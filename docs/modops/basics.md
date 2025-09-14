@@ -2,6 +2,8 @@
 
 ## Replace
 
+{{all}}
+
 Replaces the selection.
 
 === ":material-pillar: 117"
@@ -38,7 +40,7 @@ Replaces the selection.
 ??? tip "Only replace if the value is higher."
     A common pattern is to replace a value only if it is higher than the existing one.
 
-    This can be achieved with [Conditions](./conditions.md).
+    This can be achieved with [Conditions](./control.md#condition).
 
     === ":material-pillar: 117"
         ```xml hl_lines="2"
@@ -48,11 +50,11 @@ Replaces the selection.
         </ModOp>
         ```
 
-        ### Note on Brackets `<>`
+        **Note on Brackets `<>`**
 
         Using brackets `<>` in attributes is not valid XML. Use `&lt;` for `<` and `&gt;` for `>` instead.
 
-        ### Note on Negative Condition
+        **Note on Negative Condition**
 
         The condition is negative with `!`. You could do a positive condition with the same path as `Path`:
 
@@ -72,11 +74,11 @@ Replaces the selection.
         </ModOp>
         ```
 
-        ### Note on Brackets `<>`
+        **Note on Brackets `<>`**
 
         Using brackets `<>` in attributes is not valid XML. Use `&lt;` for `<` and `&gt;` for `>` instead.
 
-        ### Note on Negative Condition
+        **Note on Negative Condition**
 
         The condition is negative with `!`. You could do a positive condition with the same path as `Path`:
 
@@ -168,6 +170,8 @@ Elements containing elements can be replaced as well.
 
 ## Add
 
+{{all}}
+
 Adds the content at the end inside of the selection.
 
 === ":material-pillar: 117"
@@ -201,11 +205,13 @@ Adds the content at the end inside of the selection.
     ```
 
 ??? tip "`Add` does not check if an element already exists."
-    Use [Conditions](./conditions.md) to skip an `Add` if the node already exists.
+    Use [Conditions](./control.md#condition) to skip an `Add` if the node already exists.
 
     Use [Merge](#merge) to update if the node already exists, or add otherwise.
 
 ## Merge
+
+{{all}}
 
 Adds the content, or replaces it if it already exists.
 
@@ -386,6 +392,8 @@ Adds the content, or replaces it if it already exists.
 
 ## Append (AddNextSibling)
 
+{{all}}
+
 Adds the content after the selection.
 
 === ":material-pillar: 117"
@@ -506,6 +514,8 @@ A common situation is when you want to insert an item at a specific position.
 
 ## Prepend (AddPrevSibling)
 
+{{all}}
+
 Prepend works the same as `Append` except that it adds the content before the selection.
 
 === ":material-pillar: 117"
@@ -573,6 +583,8 @@ Prepend works the same as `Append` except that it adds the content before the se
     See also [Item Lists](./lists.md) for more details.
 
 ## Remove
+
+{{all}}
 
 Removes the selected elements.
 

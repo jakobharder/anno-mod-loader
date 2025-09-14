@@ -40,23 +40,12 @@
 
     Learn advanced techniques to handle `Item` lists.
 
--   [__Grouping__](./modops/grouping.md)
-
-    ---
-
-    How to organize ModOps using groups, external includes, and loops.
-
--   [__Conditions__](./modops/conditions.md)
+-   [__Grouping__](./modops/control.md)
 
     ---
 
     Apply ModOps conditionally using XPath, options, or mod IDs.
-
--   [__Examples__](./modops/examples.md)
-
-    ---
-
-    Examples for common patterns.
+    How to organize ModOps using groups, external includes, and loops.
 
 </div>
 

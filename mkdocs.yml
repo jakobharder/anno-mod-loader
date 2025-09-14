@@ -12,16 +12,15 @@ nav:
   - New Features: new-features-117.md
   - Create Mods:
     - Modinfo: modinfo.md
-    - Structure:
+    - Loading and Structure:
       - Loading Order: structure/loading-order.md
       - Sub-Mods: structure/submods.md
       - Zip Files: structure/zipfiles.md
       - Links: structure/links.md
-    - ModOps:
+    - XML ModOps:
       - modops/index.md
       - Basic Types: modops/basics.md
-      - Grouping: modops/grouping.md
-      - Conditions: modops/conditions.md
+      - Grouping and Conditions: modops/control.md
       - Dynamic Content: modops/content.md
       - Item Lists: modops/lists.md
     - Options: options.md
