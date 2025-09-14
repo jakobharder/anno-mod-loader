@@ -40,7 +40,7 @@
 
     Learn advanced techniques for `merge` ModOps.
 
--   [__Grouping__](./modops/groups.md)
+-   [__Grouping__](./modops/grouping.md)
 
     ---
 
