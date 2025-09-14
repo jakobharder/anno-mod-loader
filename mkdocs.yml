@@ -17,6 +17,7 @@ nav:
       - Grouping: modops/groups.md
       - Conditions: modops/conditions.md
       - Examples: modops/examples.md
+    - Modinfo: modinfo.md
     - Options: options.md
     - InfoTips: infotips.md
   - XPath:
@@ -42,13 +43,21 @@ theme:
     # - navigation.tabs
 
 markdown_extensions:
+  - tables
   - admonition
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
   - footnotes
   - attr_list
   - md_in_html
   - toc:
       permalink: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.keys
