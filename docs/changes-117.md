@@ -1,18 +1,44 @@
 # Changes with Anno 117
 
-There are a few changes in file structure and modinfo.json that are mandatory.
-
 ## Important
 
-- [Changed Paths](#changed-paths) - Paths to `assets.xml` and others have changed.
-- [Modinfo](./modinfo.md) - Only mods with `Game: 8` are loaded.
-- [GUID Ranges](#safe-ranges) - The ranges have not changed.
-- [Mod Folders](#mod-folders) - The folders have not changed.
+<div class="annotate" markdown>
+-   [Changed Paths](#changed-paths) - Paths to `assets.xml` and others have changed. (1)
+-   [Modinfo](./modinfo.md#mandatory-fields) - Only mods with game version `8` are loaded. (2)
+-   [GUID Ranges](#safe-ranges) - No changes. (3)
+-   [Mod Folders](#mod-folders) - No changes. (4)
+</div>
+
+1.  Most base game files are also under `data/base` now.
+
+    E.g. `data/base/config/export/assets.xml`
+
+2.  Only mods with game version `8` in `modinfo.json` are loaded.
+    ```json
+    {
+      "Anno": 8,
+      "Version": "1.0.0",
+      "ModID": "first-mod-jakob"
+      // ..
+    }
+    ```
+
+3.  Reserve your GUID range.
+
+    Open a PR on [GuidRanges](https://github.com/anno-mods/GuidRanges) or ask on [Discord](https://discord.gg/CUq2zQdV).
+
+4.  The mod folders for manual installation are:
+
+    - `<user>/Anno 117/mods/`
+    - `<install>/Anno 117/mods/`
+
+??? tip "Templates in Visual Studio Code"
+    Press ++f1++ in [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools) and run `Anno: Create Mod from Template` to generate a template.
 
 ## Changes
 
 - [Localization](#localization) - Texts use LineIDs now instead of GUIDs.
-- [Modinfo](./modinfo.md) - New `Difficulty` entry is mandatory, but mods load without it.
+- [Modinfo](./modinfo.md#game-setup) - New `Difficulty` entry is mandatory, but mods load without it.
 - [InfoTips](./infotips.md#structure) - The format has changed for better readability.
 - [Dependencies](./modinfo.md#dependencies) - Changed dependency entries in modinfo.
 
@@ -37,11 +63,11 @@ There are a few changes in file structure and modinfo.json that are mandatory.
 The location of the main `assets.xml` has changed.
 
 === ":material-pillar: 117"
-    `data\base\config\export\assets.xml`
+    `data/base/config/export/assets.xml`
 === ":material-factory: 1800"
-    `data\config\export\main\asset\assets.xml`
+    `data/config/export/main/asset/assets.xml`
 
-Most base game files are also under `data\base` now.
+Most base game files are also under `data/base` now.
 
 !!! tip "Templates in Visual Studio Code"
     Press ++f1++ in [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools) and run `Anno: Create Mod from Template` to generate a template.
