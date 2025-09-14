@@ -1149,18 +1149,50 @@
 
 
 <h1 id="changes-with-anno-117">Changes with Anno 117<a class="headerlink" href="#changes-with-anno-117" title="Permanent link">&para;</a></h1>
-<p>There are a few changes in file structure and modinfo.json that are mandatory.</p>
 <h2 id="important">Important<a class="headerlink" href="#important" title="Permanent link">&para;</a></h2>
+<div class="annotate">
 <ul>
-<li><a href="#changed-paths">Changed Paths</a> - Paths to <code>assets.xml</code> and others have changed.</li>
-<li><a href="../modinfo/">Modinfo</a> - Only mods with <code>Game: 8</code> are loaded.</li>
-<li><a href="#safe-ranges">GUID Ranges</a> - The ranges have not changed.</li>
-<li><a href="#mod-folders">Mod Folders</a> - The folders have not changed.</li>
+<li><a href="#changed-paths">Changed Paths</a> - Paths to <code>assets.xml</code> and others have changed. (1)</li>
+<li><a href="../modinfo/#mandatory-fields">Modinfo</a> - Only mods with game version <code>8</code> are loaded. (2)</li>
+<li><a href="#safe-ranges">GUID Ranges</a> - No changes. (3)</li>
+<li><a href="#mod-folders">Mod Folders</a> - No changes. (4)</li>
 </ul>
+</div>
+<ol>
+<li>
+<p>Most base game files are also under <code>data/base</code> now.</p>
+<p>E.g. <code>data/base/config/export/assets.xml</code></p>
+</li>
+<li>
+<p>Only mods with game version <code>8</code> in <code>modinfo.json</code> are loaded.
+    <div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Anno&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;ModID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;first-mod-jakob&quot;</span>
+<span class="w">  </span><span class="c1">// ..</span>
+<span class="p">}</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Reserve your GUID range.</p>
+<p>Open a PR on <a href="https://github.com/anno-mods/GuidRanges">GuidRanges</a> or ask on <a href="https://discord.gg/CUq2zQdV">Discord</a>.</p>
+</li>
+<li>
+<p>The mod folders for manual installation are:</p>
+<ul>
+<li><code>&lt;user&gt;/Anno 117/mods/</code></li>
+<li><code>&lt;install&gt;/Anno 117/mods/</code></li>
+</ul>
+</li>
+</ol>
+<details class="tip">
+<summary>Templates in Visual Studio Code</summary>
+<p>Press <span class="keys"><kbd class="key-f1">F1</kbd></span> in <a href="https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools">Anno Modding Tools</a> and run <code>Anno: Create Mod from Template</code> to generate a template.</p>
+</details>
 <h2 id="changes">Changes<a class="headerlink" href="#changes" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="#localization">Localization</a> - Texts use LineIDs now instead of GUIDs.</li>
-<li><a href="../modinfo/">Modinfo</a> - New <code>Difficulty</code> entry is mandatory, but mods load without it.</li>
+<li><a href="../modinfo/#game-setup">Modinfo</a> - New <code>Difficulty</code> entry is mandatory, but mods load without it.</li>
 <li><a href="../infotips/#structure">InfoTips</a> - The format has changed for better readability.</li>
 <li><a href="../modinfo/#dependencies">Dependencies</a> - Changed dependency entries in modinfo.</li>
 </ul>
@@ -1184,14 +1216,14 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="117" name="__tabbed_1" type="radio" /><input id="1800" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="117"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label><label for="1800"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 18v2h4v-2zm0-4v2h10v-2zm6 4v2h4v-2zm6-4v2h4v-2zm0 4v2h4v-2zM2 22V8l5 4V8l5 4V8l5 4 1-10h3l1 10v10z"/></svg></span> 1800</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><code>data\base\config\export\assets.xml</code></p>
+<p><code>data/base/config/export/assets.xml</code></p>
 </div>
 <div class="tabbed-block">
-<p><code>data\config\export\main\asset\assets.xml</code></p>
+<p><code>data/config/export/main/asset/assets.xml</code></p>
 </div>
 </div>
 </div>
-<p>Most base game files are also under <code>data\base</code> now.</p>
+<p>Most base game files are also under <code>data/base</code> now.</p>
 <div class="admonition tip">
 <p class="admonition-title">Templates in Visual Studio Code</p>
 <p>Press <span class="keys"><kbd class="key-f1">F1</kbd></span> in <a href="https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools">Anno Modding Tools</a> and run <code>Anno: Create Mod from Template</code> to generate a template.</p>
