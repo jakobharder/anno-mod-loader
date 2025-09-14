@@ -10,6 +10,12 @@ nav:
   - Important Changes: changes-117.md
   - New Features: new-features-117.md
   - Features:
+    - Modinfo: modinfo.md
+    - Structure:
+      - Loading Order: structure/loading-order.md
+      - Sub-Mods: structure/submods.md
+      - Zip Files: structure/zipfiles.md
+      - Links: structure/links.md
     - ModOps:
       - modops/index.md
       - Basic Types: modops/basics.md
@@ -18,11 +24,10 @@ nav:
       - Conditions: modops/conditions.md
       - Content: modops/content.md
       - Examples: modops/examples.md
-    - Modinfo: modinfo.md
-    - Loading Order: loading-order.md
-    - Sub-Mods: submods.md
+    - Profiles: profiles.md
     - Options: options.md
     - InfoTips: infotips.md
+    - "CFG, FC Patches": cfg-fc-patches.md
   - XPath:
     - Cheat Sheet: https://devhints.io/xpath
 
