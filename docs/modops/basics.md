@@ -199,6 +199,34 @@ Adds the content, or replaces it if it already exists.
     </Asset>
     ```
 
+??? info "`Merge` does not remove nodes."
+
+    === ":material-pillar: 117"
+        ```xml
+        <ModOp GUID="123" Merge="">
+          <Building />
+        </ModOp>
+        ```
+    === ":material-animation-outline: 117 & 1800"
+        ```xml
+        <ModOp GUID="123" Type="merge" Path="/Values">
+          <Building />
+        </ModOp>
+        ```
+    === ":material-xml: Result"
+        ```diff hl_lines="5-7"
+        <Values>
+          <Standard>
+            <GUID>123</GUID>
+          </Standard>
+          <Building>
+            <AllowChangeVariation>1</AllowChangeVariation>
+          </Building>
+        </Values>
+        ```
+
+    Use `replace` or `remove` instead if you want to remove content.
+
 ??? info "`Merge` is order independent."
 
     The order of nodes do not matter for successful merges.
@@ -232,33 +260,10 @@ Adds the content, or replaces it if it already exists.
           </Values>
         ```
 
-??? info "`Merge` does not remove nodes."
+??? tip "Use ModItem merge or Conditions to merging list items."
+    List items are merged by order of occurrence. It is better to replace a list completely or define conditions for each item individually.
 
-    === ":material-pillar: 117"
-        ```xml
-        <ModOp GUID="123" Merge="">
-          <Building />
-        </ModOp>
-        ```
-    === ":material-animation-outline: 117 & 1800"
-        ```xml
-        <ModOp GUID="123" Type="merge" Path="/Values">
-          <Building />
-        </ModOp>
-        ```
-    === ":material-xml: Result"
-        ```diff hl_lines="5-7"
-        <Values>
-          <Standard>
-            <GUID>123</GUID>
-          </Standard>
-          <Building>
-            <AllowChangeVariation>1</AllowChangeVariation>
-          </Building>
-        </Values>
-        ```
-
-    Use `replace` or `remove` instead if you want to remove content.
+    Read more about individual item conditions in [ModItem Merge](./lists.md#moditem-merge).
 
 ??? tip "Top-level content element can be skipped in most situations."
     The following is shorter by skipping `Standard` and has to the same result.
