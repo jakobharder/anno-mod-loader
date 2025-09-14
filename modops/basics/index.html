@@ -1,0 +1,1396 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jakobharder.github.io/anno-mod-loader/modops/basics/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../merge/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+    
+    
+      
+        <title>Basic Types - Anno Modloader Reference</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#basic-modop-types" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Anno Modloader Reference" class="md-header__button md-logo" aria-label="Anno Modloader Reference" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Anno Modloader Reference
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Basic Types
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_1">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Anno Modloader Reference" class="md-nav__button md-logo" aria-label="Anno Modloader Reference" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Anno Modloader Reference
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changes-117/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Important Changes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../new-features-117/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    New Features
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Features
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Features
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    ModOps
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            ModOps
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Basic Types
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Basic Types
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#replace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replace
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#merge" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#append" class="md-nav__link">
+    <span class="md-ellipsis">
+      Append
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prepend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prepend
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remove" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remove
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../merge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Merge
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../grouping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Grouping
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Conditions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Examples
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modinfo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Modinfo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../options/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Options
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infotips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    InfoTips
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    XPath
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            XPath
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://devhints.io/xpath" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cheat Sheet
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#replace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replace
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#merge" class="md-nav__link">
+    <span class="md-ellipsis">
+      Merge
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#append" class="md-nav__link">
+    <span class="md-ellipsis">
+      Append
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prepend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prepend
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remove" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remove
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="basic-modop-types">Basic ModOp Types<a class="headerlink" href="#basic-modop-types" title="Permanent link">&para;</a></h1>
+<h2 id="replace">Replace<a class="headerlink" href="#replace" title="Permanent link">&para;</a></h2>
+<p>Replaces the selection.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="117" name="__tabbed_1" type="radio" /><input id="117_1" name="__tabbed_1" type="radio" /><input id="117--1800" name="__tabbed_1" type="radio" /><input id="result" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="117"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label><label for="117_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 15c.81 0 1.5-.3 2.11-.89.59-.61.89-1.3.89-2.11s-.3-1.5-.89-2.11C13.5 9.3 12.81 9 12 9s-1.5.3-2.11.89C9.3 10.5 9 11.19 9 12s.3 1.5.89 2.11c.61.59 1.3.89 2.11.89m0-13c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12v1.45c0 1-.35 1.85-1 2.55-.7.67-1.5 1-2.5 1-1.2 0-2.19-.5-2.94-1.5-1 1-2.18 1.5-3.56 1.5-1.37 0-2.55-.5-3.54-1.46C7.5 14.55 7 13.38 7 12c0-1.37.5-2.55 1.46-3.54C9.45 7.5 10.63 7 12 7c1.38 0 2.55.5 3.54 1.46C16.5 9.45 17 10.63 17 12v1.45c0 .41.16.77.46 1.08s.65.47 1.04.47c.42 0 .77-.16 1.07-.47s.43-.67.43-1.08V12c0-2.19-.77-4.07-2.35-5.65S14.19 4 12 4s-4.07.77-5.65 2.35S4 9.81 4 12s.77 4.07 2.35 5.65S9.81 20 12 20h5v2h-5c-2.75 0-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2"/></svg></span> 117</label><label for="117--1800"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</label><label for="result"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.89 3 1.96.4L11.11 21l-1.96-.4zm6.7 9L16 8.41V5.58L22.42 12 16 18.41v-2.83zM1.58 12 8 5.58v2.83L4.41 12 8 15.58v2.83z"/></svg></span> Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Replace=</span><span class="s">&quot;Standard/Name&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Name&gt;</span>new<span class="w"> </span>name<span class="nt">&lt;/Name&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Replace=</span><span class="s">&quot;@123/Standard/Name&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Name&gt;</span>new<span class="w"> </span>name<span class="nt">&lt;/Name&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;replace&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Name&gt;</span>new<span class="w"> </span>name<span class="nt">&lt;/Name&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="gd">-     &lt;Name&gt;old name&lt;/Name&gt;</span>
+<span class="gi">+     &lt;Name&gt;new name&lt;/Name&gt;</span>
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Replace is not limited to single elements.
+Elements containing elements can be replaced as well.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="117_2" name="__tabbed_2" type="radio" /><input id="117_3" name="__tabbed_2" type="radio" /><input id="117--1800_1" name="__tabbed_2" type="radio" /><input id="result_1" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="117_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label><label for="117_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 15c.81 0 1.5-.3 2.11-.89.59-.61.89-1.3.89-2.11s-.3-1.5-.89-2.11C13.5 9.3 12.81 9 12 9s-1.5.3-2.11.89C9.3 10.5 9 11.19 9 12s.3 1.5.89 2.11c.61.59 1.3.89 2.11.89m0-13c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12v1.45c0 1-.35 1.85-1 2.55-.7.67-1.5 1-2.5 1-1.2 0-2.19-.5-2.94-1.5-1 1-2.18 1.5-3.56 1.5-1.37 0-2.55-.5-3.54-1.46C7.5 14.55 7 13.38 7 12c0-1.37.5-2.55 1.46-3.54C9.45 7.5 10.63 7 12 7c1.38 0 2.55.5 3.54 1.46C16.5 9.45 17 10.63 17 12v1.45c0 .41.16.77.46 1.08s.65.47 1.04.47c.42 0 .77-.16 1.07-.47s.43-.67.43-1.08V12c0-2.19-.77-4.07-2.35-5.65S14.19 4 12 4s-4.07.77-5.65 2.35S4 9.81 4 12s.77 4.07 2.35 5.65S9.81 20 12 20h5v2h-5c-2.75 0-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2"/></svg></span> 117</label><label for="117--1800_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</label><label for="result_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.89 3 1.96.4L11.11 21l-1.96-.4zm6.7 9L16 8.41V5.58L22.42 12 16 18.41v-2.83zM1.58 12 8 5.58v2.83L4.41 12 8 15.58v2.83z"/></svg></span> Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Replace=</span><span class="s">&quot;Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Standard&gt;</span>
+<span class="w">    </span><span class="nt">&lt;GUID&gt;</span>456<span class="nt">&lt;/GUID&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Description&gt;</span>description<span class="nt">&lt;/Description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Standard&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Replace=</span><span class="s">&quot;@123/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Standard&gt;</span>
+<span class="w">    </span><span class="nt">&lt;GUID&gt;</span>456<span class="nt">&lt;/GUID&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Description&gt;</span>description<span class="nt">&lt;/Description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Standard&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;replace&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Standard&gt;</span>
+<span class="w">    </span><span class="nt">&lt;GUID&gt;</span>456<span class="nt">&lt;/GUID&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Description&gt;</span>description<span class="nt">&lt;/Description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Standard&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="gd">-     &lt;GUID&gt;123&lt;/GUID&gt;</span>
+<span class="gd">-     &lt;Name&gt;name&lt;/Name&gt;</span>
+<span class="gi">+     &lt;GUID&gt;456&lt;/GUID&gt;</span>
+<span class="gi">+     &lt;Description&gt;description&lt;/Description&gt;</span>
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<details class="note">
+<summary>An empty replace is the same as remove.</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:3"><input checked="checked" id="replace_1" name="__tabbed_3" type="radio" /><input id="remove_1" name="__tabbed_3" type="radio" /><input id="result_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="replace_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 15c.81 0 1.5-.3 2.11-.89.59-.61.89-1.3.89-2.11s-.3-1.5-.89-2.11C13.5 9.3 12.81 9 12 9s-1.5.3-2.11.89C9.3 10.5 9 11.19 9 12s.3 1.5.89 2.11c.61.59 1.3.89 2.11.89m0-13c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12v1.45c0 1-.35 1.85-1 2.55-.7.67-1.5 1-2.5 1-1.2 0-2.19-.5-2.94-1.5-1 1-2.18 1.5-3.56 1.5-1.37 0-2.55-.5-3.54-1.46C7.5 14.55 7 13.38 7 12c0-1.37.5-2.55 1.46-3.54C9.45 7.5 10.63 7 12 7c1.38 0 2.55.5 3.54 1.46C16.5 9.45 17 10.63 17 12v1.45c0 .41.16.77.46 1.08s.65.47 1.04.47c.42 0 .77-.16 1.07-.47s.43-.67.43-1.08V12c0-2.19-.77-4.07-2.35-5.65S14.19 4 12 4s-4.07.77-5.65 2.35S4 9.81 4 12s.77 4.07 2.35 5.65S9.81 20 12 20h5v2h-5c-2.75 0-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2"/></svg></span> Replace</label><label for="remove_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 15c.81 0 1.5-.3 2.11-.89.59-.61.89-1.3.89-2.11s-.3-1.5-.89-2.11C13.5 9.3 12.81 9 12 9s-1.5.3-2.11.89C9.3 10.5 9 11.19 9 12s.3 1.5.89 2.11c.61.59 1.3.89 2.11.89m0-13c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12v1.45c0 1-.35 1.85-1 2.55-.7.67-1.5 1-2.5 1-1.2 0-2.19-.5-2.94-1.5-1 1-2.18 1.5-3.56 1.5-1.37 0-2.55-.5-3.54-1.46C7.5 14.55 7 13.38 7 12c0-1.37.5-2.55 1.46-3.54C9.45 7.5 10.63 7 12 7c1.38 0 2.55.5 3.54 1.46C16.5 9.45 17 10.63 17 12v1.45c0 .41.16.77.46 1.08s.65.47 1.04.47c.42 0 .77-.16 1.07-.47s.43-.67.43-1.08V12c0-2.19-.77-4.07-2.35-5.65S14.19 4 12 4s-4.07.77-5.65 2.35S4 9.81 4 12s.77 4.07 2.35 5.65S9.81 20 12 20h5v2h-5c-2.75 0-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2"/></svg></span> Remove</label><label for="result_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.89 3 1.96.4L11.11 21l-1.96-.4zm6.7 9L16 8.41V5.58L22.42 12 16 18.41v-2.83zM1.58 12 8 5.58v2.83L4.41 12 8 15.58v2.83z"/></svg></span> Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Replace=</span><span class="s">&quot;@123/Cost&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+</code></pre></div>
+<p>Applies to all versions.</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Remove=</span><span class="s">&quot;@123/Cost&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+</code></pre></div>
+<p>Applies to all versions.</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="gd">-   &lt;Cost /&gt;</span>
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+<h2 id="add">Add<a class="headerlink" href="#add" title="Permanent link">&para;</a></h2>
+<p>Adds the content at the end inside of the selection.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:4"><input checked="checked" id="117_4" name="__tabbed_4" type="radio" /><input id="117_5" name="__tabbed_4" type="radio" /><input id="117--1800_2" name="__tabbed_4" type="radio" /><input id="result_3" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="117_4"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label><label for="117_5"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 15c.81 0 1.5-.3 2.11-.89.59-.61.89-1.3.89-2.11s-.3-1.5-.89-2.11C13.5 9.3 12.81 9 12 9s-1.5.3-2.11.89C9.3 10.5 9 11.19 9 12s.3 1.5.89 2.11c.61.59 1.3.89 2.11.89m0-13c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12v1.45c0 1-.35 1.85-1 2.55-.7.67-1.5 1-2.5 1-1.2 0-2.19-.5-2.94-1.5-1 1-2.18 1.5-3.56 1.5-1.37 0-2.55-.5-3.54-1.46C7.5 14.55 7 13.38 7 12c0-1.37.5-2.55 1.46-3.54C9.45 7.5 10.63 7 12 7c1.38 0 2.55.5 3.54 1.46C16.5 9.45 17 10.63 17 12v1.45c0 .41.16.77.46 1.08s.65.47 1.04.47c.42 0 .77-.16 1.07-.47s.43-.67.43-1.08V12c0-2.19-.77-4.07-2.35-5.65S14.19 4 12 4s-4.07.77-5.65 2.35S4 9.81 4 12s.77 4.07 2.35 5.65S9.81 20 12 20h5v2h-5c-2.75 0-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2"/></svg></span> 117</label><label for="117--1800_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</label><label for="result_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.89 3 1.96.4L11.11 21l-1.96-.4zm6.7 9L16 8.41V5.58L22.42 12 16 18.41v-2.83zM1.58 12 8 5.58v2.83L4.41 12 8 15.58v2.83z"/></svg></span> Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Add=</span><span class="s">&quot;&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Add=</span><span class="s">&quot;@123&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;add&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="gi">+   &lt;Maintenance /&gt;</span>
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<p><code>Add</code> does not check if an element already exists.
+Use <a href="#merge">Merge</a> or <a href="../conditions/">Conditions</a> for that purpose.</p>
+<h2 id="merge">Merge<a class="headerlink" href="#merge" title="Permanent link">&para;</a></h2>
+<p>Adds the content, or replaces it if it already exists.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:4"><input checked="checked" id="117_6" name="__tabbed_5" type="radio" /><input id="117_7" name="__tabbed_5" type="radio" /><input id="117--1800_3" name="__tabbed_5" type="radio" /><input id="result_4" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="117_6"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label><label for="117_7"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 15c.81 0 1.5-.3 2.11-.89.59-.61.89-1.3.89-2.11s-.3-1.5-.89-2.11C13.5 9.3 12.81 9 12 9s-1.5.3-2.11.89C9.3 10.5 9 11.19 9 12s.3 1.5.89 2.11c.61.59 1.3.89 2.11.89m0-13c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12v1.45c0 1-.35 1.85-1 2.55-.7.67-1.5 1-2.5 1-1.2 0-2.19-.5-2.94-1.5-1 1-2.18 1.5-3.56 1.5-1.37 0-2.55-.5-3.54-1.46C7.5 14.55 7 13.38 7 12c0-1.37.5-2.55 1.46-3.54C9.45 7.5 10.63 7 12 7c1.38 0 2.55.5 3.54 1.46C16.5 9.45 17 10.63 17 12v1.45c0 .41.16.77.46 1.08s.65.47 1.04.47c.42 0 .77-.16 1.07-.47s.43-.67.43-1.08V12c0-2.19-.77-4.07-2.35-5.65S14.19 4 12 4s-4.07.77-5.65 2.35S4 9.81 4 12s.77 4.07 2.35 5.65S9.81 20 12 20h5v2h-5c-2.75 0-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2"/></svg></span> 117</label><label for="117--1800_3"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</label><label for="result_4"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.89 3 1.96.4L11.11 21l-1.96-.4zm6.7 9L16 8.41V5.58L22.42 12 16 18.41v-2.83zM1.58 12 8 5.58v2.83L4.41 12 8 15.58v2.83z"/></svg></span> Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Merge=</span><span class="s">&quot;Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Standard&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Name&gt;</span>new<span class="w"> </span>name<span class="nt">&lt;/Name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Description&gt;</span>desc<span class="nt">&lt;/Description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Standard&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Merge=</span><span class="s">&quot;@123/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Standard&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Name&gt;</span>new<span class="w"> </span>name<span class="nt">&lt;/Name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Description&gt;</span>desc<span class="nt">&lt;/Description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Standard&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;merge&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Standard&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Name&gt;</span>new<span class="w"> </span>name<span class="nt">&lt;/Name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Description&gt;</span>desc<span class="nt">&lt;/Description&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Standard&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="gd">-     &lt;Name&gt;old name&lt;/Name&gt;</span>
+<span class="gi">+     &lt;Name&gt;new name&lt;/Name&gt;</span>
+<span class="gi">+     &lt;Description&gt;desc&lt;/Description&gt;</span>
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<details class="warning">
+<summary>You may leave out the top-level element (here <code>Standard</code>) in most situations</summary>
+<p>The following is shorter and has to the same result.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:3"><input checked="checked" id="117_8" name="__tabbed_6" type="radio" /><input id="117--1800_4" name="__tabbed_6" type="radio" /><input id="result_5" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="117_8"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 15c.81 0 1.5-.3 2.11-.89.59-.61.89-1.3.89-2.11s-.3-1.5-.89-2.11C13.5 9.3 12.81 9 12 9s-1.5.3-2.11.89C9.3 10.5 9 11.19 9 12s.3 1.5.89 2.11c.61.59 1.3.89 2.11.89m0-13c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12v1.45c0 1-.35 1.85-1 2.55-.7.67-1.5 1-2.5 1-1.2 0-2.19-.5-2.94-1.5-1 1-2.18 1.5-3.56 1.5-1.37 0-2.55-.5-3.54-1.46C7.5 14.55 7 13.38 7 12c0-1.37.5-2.55 1.46-3.54C9.45 7.5 10.63 7 12 7c1.38 0 2.55.5 3.54 1.46C16.5 9.45 17 10.63 17 12v1.45c0 .41.16.77.46 1.08s.65.47 1.04.47c.42 0 .77-.16 1.07-.47s.43-.67.43-1.08V12c0-2.19-.77-4.07-2.35-5.65S14.19 4 12 4s-4.07.77-5.65 2.35S4 9.81 4 12s.77 4.07 2.35 5.65S9.81 20 12 20h5v2h-5c-2.75 0-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2"/></svg></span> 117</label><label for="117--1800_4"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</label><label for="result_5"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.89 3 1.96.4L11.11 21l-1.96-.4zm6.7 9L16 8.41V5.58L22.42 12 16 18.41v-2.83zM1.58 12 8 5.58v2.83L4.41 12 8 15.58v2.83z"/></svg></span> Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Merge=</span><span class="s">&quot;@123/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Name&gt;</span>new<span class="w"> </span>name<span class="nt">&lt;/Name&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Description&gt;</span>desc<span class="nt">&lt;/Description&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;merge&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Name&gt;</span>new<span class="w"> </span>name<span class="nt">&lt;/Name&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Description&gt;</span>desc<span class="nt">&lt;/Description&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="gd">-     &lt;Name&gt;old name&lt;/Name&gt;</span>
+<span class="gi">+     &lt;Name&gt;new name&lt;/Name&gt;</span>
+<span class="gi">+     &lt;Description&gt;desc&lt;/Description&gt;</span>
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Only when the selected element has a child with the same name, you must use the long way.
+In doubt, always use the long way.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:4"><input checked="checked" id="problem" name="__tabbed_7" type="radio" /><input id="117_9" name="__tabbed_7" type="radio" /><input id="117--1800_5" name="__tabbed_7" type="radio" /><input id="result_6" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="problem">Problem</label><label for="117_9"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 15c.81 0 1.5-.3 2.11-.89.59-.61.89-1.3.89-2.11s-.3-1.5-.89-2.11C13.5 9.3 12.81 9 12 9s-1.5.3-2.11.89C9.3 10.5 9 11.19 9 12s.3 1.5.89 2.11c.61.59 1.3.89 2.11.89m0-13c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12v1.45c0 1-.35 1.85-1 2.55-.7.67-1.5 1-2.5 1-1.2 0-2.19-.5-2.94-1.5-1 1-2.18 1.5-3.56 1.5-1.37 0-2.55-.5-3.54-1.46C7.5 14.55 7 13.38 7 12c0-1.37.5-2.55 1.46-3.54C9.45 7.5 10.63 7 12 7c1.38 0 2.55.5 3.54 1.46C16.5 9.45 17 10.63 17 12v1.45c0 .41.16.77.46 1.08s.65.47 1.04.47c.42 0 .77-.16 1.07-.47s.43-.67.43-1.08V12c0-2.19-.77-4.07-2.35-5.65S14.19 4 12 4s-4.07.77-5.65 2.35S4 9.81 4 12s.77 4.07 2.35 5.65S9.81 20 12 20h5v2h-5c-2.75 0-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2"/></svg></span> 117</label><label for="117--1800_5"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</label><label for="result_6"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.89 3 1.96.4L11.11 21l-1.96-.4zm6.7 9L16 8.41V5.58L22.42 12 16 18.41v-2.83zM1.58 12 8 5.58v2.83L4.41 12 8 15.58v2.83z"/></svg></span> Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="hll"><span class="w">  </span><span class="nt">&lt;Text&gt;</span>
+</span><span class="w">    </span><span class="nt">&lt;LineId&gt;</span>123<span class="nt">&lt;/LineId&gt;</span>
+<span class="hll"><span class="w">    </span><span class="nt">&lt;Text&gt;</span>old<span class="w"> </span>text<span class="nt">&lt;/Text&gt;</span>
+</span><span class="w">  </span><span class="nt">&lt;/Text&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Merge=</span><span class="s">&quot;@123/Text&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Text&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Text&gt;</span>new<span class="w"> </span>text<span class="nt">&lt;/Text&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Text&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;Merge&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Text&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Text&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Text&gt;</span>new<span class="w"> </span>text<span class="nt">&lt;/Text&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Text&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Text&gt;
+<span class="w"> </span> &lt;LineId&gt;123&lt;/LineId&gt;
+<span class="gd">-   &lt;Text&gt;old text&lt;/Text&gt;</span>
+<span class="gi">+   &lt;Text&gt;new text&lt;/Text&gt;</span>
+&lt;/Text&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+</details>
+<h2 id="append">Append<a class="headerlink" href="#append" title="Permanent link">&para;</a></h2>
+<p>Adds the content after the selection.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:4"><input checked="checked" id="117_10" name="__tabbed_8" type="radio" /><input id="117_11" name="__tabbed_8" type="radio" /><input id="117--1800_6" name="__tabbed_8" type="radio" /><input id="result_7" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="117_10"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label><label for="117_11"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 15c.81 0 1.5-.3 2.11-.89.59-.61.89-1.3.89-2.11s-.3-1.5-.89-2.11C13.5 9.3 12.81 9 12 9s-1.5.3-2.11.89C9.3 10.5 9 11.19 9 12s.3 1.5.89 2.11c.61.59 1.3.89 2.11.89m0-13c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12v1.45c0 1-.35 1.85-1 2.55-.7.67-1.5 1-2.5 1-1.2 0-2.19-.5-2.94-1.5-1 1-2.18 1.5-3.56 1.5-1.37 0-2.55-.5-3.54-1.46C7.5 14.55 7 13.38 7 12c0-1.37.5-2.55 1.46-3.54C9.45 7.5 10.63 7 12 7c1.38 0 2.55.5 3.54 1.46C16.5 9.45 17 10.63 17 12v1.45c0 .41.16.77.46 1.08s.65.47 1.04.47c.42 0 .77-.16 1.07-.47s.43-.67.43-1.08V12c0-2.19-.77-4.07-2.35-5.65S14.19 4 12 4s-4.07.77-5.65 2.35S4 9.81 4 12s.77 4.07 2.35 5.65S9.81 20 12 20h5v2h-5c-2.75 0-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2"/></svg></span> 117</label><label for="117--1800_6"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</label><label for="result_7"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.89 3 1.96.4L11.11 21l-1.96-.4zm6.7 9L16 8.41V5.58L22.42 12 16 18.41v-2.83zM1.58 12 8 5.58v2.83L4.41 12 8 15.58v2.83z"/></svg></span> Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Append=</span><span class="s">&quot;Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Append=</span><span class="s">&quot;@123/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;addNextSibling&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="gi">+   &lt;Maintenance /&gt;</span>
+<span class="w"> </span>   &lt;Cost /&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>A common situation is when you want to insert an item at a specific position.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:4"><input checked="checked" id="117_12" name="__tabbed_9" type="radio" /><input id="117_13" name="__tabbed_9" type="radio" /><input id="117--1800_7" name="__tabbed_9" type="radio" /><input id="result_8" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="117_12"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label><label for="117_13"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 15c.81 0 1.5-.3 2.11-.89.59-.61.89-1.3.89-2.11s-.3-1.5-.89-2.11C13.5 9.3 12.81 9 12 9s-1.5.3-2.11.89C9.3 10.5 9 11.19 9 12s.3 1.5.89 2.11c.61.59 1.3.89 2.11.89m0-13c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12v1.45c0 1-.35 1.85-1 2.55-.7.67-1.5 1-2.5 1-1.2 0-2.19-.5-2.94-1.5-1 1-2.18 1.5-3.56 1.5-1.37 0-2.55-.5-3.54-1.46C7.5 14.55 7 13.38 7 12c0-1.37.5-2.55 1.46-3.54C9.45 7.5 10.63 7 12 7c1.38 0 2.55.5 3.54 1.46C16.5 9.45 17 10.63 17 12v1.45c0 .41.16.77.46 1.08s.65.47 1.04.47c.42 0 .77-.16 1.07-.47s.43-.67.43-1.08V12c0-2.19-.77-4.07-2.35-5.65S14.19 4 12 4s-4.07.77-5.65 2.35S4 9.81 4 12s.77 4.07 2.35 5.65S9.81 20 12 20h5v2h-5c-2.75 0-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2"/></svg></span> 117</label><label for="117--1800_7"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</label><label for="result_8"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.89 3 1.96.4L11.11 21l-1.96-.4zm6.7 9L16 8.41V5.58L22.42 12 16 18.41v-2.83zM1.58 12 8 5.58v2.83L4.41 12 8 15.58v2.83z"/></svg></span> Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span>
+<span class="w">       </span><span class="na">Append=</span><span class="s">&quot;ConstructionCategory/BuildingList/Item[Building=&#39;1000178&#39;]&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Item&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Building&gt;</span>123<span class="nt">&lt;/Building&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Item&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Append=</span><span class="s">&quot;@123/ConstructionCategory/BuildingList/Item[Building=&#39;1000178&#39;]&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Item&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Building&gt;</span>123<span class="nt">&lt;/Building&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Item&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;addNextSibling&quot;</span>
+<span class="w">       </span><span class="na">Path=</span><span class="s">&quot;/Values/ConstructionCategory/BuildingList/Item[Building=&#39;1000178&#39;]&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Item&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Building&gt;</span>123<span class="nt">&lt;/Building&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Item&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span>   &lt;ConstructionCategory&gt;
+<span class="w"> </span>     &lt;BuildingList&gt;
+<span class="w"> </span>       &lt;Item&gt;
+<span class="w"> </span>         &lt;Building&gt;1000178&lt;/Building&gt;
+<span class="w"> </span>       &lt;/Item&gt;
+<span class="gi">+       &lt;Item&gt;</span>
+<span class="gi">+         &lt;Building&gt;123&lt;/Building&gt;</span>
+<span class="gi">+       &lt;/Item&gt;</span>
+<span class="w"> </span>       &lt;Item&gt;
+<span class="w"> </span>         &lt;Building&gt;1010372&lt;/Building&gt;
+<span class="w"> </span>       &lt;/Item&gt;
+<span class="w"> </span>     &lt;/BuildingList&gt;
+<span class="w"> </span>   &lt;/ConstructionCategory&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<h2 id="prepend">Prepend<a class="headerlink" href="#prepend" title="Permanent link">&para;</a></h2>
+<p>Prepend works the same as <code>Append</code> except that it adds the content before the selection.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="10:4"><input checked="checked" id="117_14" name="__tabbed_10" type="radio" /><input id="117_15" name="__tabbed_10" type="radio" /><input id="117--1800_8" name="__tabbed_10" type="radio" /><input id="result_9" name="__tabbed_10" type="radio" /><div class="tabbed-labels"><label for="117_14"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label><label for="117_15"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 15c.81 0 1.5-.3 2.11-.89.59-.61.89-1.3.89-2.11s-.3-1.5-.89-2.11C13.5 9.3 12.81 9 12 9s-1.5.3-2.11.89C9.3 10.5 9 11.19 9 12s.3 1.5.89 2.11c.61.59 1.3.89 2.11.89m0-13c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12v1.45c0 1-.35 1.85-1 2.55-.7.67-1.5 1-2.5 1-1.2 0-2.19-.5-2.94-1.5-1 1-2.18 1.5-3.56 1.5-1.37 0-2.55-.5-3.54-1.46C7.5 14.55 7 13.38 7 12c0-1.37.5-2.55 1.46-3.54C9.45 7.5 10.63 7 12 7c1.38 0 2.55.5 3.54 1.46C16.5 9.45 17 10.63 17 12v1.45c0 .41.16.77.46 1.08s.65.47 1.04.47c.42 0 .77-.16 1.07-.47s.43-.67.43-1.08V12c0-2.19-.77-4.07-2.35-5.65S14.19 4 12 4s-4.07.77-5.65 2.35S4 9.81 4 12s.77 4.07 2.35 5.65S9.81 20 12 20h5v2h-5c-2.75 0-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2"/></svg></span> 117</label><label for="117--1800_8"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</label><label for="result_9"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.89 3 1.96.4L11.11 21l-1.96-.4zm6.7 9L16 8.41V5.58L22.42 12 16 18.41v-2.83zM1.58 12 8 5.58v2.83L4.41 12 8 15.58v2.83z"/></svg></span> Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Prepend=</span><span class="s">&quot;Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Prepend=</span><span class="s">&quot;@123/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;addPreviousSibling&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Maintenance</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/ModOp&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="gi">+   &lt;Maintenance /&gt;</span>
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="w"> </span>   &lt;Cost /&gt;
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<h2 id="remove">Remove<a class="headerlink" href="#remove" title="Permanent link">&para;</a></h2>
+<p>Removes the selected elements.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="11:4"><input checked="checked" id="117_16" name="__tabbed_11" type="radio" /><input id="117_17" name="__tabbed_11" type="radio" /><input id="117--1800_9" name="__tabbed_11" type="radio" /><input id="result_10" name="__tabbed_11" type="radio" /><div class="tabbed-labels"><label for="117_16"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label><label for="117_17"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 15c.81 0 1.5-.3 2.11-.89.59-.61.89-1.3.89-2.11s-.3-1.5-.89-2.11C13.5 9.3 12.81 9 12 9s-1.5.3-2.11.89C9.3 10.5 9 11.19 9 12s.3 1.5.89 2.11c.61.59 1.3.89 2.11.89m0-13c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12v1.45c0 1-.35 1.85-1 2.55-.7.67-1.5 1-2.5 1-1.2 0-2.19-.5-2.94-1.5-1 1-2.18 1.5-3.56 1.5-1.37 0-2.55-.5-3.54-1.46C7.5 14.55 7 13.38 7 12c0-1.37.5-2.55 1.46-3.54C9.45 7.5 10.63 7 12 7c1.38 0 2.55.5 3.54 1.46C16.5 9.45 17 10.63 17 12v1.45c0 .41.16.77.46 1.08s.65.47 1.04.47c.42 0 .77-.16 1.07-.47s.43-.67.43-1.08V12c0-2.19-.77-4.07-2.35-5.65S14.19 4 12 4s-4.07.77-5.65 2.35S4 9.81 4 12s.77 4.07 2.35 5.65S9.81 20 12 20h5v2h-5c-2.75 0-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2"/></svg></span> 117</label><label for="117--1800_9"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</label><label for="result_10"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.89 3 1.96.4L11.11 21l-1.96-.4zm6.7 9L16 8.41V5.58L22.42 12 16 18.41v-2.83zM1.58 12 8 5.58v2.83L4.41 12 8 15.58v2.83z"/></svg></span> Result</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Remove=</span><span class="s">&quot;Cost&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Remove=</span><span class="s">&quot;@123/Cost&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;remove&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Cost&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>&lt;Asset&gt;
+<span class="w"> </span> &lt;Values&gt;
+<span class="w"> </span>   &lt;Standard&gt;
+<span class="w"> </span>     &lt;GUID&gt;123&lt;/GUID&gt;
+<span class="w"> </span>   &lt;/Standard&gt;
+<span class="gd">-   &lt;Cost /&gt;</span>
+<span class="w"> </span> &lt;/Values&gt;
+&lt;/Asset&gt;
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Removing an not existing element leads to warning</p>
+<p>As with all ModOps, there will be a warning if the selected element path does not exist.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Get Started with ModOps">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Get Started with ModOps
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../merge/" class="md-footer__link md-footer__link--next" aria-label="Next: Merge">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Merge
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "content.code.copy", "navigation.footer", "header.autohide", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
