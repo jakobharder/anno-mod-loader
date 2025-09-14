@@ -22,7 +22,7 @@ nav:
       - Basic Types: modops/basics.md
       - Grouping: modops/grouping.md
       - Conditions: modops/conditions.md
-      - Content: modops/content.md
+      - Dynamic Content: modops/content.md
       - Item Lists: modops/lists.md
       - Examples: modops/examples.md
     - Options: options.md

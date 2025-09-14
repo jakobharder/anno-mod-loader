@@ -333,7 +333,7 @@ Adds the content, or replaces it if it already exists.
           </Text>
         ```
 
-## Append
+## Append (AddNextSibling)
 
 Adds the content after the selection.
 
@@ -420,7 +420,40 @@ A common situation is when you want to insert an item at a specific position.
     </Asset>
     ```
 
-## Prepend
+??? tip "Use `Merge` to append list items. {{a117}}"
+    === ":material-pillar: 117"
+        ```xml
+        <ModOp GUID="123" Merge="ConstructionCategory/BuildingList">
+          <ModItem Attribute="Building" Append="Building='1000178'">
+            <Building>123</Building>
+          </ModItem>
+        </ModOp>
+        ```
+    === ":material-xml: Result"
+        ```diff
+          <Values>
+            <Standard>
+              <GUID>123</GUID>
+            </Standard>
+            <ConstructionCategory>
+              <BuildingList>
+                <Item>
+                  <Building>1000178</Building>
+                </Item>
+        +       <Item>
+        +         <Building>123</Building>
+        +       </Item>
+                <Item>
+                  <Building>1010372</Building>
+                </Item>
+              </BuildingList>
+            </ConstructionCategory>
+          </Values>
+        ```
+
+    See also [Item Lists](./lists.md) for more details.
+
+## Prepend (AddPrevSibling)
 
 Prepend works the same as `Append` except that it adds the content before the selection.
 
@@ -454,6 +487,39 @@ Prepend works the same as `Append` except that it adds the content before the se
       </Values>
     </Asset>
     ```
+
+??? tip "Use `Merge` to prepend list items. {{a117}}"
+    === ":material-pillar: 117"
+        ```xml
+        <ModOp GUID="123" Merge="ConstructionCategory/BuildingList">
+          <ModItem Attribute="Building" Prepend="Building='1010372'">
+            <Building>123</Building>
+          </ModItem>
+        </ModOp>
+        ```
+    === ":material-xml: Result"
+        ```diff
+          <Values>
+            <Standard>
+              <GUID>123</GUID>
+            </Standard>
+            <ConstructionCategory>
+              <BuildingList>
+                <Item>
+                  <Building>1000178</Building>
+                </Item>
+        +       <Item>
+        +         <Building>123</Building>
+        +       </Item>
+                <Item>
+                  <Building>1010372</Building>
+                </Item>
+              </BuildingList>
+            </ConstructionCategory>
+          </Values>
+        ```
+
+    See also [Item Lists](./lists.md) for more details.
 
 ## Remove
 
