@@ -10,21 +10,18 @@ Replaces the selection.
       <Name>new name</Name>
     </ModOp>
     ```
-
 === ":material-at: 117"
     ```xml
     <ModOp Replace="@123/Standard/Name">
       <Name>new name</Name>
     </ModOp>
     ```
-
 === ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOp GUID="123" Type="replace" Path="/Values/Standard">
       <Name>new name</Name>
     </ModOp>
     ```
-
 === ":material-xml: Result"
     ```diff
     <Asset>
@@ -37,6 +34,60 @@ Replaces the selection.
       </Values>
     </Asset>
     ```
+
+??? tip "Only replace if the value is higher."
+    A common pattern is to replace a value only if it is higher than the existing one.
+
+    This can be achieved with [Conditions](./conditions.md).
+
+    === ":material-pillar: 117"
+        ```xml hl_lines="2"
+        <ModOp GUID="2001241" Replace="BuildingBaseTiles"
+               Condition="!BuildingBaseTiles[HarbourConstructionAreaRadius &gt;= 40]">
+          <HarbourConstructionAreaRadius>40</HarbourConstructionAreaRadius>
+        </ModOp>
+        ```
+
+        ### Note on Brackets `<>`
+
+        Using brackets `<>` in attributes is not valid XML. Use `&lt;` for `<` and `&gt;` for `>` instead.
+
+        ### Note on Negative Condition
+
+        The condition is negative with `!`. You could do a positive condition with the same path as `Path`:
+
+        ```
+        Condition="BuildingBaseTiles[HarbourConstructionAreaRadius &lt; 40]"
+        ```
+
+        The difference is: if there is any error in the Condition path itself - be it a typo or another mod removed that element - you don't get any warnings. The condition will just say: not available, hence don't execute.
+
+        On the other hand, the negative check with `!` skips if an conditions exists exactly how you expect it.
+        Meaning it will execute if there is something unexpected, leading to warnings in the end.
+    === ":material-animation-outline: 117 & 1800"
+        ```xml hl_lines="2"
+        <ModOp GUID="2001241" Type="replace" Path="/Values/BuildingBaseTiles"
+               Condition="!/Values/BuildingBaseTiles[HarbourConstructionAreaRadius &gt;= 40]">
+          <HarbourConstructionAreaRadius>40</HarbourConstructionAreaRadius>
+        </ModOp>
+        ```
+
+        ### Note on Brackets `<>`
+
+        Using brackets `<>` in attributes is not valid XML. Use `&lt;` for `<` and `&gt;` for `>` instead.
+
+        ### Note on Negative Condition
+
+        The condition is negative with `!`. You could do a positive condition with the same path as `Path`:
+
+        ```
+        Condition="/Values/BuildingBaseTiles[HarbourConstructionAreaRadius &lt; 40]"
+        ```
+
+        The difference is: if there is any error in the Condition path itself - be it a typo or another mod removed that element - you don't get any warnings. The condition will just say: not available, hence don't execute.
+
+        On the other hand, the negative check with `!` skips if an conditions exists exactly how you expect it.
+        Meaning it will execute if there is something unexpected, leading to warnings in the end.
 
 Replace is not limited to single elements.
 Elements containing elements can be replaced as well.

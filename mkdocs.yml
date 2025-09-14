@@ -24,7 +24,6 @@ nav:
       - Conditions: modops/conditions.md
       - Dynamic Content: modops/content.md
       - Item Lists: modops/lists.md
-      - Examples: modops/examples.md
     - Options: options.md
     - InfoTips: infotips.md
     - "CFG, FC Patches": cfg-fc-patches.md
