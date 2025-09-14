@@ -4,7 +4,7 @@ You can patch `data/infotips/export.bin` by adding an `export.bin.xml` patch fil
 
 ## Select InfoTip
 
-{{v0()}}
+{{all}}
 
 === ":material-pillar: 117"
     ```xml
@@ -27,7 +27,7 @@ You can patch `data/infotips/export.bin` by adding an `export.bin.xml` patch fil
 
 ## Structure
 
-{{v0()}}
+{{all}}
 
 The structure of the InfoTips is different depending on the game version.
 

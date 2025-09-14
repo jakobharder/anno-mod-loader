@@ -8,7 +8,7 @@ These options are accessible as `$mod-id.option-name` in XPath.
 
 ## Options file
 
-{{v8()}}
+{{a117}}
 
 The `options.jsonc` file is read from the `mods/` folder with the following format:
 
@@ -46,7 +46,7 @@ The `modinfo.json` file contains defaults:
 
 ## Use as Condition
 
-{{v8()}}
+{{a117}}
 
 Option values can be used in `Condition` XPath.
 
@@ -81,7 +81,7 @@ Option values can be used in `Condition` XPath.
 
 ## Use As Value
 
-{{v8()}}
+{{a117}}
 
 Option values can be used in `<ModValue Insert>` as values to insert.
 
@@ -112,7 +112,7 @@ Option values can be used in `<ModValue Insert>` as values to insert.
 
 ## Combined Example
 
-{{v8()}}
+{{a117}}
 
 This example uses the option value to compare in a condition, and only sets it when higher.
 
@@ -165,7 +165,7 @@ Also note that `mod-id` can be skipped if the variable comes from the same mod s
 
 ## Additional Modinfos
 
-{{v8()}}
+{{a117}}
 
 Specify user customizable options of a mod (like iModYourAnno tweaks) in `modinfo.json`:
 

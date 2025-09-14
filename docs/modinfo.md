@@ -13,7 +13,7 @@ Check the full [modinfo.json specification](https://github.com/anno-mods/Modinfo
 
 ## Files
 
-{{v0()}}
+{{all}}
 
 A `modinfo.json` file is required in the top-level folder of your mod.
 Description and images are optional.
@@ -41,7 +41,7 @@ File | Description
 
 ## Mandatory Fields
 
-{{v0()}}
+{{all}}
 
 Mandatory fields are used by the modloader to correctly identify mods. Missing or wrong entries result in errors in the `mod-loader.log`.
 
@@ -64,7 +64,7 @@ Field | Description
 
 ## Game Setup
 
-{{v8()}}
+{{a117}}
 
 ```json title="modinfo.json"
 {
@@ -94,7 +94,7 @@ Field | Description
 
 ## Dependencies
 
-{{v0()}}
+{{all}}
 
 === ":material-pillar: 117"
     ```json
@@ -140,7 +140,7 @@ Field | Description
 
 ## Development Info
 
-{{v0()}}
+{{all}}
 
 Infos used by Visual Studio Code plugin [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools).
 

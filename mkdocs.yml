@@ -3,8 +3,7 @@ site_url: https://jakobharder.github.io/anno-mod-loader
 
 plugins:
   - search
-  - macros:
-      module_name: docs/macros
+  - macros
 
 nav:
   - Overview: index.md
@@ -21,10 +20,10 @@ nav:
     - ModOps:
       - modops/index.md
       - Basic Types: modops/basics.md
-      - Item Lists: modops/lists.md
       - Grouping: modops/grouping.md
       - Conditions: modops/conditions.md
       - Content: modops/content.md
+      - Item Lists: modops/lists.md
       - Examples: modops/examples.md
     - Options: options.md
     - InfoTips: infotips.md
@@ -76,3 +75,8 @@ markdown_extensions:
 
 extra_css:
   - stylesheets/extra.css
+
+extra:
+    all: '<span class="version-tag" title="Available in all supported Annos">:material-animation-outline: 117 & 1800</span>'
+    a1800: '<span class="version-tag" title="Only available in Anno 1800">:material-factory: 1800</span>'
+    a117: '<span class="version-tag" title="Only available in Anno 117">:material-pillar: 117</span>'

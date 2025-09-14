@@ -2,13 +2,13 @@
 
 You can change the activation of a mod in the following ways:
 
-- Recommended: Prefix entry with `#` in `<user>/Anno 117/mods/active-profile.txt` {{v8()}}
-- Prefix mod with `-` {{v0()}}
-- Add disable entry in `<mods>/activation.json` {{v7()}}
+- Recommended: Prefix entry with `#` in `<user>/Anno 117/mods/active-profile.txt` {{a117}}
+- Prefix mod with `-` {{all}}
+- Add disable entry in `<mods>/activation.json` {{a1800}}
 
 ## Profile File
 
-{{v8()}}
+{{a117}}
 
 !!! warning "Profiles are not available in the demo"
 
@@ -36,7 +36,7 @@ Prefix `EnableNewMods` with `#` to disable newly added mods by default.
 
 ## Prefix With Minus
 
-{{v0()}}
+{{all}}
 
 Add a `-` in front of a mod folder or zip file.
 
@@ -53,7 +53,7 @@ Add a `-` in front of a mod folder or zip file.
 
 ## Activations File
 
-{{v7()}}
+{{a1800}}
 
 Place a `activation.json` file in your install or user documents `mods/` folder and add entries like the following:
 
@@ -70,6 +70,6 @@ Place a `activation.json` file in your install or user documents `mods/` folder 
 
 ## Account Data
 
-{{v7()}}
+{{a1800}}
 
 TBD

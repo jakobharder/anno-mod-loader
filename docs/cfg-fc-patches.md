@@ -2,7 +2,7 @@
 
 ## Patching .cfg files
 
-{{v7()}}
+{{a1800}}
 
 You can patch .cfg files e.g. `world_map_01.cfg` by adding an XML file with the same name plus `.xml` as an extension.
 
@@ -21,7 +21,7 @@ Note: patching is more expensive than replacing. Avoid it if you can.
 
 ## Patching .fc files
 
-{{v7()}}
+{{a1800}}
 
 You can patch .fc files e.g. `world_map_01.fc` by adding an XML file with the same name plus `.xml` as an extension.
 
