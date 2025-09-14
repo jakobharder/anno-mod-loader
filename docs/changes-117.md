@@ -2,50 +2,35 @@
 
 There are a few changes in file structure and modinfo.json that are mandatory.
 
-### Mod Folders
+## Important
 
-The locations of the mod folders for manual installation are unchanged.
+- [Changed Paths](#changed-paths) - Paths to `assets.xml` and others have changed.
+- [Modinfo](./modinfo.md) - Only mods with `Game: 8` are loaded.
+- [GUID Ranges](#safe-ranges) - The ranges have not changed.
+- [Mod Folders](#mod-folders) - The folders have not changed.
 
-- `<user>/Anno 117/mods/`
-- `<install>/Anno 117/mods/`
+## Changes
 
-### Mod Profiles
+- [Localization](#localization) - Texts use LineIDs now instead of GUIDs.
+- [Modinfo](./modinfo.md) - New `Difficulty` entry is mandatory, but mods load without it.
+- [InfoTips](./infotips.md#structure) - The format has changed for better readability.
+- [Dependencies](./modinfo.md#dependencies) - Changed dependency entries in modinfo.
 
-!!! warning "Profiles are not available in the demo"
+## New Features
 
-You can change the activation of a mod in two ways:
+- [Short ModOps](./new-features-117.md#short-modops) - Shorter ModOps.
+- [Directly Add Assets](./new-features-117.md#add-assets) - Conveniently add assets. Handles BaseAssetGUID automatically.
+- [Mod Profiles](./profiles.md) - The game loads mod activations from `<user>/Anno 117/active-profile.txt`.
+- [ModOps Property](./new-features-117.md#property-lookup) - Property Lookup
+- [ModOps MaxRepeat](./new-features-117.md#property-lookup) - Use `Group` with `Condition` for loops.
+- [InfoTips](./infotips.md#select-infotip) - GUID Lookup
+- [XPath Functions](./new-features-117.md#xpath) - XPath functions like `number()` and `count()` can be used.
+- [ModID as XPath Variable](./modops/control.md#modid-condition) - Do things like `#mod-a and not(#mod-b)`.
+- [Inline ModOps](./modops/content.md) - Merge enums, insert local content and other `Content` improvements.
+- [ModItem](./modops/lists.md) - More control over merging items and lists with items.
+- [Lua Scripts](./new-features-117.md#scripts) - Script support
 
-- Prefix entry with `#` in `<user>/Anno 117/active-profile.txt`
-- Prefix folder with `-` *(not recommended while the game is running)*
-
-The loader adds all detected mods to the active profile:
-
-```ini title="active-profile.txt"
-## Disable a mod:
-## - Add a `#` before it.
-##
-## Disable mods not listed:
-## - Add `#` before `EnableNewMods` to automatically disable new mods.
-## - That's useful if you want to backup your activation list as a mod profile.
-EnableNewMods
-
-# infinite-money-ubi
-infinite-materials-ubi
-```
-
-### Safe Ranges
-
-!!! info inline end "Reserve your range"
-    Open a PR on [GuidRanges](https://github.com/anno-mods/GuidRanges) or ask on [Discord](https://discord.gg/CUq2zQdV).
-
-The GUID ranges safe to use for mods have not changed.
-
-Name | Range
--- | --
-GUIDs         | 1.337.471.142 - 2.147.483.647
-LineIDs       | 1.337.471.142 - 2.147.483.647
-Personal use  | 2.001.000.000 - 2.001.009.999
-Enums         | will come with future releases
+## Extra Notes
 
 ### Changed Paths
 
@@ -60,6 +45,27 @@ Most base game files are also under `data\base` now.
 
 !!! tip "Templates in Visual Studio Code"
     Press ++f1++ in [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools) and run `Anno: Create Mod from Template` to generate a template.
+
+### Mod Folders
+
+The locations of the mod folders for manual installation are unchanged.
+
+- `<user>/Anno 117/mods/`
+- `<install>/Anno 117/mods/`
+
+### Safe Ranges
+
+!!! info inline end "Reserve your range"
+    Open a PR on [GuidRanges](https://github.com/anno-mods/GuidRanges) or ask on [Discord](https://discord.gg/CUq2zQdV).
+
+The GUID ranges safe to use for mods have not changed.
+
+Name | Range
+-- | --
+GUIDs         | 1.337.471.142 - 2.147.483.647
+LineIDs       | 1.337.471.142 - 2.147.483.647
+Personal use  | 2.001.000.000 - 2.001.009.999
+Enums         | will come with future releases
 
 ### Localization
 
@@ -108,102 +114,3 @@ E.g. matching LineID of a building name with the GUID of the building asset.
     </Values>
     ```
 
-### Modinfo
-
-The `modinfo.json` now supports JSON with comments (you can also name it `modinfo.jsonc`).
-
-A game version entry is now mandatory:
-
-```json title="modinfo.jsonc"
-{
-  "Anno": 8,
-  // ...
-}
-```
-
-!!! warning "Mods without modinfo and game version won't be loaded"
-
-There are a few more informational entries in `modinfo.json`.
-
-```json title="modinfo.jsonc"
-{
-  "Anno": 8,
-  // ...
-  // new entries:
-  "Difficulty": "harder",
-  "GameSetup": {
-    "RequiresNewGame": false,
-    "SafeToRemove": false,
-    "Multiplayer": true,
-    "Campaign": true
-  }
-}
-```
-
-|Name|Value|Effect|
-|---|---|---|
-|`Anno` (mandatory)[^1]|`8`|Only mods with the correction version will be loaded
-|`Difficulty` (mandatory)[^2]|`cheat`|e.g. no construction costs
-|.|`easier`|makes the game easier, e.g. reduced needs consumption
-|.|`unchanged`|is balanced similar as the vanilla game, e.g. new productions or quality of life features like free farmfield placement
-|.|`harder`|makes the game harder
-|`RequiresNewGame`|`true` or `false`|only works with a new savegame, for example like river slots.<br/>Default is `false`.
-|`SafeToRemove`|`true` or `false`|can be removed from a savegame without leaving trails. For example construction menu reordering.<br/>Default is `false`.
-|`Multiplayer`|`true` or `false`|can be used in multiplayer games.<br/>Default is `true`.
-|`Campaign`|`true` or `false`|can be used in campaign games.<br/>Default is `true`.
-
-[^1]: The mod won't be loaded without the game version entry.
-[^2]: The mod loader prints an error if the entry is missing or wrong.
-
-## InfoTips
-
-!!! warning "Not available in demo"
-
-There are a few changes to improve readability:
-
-1. Types and Operators have proper names instead of numbers.
-2. ElementType is now an attribute of InfoElement and VisibilityElement.
-3. Nested operators like `CompareOperator` are now more compact.
-4. No `ChildCount`s anymore
-
-=== ":material-pillar: 117"
-    ```xml
-    <InfoElement Type="Container">
-      <VisibilityElement Type="Group">
-        <VisibilityElement Type="Condition">
-          <CompareOperator>Greater</CompareOperator>
-          <!-- .. -->
-        </VisibilityElement>
-      </VisibilityElement>
-      <!-- .. -->
-    </InfoElement>
-    ```
-
-=== ":material-factory: 1800"
-    ```xml
-    <InfoElement>
-      <ElementType>23</ElementType>
-      <ChildCount>1</ChildCount>
-      <VisibilityElement>
-        <ElementType>
-          <ElementType>2</ElementType>
-        <ElementType>
-        <VisibilityElement>
-          <ElementType>
-            <ElementType>1</ElementType>
-          <ElementType>
-          <ChildCount>1</ChildCount>
-          <CompareOperator>
-            <CompareOperator>5</CompareOperator>
-          </CompareOperator>
-          <!-- .. -->
-        </VisibilityElement>
-      </VisibilityElement>
-      <!-- .. -->
-    </InfoElement>
-    ```
-
-Note: These improvements are not part of [FileDBReader](https://github.com/anno-mods/FileDBReader), except the type and operator names. Keep that in mind when comparing **FileDBReader** and **xmltest** output.
-
-
-!!! info "Reminder: Texts use OasisIDs now (`TextId`) instead of GUIDs (`TextGUID`)"
