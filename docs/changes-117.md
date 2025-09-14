@@ -51,15 +51,15 @@ Enums         | will come with future releases
 
 The location of the main `assets.xml` has changed.
 
-=== "117"
+=== ":material-pillar: 117"
     `data\base\config\export\assets.xml`
-=== "1800"
+=== ":material-factory: 1800"
     `data\config\export\main\asset\assets.xml`
 
 Most base game files are also under `data\base` now.
 
 !!! tip "Templates in Visual Studio Code"
-    Press key `F1` in [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools) and run `Anno: Create Mod from Template` to generate a template.
+    Press ++f1++ in [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools) and run `Anno: Create Mod from Template` to generate a template.
 
 ### Localization
 
@@ -68,7 +68,7 @@ Text IDs are based on Oasis Line IDs now instead of `GUID`s.
 Line IDs have their own range, but for modding purposes it is best to simply use the same range as GUIDs.
 E.g. matching LineID of a building name with the GUID of the building asset.
 
-=== "117"
+=== ":material-pillar: 117"
     ```xml
     <ModOp Add="/TextExport/Texts[1]">
       <Text>
@@ -87,7 +87,7 @@ E.g. matching LineID of a building name with the GUID of the building asset.
     </Values>
     ```
 
-=== "1800"
+=== ":material-factory: 1800"
     ```xml
     <ModOp Add="/TextExport/Texts[1]">
       <Text>
@@ -164,7 +164,7 @@ There are a few changes to improve readability:
 3. Nested operators like `CompareOperator` are now more compact.
 4. No `ChildCount`s anymore
 
-=== "117"
+=== ":material-pillar: 117"
     ```xml
     <InfoElement Type="Container">
       <VisibilityElement Type="Group">
@@ -177,7 +177,7 @@ There are a few changes to improve readability:
     </InfoElement>
     ```
 
-=== "1800"
+=== ":material-factory: 1800"
     ```xml
     <InfoElement>
       <ElementType>23</ElementType>

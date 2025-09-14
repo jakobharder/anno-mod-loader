@@ -6,7 +6,7 @@ You can group multiple ModOps into one group with `Group`.
 
 This is beneficial for readability and to use a shared `Condition`.
 
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOps>
       <Group>
@@ -25,7 +25,7 @@ This is beneficial for readability and to use a shared `Condition`.
 
 Include works same as `Group` except that it contents come from another XML file.
 
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOps>
       <Include File="feature.include.xml" />
@@ -45,7 +45,7 @@ Start the path with `/` to specify a path relative to the mod folder.
 You can repeat ModOps until a `Condition` doesn't match anymore with setting `MaxRepeat`.
 The default `MaxRepeat=1` behaves like a normal `Group`.
 
-=== "117"
+=== ":material-pillar: 117"
     ```xml
     <Group Condition="@123/List/Item" MaxRepeat="10">
       <!-- ..  -->

@@ -13,12 +13,13 @@ This works in any patch - not only `assets.xml` patches.
 It doesn't matter whether the mod is loaded before or after this mod.
 Use `LoadAfterIds` to ensure it's loaded before your mod.
 
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <Group Condition="#mod-id">
       <!-- Apply ModOps if `mod-id` is active. -->
     <Group>
-
+    ```
+    ```xml
     <Group Condition="!#mod-id">
       <!-- Apply ModOps if `mod-id` is NOT active. -->
     <Group>
@@ -27,13 +28,13 @@ Use `LoadAfterIds` to ensure it's loaded before your mod.
 New in Anno 117: These `#mod-id` expressions are now expanded to `true()` and `false()` to be used within XPath.
 That means you can combine them like XPath expressions with `and` and `or`.
 
-=== "117"
+=== ":material-pillar: 117"
     ```xml
     <Group Condition="#mod-a and not(#mod-b)">
       <!-- ... -->
     </Group>
     ```
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <Group Condition="#mod-a">
       <Group Condition="!#mod-b">
@@ -45,12 +46,13 @@ That means you can combine them like XPath expressions with `and` and `or`.
 
 ## With XPath
 
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <Group Condition="//Values[Standard/GUID='1500010714']">
       <!-- Apply ModOps if asset 1500010714 exists. -->
     </Group>
-
+    ```
+    ```xml
     <Group Condition="!//Values[Standard/GUID='1500010714']">
       <!-- Apply ModOps if 1500010714 does NOT exist. -->
     </Group>
@@ -61,12 +63,13 @@ That means you can combine them like XPath expressions with `and` and `or`.
 Use `@` as a short version of `//Values[Standard/GUID='guid']`.
 This works only at the start of an XPath.
 
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <Group Condition="@1500010714">
       <!-- Apply ModOps if asset 1500010714 exists. -->
     </Group>
-
+    ```
+    ```xml
     <Group Condition="!@1500010714">
       <!-- Apply ModOps if 1500010714 does NOT exist. -->
     </Group>
@@ -76,7 +79,7 @@ This works only at the start of an XPath.
 
 Conditions can be relative to the `GUID` your ModOp is operating on.
 
-=== "117"
+=== ":material-pillar: 117"
     ```xml
     <ModOp GUID="800111"
       Condition="!Property/List[Item/Product='1500010120']"
@@ -86,16 +89,19 @@ Conditions can be relative to the `GUID` your ModOp is operating on.
       </Item>
     </ModOp>
     ```
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
-    <ModOp Type="add" GUID="800111"
+    <ModOp GUID="800111"
       Condition="!/Values/Property/List[Item/Product='1500010120']"
-      Path="/Values/Property/List">
+      Type="add" Path="/Values/Property/List">
       <Item>
         <Product>1500010120</Product>
       </Item>
     </ModOp>
     ```
+
+!!! warning "Be aware of condition path difference"
+    When using short ModOp style also the Condition path skips `/Values/`.
 
 ## Skip
 
@@ -103,11 +109,12 @@ Conditions can be relative to the `GUID` your ModOp is operating on.
 
 The attribute `Skip` can be used with `Group` and `Include` to ignore that operation.
 
-```xml
-<ModOps>
-  <Include File="/feature.include.xml" Skip="1" />
-</ModOps>
-```
+=== ":material-animation-outline: 117 & 1800"
+    ```xml
+    <ModOps>
+      <Include File="/feature.include.xml" Skip="1" />
+    </ModOps>
+    ```
 
 Note: the skip happens when the attribute `Skip` is present.
 It doesn't matter if you write `Skip="1"`, `Skip="True"` or even `Skip="0"` - all of them lead to skipping the include.
@@ -116,7 +123,7 @@ It doesn't matter if you write `Skip="1"`, `Skip="True"` or even `Skip="0"` - al
 
 The following two ModOps will lead to the same result, but have a stark difference.
 
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <!-- negative condition -->
     <ModOp Type="add" GUID="800111"
@@ -144,11 +151,11 @@ It's better to use conditions in many cases, as conditions still allow some warn
 
 Adding a product only once to a list with `AllowNoMatch`:
 
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOp Type="add" GUID="120055"
-          Path="/Values/List[not(Item/Product='1500010102')]"
-          AllowNoMatch="1">
+           Path="/Values/List[not(Item/Product='1500010102')]"
+           AllowNoMatch="1">
       <Item>
         <Product>1500010102</Product>
       </Item>

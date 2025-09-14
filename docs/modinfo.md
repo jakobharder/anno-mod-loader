@@ -124,7 +124,9 @@ Field | Description
 
 Infos used by Visual Studio Code plugin [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools).
 
-=== "Current"
+These don't depend on the game version, but tool version.
+
+=== ":material-animation-outline: Current"
     ```json
     {
       // ..
@@ -135,7 +137,7 @@ Infos used by Visual Studio Code plugin [Anno Modding Tools](https://marketplace
       }
     }
     ```
-=== "Deprecated"
+=== ":material-close-octagon-outline: Deprecated"
     ```json
     {
       // ..

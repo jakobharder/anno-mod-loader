@@ -4,21 +4,28 @@
 
 Replaces the selection.
 
-=== "117 (short)"
+=== ":material-pillar: 117"
+    ```xml
+    <ModOp GUID="123" Replace="Standard/Name">
+      <Name>new name</Name>
+    </ModOp>
+    ```
+
+=== ":material-at: 117"
     ```xml
     <ModOp Replace="@123/Standard/Name">
       <Name>new name</Name>
     </ModOp>
     ```
 
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOp GUID="123" Type="replace" Path="/Values/Standard">
       <Name>new name</Name>
     </ModOp>
     ```
 
-=== "Result"
+=== ":material-xml: Result"
     ```diff
     <Asset>
       <Values>
@@ -34,7 +41,16 @@ Replaces the selection.
 Replace is not limited to single elements.
 Elements containing elements can be replaced as well.
 
-=== "117 (short)"
+=== ":material-pillar: 117"
+    ```xml
+    <ModOp GUID="123" Replace="Standard">
+      <Standard>
+        <GUID>456</GUID>
+        <Description>description</Description>
+      </Standard>
+    </ModOp>
+    ```
+=== ":material-at: 117"
     ```xml
     <ModOp Replace="@123/Standard">
       <Standard>
@@ -43,8 +59,7 @@ Elements containing elements can be replaced as well.
       </Standard>
     </ModOp>
     ```
-
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOp GUID="123" Type="replace" Path="/Values/Standard">
       <Standard>
@@ -54,7 +69,7 @@ Elements containing elements can be replaced as well.
     </ModOp>
     ```
 
-=== "Result"
+=== ":material-xml: Result"
     ```diff
     <Asset>
       <Values>
@@ -69,21 +84,21 @@ Elements containing elements can be replaced as well.
     ```
 
 ??? note "An empty replace is the same as remove."
-    === "Replace (short)"
+    === ":material-at: Replace"
         ```xml
         <ModOp Replace="@123/Cost" />
         ```
 
         Applies to all versions.
 
-    === "Remove (short)"
+    === ":material-at: Remove"
         ```xml
         <ModOp Remove="@123/Cost" />
         ```
 
         Applies to all versions.
 
-    === "Result"
+    === ":material-xml: Result"
         ```diff
         <Asset>
           <Values>
@@ -99,21 +114,25 @@ Elements containing elements can be replaced as well.
 
 Adds the content at the end inside of the selection.
 
-=== "117 (short)"
+=== ":material-pillar: 117"
+    ```xml
+    <ModOp GUID="123" Add="">
+      <Maintenance />
+    </ModOp>
+    ```
+=== ":material-at: 117"
     ```xml
     <ModOp Add="@123">
       <Maintenance />
     </ModOp>
     ```
-
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOp GUID="123" Type="add" Path="/Values">
       <Maintenance />
     </ModOp>
     ```
-
-=== "Result"
+=== ":material-xml: Result"
     ```diff
     <Asset>
       <Values>
@@ -132,7 +151,16 @@ Use [Merge](#merge) or [Conditions](./conditions.md) for that purpose.
 
 Adds the content, or replaces it if it already exists.
 
-=== "117 (short)"
+=== ":material-pillar: 117"
+    ```xml
+    <ModOp GUID="123" Merge="Standard">
+      <Standard>
+        <Name>new name</Name>
+        <Description>desc</Description>
+      </Standard>
+    </ModOp>
+    ```
+=== ":material-at: 117"
     ```xml
     <ModOp Merge="@123/Standard">
       <Standard>
@@ -141,8 +169,7 @@ Adds the content, or replaces it if it already exists.
       </Standard>
     </ModOp>
     ```
-
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOp GUID="123" Type="merge" Path="/Values/Standard">
       <Standard>
@@ -151,8 +178,7 @@ Adds the content, or replaces it if it already exists.
       </Standard>
     </ModOp>
     ```
-
-=== "Result"
+=== ":material-xml: Result"
     ```diff
     <Asset>
       <Values>
@@ -169,7 +195,7 @@ Adds the content, or replaces it if it already exists.
 ??? warning "You may leave out the top-level element (here `Standard`) in most situations"
     The following is shorter and has to the same result.
 
-    === "117 (short)"
+    === ":material-at: 117"
         ```xml
         <ModOp Merge="@123/Standard">
           <Name>new name</Name>
@@ -177,7 +203,7 @@ Adds the content, or replaces it if it already exists.
         </ModOp>
         ```
 
-    === "117 & 1800"
+    === ":material-animation-outline: 117 & 1800"
         ```xml
         <ModOp GUID="123" Type="merge" Path="/Values/Standard">
           <Name>new name</Name>
@@ -185,7 +211,7 @@ Adds the content, or replaces it if it already exists.
         </ModOp>
         ```
 
-    === "Result"
+    === ":material-xml: Result"
         ```diff
         <Asset>
           <Values>
@@ -209,8 +235,7 @@ Adds the content, or replaces it if it already exists.
             <Text>old text</Text>
           </Text>
         ```
-
-    === "117"
+    === ":material-at: 117"
         ```xml
         <ModOp Merge="@123/Text">
           <Text>
@@ -218,8 +243,15 @@ Adds the content, or replaces it if it already exists.
           </Text>
         </ModOp>
         ```
-
-    === "Result"
+    === ":material-animation-outline: 117 & 1800"
+        ```xml
+        <ModOp GUID="123" Type="Merge" Path="/Values/Text">
+          <Text>
+            <Text>new text</Text>
+          </Text>
+        </ModOp>
+        ```
+    === ":material-xml: Result"
           ```diff
           <Text>
             <LineId>123</LineId>
@@ -232,21 +264,25 @@ Adds the content, or replaces it if it already exists.
 
 Adds the content after the selection.
 
-=== "117 (short)"
+=== ":material-pillar: 117"
+    ```xml
+    <ModOp GUID="123" Append="Standard">
+      <Maintenance />
+    </ModOp>
+    ```
+=== ":material-at: 117"
     ```xml
     <ModOp Append="@123/Standard">
       <Maintenance />
     </ModOp>
     ```
-
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOp GUID="123" Type="addNextSibling" Path="/Values/Standard">
       <Maintenance />
     </ModOp>
     ```
-
-=== "Result"
+=== ":material-xml: Result"
     ```diff
     <Asset>
       <Values>
@@ -261,7 +297,16 @@ Adds the content after the selection.
 
 A common situation is when you want to insert an item at a specific position.
 
-=== "117 (short)"
+=== ":material-pillar: 117"
+    ```xml
+    <ModOp GUID="123"
+           Append="ConstructionCategory/BuildingList/Item[Building='1000178']">
+      <Item>
+        <Building>123</Building>
+      </Item>
+    </ModOp>
+    ```
+=== ":material-at: 117"
     ```xml
     <ModOp Append="@123/ConstructionCategory/BuildingList/Item[Building='1000178']">
       <Item>
@@ -269,8 +314,7 @@ A common situation is when you want to insert an item at a specific position.
       </Item>
     </ModOp>
     ```
-
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOp GUID="123" Type="addNextSibling"
            Path="/Values/ConstructionCategory/BuildingList/Item[Building='1000178']">
@@ -279,8 +323,7 @@ A common situation is when you want to insert an item at a specific position.
       </Item>
     </ModOp>
     ```
-
-=== "Result"
+=== ":material-xml: Result"
     ```diff
     <Asset>
       <Values>
@@ -308,21 +351,25 @@ A common situation is when you want to insert an item at a specific position.
 
 Prepend works the same as `Append` except that it adds the content before the selection.
 
-=== "117 (short)"
+=== ":material-pillar: 117"
+    ```xml
+    <ModOp GUID="123" Prepend="Standard">
+      <Maintenance />
+    </ModOp>
+    ```
+=== ":material-at: 117"
     ```xml
     <ModOp Prepend="@123/Standard">
       <Maintenance />
     </ModOp>
     ```
-
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOp GUID="123" Type="addPreviousSibling" Path="/Values/Standard">
       <Maintenance />
     </ModOp>
     ```
-
-=== "Result"
+=== ":material-xml: Result"
     ```diff
     <Asset>
       <Values>
@@ -339,17 +386,19 @@ Prepend works the same as `Append` except that it adds the content before the se
 
 Removes the selected elements.
 
-=== "117 (short)"
+=== ":material-pillar: 117"
+    ```xml
+    <ModOp GUID="123" Remove="Cost" />
+    ```
+=== ":material-at: 117"
     ```xml
     <ModOp Remove="@123/Cost" />
     ```
-
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOp GUID="123" Type="remove" Path="/Values/Cost" />
     ```
-
-=== "Result"
+=== ":material-xml: Result"
     ```diff
     <Asset>
       <Values>

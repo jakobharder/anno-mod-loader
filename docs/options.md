@@ -2,16 +2,16 @@
 
 Options are comparable to iModYourAnno Tweaks.
 
-Options can be defined in an external `options.json` file.
+Options can be defined in an external `options.jsonc` file.
 
 These options are accessible as `$mod-id.option-name` in XPath.
 
 ## Options file
 
-The `options.json` file is read from the `mods/` folder with the following format:
+The `options.jsonc` file is read from the `mods/` folder with the following format:
 
-=== "117"
-    ```json
+=== ":material-pillar: 117"
+    ```json title="options.jsonc"
     {
       "mod-id": {
         "range": "10",
@@ -24,8 +24,8 @@ The `options.json` file is read from the `mods/` folder with the following forma
 
 The `modinfo.json` file contains defaults:
 
-=== "117"
-    ```json
+=== ":material-pillar: 117"
+    ```json title="modinfo.json"
     {
       // ..
       "options": {
@@ -44,41 +44,122 @@ The `modinfo.json` file contains defaults:
 
 ## Use as Condition
 
-You can leave out `mod-id` if the variable comes from the same mod shortening the path to `$option-name`.
+Option values can be used in `Condition` XPath.
 
-=== "117"
-    ```xml
+=== ":material-at: 117"
+    ```xml hl_lines="2"
     <ModOps>
-      <ModOp Condition="$use-influence"
-            Replace="@123/Costs/Influence" >
+      <ModOp Condition="$mod-id.use-influence"
+             Merge="@123/Costs">
         <Influence>3</Influence>
-      </ModOp>
-      <ModOp Condition="$other-mod.range &lt; 20"
-            Merge="@123/Service/PublicServiceRange">
-        <PublicServiceRange>20</PublicServiceRange>
       </ModOp>
     </ModOps>
     ```
-
-!!! info "`<>` are not valid characters in attributes. Use `&lt;` for `<` and `&gt;` for `>` instead."
+=== ":material-cog-outline: Options"
+    ```json hl_lines="3"
+    {
+      "mod-id": {
+        "useInfluence": true
+      }
+    }
+    ```
+=== ":material-xml: Result"
+    ```diff hl_lines="6"
+      <Values>
+        <Standard>
+          <GUID>123</GUID>
+        </Standard>
+        <Costs>
+    +     <Influence>3</Influence>
+        </Costs>
+      </Values>
+    ```
 
 ## Use As Value
 
-Use options directly as values using `ModValue Insert`.
+Option values can be used in `<ModValue Insert>` as values to insert.
 
-=== "117"
-    ```xml
+=== ":material-at: 117"
+    ```xml hl_lines="2"
     <ModOp Merge="@123">
       <PublicServiceRange><ModValue Insert="$mod-id.range"/></PublicServiceRange>
     </ModOp>
     ```
+=== ":material-cog-outline: Options"
+    ```json hl_lines="3"
+    {
+      "mod-id": {
+        "range": "10"
+      }
+    }
+    ```
+=== ":material-xml: Result"
+    ```diff hl_lines="5 6"
+      <Values>
+        <Standard>
+          <GUID>123</GUID>
+        </Standard>
+    -   <PublicServiceRange>20</PublicServiceRange>
+    +   <PublicServiceRange>10</PublicServiceRange>
+      </Values>
+    ```
 
+## Combined Example
+
+This example uses the option value to compare in a condition, and only sets it when higher.
+
+Also note that `mod-id` can be skipped if the variable comes from the same mod shortening the path to `$option-name`.
+
+=== ":material-at: 117"
+    ```xml
+    <ModOps>
+      <ModOp GUID="123" Merge="Service/RangeOne"
+             Condition="Service/RangeOne &lt; $range">
+        <RangeOne><ModValue Insert="$range"/></RangeOne>
+      </ModOp>
+      <ModOp GUID="123" Merge="Service/RangeTwo"
+             Condition="Service/RangeTwo &lt; $range">
+        <RangeTwo><ModValue Insert="$range"/></RangeTwo>
+      </ModOp>
+    </ModOps>
+    ```
+=== ":material-cog-outline: Options"
+    ```json
+    {
+      "mod-id": {
+        "range": "10"
+      }
+    }
+    ```
+=== ":material-file-code-outline: Input"
+    ```xml hl_lines="5 6"
+      <Values>
+        <Standard>
+          <GUID>123</GUID>
+        </Standard>
+        <RangeOne>30</RangeOne>
+        <RangeTwo>5</RangeTwo>
+      </Values>
+    ```
+=== ":material-xml: Result"
+    ```diff hl_lines="5 6 7"
+      <Values>
+        <Standard>
+          <GUID>123</GUID>
+        </Standard>
+        <RangeOne>30</RangeOne>
+    -   <RangeTwo>5</RangeTwo>
+    +   <RangeTwo>10</RangeTwo>
+      </Values>
+    ```
+
+!!! info "`<>` are not valid characters in attributes. Use `&lt;` for `<` and `&gt;` for `>` instead."
 
 ## Additional Modinfos
 
 Specify user customizable options of a mod (like iModYourAnno tweaks) in `modinfo.json`:
 
-=== "117"
+=== ":material-pillar: 117"
     ```json
     {
       // ..

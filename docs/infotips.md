@@ -4,13 +4,19 @@ You can patch `data/infotips/export.bin` by adding an `export.bin.xml` patch fil
 
 ## Select InfoTip
 
-=== "117"
+=== ":material-pillar: 117"
+    ```xml
+    <ModOp GUID="500934" Add="">
+      <!-- .. -->
+    </ModOp>
+    ```
+=== ":material-at: 117"
     ```xml
     <ModOp Add="@500934">
       <!-- .. -->
     </ModOp>
     ```
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOp Type="add" Path="//InfoTipData[Guid='500934']">
       <!-- .. -->
@@ -23,7 +29,7 @@ The structure of the InfoTips is different depending on the game version.
 
 Anno 117 uses attributes to make InfoElements and VisibilityElements much more compact and readable.
 
-=== "117"
+=== ":material-pillar: 117"
     ```xml
     <InfoElement Type="Container">
       <VisibilityElement Type="Group">
@@ -42,7 +48,7 @@ Anno 117 uses attributes to make InfoElements and VisibilityElements much more c
 
     !!! info "Reminder: Texts use OasisIDs now (`TextId`) instead of GUIDs (`TextGUID`)"
 
-=== "1800"
+=== ":material-factory: 1800"
     ```xml
     <InfoElement>
       <ElementType>23</ElementType>

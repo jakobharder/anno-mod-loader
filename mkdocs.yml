@@ -14,7 +14,7 @@ nav:
       - modops/index.md
       - Basic Types: modops/basics.md
       - Merge: modops/merge.md
-      - Grouping: modops/groups.md
+      - Grouping: modops/grouping.md
       - Conditions: modops/conditions.md
       - Examples: modops/examples.md
     - Modinfo: modinfo.md

@@ -17,7 +17,7 @@ ModOps can be shortened with `Merge=<XPath>` instead of the old long form `Type=
 
 When using `GUID` lookup with the short style skips `/Values` like the previously introduced `@GUID` notation.
 
-=== "Short"
+=== ":material-pillar: Short"
     ```xml
     <ModOp GUID="1010372" Merge="Building">
       <AllowChangeVariation>1</AllowChangeVariation>
@@ -32,7 +32,7 @@ When using `GUID` lookup with the short style skips `/Values` like the previousl
     </ModOp>
     ```
 
-=== "Legacy"
+=== ":material-animation-outline: Legacy"
     ```xml
     <ModOp Type="merge" GUID="1010372" Path="/Values/Building">
       <AllowChangeVariation>1</AllowChangeVariation>
@@ -66,7 +66,7 @@ Short | Legacy | Comment
 The fastest way to add assets is to directly drop them into your file without using a `ModOp` at all.
 `BaseAssetGUID` order is automatically handled.
 
-=== "117"
+=== ":material-pillar: 117"
     ```xml
     <ModOps>
       <Asset>
@@ -80,7 +80,7 @@ The fastest way to add assets is to directly drop them into your file without us
     </ModOps>
     ```
 
-=== "1800 ⚠️"
+=== ":material-animation-outline: 1800 ⚠️"
     ```xml
     <ModOps>
       <ModOp Type="addNextSibling" GUID="100780">
@@ -104,7 +104,7 @@ It will select `Values/<Property>/` of all assets containing that property.
 
 Note: this will not select assets, that have the property in `templates.xml` but not in `assets.xml` or only in their base asset.
 
-=== "117 (short)"
+=== ":material-pillar: 117"
     ```xml
     <ModOp Property="ModuleOwner" Merge=".[FarmType='PlantFarm']">
       <ModuleOwner>
@@ -112,7 +112,7 @@ Note: this will not select assets, that have the property in `templates.xml` but
       </ModuleOwner>
     </ModOp>
     ```
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOp Type="merge" Path="//ModuleOwner/[FarmType='PlantFarm']">
       <ModuleOwner>
@@ -127,15 +127,15 @@ Note: this will not select assets, that have the property in `templates.xml` but
 
 You can now use `GUID` and `@` for easier lookup.
 
-=== "@ (short)"
+=== ":material-pillar: 117 GUID"
+    ```xml
+    <ModOp GUID="3762" Remove="InfoElement[1]" />
+    ```
+=== ":material-at: 117 At"
     ```xml
     <ModOp Remove="@3762/InfoElement[1]" />
     ```
-=== "GUID (short)"
-    ```xml
-    <ModOp GUID="3762" Remove="/InfoElement[1]" />
-    ```
-=== "XPath (legacy)"
+=== ":material-animation-outline: XPath"
     ```xml
     <ModOp Type="remove" Path="//InfoTipData[Guid='3762']/InfoElement[1]" />
     ```
@@ -147,7 +147,7 @@ You can now use `GUID` and `@` for easier lookup.
 You can repeat ModOps until a `Condition` doesn't match anymore with setting `MaxRepeat`.
 The default `MaxRepeat=1` behaves like a normal `Group`.
 
-=== "117"
+=== ":material-pillar: 117"
     ```xml
     <Group Condition="@123/List/Item" MaxRepeat="10">
       <!--  -->
@@ -164,7 +164,7 @@ XPath 1.0 functions like `count()` and `number()` are fully supported now.
 
 Use `number()` to add to a number instead of replacing it.
 
-=== "117 (short)"
+=== ":material-pillar: 117"
     ```xml
     <ModOp GUID="1010343"
       Replace="Residence7/ResidentMax"
@@ -173,7 +173,7 @@ Use `number()` to add to a number instead of replacing it.
     </ModOp>
     ```
 
-=== "117 & 1800 ⚠️"
+=== ":material-animation-outline: 117 & 1800 ⚠️"
     ```xml
     <!-- number table -->
     <ModOp Type="add" GUID="1010343" Path="/Values">
@@ -205,7 +205,7 @@ Conditions allowed to check if a another mod is loaded.
 These `#mod-id` expressions are now expanded to `true()` and `false()` to be used within XPath.
 That means you can combine them like XPath expressions with `and` and `or`.
 
-=== "117"
+=== ":material-pillar: 117"
     ```xml
     <ModOps>
       <Group Condition="#mod-a and not(#mod-b)">
@@ -223,22 +223,35 @@ Inline ModOps are operators you can use inside the content of a `merge` `ModOp`.
 Use `<ModValue Merge="Your;Flags" />` to insert one or more flags if not already present, instead of overwriting the existing flags value.
 Similarily use `Remove` to remove flags.
 
-=== "117 (short)"
+=== ":material-pillar: 117"
+    ```xml
+    <ModOp GUID="114365" Merge="Product">
+      <AssociatedRegion><ModValue Merge="Moderate" /></AssociatedRegion>
+    </ModOp>
+    ```
+    ```xml
+    <ModOp GUID="114365" Merge="Product">
+      <AssociatedRegion><ModValue Remove="Moderate" /></AssociatedRegion>
+    </ModOp>
+    ```
+=== ":material-at: 117"
     ```xml
     <ModOp Merge="@114365/Product">
       <AssociatedRegion><ModValue Merge="Moderate" /></AssociatedRegion>
     </ModOp>
+    ```
+    ```xml
     <ModOp Merge="@114365/Product">
       <AssociatedRegion><ModValue Remove="Moderate" /></AssociatedRegion>
     </ModOp>
     ```
-
-=== "1800 ⚠️"
+=== ":material-animation-outline: 117 & 1800 ⚠️"
     ```xml
     <ModOp Type="add" GUID="114365"
       Condition="!/Values/Product/AssociatedRegion[contains(text(), 'Moderate')]"
       Path="/Values/Product/AssociatedRegion">;Moderate</ModOp>
-
+    ```
+    ```xml
     <!-- a generic remove was not possible -->
     ```
 
@@ -246,7 +259,7 @@ Similarily use `Remove` to remove flags.
 
 Use `<ModValue Insert="<local path>" />` to copy data from a local path without specifying `GUID`.
 
-=== "117 (short)"
+=== ":material-pillar: 117"
     ```xml
     <ModOp Merge="@123">
       <Inline><ModValue Insert="../Standard/GUID/text()" /></Inline>
@@ -256,7 +269,7 @@ Use `<ModValue Insert="<local path>" />` to copy data from a local path without 
     </ModOp>
     ```
 
-=== "1800 ⚠️"
+=== ":material-animation-outline: 117 & 1800 ⚠️"
     Previously, copying local content was only possible in combination with a specific `GUID`.
 
     ```xml
@@ -267,7 +280,7 @@ Use `<ModValue Insert="<local path>" />` to copy data from a local path without 
 
 ### Insert Calculations - `ModValue`
 
-=== "117 (short)"
+=== ":material-pillar: 117"
     ```xml
     <!-- addition -->
     <ModOp Property="Maintenance" Merge="Workforce">
@@ -291,7 +304,7 @@ The item is merged with the first item that matches the attribute in `Merge`.
 
 In the rare even you want to change the attribute itself in the merge process use `<ModItem Merge="Attribute='Value'">` to select the item.
 
-=== "117 (short)"
+=== ":material-pillar: 117"
     ```xml hl_lines="2"
     <ModOp GUID="114365" Merge="Product/ProductionRegions">
       <ModItem Merge="RegionType">
@@ -300,7 +313,7 @@ In the rare even you want to change the attribute itself in the merge process us
     </ModOp>
     ```
 
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOp Type="add" GUID="114365"
       Condition="!/Values/Product/ProductionRegions[Item/RegionType='Moderate']"
@@ -318,16 +331,16 @@ You can change that by defining a `Append` or `Prepend` path.
 
 The default is the same as `Append='last()'`.
 
-=== "117 (short)"
+=== ":material-pillar: 117"
     ```xml hl_lines="2"
-    <ModOp Merge="@502017/ProductList/List">
+    <ModOp GUID="502017" Merge="ProductList/List">
       <ModItem Merge="Product" Append="Product='1010200'">
         <Product>1500010836</Product>
       </ModItem>
     </ModOp>
     ```
 
-=== "117 & 1800"
+=== ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOp Type="addNextSibling" GUID="502017"
       Condition="!~/Values/ProductList/List/Item[Product='1500010836']"
@@ -342,7 +355,7 @@ The default is the same as `Append='last()'`.
 
 With `ModValue` in combination `ModItem` + `ModValueContent` you can construct lists with automatic duplicate handling.
 
-=== "117"
+=== ":material-pillar: 117"
     ```xml hl_lines="5 6 7"
     <!-- .. -->
     <ItemEffectTargetPool>
@@ -362,7 +375,7 @@ Use `SkipParent` if you need to exclude the top-level parent, because you have i
 
 `SkipParent` also works with `ModOpContent`.
 
-=== "117"
+=== ":material-pillar: 117"
     ```xml hl_lines="6"
     <!-- .. -->
     <ItemEffectTargetPool>
@@ -380,12 +393,13 @@ Use `SkipParent` if you need to exclude the top-level parent, because you have i
 
 ### Scripts
 
-**Experimental**: This is the first release with notable script features.
-Expect changes with the next versions.
+!!! warning "Experimental"
+    This is the first release with notable script features.
+    Expect changes with the next versions.
 
 Define scripts and commands in `modinfo.json`:
 
-=== "117"
+=== ":material-pillar: 117"
     ```json
     {
       // ..
@@ -426,7 +440,7 @@ return SomeScript;
 The format for dependencies has changed a bit.
 All entries are now grouped under `Dependencies`.
 
-=== "117"
+=== ":material-pillar: 117"
     ```json
     {
       // ..
@@ -439,7 +453,7 @@ All entries are now grouped under `Dependencies`.
       }
     }
     ```
-=== "1800"
+=== ":material-factory: 1800"
     ```json
     {
       // ..
