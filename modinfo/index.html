@@ -14,7 +14,7 @@
         <link rel="prev" href="../modops/examples/">
       
       
-        <link rel="next" href="../options/">
+        <link rel="next" href="../loading-order/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -302,6 +302,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -349,6 +353,8 @@
       
         
           
+        
+      
         
       
         
@@ -502,6 +508,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../modops/content/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Content
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../modops/examples/" class="md-nav__link">
         
   
@@ -583,9 +612,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#location" class="md-nav__link">
+  <a href="#files" class="md-nav__link">
     <span class="md-ellipsis">
-      Location
+      Files
     </span>
   </a>
   
@@ -649,6 +678,52 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../loading-order/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Loading Order
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../submods/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sub-Mods
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -811,9 +886,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#location" class="md-nav__link">
+  <a href="#files" class="md-nav__link">
     <span class="md-ellipsis">
-      Location
+      Files
     </span>
   </a>
   
@@ -898,15 +973,45 @@
 <p>Ensure <a href="vscode://settings/anno.workspaceSchemas">anno.workspaceSchemas</a> is enabled for auto-completion and tooltips.</p>
 <p>Press <span class="keys"><kbd class="key-f1">F1</kbd></span> and run <code>Anno: Create Mod from Template</code> to generate a template.</p>
 </details>
-<h2 id="location">Location<a class="headerlink" href="#location" title="Permanent link">&para;</a></h2>
-<p>Place the <code>modinfo.json</code> in the top-level folder of your mod.</p>
+<h2 id="files">Files<a class="headerlink" href="#files" title="Permanent link">&para;</a></h2>
+<p>A <code>modinfo.json</code> file is required in the top-level folder of your mod.
+Description and images are optional.</p>
 <div class="admonition warning">
 <p class="admonition-title">Anno 117 and Anno 1800 (mod.io only) won't load mods without a modinfo file.</p>
 </div>
 <div class="highlight"><span class="filename">mod folder structure</span><pre><span></span><code>├─ data/
 │  └─ **/*
-<span class="hll">└─ modinfo.json
+<span class="hll">├─ banner.jpg
+</span><span class="hll">├─ logo.jpg
+</span><span class="hll">├─ modinfo.json
+</span><span class="hll">└─ README.md
 </span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>banner.jpg</code></td>
+<td>Large 16:9 image for offline mod managers.</td>
+</tr>
+<tr>
+<td><code>logo.jpg</code></td>
+<td>Small 16:9 image. Used in Anno 1800 mod activation list.</td>
+</tr>
+<tr>
+<td><code>modinfo.json</code></td>
+<td>ModID, version, dependencies and other infos.</td>
+</tr>
+<tr>
+<td><code>README.md</code></td>
+<td>Mod description.</td>
+</tr>
+</tbody>
+</table>
 <details class="tip">
 <summary>JSON with comments is supported in Anno 117</summary>
 <p>You may also name the file <code>modinfo.jsonc</code> so that your editor of choice recognizes the JSON with comments format.</p>
@@ -1039,7 +1144,7 @@
 <tbody>
 <tr>
 <td><code>Require</code></td>
-<td>List mods and DLCs that are required to use this mod.</td>
+<td>List mods and DLCs that are required to use this mod.<br/>Missing dependencies result in log warning.</td>
 </tr>
 <tr>
 <td><code>Optional</code></td>
@@ -1055,7 +1160,7 @@
 </tr>
 <tr>
 <td><code>Incompatible</code></td>
-<td>List incompatible mods. A warning will be printed in the mod-loader.log</td>
+<td>List incompatible mods.<br/>Active incompatible mods result in log warning.</td>
 </tr>
 </tbody>
 </table>
@@ -1080,7 +1185,7 @@
 <tbody>
 <tr>
 <td><code>ModDependencies</code></td>
-<td>List mods that are required to use this mod.</td>
+<td>List mods that are required to use this mod.<br/>Missing dependencies result in log warning.</td>
 </tr>
 <tr>
 <td><code>OptionalDependencies</code></td>
@@ -1096,7 +1201,7 @@
 </tr>
 <tr>
 <td><code>IncompatibleIds</code></td>
-<td>List incompatible mods. A warning will be printed in the mod-loader.log</td>
+<td>List incompatible mods.<br/>Active incompatible mods result in log warning.</td>
 </tr>
 </tbody>
 </table>
@@ -1118,18 +1223,6 @@
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="c1">// ..</span>
-<span class="w">  </span><span class="nt">&quot;OptionalDependencies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-<span class="w">  </span><span class="nt">&quot;out&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;${annoMods}/${modName}&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;bundle&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
-<span class="p">}</span>
-</code></pre></div>
-</div>
-</div>
-</div>
 <table>
 <thead>
 <tr>
@@ -1152,6 +1245,40 @@
 </tr>
 </tbody>
 </table>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="c1">// ..</span>
+<span class="w">  </span><span class="nt">&quot;OptionalDependencies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">  </span><span class="nt">&quot;out&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;${annoMods}/${modName}&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;bundle&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="p">}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OptionalDependencies</code></td>
+<td>List of mods that should be loaded for patch error analysis and GUID references.</td>
+</tr>
+<tr>
+<td><code>out</code></td>
+<td>Target path for mod deployment.</td>
+</tr>
+<tr>
+<td><code>bundle</code></td>
+<td>List of mods that should be included as a sub mod.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 <details class="tip">
 <summary>Learn more about deploying mods.</summary>
 <p>The Visual Studio Code <a href="https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools">modding tools</a> can deploy your mods with automatic DDS generation, dependency downloads, etc.</p>
@@ -1215,13 +1342,13 @@
         
         
           
-          <a href="../options/" class="md-footer__link md-footer__link--next" aria-label="Next: Options">
+          <a href="../loading-order/" class="md-footer__link md-footer__link--next" aria-label="Next: Loading Order">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Options
+                Loading Order
               </div>
             </div>
             <div class="md-footer__button md-icon">
