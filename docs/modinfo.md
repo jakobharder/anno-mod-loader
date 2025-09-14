@@ -13,6 +13,8 @@ Check the full [modinfo.json specification](https://github.com/anno-mods/Modinfo
 
 ## Files
 
+{{v0()}}
+
 A `modinfo.json` file is required in the top-level folder of your mod.
 Description and images are optional.
 
@@ -39,6 +41,8 @@ File | Description
 
 ## Mandatory Fields
 
+{{v0()}}
+
 Mandatory fields are used by the modloader to correctly identify mods. Missing or wrong entries result in errors in the `mod-loader.log`.
 
 !!! warning "Anno 117 won't load mods without the correct game version."
@@ -60,19 +64,20 @@ Field | Description
 
 ## Game Setup
 
-=== ":material-pillar: 117"
-    ```json title="modinfo.json"
-    {
-      // ..
-      "Difficulty": "harder",
-      "GameSetup": {
-        "RequiresNewGame": false,
-        "SafeToRemove": false,
-        "Multiplayer": true,
-        "Campaign": true
-      }
-    }
-    ```
+{{v8()}}
+
+```json title="modinfo.json"
+{
+  // ..
+  "Difficulty": "harder",
+  "GameSetup": {
+    "RequiresNewGame": false,
+    "SafeToRemove": false,
+    "Multiplayer": true,
+    "Campaign": true
+  }
+}
+```
 
 |Name|Value|Effect|
 |---|---|---|
@@ -88,6 +93,8 @@ Field | Description
 [^difficulty]: The mod loader prints an error if the entry is missing or wrong.
 
 ## Dependencies
+
+{{v0()}}
 
 === ":material-pillar: 117"
     ```json
@@ -132,6 +139,8 @@ Field | Description
     |`IncompatibleIds`|List incompatible mods.<br/>Active incompatible mods result in log warning.
 
 ## Development Info
+
+{{v0()}}
 
 Infos used by Visual Studio Code plugin [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools).
 

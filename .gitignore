@@ -46,3 +46,5 @@
 /.ccls-cache/
 /.cache/
 compile_commands.json
+
+/docs/__pycache__

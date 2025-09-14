@@ -3,13 +3,15 @@ site_url: https://jakobharder.github.io/anno-mod-loader
 
 plugins:
   - search
+  - macros:
+      module_name: docs/macros
 
 nav:
   - Overview: index.md
   #- "Changes in 117":
   - Important Changes: changes-117.md
   - New Features: new-features-117.md
-  - Features:
+  - Create Mods:
     - Modinfo: modinfo.md
     - Structure:
       - Loading Order: structure/loading-order.md
@@ -24,12 +26,13 @@ nav:
       - Conditions: modops/conditions.md
       - Content: modops/content.md
       - Examples: modops/examples.md
-    - Profiles: profiles.md
     - Options: options.md
     - InfoTips: infotips.md
     - "CFG, FC Patches": cfg-fc-patches.md
-  - XPath:
-    - Cheat Sheet: https://devhints.io/xpath
+  - Use Mods:
+    - Mod Profiles: profiles.md
+  - External:
+    - XPath Cheat Sheet: https://devhints.io/xpath
 
 theme:
   name: material
@@ -45,6 +48,7 @@ theme:
   features:
     - navigation.sections
     - content.code.copy
+    - content.tooltips
     - navigation.footer
     - header.autohide
     - navigation.indexes
@@ -69,3 +73,6 @@ markdown_extensions:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.keys
+
+extra_css:
+  - stylesheets/extra.css

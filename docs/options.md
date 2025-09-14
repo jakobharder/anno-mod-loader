@@ -1,4 +1,4 @@
-# New Feature: Options in Anno 117
+# Options in Anno 117
 
 Options are comparable to iModYourAnno Tweaks.
 
@@ -7,6 +7,8 @@ Options can be defined in an external `options.jsonc` file.
 These options are accessible as `$mod-id.option-name` in XPath.
 
 ## Options file
+
+{{v8()}}
 
 The `options.jsonc` file is read from the `mods/` folder with the following format:
 
@@ -44,6 +46,8 @@ The `modinfo.json` file contains defaults:
 
 ## Use as Condition
 
+{{v8()}}
+
 Option values can be used in `Condition` XPath.
 
 === ":material-at: 117"
@@ -77,6 +81,8 @@ Option values can be used in `Condition` XPath.
 
 ## Use As Value
 
+{{v8()}}
+
 Option values can be used in `<ModValue Insert>` as values to insert.
 
 === ":material-at: 117"
@@ -105,6 +111,8 @@ Option values can be used in `<ModValue Insert>` as values to insert.
     ```
 
 ## Combined Example
+
+{{v8()}}
 
 This example uses the option value to compare in a condition, and only sets it when higher.
 
@@ -156,6 +164,8 @@ Also note that `mod-id` can be skipped if the variable comes from the same mod s
 !!! info "`<>` are not valid characters in attributes. Use `&lt;` for `<` and `&gt;` for `>` instead."
 
 ## Additional Modinfos
+
+{{v8()}}
 
 Specify user customizable options of a mod (like iModYourAnno tweaks) in `modinfo.json`:
 
