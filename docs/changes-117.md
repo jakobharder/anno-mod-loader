@@ -54,7 +54,7 @@
 - [ModID as XPath Variable](./modops/control.md#modid-condition) - Do things like `#mod-a and not(#mod-b)`.
 - [Inline ModOps](./modops/content.md) - Merge enums, insert local content and other `Content` improvements.
 - [ModItem](./modops/lists.md) - More control over merging items and lists with items.
-- [Lua Scripts](./new-features-117.md#scripts) - Script support
+- [Lua Scripts](./lua-scripts.md) - Script support
 
 ## Extra Notes
 

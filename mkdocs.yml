@@ -26,6 +26,7 @@ nav:
     - Options: options.md
     - InfoTips: infotips.md
     - "CFG, FC Patches": cfg-fc-patches.md
+    - Lua Scripts: lua-scripts.md
   - Use Mods:
     - Mod Profiles: profiles.md
   - External:
@@ -71,7 +72,7 @@ markdown_extensions:
   - tables
   - toc:
       permalink: true
- 
+
 extra_css:
   - stylesheets/extra.css
 
