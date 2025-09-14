@@ -34,11 +34,11 @@
 
     Overview of the basic ModOp types.
 
--   [__Merge__](./modops/merge.md)
+-   [__Item Lists__](./modops/lists.md)
 
     ---
 
-    Learn advanced techniques for `merge` ModOps.
+    Learn advanced techniques to handle `Item` lists.
 
 -   [__Grouping__](./modops/grouping.md)
 

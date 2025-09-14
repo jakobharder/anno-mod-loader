@@ -83,7 +83,7 @@ Elements containing elements can be replaced as well.
     </Asset>
     ```
 
-??? note "An empty replace is the same as remove."
+??? info "An empty `Replace` is the same as `Remove`."
     === ":material-at: Replace"
         ```xml
         <ModOp Replace="@123/Cost" />
@@ -109,6 +109,11 @@ Elements containing elements can be replaced as well.
           </Values>
         </Asset>
         ```
+
+??? warning "Avoid replacing larger structures"
+    Replace removes all content in the selection and replaces it.
+
+    That often leads to unforeseen issues after game updates or in combination with other mods.
 
 ## Add
 
@@ -144,8 +149,10 @@ Adds the content at the end inside of the selection.
     </Asset>
     ```
 
-`Add` does not check if an element already exists.
-Use [Merge](#merge) or [Conditions](./conditions.md) for that purpose.
+??? tip "`Add` does not check if an element already exists."
+    Use [Conditions](./conditions.md) to skip an `Add` if the node already exists.
+
+    Use [Merge](#merge) to update if the node already exists, or add otherwise.
 
 ## Merge
 
@@ -192,8 +199,69 @@ Adds the content, or replaces it if it already exists.
     </Asset>
     ```
 
-??? warning "You may leave out the top-level element (here `Standard`) in most situations"
-    The following is shorter and has to the same result.
+??? info "`Merge` is order independent."
+
+    The order of nodes do not matter for successful merges.
+
+    === ":material-pillar: 117"
+        ```xml
+        <ModOp GUID="123" Merge="Building">
+          <AllowChangeDirection>1</AllowChangeDirection>
+          <AllowChangeVariation>1</AllowChangeVariation>
+        </ModOp>
+        ```
+    === ":material-animation-outline: 117 & 1800"
+        ```xml
+        <ModOp GUID="123" Type="merge" Path="/Values/Building">
+          <AllowChangeDirection>1</AllowChangeDirection>
+          <AllowChangeVariation>1</AllowChangeVariation>
+        </ModOp>
+        ```
+    === ":material-xml: Result"
+        ```diff
+          <Values>
+            <Standard>
+              <GUID>123</GUID>
+            </Standard>
+            <Building>
+        -     <AllowChangeVariation>0</AllowChangeVariation>
+        -     <AllowChangeDirection>0</AllowChangeDirection>
+        +     <AllowChangeVariation>1</AllowChangeVariation>
+        +     <AllowChangeDirection>1</AllowChangeDirection>
+            </Building>
+          </Values>
+        ```
+
+??? info "`Merge` does not remove nodes."
+
+    === ":material-pillar: 117"
+        ```xml
+        <ModOp GUID="123" Merge="">
+          <Building />
+        </ModOp>
+        ```
+    === ":material-animation-outline: 117 & 1800"
+        ```xml
+        <ModOp GUID="123" Type="merge" Path="/Values">
+          <Building />
+        </ModOp>
+        ```
+    === ":material-xml: Result"
+        ```diff hl_lines="5-7"
+        <Values>
+          <Standard>
+            <GUID>123</GUID>
+          </Standard>
+          <Building>
+            <AllowChangeVariation>1</AllowChangeVariation>
+          </Building>
+        </Values>
+        ```
+
+    Use `replace` or `remove` instead if you want to remove content.
+
+??? tip "Top-level content element can be skipped in most situations."
+    The following is shorter by skipping `Standard` and has to the same result.
 
     === ":material-at: 117"
         ```xml
@@ -228,13 +296,6 @@ Adds the content, or replaces it if it already exists.
     Only when the selected element has a child with the same name, you must use the long way.
     In doubt, always use the long way.
 
-    === "Problem"
-        ```xml hl_lines="1 3"
-          <Text>
-            <LineId>123</LineId>
-            <Text>old text</Text>
-          </Text>
-        ```
     === ":material-at: 117"
         ```xml
         <ModOp Merge="@123/Text">
@@ -251,14 +312,21 @@ Adds the content, or replaces it if it already exists.
           </Text>
         </ModOp>
         ```
-    === ":material-xml: Result"
-          ```diff
+    === ":material-file-code-outline: Input"
+        ```xml hl_lines="1 3"
           <Text>
             <LineId>123</LineId>
-          -   <Text>old text</Text>
-          +   <Text>new text</Text>
+            <Text>old text</Text>
           </Text>
-          ```
+        ```
+    === ":material-xml: Result"
+        ```diff
+          <Text>
+            <LineId>123</LineId>
+        -   <Text>old text</Text>
+        +   <Text>new text</Text>
+          </Text>
+        ```
 
 ## Append
 
@@ -410,5 +478,5 @@ Removes the selected elements.
     </Asset>
     ```
 
-!!! warning "Removing an not existing element leads to warning"
+??? info "Removing an not existing element results in a log warning."
     As with all ModOps, there will be a warning if the selected element path does not exist.

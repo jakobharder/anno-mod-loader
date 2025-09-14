@@ -21,7 +21,7 @@ nav:
     - ModOps:
       - modops/index.md
       - Basic Types: modops/basics.md
-      - Merge: modops/merge.md
+      - Item Lists: modops/lists.md
       - Grouping: modops/grouping.md
       - Conditions: modops/conditions.md
       - Content: modops/content.md
