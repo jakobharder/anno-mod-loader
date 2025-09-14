@@ -8,28 +8,28 @@
       
       
       
-        <link rel="canonical" href="https://jakobharder.github.io/anno-mod-loader/modops/">
+        <link rel="canonical" href="https://jakobharder.github.io/anno-mod-loader/structure/zipfiles/">
       
       
-        <link rel="prev" href="../structure/links/">
+        <link rel="prev" href="../submods/">
       
       
-        <link rel="next" href="basics/">
+        <link rel="next" href="../links/">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
     
     
       
-        <title>Get Started with ModOps - Anno Modloader Reference</title>
+        <title>Zip Files - Anno Modloader Reference</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,9 +48,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#get-started-with-modops" class="md-skip">
+        <a href="#mods-in-zip-files" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +92,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Anno Modloader Reference" class="md-header__button md-logo" aria-label="Anno Modloader Reference" data-md-component="logo">
+    <a href="../.." title="Anno Modloader Reference" class="md-header__button md-logo" aria-label="Anno Modloader Reference" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Get Started with ModOps
+              Zip Files
             
           </span>
         </div>
@@ -208,7 +208,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Anno Modloader Reference" class="md-nav__button md-logo" aria-label="Anno Modloader Reference" data-md-component="logo">
+    <a href="../.." title="Anno Modloader Reference" class="md-nav__button md-logo" aria-label="Anno Modloader Reference" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -226,7 +226,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -248,7 +248,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../changes-117/" class="md-nav__link">
+      <a href="../../changes-117/" class="md-nav__link">
         
   
   
@@ -270,7 +270,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../new-features-117/" class="md-nav__link">
+      <a href="../../new-features-117/" class="md-nav__link">
         
   
   
@@ -351,7 +351,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../modinfo/" class="md-nav__link">
+      <a href="../../modinfo/" class="md-nav__link">
         
   
   
@@ -371,8 +371,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -390,11 +392,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
         
           
           <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
@@ -410,7 +412,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_2">
             <span class="md-nav__icon md-icon"></span>
             Loading and Structure
@@ -424,7 +426,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../structure/loading-order/" class="md-nav__link">
+      <a href="../loading-order/" class="md-nav__link">
         
   
   
@@ -447,7 +449,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../structure/submods/" class="md-nav__link">
+      <a href="../submods/" class="md-nav__link">
         
   
   
@@ -467,10 +469,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../structure/zipfiles/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Zip Files
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -481,6 +503,33 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mods-in-zip-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mods in zip files
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -493,7 +542,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../structure/links/" class="md-nav__link">
+      <a href="../links/" class="md-nav__link">
         
   
   
@@ -521,8 +570,6 @@
                 
   
   
-    
-  
   
   
     
@@ -546,15 +593,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
+            <a href="../../modops/" class="md-nav__link ">
               
   
   
@@ -567,13 +614,13 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_3">
             <span class="md-nav__icon md-icon"></span>
             XML ModOps
@@ -589,7 +636,7 @@
   
   
     <li class="md-nav__item">
-      <a href="basics/" class="md-nav__link">
+      <a href="../../modops/basics/" class="md-nav__link">
         
   
   
@@ -612,7 +659,7 @@
   
   
     <li class="md-nav__item">
-      <a href="control/" class="md-nav__link">
+      <a href="../../modops/control/" class="md-nav__link">
         
   
   
@@ -635,7 +682,7 @@
   
   
     <li class="md-nav__item">
-      <a href="content/" class="md-nav__link">
+      <a href="../../modops/content/" class="md-nav__link">
         
   
   
@@ -658,7 +705,7 @@
   
   
     <li class="md-nav__item">
-      <a href="lists/" class="md-nav__link">
+      <a href="../../modops/lists/" class="md-nav__link">
         
   
   
@@ -689,7 +736,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../options/" class="md-nav__link">
+      <a href="../../options/" class="md-nav__link">
         
   
   
@@ -712,7 +759,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../infotips/" class="md-nav__link">
+      <a href="../../infotips/" class="md-nav__link">
         
   
   
@@ -735,7 +782,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cfg-fc-patches/" class="md-nav__link">
+      <a href="../../cfg-fc-patches/" class="md-nav__link">
         
   
   
@@ -812,7 +859,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../profiles/" class="md-nav__link">
+      <a href="../../profiles/" class="md-nav__link">
         
   
   
@@ -929,8 +976,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -939,27 +984,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#basic-structure" class="md-nav__link">
+  <a href="#mods-in-zip-files" class="md-nav__link">
     <span class="md-ellipsis">
-      Basic Structure
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#select-a-target" class="md-nav__link">
-    <span class="md-ellipsis">
-      Select a Target
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#choose-type" class="md-nav__link">
-    <span class="md-ellipsis">
-      Choose Type
+      Mods in zip files
     </span>
   </a>
   
@@ -981,98 +1008,24 @@
 
 
 
-<h1 id="get-started-with-modops">Get Started with ModOps<a class="headerlink" href="#get-started-with-modops" title="Permanent link">&para;</a></h1>
-<h2 id="basic-structure">Basic Structure<a class="headerlink" href="#basic-structure" title="Permanent link">&para;</a></h2>
-<div class="admonition tip">
-<p class="admonition-title">Templates in Visual Studio Code</p>
-<p>Skip the following steps by using a template.</p>
-<p>Press key <code>F1</code> in <a href="https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools">Anno Modding Tools</a> and run <code>Anno: Create Mod from Template</code>.</p>
-</div>
-<ol>
-<li>Create a mod folder</li>
-<li>
-<p>Add a patch XML file</p>
-<p>The patch file must be in the same location as target file.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="117" name="__tabbed_1" type="radio" /><input id="1800" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="117">117</label><label for="1800">1800</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p><code>data\base\config\export\assets.xml</code></p>
-</div>
-<div class="tabbed-block">
-<p><code>data\config\export\main\asset\assets.xml</code></p>
-</div>
-</div>
-</div>
-</li>
-<li>
-<p>Add the following empty structure
-    <div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOps&gt;</span>
-<span class="w">  </span><span class="nt">&lt;ModOp&gt;</span>
-<span class="w">    </span><span class="cm">&lt;!-- content --&gt;</span>
-<span class="w">  </span><span class="nt">&lt;/ModOp&gt;</span>
-<span class="nt">&lt;/ModOps&gt;</span>
-</code></pre></div></p>
-<p>You can add as many <code>&lt;ModOp&gt;</code> as needed.</p>
-</li>
-</ol>
-<h2 id="select-a-target">Select a Target<a class="headerlink" href="#select-a-target" title="Permanent link">&para;</a></h2>
-<p>Look up and select the XML node you want to edit with XPath using the <code>Path</code> attribute.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Templates/Group[Name=&#39;Objects&#39;]/Template&quot;</span><span class="nt">&gt;</span>
-</code></pre></div>
-<p>For the assets file, you can also use the <code>GUID</code> attribute.</p>
-<div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- standard XPath way --&gt;</span>
-<span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;//Asset[Values/Standard/GUID=&#39;1137&#39;]/Values/Standard/Name&quot;</span><span class="nt">&gt;</span>
+  <h1>Zip Files</h1>
 
-<span class="cm">&lt;!-- with GUID helper --&gt;</span>
-<span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;1337&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard/Name&quot;</span><span class="nt">&gt;</span>
+<h2 id="mods-in-zip-files">Mods in zip files<a class="headerlink" href="#mods-in-zip-files" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mods/</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">- Mod.zip/</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">- data/</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">- modinfo.json</span>
 </code></pre></div>
-<div class="admonition info">
-<p class="admonition-title">XPath can be quite powerful. Checkout the <a href="https://devhints.io/xpath">XPath Cheatsheet</a> to learn more.</p>
-</div>
-<h2 id="choose-type">Choose Type<a class="headerlink" href="#choose-type" title="Permanent link">&para;</a></h2>
-<p>Specify the type of modification:</p>
-<ul>
-<li>Short: type as path attribute <code>&lt;type&gt;="&lt;path&gt;"</code> (available since Anno 117)</li>
-<li>Legacy: extra type attribute <code>Type="&lt;type&gt;"</code></li>
-</ul>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="117-short" name="__tabbed_2" type="radio" /><input id="117--1800" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="117-short">117 (short)</label><label for="117--1800">117 &amp; 1800</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- remove Standard/Name of asset 1337 --&gt;</span>
-<span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;1337&quot;</span><span class="w"> </span><span class="na">Remove=</span><span class="s">&quot;Standard/Name&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mods/</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">- Collection.zip/</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">- ModA/</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">- data/</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">- modinfo.json</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">- ModB/</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">- data/</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">- modinfo.json</span>
 </code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- remove Standard/Name of asset 1337 --&gt;</span>
-<span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;1337&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;Remove&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Standard/Name&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
-</code></pre></div>
-</div>
-</div>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Short ModOps skip the <code>/Values/</code> part of the path</p>
-<p>If you want to select the <code>Asset</code> node you need to use <code>../</code> as the path.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="117-short_1" name="__tabbed_3" type="radio" /><input id="legacy" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="117-short_1">117 (short)</label><label for="legacy">Legacy</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- removes Values/ child of asset 1337 --&gt;</span>
-<span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;1337&quot;</span><span class="w"> </span><span class="na">Remove=</span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- removes asset 1337 --&gt;</span>
-<span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;1337&quot;</span><span class="w"> </span><span class="na">Remove=</span><span class="s">&quot;../&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- removes Values/ child of asset 1337 --&gt;</span>
-<span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;1337&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;Remove&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- removes asset 1337 --&gt;</span>
-<span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;1337&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;Remove&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
-</code></pre></div>
-</div>
-</div>
-</div>
-</div>
+<p><code>modinfo.json</code> is required for mods in zips.</p>
 
 
 
@@ -1102,7 +1055,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../structure/links/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Links">
+          <a href="../submods/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Sub-Mods">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1112,20 +1065,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Links
+                Sub-Mods
               </div>
             </div>
           </a>
         
         
           
-          <a href="basics/" class="md-footer__link md-footer__link--next" aria-label="Next: Basic Types">
+          <a href="../links/" class="md-footer__link md-footer__link--next" aria-label="Next: Links">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Basic Types
+                Links
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1161,10 +1114,10 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "content.code.copy", "content.tooltips", "navigation.footer", "header.autohide", "navigation.indexes"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "content.code.copy", "content.tooltips", "navigation.footer", "header.autohide", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
       
     
   </body>

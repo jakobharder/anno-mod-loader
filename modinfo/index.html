@@ -11,10 +11,10 @@
         <link rel="canonical" href="https://jakobharder.github.io/anno-mod-loader/modinfo/">
       
       
-        <link rel="prev" href="../modops/examples/">
+        <link rel="prev" href="../new-features-117/">
       
       
-        <link rel="next" href="../loading-order/">
+        <link rel="next" href="../structure/loading-order/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -47,6 +47,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -327,7 +329,7 @@
   
   
   <span class="md-ellipsis">
-    Features
+    Create Mods
     
   </span>
   
@@ -338,222 +340,9 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
-            Features
+            Create Mods
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../modops/" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    ModOps
-    
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_1">
-            <span class="md-nav__icon md-icon"></span>
-            ModOps
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../modops/basics/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Basic Types
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../modops/merge/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Merge
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../modops/grouping/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Grouping
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../modops/conditions/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Conditions
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../modops/content/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Content
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../modops/examples/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Examples
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
             
               
                 
@@ -689,8 +478,58 @@
   
   
   
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Loading and Structure
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Loading and Structure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../loading-order/" class="md-nav__link">
+      <a href="../structure/loading-order/" class="md-nav__link">
         
   
   
@@ -713,7 +552,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../submods/" class="md-nav__link">
+      <a href="../structure/submods/" class="md-nav__link">
         
   
   
@@ -724,6 +563,223 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../structure/zipfiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Zip Files
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../structure/links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Links
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../modops/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    XML ModOps
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            XML ModOps
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modops/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Basic Types
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modops/control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Grouping and Conditions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modops/content/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dynamic Content
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modops/lists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Item Lists
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -775,6 +831,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cfg-fc-patches/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CFG, FC Patches
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -814,7 +893,7 @@
   
   
   <span class="md-ellipsis">
-    XPath
+    Use Mods
     
   </span>
   
@@ -825,7 +904,84 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            XPath
+            Use Mods
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../profiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mod Profiles
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    External
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            External
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -841,7 +997,7 @@
   
   
   <span class="md-ellipsis">
-    Cheat Sheet
+    XPath Cheat Sheet
     
   </span>
   
@@ -974,6 +1130,7 @@
 <p>Press <span class="keys"><kbd class="key-f1">F1</kbd></span> and run <code>Anno: Create Mod from Template</code> to generate a template.</p>
 </details>
 <h2 id="files">Files<a class="headerlink" href="#files" title="Permanent link">&para;</a></h2>
+<p><span class="version-tag" title="Available in all supported Annos"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</span></p>
 <p>A <code>modinfo.json</code> file is required in the top-level folder of your mod.
 Description and images are optional.</p>
 <div class="admonition warning">
@@ -1017,6 +1174,7 @@ Description and images are optional.</p>
 <p>You may also name the file <code>modinfo.jsonc</code> so that your editor of choice recognizes the JSON with comments format.</p>
 </details>
 <h2 id="mandatory-fields">Mandatory Fields<a class="headerlink" href="#mandatory-fields" title="Permanent link">&para;</a></h2>
+<p><span class="version-tag" title="Available in all supported Annos"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</span></p>
 <p>Mandatory fields are used by the modloader to correctly identify mods. Missing or wrong entries result in errors in the <code>mod-loader.log</code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Anno 117 won't load mods without the correct game version.</p>
@@ -1051,9 +1209,7 @@ Description and images are optional.</p>
 </tbody>
 </table>
 <h2 id="game-setup">Game Setup<a class="headerlink" href="#game-setup" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:1"><input checked="checked" id="117" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="117"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
+<p><span class="version-tag" title="Only available in Anno 117"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</span></p>
 <div class="highlight"><span class="filename">modinfo.json</span><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="c1">// ..</span>
 <span class="w">  </span><span class="nt">&quot;Difficulty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;harder&quot;</span><span class="p">,</span>
@@ -1065,9 +1221,6 @@ Description and images are optional.</p>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-</div>
-</div>
-</div>
 <table>
 <thead>
 <tr>
@@ -1120,7 +1273,8 @@ Description and images are optional.</p>
 </tbody>
 </table>
 <h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="117_1" name="__tabbed_2" type="radio" /><input id="1800" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="117_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label><label for="1800"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 18v2h4v-2zm0-4v2h10v-2zm6 4v2h4v-2zm6-4v2h4v-2zm0 4v2h4v-2zM2 22V8l5 4V8l5 4V8l5 4 1-10h3l1 10v10z"/></svg></span> 1800</label></div>
+<p><span class="version-tag" title="Available in all supported Annos"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</span></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="117" name="__tabbed_1" type="radio" /><input id="1800" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="117"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label><label for="1800"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 18v2h4v-2zm0-4v2h10v-2zm6 4v2h4v-2zm6-4v2h4v-2zm0 4v2h4v-2zM2 22V8l5 4V8l5 4V8l5 4 1-10h3l1 10v10z"/></svg></span> 1800</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -1209,9 +1363,10 @@ Description and images are optional.</p>
 </div>
 </div>
 <h2 id="development-info">Development Info<a class="headerlink" href="#development-info" title="Permanent link">&para;</a></h2>
+<p><span class="version-tag" title="Available in all supported Annos"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</span></p>
 <p>Infos used by Visual Studio Code plugin <a href="https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools">Anno Modding Tools</a>.</p>
 <p>These don't depend on the game version, but tool version.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="current" name="__tabbed_3" type="radio" /><input id="deprecated" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="current"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> Current</label><label for="deprecated"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.27 3 3 8.27v7.46L8.27 21h7.46C17.5 19.24 21 15.73 21 15.73V8.27L15.73 3M9.1 5h5.8L19 9.1v5.8L14.9 19H9.1L5 14.9V9.1m4.12-1.39L7.71 9.12 10.59 12l-2.88 2.88 1.41 1.41L12 13.41l2.88 2.88 1.41-1.41L13.41 12l2.88-2.88-1.41-1.41L12 10.59"/></svg></span> Deprecated</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="current" name="__tabbed_2" type="radio" /><input id="deprecated" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="current"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> Current</label><label for="deprecated"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.27 3 3 8.27v7.46L8.27 21h7.46C17.5 19.24 21 15.73 21 15.73V8.27L15.73 3M9.1 5h5.8L19 9.1v5.8L14.9 19H9.1L5 14.9V9.1m4.12-1.39L7.71 9.12 10.59 12l-2.88 2.88 1.41 1.41L12 13.41l2.88 2.88 1.41-1.41L13.41 12l2.88-2.88-1.41-1.41L12 10.59"/></svg></span> Deprecated</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -1325,7 +1480,7 @@ Description and images are optional.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../modops/examples/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Examples">
+          <a href="../new-features-117/" class="md-footer__link md-footer__link--prev" aria-label="Previous: New Features">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1335,14 +1490,14 @@ Description and images are optional.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Examples
+                New Features
               </div>
             </div>
           </a>
         
         
           
-          <a href="../loading-order/" class="md-footer__link md-footer__link--next" aria-label="Next: Loading Order">
+          <a href="../structure/loading-order/" class="md-footer__link md-footer__link--next" aria-label="Next: Loading Order">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
@@ -1384,7 +1539,7 @@ Description and images are optional.</p>
     
     
       
-      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "content.code.copy", "navigation.footer", "header.autohide", "navigation.indexes"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "content.code.copy", "content.tooltips", "navigation.footer", "header.autohide", "navigation.indexes"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>

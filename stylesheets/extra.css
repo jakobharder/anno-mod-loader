@@ -1,5 +1,8 @@
-:root  > * {
-  --md-primary-fg-color:        rgb(95, 3, 46);
-  --md-primary-fg-color--light: rgb(95, 3, 46);
-  --md-primary-fg-color--dark:  rgb(95, 3, 46);
+.version-tag {
+  background: rgb(95, 3, 46);
+  color: white;
+  border-radius: 0.25em;
+  font-size: 0.75em;
+  padding: 0.1em 0.4em;
+  margin-left: 0.3em;
 }
