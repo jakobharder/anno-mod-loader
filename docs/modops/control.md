@@ -119,9 +119,7 @@ Conditions can be used with all ModOps: `ModOp`, `Group`, `Include` and `Asset`.
 
 ## Loop
 
-{{a117}}
-
-!!! warning "Not available in demo"
+{{a117r}}
 
 You can repeat ModOps until a `Condition` doesn't match anymore with setting `MaxRepeat`.
 The default `MaxRepeat=1` behaves like a normal `Group`.

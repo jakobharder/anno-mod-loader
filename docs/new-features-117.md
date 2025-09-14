@@ -5,42 +5,6 @@
 
 ## ModOp Basics
 
-### Short ModOps
-
-ModOps can be shortened with `Merge=<XPath>` instead of the old long form `Type="merge" Path=<XPath>`.
-
-When using `GUID` lookup with the short style skips `/Values` like the previously introduced `@GUID` notation.
-
-=== ":material-pillar: Short"
-    ```xml
-    <ModOp GUID="1010372" Merge="Building">
-      <AllowChangeVariation>1</AllowChangeVariation>
-    </ModOp>
-
-    <ModOp Merge="@1010372/Building">
-      <AllowChangeVariation>1</AllowChangeVariation>
-    </ModOp>
-
-    <ModOp GUID="123" Replace="../Template">
-      <Template>Icon</Template>
-    </ModOp>
-    ```
-
-=== ":material-animation-outline: Legacy"
-    ```xml
-    <ModOp Type="merge" GUID="1010372" Path="/Values/Building">
-      <AllowChangeVariation>1</AllowChangeVariation>
-    </ModOp>
-
-    <ModOp Type="merge" Path="@1010372/Building">
-      <AllowChangeVariation>1</AllowChangeVariation>
-    </ModOp>
-
-    <ModOp Type="replace" GUID="123">
-      <Template>Icon</Template>
-    </ModOp>
-    ```
-
 ### ModOp Types
 
 Short | Legacy | Comment
@@ -52,44 +16,6 @@ Short | Legacy | Comment
 `Merge`|`Type="merge"`|Includes improved flags and list handling.
 `Replace`|`Type="replace`|unchanged
 `Remove`|`Type="remove"`|unchanged
-
-### Add Assets
-
-!!! warning "Not available in demo"
-
-The fastest way to add assets is to directly drop them into your file without using a `ModOp` at all.
-`BaseAssetGUID` order is automatically handled.
-
-=== ":material-pillar: 117"
-    ```xml
-    <ModOps>
-      <Asset>
-        <Template>Text</Template>
-        <Values> <!-- .. --> </Values>
-      </Asset>
-      <Asset>
-        <BaseAssetGUID>100780</BaseAssetGUID>
-        <Values> <!-- .. --> </Values>
-      </Asset>
-    </ModOps>
-    ```
-
-=== ":material-animation-outline: 1800 ⚠️"
-    ```xml
-    <ModOps>
-      <ModOp Type="addNextSibling" GUID="100780">
-        <Asset>
-          <Template>Text</Template>
-          <Values> <!-- .. --> </Values>
-        </Asset>
-        <Asset>
-          <!-- manually ensure that this comes after 100780 -->
-          <BaseAssetGUID>100780</BaseAssetGUID>
-          <Values> <!-- .. --> </Values>
-        </Asset>
-      </ModOp>
-    </ModOps>
-    ```
 
 ### Property Lookup
 

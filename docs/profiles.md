@@ -8,9 +8,7 @@ You can change the activation of a mod in the following ways:
 
 ## Profile File
 
-{{a117}}
-
-!!! warning "Profiles are not available in the demo"
+{{a117r}}
 
 Prefix an entry with `#` to disable it.
 

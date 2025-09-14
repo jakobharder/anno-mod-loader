@@ -5,8 +5,8 @@
 <div class="annotate" markdown>
 -   [Changed Paths](#changed-paths) - Paths to `assets.xml` and others have changed. (1)
 -   [Modinfo](./modinfo.md#mandatory-fields) - Only mods with game version `8` are loaded. (2)
--   [GUID Ranges](#safe-ranges) - No changes. (3)
--   [Mod Folders](#mod-folders) - No changes. (4)
+-   No changes to [GUID Ranges](#safe-ranges) (3)
+-   No changes to [Mod Folders](#mod-folders) (4)
 </div>
 
 1.  Most base game files are also under `data/base` now.
@@ -44,8 +44,10 @@
 
 ## New Features
 
-- [Short ModOps](./new-features-117.md#short-modops) - Shorter ModOps.
-- [Directly Add Assets](./new-features-117.md#add-assets) - Conveniently add assets. Handles BaseAssetGUID automatically.
+<div class="annotate" markdown>
+
+- [Short ModOps](./modops/index.md#choose-type) (1)
+- [Asset](./modops/basics.md#asset) - Add without ModOp (2)
 - [Mod Profiles](./profiles.md) - The game loads mod activations from `<user>/Anno 117/active-profile.txt`.
 - [ModOps Property](./new-features-117.md#property-lookup) - Property Lookup
 - [ModOps MaxRepeat](./new-features-117.md#property-lookup) - Use `Group` with `Condition` for loops.
@@ -55,6 +57,52 @@
 - [Inline ModOps](./modops/content.md) - Merge enums, insert local content and other `Content` improvements.
 - [ModItem](./modops/lists.md) - More control over merging items and lists with items.
 - [Lua Scripts](./lua-scripts.md) - Script support
+
+</div>
+
+1.  ModOps can be shortened with `Merge=<XPath>` instead of the old long form `Type="merge" Path=<XPath>`.
+
+    === ":material-pillar: Short"
+        ```xml
+        <ModOp GUID="1010372"
+               Merge="Building">
+          <AllowChangeVariation>1</AllowChangeVariation>
+        </ModOp>
+        ```
+
+    === ":material-animation-outline: Legacy"
+        ```xml
+        <ModOp GUID="1010372"
+               Type="merge" Path="/Values/Building">
+          <AllowChangeVariation>1</AllowChangeVariation>
+        </ModOp>
+        ```
+
+2.  {{a117r}}
+
+    Directly drop assets into your file without `ModOp`.
+    The order of `BaseAssetGUID` is automatically handled.
+
+    === ":material-pillar: 117"
+        ```xml
+        <ModOps>
+          <Asset>
+            <BaseAssetGUID>100780</BaseAssetGUID>
+            <Values> <!-- .. --> </Values>
+          </Asset>
+        </ModOps>
+        ```
+    === ":material-animation-outline: 117 & 1800 ⚠️"
+        ```xml
+        <ModOps>
+          <ModOp Type="addNextSibling" GUID="100780">
+            <Asset>
+              <BaseAssetGUID>100780</BaseAssetGUID>
+              <Values> <!-- .. --> </Values>
+            </Asset>
+          </ModOp>
+        </ModOps>
+        ```
 
 ## Extra Notes
 

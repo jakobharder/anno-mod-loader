@@ -163,7 +163,7 @@ Elements containing elements can be replaced as well.
         </Asset>
         ```
 
-??? warning "Avoid replacing larger structures"
+??? warning "Avoid replacing larger structures."
     Replace removes all content in the selection and replaces it.
 
     That often leads to unforeseen issues after game updates or in combination with other mods.
@@ -317,7 +317,7 @@ Adds the content, or replaces it if it already exists.
           </Values>
         ```
 
-??? tip "Use ModItem merge or Conditions to merging list items."
+??? tip "Use `ModItem` {{a117}} or `Condition` {{all}} to merge list items."
     List items are merged by order of occurrence. It is better to replace a list completely or define conditions for each item individually.
 
     Read more about individual item conditions in [ModItem Merge](./lists.md#moditem-merge).
@@ -512,6 +512,31 @@ A common situation is when you want to insert an item at a specific position.
 
     See also [Item Lists](./lists.md) for more details.
 
+??? tip "Use `Asset` to add full assets. {{a117r}}"
+    Directly drop assets into your file without `ModOp`.
+    The order of `BaseAssetGUID` is automatically handled.
+
+    === ":material-pillar: 117"
+        ```xml
+        <ModOps>
+          <Asset>
+            <BaseAssetGUID>100780</BaseAssetGUID>
+            <Values> <!-- .. --> </Values>
+          </Asset>
+        </ModOps>
+        ```
+    === ":material-animation-outline: 117 & 1800 ⚠️"
+        ```xml
+        <ModOps>
+          <ModOp Type="addNextSibling" GUID="100780">
+            <Asset>
+              <BaseAssetGUID>100780</BaseAssetGUID>
+              <Values> <!-- .. --> </Values>
+            </Asset>
+          </ModOp>
+        </ModOps>
+        ```
+
 ## Prepend (AddPrevSibling)
 
 {{all}}
@@ -581,6 +606,44 @@ Prepend works the same as `Append` except that it adds the content before the se
         ```
 
     See also [Item Lists](./lists.md) for more details.
+
+
+## Asset
+
+{{a117r}}
+
+The fastest way to add assets is to directly drop them into your file without using a `ModOp` at all.
+The order of `BaseAssetGUID` is automatically handled.
+
+=== ":material-pillar: 117"
+    ```xml
+    <ModOps>
+      <Asset>
+        <Template>Text</Template>
+        <Values> <!-- .. --> </Values>
+      </Asset>
+      <Asset>
+        <BaseAssetGUID>100780</BaseAssetGUID>
+        <Values> <!-- .. --> </Values>
+      </Asset>
+    </ModOps>
+    ```
+=== ":material-animation-outline: 117 & 1800 ⚠️"
+    ```xml
+    <ModOps>
+      <ModOp Type="addNextSibling" GUID="100780">
+        <Asset>
+          <Template>Text</Template>
+          <Values> <!-- .. --> </Values>
+        </Asset>
+        <Asset>
+          <!-- manually ensure that this comes after 100780 -->
+          <BaseAssetGUID>100780</BaseAssetGUID>
+          <Values> <!-- .. --> </Values>
+        </Asset>
+      </ModOp>
+    </ModOps>
+    ```
 
 ## Remove
 

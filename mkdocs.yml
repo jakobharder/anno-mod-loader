@@ -80,3 +80,4 @@ extra:
     all: '<span class="version-tag" title="Available in all supported Annos">:material-animation-outline: 117 & 1800</span>'
     a1800: '<span class="version-tag" title="Only available in Anno 1800">:material-factory: 1800</span>'
     a117: '<span class="version-tag" title="Only available in Anno 117">:material-pillar: 117</span>'
+    a117r: '<span class="version-tag" title="Only available in Anno 117">:material-pillar: 117 (not in demo)</span>'
