@@ -16,8 +16,11 @@ nav:
       - Merge: modops/merge.md
       - Grouping: modops/grouping.md
       - Conditions: modops/conditions.md
+      - Content: modops/content.md
       - Examples: modops/examples.md
     - Modinfo: modinfo.md
+    - Loading Order: loading-order.md
+    - Sub-Mods: submods.md
     - Options: options.md
     - InfoTips: infotips.md
   - XPath:

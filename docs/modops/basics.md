@@ -365,7 +365,7 @@ Prepend works the same as `Append` except that it adds the content before the se
     ```
 === ":material-animation-outline: 117 & 1800"
     ```xml
-    <ModOp GUID="123" Type="addPreviousSibling" Path="/Values/Standard">
+    <ModOp GUID="123" Type="addPrevSibling" Path="/Values/Standard">
       <Maintenance />
     </ModOp>
     ```

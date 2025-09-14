@@ -65,7 +65,9 @@ Most base game files are also under `data\base` now.
 
 Text IDs are based on Oasis Line IDs now instead of `GUID`s.
 
-Line IDs have their own range, but for modding purposes it is best to simply use the same range as GUIDs.
+Vanilla text IDs are always negative numbers like `-6911555031864321364` (or `A015 3951 4829 DAAC` in hex).
+
+For modding purposes it is best to simply use the same range as GUIDs.
 E.g. matching LineID of a building name with the GUID of the building asset.
 
 === ":material-pillar: 117"

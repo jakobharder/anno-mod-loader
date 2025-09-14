@@ -11,17 +11,28 @@ Check the full [modinfo.json specification](https://github.com/anno-mods/Modinfo
 
     Press ++f1++ and run `Anno: Create Mod from Template` to generate a template.
 
-## Location
+## Files
 
-Place the `modinfo.json` in the top-level folder of your mod.
+A `modinfo.json` file is required in the top-level folder of your mod.
+Description and images are optional.
 
 !!! warning "Anno 117 and Anno 1800 (mod.io only) won't load mods without a modinfo file."
 
-```plaintext title="mod folder structure" hl_lines="3"
+```plaintext title="mod folder structure" hl_lines="3-7"
 ├─ data/
 │  └─ **/*
-└─ modinfo.json
+├─ banner.jpg
+├─ logo.jpg
+├─ modinfo.json
+└─ README.md
 ```
+
+File | Description
+--- | ---
+`banner.jpg` | Large 16:9 image for offline mod managers.
+`logo.jpg` | Small 16:9 image. Used in Anno 1800 mod activation list.
+`modinfo.json` | ModID, version, dependencies and other infos.
+`README.md` | Mod description.
 
 ??? tip "JSON with comments is supported in Anno 117"
     You may also name the file `modinfo.jsonc` so that your editor of choice recognizes the JSON with comments format.
@@ -94,11 +105,11 @@ Field | Description
 
     |Name|Description
     |---|---
-    |`Require`|List mods and DLCs that are required to use this mod.
+    |`Require`|List mods and DLCs that are required to use this mod.<br/>Missing dependencies result in log warning.
     |`Optional`|List mods and DLCs that enable further content in this mod.
     |`LoadAfter`|List mods to load before this mod.
     |`Deprecate`|List mods that are replaced by this mod.<br/>A warning will be printed in the mod-loader.log. LoadAfter and Require will use the new ID.
-    |`Incompatible`|List incompatible mods. A warning will be printed in the mod-loader.log
+    |`Incompatible`|List incompatible mods.<br/>Active incompatible mods result in log warning.
 
 === ":material-factory: 1800"
     ```json
@@ -114,11 +125,11 @@ Field | Description
 
     |Name|Description
     |---|---
-    |`ModDependencies`|List mods that are required to use this mod.
+    |`ModDependencies`|List mods that are required to use this mod.<br/>Missing dependencies result in log warning.
     |`OptionalDependencies`|List mods that enable further content in this mod.
     |`LoadAfterIds`|List mods to load before this mod.
     |`DeprecateIds`|List mods that are replaced by this mod.
-    |`IncompatibleIds`|List incompatible mods. A warning will be printed in the mod-loader.log
+    |`IncompatibleIds`|List incompatible mods.<br/>Active incompatible mods result in log warning.
 
 ## Development Info
 
@@ -137,6 +148,12 @@ These don't depend on the game version, but tool version.
       }
     }
     ```
+
+    |Name|Description
+    |---|---
+    |`Dependencies`|List of mods that should be loaded for patch error analysis and GUID references.
+    |`DeployPath`|Target path for mod deployment.
+    |`Bundle`|List of mods that should be included as a sub mod.
 === ":material-close-octagon-outline: Deprecated"
     ```json
     {
@@ -147,11 +164,11 @@ These don't depend on the game version, but tool version.
     }
     ```
 
-|Name|Description
-|---|---
-|`Dependencies`|List of mods that should be loaded for patch error analysis and GUID references.
-|`DeployPath`|Target path for mod deployment.
-|`Bundle`|List of mods that should be included as a sub mod.
+    |Name|Description
+    |---|---
+    |`OptionalDependencies`|List of mods that should be loaded for patch error analysis and GUID references.
+    |`out`|Target path for mod deployment.
+    |`bundle`|List of mods that should be included as a sub mod.
 
 ??? tip "Learn more about deploying mods."
     The Visual Studio Code [modding tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools) can deploy your mods with automatic DDS generation, dependency downloads, etc.
