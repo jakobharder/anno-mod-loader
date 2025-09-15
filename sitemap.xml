@@ -2,70 +2,70 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/</loc>
-         <lastmod>2025-09-14</lastmod>
+         <lastmod>2025-09-15</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/cfg-fc-patches/</loc>
-         <lastmod>2025-09-14</lastmod>
+         <lastmod>2025-09-15</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/changes-117/</loc>
-         <lastmod>2025-09-14</lastmod>
+         <lastmod>2025-09-15</lastmod>
+    </url>
+    <url>
+         <loc>https://jakobharder.github.io/anno-mod-loader/file-structure/</loc>
+         <lastmod>2025-09-15</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/infotips/</loc>
-         <lastmod>2025-09-14</lastmod>
+         <lastmod>2025-09-15</lastmod>
+    </url>
+    <url>
+         <loc>https://jakobharder.github.io/anno-mod-loader/install/</loc>
+         <lastmod>2025-09-15</lastmod>
+    </url>
+    <url>
+         <loc>https://jakobharder.github.io/anno-mod-loader/loading-order/</loc>
+         <lastmod>2025-09-15</lastmod>
+    </url>
+    <url>
+         <loc>https://jakobharder.github.io/anno-mod-loader/lua-scripts/</loc>
+         <lastmod>2025-09-15</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/modinfo/</loc>
-         <lastmod>2025-09-14</lastmod>
+         <lastmod>2025-09-15</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/new-features-117/</loc>
-         <lastmod>2025-09-14</lastmod>
+         <lastmod>2025-09-15</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/options/</loc>
-         <lastmod>2025-09-14</lastmod>
+         <lastmod>2025-09-15</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/profiles/</loc>
-         <lastmod>2025-09-14</lastmod>
+         <lastmod>2025-09-15</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/modops/</loc>
-         <lastmod>2025-09-14</lastmod>
+         <lastmod>2025-09-15</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/modops/basics/</loc>
-         <lastmod>2025-09-14</lastmod>
+         <lastmod>2025-09-15</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/modops/content/</loc>
-         <lastmod>2025-09-14</lastmod>
+         <lastmod>2025-09-15</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/modops/control/</loc>
-         <lastmod>2025-09-14</lastmod>
+         <lastmod>2025-09-15</lastmod>
     </url>
     <url>
          <loc>https://jakobharder.github.io/anno-mod-loader/modops/lists/</loc>
-         <lastmod>2025-09-14</lastmod>
-    </url>
-    <url>
-         <loc>https://jakobharder.github.io/anno-mod-loader/structure/links/</loc>
-         <lastmod>2025-09-14</lastmod>
-    </url>
-    <url>
-         <loc>https://jakobharder.github.io/anno-mod-loader/structure/loading-order/</loc>
-         <lastmod>2025-09-14</lastmod>
-    </url>
-    <url>
-         <loc>https://jakobharder.github.io/anno-mod-loader/structure/submods/</loc>
-         <lastmod>2025-09-14</lastmod>
-    </url>
-    <url>
-         <loc>https://jakobharder.github.io/anno-mod-loader/structure/zipfiles/</loc>
-         <lastmod>2025-09-14</lastmod>
+         <lastmod>2025-09-15</lastmod>
     </url>
 </urlset>

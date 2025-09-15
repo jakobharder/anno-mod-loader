@@ -8,28 +8,28 @@
       
       
       
-        <link rel="canonical" href="https://jakobharder.github.io/anno-mod-loader/structure/submods/">
+        <link rel="canonical" href="https://jakobharder.github.io/anno-mod-loader/loading-order/">
       
       
-        <link rel="prev" href="../loading-order/">
+        <link rel="prev" href="../modinfo/">
       
       
-        <link rel="next" href="../zipfiles/">
+        <link rel="next" href="../modops/">
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
     
     
       
-        <title>Sub-Mods - Anno Modloader Reference</title>
+        <title>Loading Order - Anno Modloader Reference</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,9 +48,9 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#sub-mods" class="md-skip">
+        <a href="#mod-loading-order" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +92,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Anno Modloader Reference" class="md-header__button md-logo" aria-label="Anno Modloader Reference" data-md-component="logo">
+    <a href=".." title="Anno Modloader Reference" class="md-header__button md-logo" aria-label="Anno Modloader Reference" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Sub-Mods
+              Loading Order
             
           </span>
         </div>
@@ -208,7 +208,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Anno Modloader Reference" class="md-nav__button md-logo" aria-label="Anno Modloader Reference" data-md-component="logo">
+    <a href=".." title="Anno Modloader Reference" class="md-nav__button md-logo" aria-label="Anno Modloader Reference" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -226,7 +226,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -248,7 +248,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../changes-117/" class="md-nav__link">
+      <a href="../changes-117/" class="md-nav__link">
         
   
   
@@ -270,7 +270,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../new-features-117/" class="md-nav__link">
+      <a href="../new-features-117/" class="md-nav__link">
         
   
   
@@ -295,6 +295,8 @@
   
     
     
+      
+        
       
         
       
@@ -351,12 +353,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../modinfo/" class="md-nav__link">
+      <a href="../file-structure/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Modinfo
+    File Structure
     
   </span>
   
@@ -371,67 +373,15 @@
                 
   
   
-    
-  
-  
-  
-    
-    
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Loading and Structure
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_2">
-            <span class="md-nav__icon md-icon"></span>
-            Loading and Structure
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
   
   
     <li class="md-nav__item">
-      <a href="../loading-order/" class="md-nav__link">
+      <a href="../modinfo/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Loading Order
+    Modinfo
     
   </span>
   
@@ -458,136 +408,17 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Sub-Mods
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
-    Sub-Mods
+    Loading Order
     
   </span>
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#mods-in-sub-folders" class="md-nav__link">
-    <span class="md-ellipsis">
-      Mods in sub-folders
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#shared-mods-within-mods" class="md-nav__link">
-    <span class="md-ellipsis">
-      Shared Mods within Mods
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Shared Mods within Mods">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#make-part-of-your-mod-load-at-the-end" class="md-nav__link">
-    <span class="md-ellipsis">
-      Make part of your mod load at the end
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../zipfiles/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Zip Files
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../links/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Links
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
       
     </li>
   
@@ -625,16 +456,16 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../modops/" class="md-nav__link ">
+            <a href="../modops/" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
-    XML ModOps
+    XML Patches
     
   </span>
   
@@ -642,16 +473,16 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_3">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
             <span class="md-nav__icon md-icon"></span>
-            XML ModOps
+            XML Patches
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -664,7 +495,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../modops/basics/" class="md-nav__link">
+      <a href="../modops/basics/" class="md-nav__link">
         
   
   
@@ -687,12 +518,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../modops/control/" class="md-nav__link">
+      <a href="../modops/control/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Grouping and Conditions
+    Groups and Conditions
     
   </span>
   
@@ -710,7 +541,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../modops/content/" class="md-nav__link">
+      <a href="../modops/content/" class="md-nav__link">
         
   
   
@@ -733,7 +564,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../modops/lists/" class="md-nav__link">
+      <a href="../modops/lists/" class="md-nav__link">
         
   
   
@@ -763,22 +594,45 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../options/" class="md-nav__link">
+    
+    
+      
         
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
-    Options
+    Other Patches
     
   </span>
   
 
-      </a>
-    </li>
-  
-
-              
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Other Patches
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -787,7 +641,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../infotips/" class="md-nav__link">
+      <a href="../infotips/" class="md-nav__link">
         
   
   
@@ -810,12 +664,66 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cfg-fc-patches/" class="md-nav__link">
+      <a href="../cfg-fc-patches/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    CFG, FC Patches
+    CFG, FC Files
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../options/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Options
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lua-scripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lua Scripts
     
   </span>
   
@@ -841,6 +749,8 @@
   
     
     
+      
+        
       
         
       
@@ -887,7 +797,30 @@
   
   
     <li class="md-nav__item">
-      <a href="../../profiles/" class="md-nav__link">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Install Mods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../profiles/" class="md-nav__link">
         
   
   
@@ -1007,47 +940,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#mods-in-sub-folders" class="md-nav__link">
-    <span class="md-ellipsis">
-      Mods in sub-folders
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#shared-mods-within-mods" class="md-nav__link">
-    <span class="md-ellipsis">
-      Shared Mods within Mods
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Shared Mods within Mods">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#make-part-of-your-mod-load-at-the-end" class="md-nav__link">
-    <span class="md-ellipsis">
-      Make part of your mod load at the end
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1062,41 +954,32 @@
 
 
 
-<h1 id="sub-mods">Sub-Mods<a class="headerlink" href="#sub-mods" title="Permanent link">&para;</a></h1>
-<h2 id="mods-in-sub-folders">Mods in sub-folders<a class="headerlink" href="#mods-in-sub-folders" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mods/</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">- Collection/</span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">- ModA/</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">- data/</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">- modinfo.json</span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">- ModB/</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">- data/</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">- modinfo.json</span>
+<h1 id="mod-loading-order">Mod Loading order<a class="headerlink" href="#mod-loading-order" title="Permanent link">&para;</a></h1>
+<p>You can specificy <code>LoadAfterIds</code> in <code>modinfo.json</code> now to load your mod after another.</p>
+<p>No warning will printed if the mentioned mod is not available.
+Use <code>ModDependencies</code> to signal required mods.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;ModID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ModC&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;LoadAfterIds&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;ModA&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;ModB&quot;</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div>
-<p>Collection folders do not act as mods.
-They don't have activation or <code>ModID</code>s.</p>
-<p>A mod manager may bulk enable/disable based on those folders though...</p>
-<p><code>modinfo.json</code> is required for mods in sub-folders.</p>
-<h2 id="shared-mods-within-mods">Shared Mods within Mods<a class="headerlink" href="#shared-mods-within-mods" title="Permanent link">&para;</a></h2>
-<p>Perfect for shared data. You can version your shared data now to make sure the latest copy across all mods is used.</p>
-<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mods/</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">- ModA/</span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">- data/</span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">- modinfo.json</span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">- SharedMod/</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">- data/</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">- modinfo.json</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">- ModB/</span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">- data/</span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">- modinfo.json</span>
-<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">- SharedMod/</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">- data/</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">- modinfo.json</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;ModID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PostB&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;LoadAfterIds&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;PostA&quot;</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div>
-<p><code>modinfo.json</code> is required for such mods.</p>
-<h3 id="make-part-of-your-mod-load-at-the-end">Make part of your mod load at the end<a class="headerlink" href="#make-part-of-your-mod-load-at-the-end" title="Permanent link">&para;</a></h3>
-<p>Sub-mods also follow loading order.
-You can use that fact to add a few ModOps to be executed after other mods, rather than loading your complete mod at the end.</p>
+<p>The order is as follows:
+1. Mods with <code>LoadAfterIds</code> but without <code>*</code> following the order. Alphabetically order is ignored.
+2. Mods without <code>LoadAfterIds</code> loaded alphabetically.
+3. Mods with <code>*</code> loaded in order of <code>LoadAfterIds</code>.</p>
+<p>A mod without a <code>*</code> cannot load after a mod with a <code>*</code>.</p>
+<p>Note: Step 2 ensures previous behavior as long as there's no <code>LoadAfterIds</code>.</p>
 
 
 
@@ -1126,7 +1009,7 @@ You can use that fact to add a few ModOps to be executed after other mods, rathe
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../loading-order/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Loading Order">
+          <a href="../modinfo/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Modinfo">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1136,20 +1019,20 @@ You can use that fact to add a few ModOps to be executed after other mods, rathe
                 Previous
               </span>
               <div class="md-ellipsis">
-                Loading Order
+                Modinfo
               </div>
             </div>
           </a>
         
         
           
-          <a href="../zipfiles/" class="md-footer__link md-footer__link--next" aria-label="Next: Zip Files">
+          <a href="../modops/" class="md-footer__link md-footer__link--next" aria-label="Next: Get Started with ModOps">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Zip Files
+                Get Started with ModOps
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1185,10 +1068,10 @@ You can use that fact to add a few ModOps to be executed after other mods, rathe
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "content.code.copy", "content.tooltips", "navigation.footer", "header.autohide", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "content.code.copy", "content.tooltips", "navigation.footer", "header.autohide", "navigation.indexes"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
     
   </body>
