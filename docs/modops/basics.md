@@ -645,6 +645,8 @@ The order of `BaseAssetGUID` is automatically handled.
     </ModOps>
     ```
 
+Supports control attributes: [`Condition`](./control.md#condition), [`Skip`](./control.md#skip)
+
 ## Remove
 
 {{all}}

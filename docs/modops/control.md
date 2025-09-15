@@ -16,6 +16,8 @@ You can group multiple ModOps into one group with `Group`.
     </ModOps>
     ```
 
+Available attributes: [`Condition`](#condition), [`Skip`](#skip), [`MaxRepeat`](#loop)
+
 ## Include
 
 {{all}}
@@ -30,6 +32,8 @@ You can group multiple ModOps into one group with `Group`.
     ```
 
 Use the extension `.include.xml` to ensure the file is treated as an include file in tools and the game.
+
+Available attributes: [`Condition`](#condition), [`Skip`](#skip)
 
 ??? info "Includes from other folders"
 

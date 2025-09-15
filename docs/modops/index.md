@@ -1,37 +1,5 @@
 # Get Started with ModOps
 
-## Basic Structure
-
-??? tip "Templates in Visual Studio Code"
-    Skip the following steps by using a template.
-
-    Press key `F1` in [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools) and run `Anno: Create Mod from Template`.
-
-1. Create a mod folder
-2. Add a patch XML file
-
-    The patch file must be in the same location as target file.
-
-    === ":material-pillar: 117"
-        ```plaintext
-        data/base/config/export/assets.xml
-        ```
-    === ":material-factory: 1800"
-        ```plaintext
-        data/config/export/main/asset/assets.xml
-        ```
-
-3. Add the following empty structure
-
-    ```xml
-    <ModOps>
-      <ModOp>
-        <!-- Content -->
-      </ModOp>
-      <!-- Add as many <ModOp> as needed -->
-    </ModOps>
-    ```
-
 ## Select a Target
 
 Look up and select the XML node you want to edit with XPath using the `Path` attribute.

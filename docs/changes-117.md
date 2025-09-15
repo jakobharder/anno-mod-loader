@@ -3,10 +3,9 @@
 ## Important
 
 <div class="annotate" markdown>
--   [Changed Paths](#changed-paths) - Paths to `assets.xml` and others have changed. (1)
+-   [Changed Paths](./file-structure.md#basic-file-structure) - Paths to `assets.xml` and others have changed. (1)
 -   [Modinfo](./modinfo.md#mandatory-fields) - Only mods with game version `8` are loaded. (2)
--   No changes to [GUID Ranges](#safe-ranges) (3)
--   No changes to [Mod Folders](#mod-folders) (4)
+-   No changes to [GUID Ranges](#safe-ranges) (3) or [Mod Folders](./install.md#mod-folders). (4)
 </div>
 
 1.  Most base game files are also under `data/base` now.
@@ -105,27 +104,6 @@
         ```
 
 ## Extra Notes
-
-### Changed Paths
-
-The location of the main `assets.xml` has changed.
-
-=== ":material-pillar: 117"
-    `data/base/config/export/assets.xml`
-=== ":material-factory: 1800"
-    `data/config/export/main/asset/assets.xml`
-
-Most base game files are also under `data/base` now.
-
-!!! tip "Templates in Visual Studio Code"
-    Press ++f1++ in [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools) and run `Anno: Create Mod from Template` to generate a template.
-
-### Mod Folders
-
-The locations of the mod folders for manual installation are unchanged.
-
-- `<user>/Anno 117/mods/`
-- `<install>/Anno 117/mods/`
 
 ### Safe Ranges
 

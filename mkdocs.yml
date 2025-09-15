@@ -11,23 +11,22 @@ nav:
   - Important Changes: changes-117.md
   - New Features: new-features-117.md
   - Create Mods:
+    - File Structure: file-structure.md
     - Modinfo: modinfo.md
-    - Loading and Structure:
-      - Loading Order: structure/loading-order.md
-      - Sub-Mods: structure/submods.md
-      - Zip Files: structure/zipfiles.md
-      - Links: structure/links.md
-    - XML ModOps:
+    - Loading Order: loading-order.md
+    - XML Patches:
       - modops/index.md
       - Basic Types: modops/basics.md
-      - Grouping and Conditions: modops/control.md
+      - Groups and Conditions: modops/control.md
       - Dynamic Content: modops/content.md
       - Item Lists: modops/lists.md
+    - Other Patches:
+      - InfoTips: infotips.md
+      - "CFG, FC Files": cfg-fc-patches.md
     - Options: options.md
-    - InfoTips: infotips.md
-    - "CFG, FC Patches": cfg-fc-patches.md
     - Lua Scripts: lua-scripts.md
   - Use Mods:
+    - Install Mods: install.md
     - Mod Profiles: profiles.md
   - External:
     - XPath Cheat Sheet: https://devhints.io/xpath

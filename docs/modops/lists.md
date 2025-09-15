@@ -89,7 +89,7 @@ The item is merged with the first item that matches the attribute in `Merge`.
     </ModOp>
     ```
 
-??? tip "You can replace the merge selecting attribute."
+??? info "You can replace the merge selecting attribute."
     The merge selecting attribute can be replaced as well.
     Use `<ModItem Merge="Attribute='Value'">` to select the item.
 

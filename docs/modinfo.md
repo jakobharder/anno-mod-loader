@@ -1,8 +1,8 @@
 # Modinfo Specification
 
-This page describes `modinfo.json` fields the modloader uses.
+A `modinfo.json` file is required in the top-level folder of your mod.
 
-Check the full [modinfo.json specification](https://github.com/anno-mods/Modinfo) for general overview.
+!!! warning "Anno 117 mods and Anno 1800 mod.io mods won't load without a modinfo file."
 
 ??? tip "Auto-completion and Template in Visual Studio Code"
     Use [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools) to get template, auto-completion and tooltips for `modinfo.json` files.
@@ -10,34 +10,6 @@ Check the full [modinfo.json specification](https://github.com/anno-mods/Modinfo
     Ensure [anno.workspaceSchemas](vscode://settings/anno.workspaceSchemas) is enabled for auto-completion and tooltips.
 
     Press ++f1++ and run `Anno: Create Mod from Template` to generate a template.
-
-## Files
-
-{{all}}
-
-A `modinfo.json` file is required in the top-level folder of your mod.
-Description and images are optional.
-
-!!! warning "Anno 117 and Anno 1800 (mod.io only) won't load mods without a modinfo file."
-
-```plaintext title="mod folder structure" hl_lines="3-7"
-├─ data/
-│  └─ **/*
-├─ banner.jpg
-├─ logo.jpg
-├─ modinfo.json
-└─ README.md
-```
-
-File | Description
---- | ---
-`banner.jpg` | Large 16:9 image for offline mod managers.
-`logo.jpg` | Small 16:9 image. Used in Anno 1800 mod activation list.
-`modinfo.json` | ModID, version, dependencies and other infos.
-`README.md` | Mod description.
-
-??? tip "JSON with comments is supported in Anno 117"
-    You may also name the file `modinfo.jsonc` so that your editor of choice recognizes the JSON with comments format.
 
 ## Mandatory Fields
 
