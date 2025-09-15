@@ -16,7 +16,7 @@ You can group multiple ModOps into one group with `Group`.
     </ModOps>
     ```
 
-Available attributes: [`Condition`](#condition), [`Skip`](#skip), [`MaxRepeat`](#loop)
+Available attributes: [`Condition`](#condition), [`Skip`](#skip), [`MaxRepeat`](#loop-condition)
 
 ## Include
 
@@ -121,7 +121,7 @@ Conditions can be used with all ModOps: `ModOp`, `Group`, `Include` and `Asset`.
 
     On the other hand, the positive condition skips the ModOp without any warning in the same situation.
 
-## Loop
+### Loop Condition
 
 {{a117r}}
 
@@ -131,11 +131,11 @@ The default `MaxRepeat=1` behaves like a normal `Group`.
 === ":material-pillar: 117"
     ```xml
     <Group Condition="@123/List/Item" MaxRepeat="10">
-      <!-- ..  -->
+      <!-- .. -->
     </Group>
     ```
 
-## ModID Condition
+### ModID Condition
 
 {{all}}
 
@@ -162,15 +162,28 @@ Use `LoadAfterIds` to ensure it's loaded before your mod.
     === ":material-pillar: 117"
         ```xml
         <Group Condition="#mod-a and not(#mod-b)">
-          <!-- ... -->
+          <!-- .. -->
+        </Group>
+        ```
+        ```xml
+        <Group Condition="#mod-a or #mod-b">
+          <!-- .. -->
         </Group>
         ```
     === ":material-animation-outline: 117 & 1800"
         ```xml
         <Group Condition="#mod-a">
           <Group Condition="!#mod-b">
-            <!-- ... -->
+            <!-- .. -->
           </Group>
+        </Group>
+        ```
+        ```xml
+        <Group Condition="#mod-a">
+          <!-- .. -->
+        </Group>
+        <Group Condition="#mod-b">
+          <!-- repeat -->
         </Group>
         ```
 
