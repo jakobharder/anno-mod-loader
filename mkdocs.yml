@@ -34,14 +34,27 @@ nav:
 theme:
   name: material
   palette:
+  # Palette toggle for automatic mode
+  - media: "(prefers-color-scheme)"
+    toggle:
+      icon: material/link
+      name: Switch to light mode
+
+  # Palette toggle for light mode
   - media: "(prefers-color-scheme: light)"
     scheme: default
-    primary: indigo
-    accent: indigo
+    primary: blue grey
+    toggle:
+      icon: material/toggle-switch
+      name: Switch to dark mode
+
+  # Palette toggle for dark mode
   - media: "(prefers-color-scheme: dark)"
     scheme: slate
-    primary: indigo
-    accent: indigo
+    primary: blue grey
+    toggle:
+      icon: material/toggle-switch-off-outline
+      name: Switch to system preference
   features:
     - navigation.sections
     - content.code.copy
