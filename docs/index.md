@@ -39,7 +39,7 @@ Read the [full list of changes](./changes-117.md).
 ## Create Mods
 
 <div class="grid cards" markdown>
--   [__File Structure__](./file-structure.md.md)
+-   [__File Structure__](./file-structure.md)
 -   [__Modinfo__](./modinfo.md)
 -   [__Loading Order__](./loading-order.md)
 </div>
