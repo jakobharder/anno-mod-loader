@@ -47,9 +47,9 @@
 
 - [Short ModOps](./modops/index.md#choose-type) (1)
 - [Asset](./modops/basics.md#asset) - Add without ModOp (2)
-- [Mod Profiles](./profiles.md) - The game loads mod activations from `<user>/Anno 117/active-profile.txt`.
-- [ModOps Property](./new-features-117.md#property-lookup) - Property Lookup
-- [ModOps MaxRepeat](./new-features-117.md#property-lookup) - Use `Group` with `Condition` for loops.
+- [Mod Profiles](./profiles.md) (3)
+- [Property Lookup](./modops/index.md#lookup-helper) (4)
+- [Loop Groups with MaxRepeat](./modops/control.md#loop-condition) - Use `Group` with `Condition` for loops.
 - [InfoTips](./infotips.md#select-infotip) - GUID Lookup
 - [XPath Functions](./new-features-117.md#xpath) - XPath functions like `number()` and `count()` can be used.
 - [ModID as XPath Variable](./modops/control.md#modid-condition) - Do things like `#mod-a and not(#mod-b)`.
@@ -101,6 +101,29 @@
             </Asset>
           </ModOp>
         </ModOps>
+        ```
+
+3.  The game loads mod activations from a text file at `<user>/Anno 117/active-profile.txt`.
+
+4.  New lookup helper to select properties.
+
+    === ":material-pillar: 117"
+        ```xml hl_lines="1"
+        <ModOp Property="ModuleOwner"
+               Merge=".[FarmType='PlantFarm']">
+          <ModuleOwner>
+            <ModuleBuildRadius>20</ModuleBuildRadius>
+          </ModuleOwner>
+        </ModOp>
+        ```
+    === ":material-animation-outline: 117 & 1800"
+        ```xml hl_lines="1"
+        <ModOp Type="merge"
+               Path="//ModuleOwner/[FarmType='PlantFarm']">
+          <ModuleOwner>
+            <ModuleBuildRadius>20</ModuleBuildRadius>
+          </ModuleOwner>
+        </ModOp>
         ```
 
 ## Extra Notes

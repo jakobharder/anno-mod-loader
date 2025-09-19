@@ -57,6 +57,9 @@ File | Description
 
 Mods can contain mods.
 
+Nested mods don't have their own activation.
+They are always enabled or disabled together with their parent mod.
+
 ```shell hl_lines="3"
 ├─ data/
 ├─ modinfo.json

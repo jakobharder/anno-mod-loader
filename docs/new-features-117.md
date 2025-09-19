@@ -5,44 +5,6 @@
 
 ## ModOp Basics
 
-### ModOp Types
-
-Short | Legacy | Comment
---- | --- | ---
-`Asset`|  |Similar to `addNextSibling` + `GUID` without `Path`.
-`Add`|`Type="add"`|unchanged
-`Append`|`Type="addNextSibling"`|unchanged
-`Prepend`|`Type="addPrevSibling"`|unchanged
-`Merge`|`Type="merge"`|Includes improved flags and list handling.
-`Replace`|`Type="replace`|unchanged
-`Remove`|`Type="remove"`|unchanged
-
-### Property Lookup
-
-You can use a property name for faster lookup and more readable code.
-It will select `Values/<Property>/` of all assets containing that property.
-
-Note: this will not select assets, that have the property in `templates.xml` but not in `assets.xml` or only in their base asset.
-
-=== ":material-pillar: 117"
-    ```xml
-    <ModOp Property="ModuleOwner" Merge=".[FarmType='PlantFarm']">
-      <ModuleOwner>
-        <ModuleBuildRadius>20</ModuleBuildRadius>
-      </ModuleOwner>
-    </ModOp>
-    ```
-=== ":material-animation-outline: 117 & 1800"
-    ```xml
-    <ModOp Type="merge" Path="//ModuleOwner/[FarmType='PlantFarm']">
-      <ModuleOwner>
-        <ModuleBuildRadius>20</ModuleBuildRadius>
-      </ModuleOwner>
-    </ModOp>
-    ```
-
-!!! note "Intended for future performance optimizations"
-
 ## ModOp Paths
 
 ### XPath

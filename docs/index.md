@@ -5,7 +5,7 @@
 <div class="annotate" markdown>
 -   [Changed Paths](./file-structure.md#basic-file-structure) - Paths to `assets.xml` and others have changed. (1)
 -   [Modinfo](./modinfo.md#mandatory-fields) - Only mods with game version `8` are loaded. (2)
--   No changes to [GUID Ranges](#safe-ranges) (3) or [Mod Folders](./install.md#mod-folders). (4)
+-   No changes to [GUID Ranges](./changes-117.md#safe-ranges) (3) or [Mod Folders](./install.md#mod-folders). (4)
 </div>
 
 1.  Most base game files are also under `data/base` now.

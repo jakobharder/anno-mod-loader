@@ -1,28 +1,24 @@
 # Get Started with ModOps
 
-## Select a Target
+## ModOps
 
-Look up and select the XML node you want to edit with XPath using the `Path` attribute.
-
-```xml
-<ModOp Path="/Templates/Group[Name='Objects']/Template">
-```
-
-For the assets file, you can also use the `GUID` attribute.
+A `ModOp` is a single patch operation that is done when the game loads its game data.
+It can modify, remove or add to a file.
 
 ```xml
-<!-- standard XPath way -->
-<ModOp Path="//Asset[Values/Standard/GUID='1137']/Values/Standard/Name">
-
-<!-- with GUID helper -->
-<ModOp GUID="1337" Path="/Values/Standard/Name">
+<ModOp Type="Replace"
+       Path="/Path/To/Node">
+  <!-- content -->
+</ModOp>
 ```
 
-!!! info "XPath can be quite powerful. Checkout the [XPath Cheatsheet](https://devhints.io/xpath) to learn more."
+The `Type` defines the kind of operation like replace, remove or add.
+
+The `Path` defines the target node or nodes of the operation.
 
 ## Choose Type
 
-Specify the type of modification:
+The modification type can be specified in two ways:
 
 - Short: type as path attribute `<type>="<path>"` {{a117}}
 - Legacy: extra type attribute `Type="<type>" Path="<path>"` {{all}}
@@ -94,3 +90,57 @@ Specify the type of modification:
               <Template>Icon</Template>
             </ModOp>
             ```
+
+## Select a Target
+
+Look up and select the XML node you want to edit with XPath using the `Path` attribute.
+
+```xml
+<ModOp Path="/Templates/Group[Name='Objects']/Template">
+```
+
+!!! info "XPath can be quite powerful. Checkout the [XPath Cheatsheet](https://devhints.io/xpath) to learn more."
+
+## Lookup Helper
+
+Lookup helper simplify the selection path with common patterns.
+They make the code more readable, and also improve loading speed.
+
+For the assets file, you can also use the `GUID` attribute for example.
+
+```xml
+<!-- standard XPath way -->
+<ModOp Path="//Asset[Values/Standard/GUID='1137']/Values/Standard/Name">
+
+<!-- same with GUID helper -->
+<ModOp GUID="1337" Path="/Values/Standard/Name">
+```
+
+Lookup | Files | XPath Equivalent
+--- | --- | ---
+`GUID` | Assets (`assets.xml`) | `//Asset[Values/Standard/GUID='<guid>']`
+`Property` | Assets (`assets.xml`) | `//Values/<property>` {{a117}}
+`GUID` | InfoTips (`export.bin`) | `//InfoTipData[Guid='<guid>']` {{a117}}
+`Template` | Templates (`templates.xml`) | `//Template[Name='template']`
+
+### Property Lookup
+
+=== ":material-pillar: 117"
+    ```xml hl_lines="1"
+    <ModOp Property="ModuleOwner" Merge=".[FarmType='PlantFarm']">
+      <ModuleOwner>
+        <ModuleBuildRadius>20</ModuleBuildRadius>
+      </ModuleOwner>
+    </ModOp>
+    ```
+=== ":material-animation-outline: 117 & 1800"
+    ```xml hl_lines="1"
+    <ModOp Type="merge" Path="//ModuleOwner/[FarmType='PlantFarm']">
+      <ModuleOwner>
+        <ModuleBuildRadius>20</ModuleBuildRadius>
+      </ModuleOwner>
+    </ModOp>
+    ```
+
+??? info "Only selects assets with the property in `assets.xml`"
+    The lookup does not select assets without that property in `assets.xml`, even if it is part of their template or base asset."

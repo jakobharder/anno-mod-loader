@@ -121,7 +121,7 @@ Conditions can be used with all ModOps: `ModOp`, `Group`, `Include` and `Asset`.
 
     On the other hand, the positive condition skips the ModOp without any warning in the same situation.
 
-### Loop Condition
+## Loop Condition
 
 {{a117r}}
 
@@ -135,7 +135,7 @@ The default `MaxRepeat=1` behaves like a normal `Group`.
     </Group>
     ```
 
-### ModID Condition
+## ModID Condition
 
 {{all}}
 

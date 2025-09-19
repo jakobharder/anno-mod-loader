@@ -6,16 +6,17 @@ plugins:
   - macros
 
 nav:
-  - Overview: index.md
-  #- "Changes in 117":
-  - Important Changes: changes-117.md
-  - New Features: new-features-117.md
+  - Home:
+    - Overview: index.md
+    - Anno 117 Changes: changes-117.md
+    - New Features: new-features-117.md
   - Create Mods:
-    - File Structure: file-structure.md
-    - Modinfo: modinfo.md
-    - Loading Order: loading-order.md
+    - General:
+      - File Structure: file-structure.md
+      - Modinfo: modinfo.md
+      - Loading Order: loading-order.md
     - XML Patches:
-      - modops/index.md
+      - Get Started: modops/index.md
       - Basic Types: modops/basics.md
       - Groups and Conditions: modops/control.md
       - Dynamic Content: modops/content.md
@@ -33,6 +34,8 @@ nav:
 
 theme:
   name: material
+  logo: images/logo.svg
+  favicon: images/logo.png
   palette:
   # Palette toggle for automatic mode
   - media: "(prefers-color-scheme)"
@@ -56,13 +59,14 @@ theme:
       icon: material/toggle-switch-off-outline
       name: Switch to system preference
   features:
-    - navigation.sections
+    - content.code.annotate
     - content.code.copy
     - content.tooltips
-    - navigation.footer
     - header.autohide
-    - navigation.indexes
+    - navigation.footer
+    - navigation.sections
     # - navigation.tabs
+    # - toc.integrate
 
 markdown_extensions:
   - admonition
@@ -84,12 +88,15 @@ markdown_extensions:
   - tables
   - toc:
       permalink: true
+      toc_depth: 2
 
 extra_css:
   - stylesheets/extra.css
 
 extra:
-    all: '<span class="version-tag" title="Available in all supported Annos">:material-animation-outline: 117 & 1800</span>'
-    a1800: '<span class="version-tag" title="Only available in Anno 1800">:material-factory: 1800</span>'
-    a117: '<span class="version-tag" title="Only available in Anno 117">:material-pillar: 117</span>'
-    a117r: '<span class="version-tag" title="Only available in Anno 117">:material-pillar: 117 (not in demo)</span>'
+  all: '<span class="version-tag" title="Available in all supported Annos">:material-animation-outline: 117 & 1800</span>'
+  a1800: '<span class="version-tag" title="Only available in Anno 1800">:material-factory: 1800</span>'
+  a117: '<span class="version-tag" title="Only available in Anno 117">:material-pillar: 117</span>'
+  a117r: '<span class="version-tag" title="Only available in Anno 117">:material-pillar: 117 (not in demo)</span>'
+  annotate:
+    xml:  [.na, .s, .s2]
