@@ -9,7 +9,6 @@ nav:
   - Home:
     - Overview: index.md
     - Anno 117 Changes: changes-117.md
-    - New Features: new-features-117.md
   - Create Mods:
     - General:
       - File Structure: file-structure.md

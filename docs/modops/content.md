@@ -148,17 +148,58 @@ Similarily use `Remove` to remove flags.
 
 {{a117}}
 
+`<ModValue Insert/>` and `<ModOp Content/>` support XPath 1.0 functions.
+
+For example use `number()` to add to a number instead of replacing it.
+
+=== ":material-pillar: 117"
+    ```xml
+    <ModOp GUID="1010343"
+      Replace="Residence7/ResidentMax"
+      Content="number(Residence7/ResidentMax) + 2">
+      <ResidentMax><ModOpContent /></ResidentMax>
+    </ModOp>
+    ```
+
+=== ":material-animation-outline: 117 & 1800 ⚠️"
+    ```xml
+    <!-- number table -->
+    <ModOp Type="add" GUID="1010343" Path="/Values">
+      <Number>1</Number>
+      <!-- ... -->
+      <Number>100</Number>
+    </ModOp>
+    <!-- add your value and pick from the table -->
+    <ModOp Type="replace" GUID="1010343"
+      Path="/Values/Residence7/ResidentMax"
+      Content="~/Values/Number[number(../Residence7/ResidentMax) + 2]/text()">
+      <ResidentMax><ModOpContent /></ResidentMax>
+    </ModOp>
+    <!-- remove table -->
+    <ModOp Type="remove" GUID="1010343" Path="/Values/Number" />
+    ```
+
+More examples with `ModValue`.
+
 === ":material-pillar: 117"
     ```xml
     <!-- addition -->
     <ModOp Property="Maintenance" Merge="Workforce">
-      <Workforce><ModValue Insert="number(self::node()) + 10" /></Workforce>
+      <Workforce><ModValue Insert="self::node() + 10" /><!-- (1)! --></Workforce>
     </ModOp>
 
     <!-- division -->
     <ModOp Property="Storage" Merge="Amount">
-      <Amount><ModValue Insert="(number(self::node()) - number(self::node()) mod 2) div 2" /></Amount>
+      <Amount><ModValue Insert="round(self::node() div 2)" /><!-- (2)! --></Amount>
     </ModOp>
     ```
 
-Available operators: `+`, `-`, `*`, `div`, `mod`
+    1.  Or shorter: `Insert=". + 10"`.
+
+    2.  Make sure to round to full numbers.
+
+Available operators: `+`, `-`, `*`, `div`, `mod`.
+
+Available calculation related XPath functions: `number()`, `count()`, `position()`, `round()`.
+
+!!! info "Checkout the [XPath Cheatsheet](https://devhints.io/xpath) to learn more about XPath."

@@ -144,3 +144,9 @@ Lookup | Files | XPath Equivalent
 
 ??? info "Only selects assets with the property in `assets.xml`"
     The lookup does not select assets without that property in `assets.xml`, even if it is part of their template or base asset."
+
+??? info "`.` shortcut for `self::node()`"
+    The use of `.[Condition]` is supported at the beginning of a `Path`, e.g. `Property="ModuleOwner" Merge=".[FarmType='PlantFarm']"`.
+
+    The usage of `.` before brackets is not allowed in XPath 1.0 but in XPath 2.0.
+    The modloader supports it by replacing it with `self::node()[Condition]`.

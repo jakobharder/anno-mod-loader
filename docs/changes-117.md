@@ -46,16 +46,14 @@
 <div class="annotate" markdown>
 
 - [Short ModOps](./modops/index.md#choose-type) (1)
-- [Asset](./modops/basics.md#asset) - Add without ModOp (2)
+- [Add Asset without a ModOp](./modops/basics.md#asset) (2)
 - [Mod Profiles](./profiles.md) (3)
-- [Property Lookup](./modops/index.md#lookup-helper) (4)
-- [Loop Groups with MaxRepeat](./modops/control.md#loop-condition) - Use `Group` with `Condition` for loops.
-- [InfoTips](./infotips.md#select-infotip) - GUID Lookup
-- [XPath Functions](./new-features-117.md#xpath) - XPath functions like `number()` and `count()` can be used.
-- [ModID as XPath Variable](./modops/control.md#modid-condition) - Do things like `#mod-a and not(#mod-b)`.
+- Lookups for [Property in Assets](./modops/index.md#lookup-helper) (4) and [GUID in InfoTips](./infotips.md#select-infotip) (5)
+- [Loop Groups with MaxRepeat](./modops/control.md#loop-condition)
+- XPath [Functions](./new-features-117.md#xpath) (6) and [ModID Variables](./modops/control.md#modid-condition) (7)
 - [Inline ModOps](./modops/content.md) - Merge enums, insert local content and other `Content` improvements.
 - [ModItem](./modops/lists.md) - More control over merging items and lists with items.
-- [Lua Scripts](./lua-scripts.md) - Script support
+- [Lua Scripts](./lua-scripts.md)
 
 </div>
 
@@ -108,7 +106,7 @@
 4.  New lookup helper to select properties.
 
     === ":material-pillar: 117"
-        ```xml hl_lines="1"
+        ```xml
         <ModOp Property="ModuleOwner"
                Merge=".[FarmType='PlantFarm']">
           <ModuleOwner>
@@ -117,13 +115,54 @@
         </ModOp>
         ```
     === ":material-animation-outline: 117 & 1800"
-        ```xml hl_lines="1"
+        ```xml
         <ModOp Type="merge"
                Path="//ModuleOwner/[FarmType='PlantFarm']">
           <ModuleOwner>
             <ModuleBuildRadius>20</ModuleBuildRadius>
           </ModuleOwner>
         </ModOp>
+        ```
+
+5.  New lookup helper to select InfoTips.
+
+    === ":material-pillar: 117"
+        ```xml
+        <ModOp GUID="500934" Add="">
+          <!-- .. -->
+        </ModOp>
+        ```
+    === ":material-at: 117"
+        ```xml
+        <ModOp Add="@500934">
+          <!-- .. -->
+        </ModOp>
+        ```
+    === ":material-animation-outline: 117 & 1800"
+        ```xml
+        <ModOp Type="add" Path="//InfoTipData[Guid='500934']">
+          <!-- .. -->
+        </ModOp>
+        ```
+
+
+6.  `<ModValue Insert/>` and `<ModOp Content/>` fully support XPath 1.0 functions.
+
+    === ":material-pillar: 117"
+        ```xml
+        <ModOp Property="Maintenance" Merge="Workforce">
+          <Workforce><ModValue
+            Insert="self::node() + 10" /></Workforce>
+        </ModOp>
+        ```
+
+7.  Evaluate mod IDs with XPath operators like `and` and `or`.
+
+    === ":material-pillar: 117"
+        ```xml
+        <Group Condition="#mod-a or #mod-b">
+          <!-- .. -->
+        </Group>
         ```
 
 ## Extra Notes
