@@ -1,35 +1,77 @@
 # Mod Loading order
 
-You can specificy `LoadAfterIds` in `modinfo.json` now to load your mod after another.
+## Two Phases
 
-No warning will printed if the mentioned mod is not available.
-Use `ModDependencies` to signal required mods.
+Mods are loaded depending on their [ModInfo](./modinfo.md#dependencies) in two phases.
 
-```json
-{
-  "ModID": "ModC",
-  "LoadAfterIds": [
-    "ModA",
-    "ModB"
-  ]
-}
+``` mermaid
+graph LR
+  A[Normal Phase] --> C;
+  C[Late Phase];
 ```
 
-```json
-{
-  "ModID": "PostB",
-  "LoadAfterIds": [
-    "*",
-    "PostA"
-  ]
-}
-```
+## Load After Dependency
 
-The order is as follows:
-1. Mods with `LoadAfterIds` but without `*` following the order. Alphabetically order is ignored.
-2. Mods without `LoadAfterIds` loaded alphabetically.
-3. Mods with `*` loaded in order of `LoadAfterIds`.
+Within a phase mods are ordered by their `LoadAfter` entry.
 
-A mod without a `*` cannot load after a mod with a `*`.
+Mods specified in `LoadAfter` in `modinfo.json` are loaded before.
+Circular dependencies result in undefined order.
 
-Note: Step 2 ensures previous behavior as long as there's no `LoadAfterIds`.
+??? info "No warning is printed if the mentioned mod is not available."
+    Use [`Dependencies.Require`](./modinfo.md#dependencies) {{a117}} or [`ModDependencies`](./modinfo.md#dependencies) {{a1800}} to mark a mod as required.
+
+=== ":material-pillar: 117"
+    ```json title="modinfo.json"
+    {
+      "ModID": "mod-c",
+      "Dependencies": {
+        "LoadAfter": [
+          "mod-a",
+          "mod-b"
+        ]
+      }
+    }
+    ```
+=== ":material-factory: 1800"
+    ```json title="modinfo.json"
+    {
+      "ModID": "mod-c",
+      "LoadAfterIds": [
+        "mod-a",
+        "mod-b"
+      ]
+    }
+    ```
+
+??? warning "Do not rely on alphabetical loading behavior."
+    In order to keep some compatibilty with mods created before the introduction of mod dependencies, mods without dependency information are loaded alphabetically.
+
+    But this is unpredictable, because as soon as another mod depends on it, it will not be alphabetical anymore.
+
+## Late Phase
+
+??? info "Only late phase mods can depend on other late phase mods."
+    A mod without a `*` cannot load after a mod with a `*`.
+
+=== ":material-pillar: 117"
+    ```json
+    {
+      "ModID": "post-b",
+      "Dependencies": {
+        "LoadAfterIds": [
+          "*",
+          "post-a"
+        ]
+      }
+    }
+    ```
+=== ":material-factory: 1800"
+    ```json
+    {
+      "ModID": "post-b",
+      "LoadAfterIds": [
+        "*",
+        "post-a"
+      ]
+    }
+    ```

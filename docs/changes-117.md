@@ -49,9 +49,9 @@
 - [Add Asset without a ModOp](./modops/basics.md#asset) (2)
 - [Mod Profiles](./profiles.md) (3)
 - Lookups for [Property in Assets](./modops/index.md#lookup-helper) (4) and [GUID in InfoTips](./infotips.md#select-infotip) (5)
-- [Loop Groups with MaxRepeat](./modops/control.md#loop-condition)
-- XPath [Functions](./new-features-117.md#xpath) (6) and [ModID Variables](./modops/control.md#modid-condition) (7)
-- [Inline ModOps](./modops/content.md) - Merge enums, insert local content and other `Content` improvements.
+- [Loop Groups with MaxRepeat](./modops/control.md#loop-condition) (6)
+- XPath [Functions](./modops/content.md#insert-calculations) (7) and [ModID Variables](./modops/control.md#modid-condition) (8)
+- [Inline ModOps](./modops/content.md) - Merge enums (9), insert local content (10) and other `Content` improvements.
 - [ModItem](./modops/lists.md) - More control over merging items and lists with items.
 - [Lua Scripts](./lua-scripts.md)
 
@@ -145,8 +145,16 @@
         </ModOp>
         ```
 
+8. Repeat until `Condition` doesn't match anymore with setting `MaxRepeat`.
 
-6.  `<ModValue Insert/>` and `<ModOp Content/>` fully support XPath 1.0 functions.
+    === ":material-pillar: 117"
+        ```xml
+        <Group Condition="@123/List/Item" MaxRepeat="10">
+          <!-- .. -->
+        </Group>
+        ```
+
+7.  `<ModValue Insert/>` and `<ModOp Content/>` fully support XPath 1.0 functions.
 
     === ":material-pillar: 117"
         ```xml
@@ -156,7 +164,7 @@
         </ModOp>
         ```
 
-7.  Evaluate mod IDs with XPath operators like `and` and `or`.
+8.  Evaluate mod IDs with XPath operators like `and` and `or`.
 
     === ":material-pillar: 117"
         ```xml
@@ -164,6 +172,10 @@
           <!-- .. -->
         </Group>
         ```
+
+9. Use `<ModValue Merge="Your;Flags" />` to insert one or more flags if not already present, instead of overwriting the existing flags value.
+
+10. Use `<ModValue Insert="<local path>" />` to copy data from a local path without specifying `GUID`.
 
 ## Extra Notes
 

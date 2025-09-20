@@ -69,7 +69,7 @@ Field | Description
 {{all}}
 
 === ":material-pillar: 117"
-    ```json
+    ```json title="modinfo.json"
     {
       // ..
       "Dependencies": {
@@ -86,12 +86,12 @@ Field | Description
     |---|---
     |`Require`|List mods and DLCs that are required to use this mod.<br/>Missing dependencies result in log warning.
     |`Optional`|List mods and DLCs that enable further content in this mod.
-    |`LoadAfter`|List mods to load before this mod.
+    |`LoadAfter`|List mods to load before this mod.<br/>See also [loading order](./loading-order.md).
     |`Deprecate`|List mods that are replaced by this mod.<br/>A warning will be printed in the mod-loader.log. LoadAfter and Require will use the new ID.
     |`Incompatible`|List incompatible mods.<br/>Active incompatible mods result in log warning.
 
 === ":material-factory: 1800"
-    ```json
+    ```json title="modinfo.json"
     {
       // ..
       "ModDependencies": [],
@@ -106,7 +106,7 @@ Field | Description
     |---|---
     |`ModDependencies`|List mods that are required to use this mod.<br/>Missing dependencies result in log warning.
     |`OptionalDependencies`|List mods that enable further content in this mod.
-    |`LoadAfterIds`|List mods to load before this mod.
+    |`LoadAfterIds`|List mods to load before this mod.<br/>See also [loading order](./loading-order.md).
     |`DeprecateIds`|List mods that are replaced by this mod.
     |`IncompatibleIds`|List incompatible mods.<br/>Active incompatible mods result in log warning.
 
@@ -119,7 +119,7 @@ Infos used by Visual Studio Code plugin [Anno Modding Tools](https://marketplace
 These don't depend on the game version, but tool version.
 
 === ":material-animation-outline: Current"
-    ```json
+    ```json title="modinfo.json"
     {
       // ..
       "Development": {
@@ -136,7 +136,7 @@ These don't depend on the game version, but tool version.
     |`DeployPath`|Target path for mod deployment.
     |`Bundle`|List of mods that should be included as a sub mod.
 === ":material-close-octagon-outline: Deprecated"
-    ```json
+    ```json title="modinfo.json"
     {
       // ..
       "OptionalDependencies": [],
