@@ -27,7 +27,11 @@ Available attributes: [`Condition`](#condition), [`Skip`](#skip), [`MaxRepeat`](
 === ":material-animation-outline: 117 & 1800"
     ```xml
     <ModOps>
+      <!-- ModOps applied before the include -->
+
       <Include File="feature.include.xml" />
+
+      <!-- ModOps applied after the include -->
     </ModOps>
     ```
 

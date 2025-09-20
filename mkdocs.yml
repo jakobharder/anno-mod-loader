@@ -27,6 +27,7 @@ nav:
     - Lua Scripts: lua-scripts.md
   - Use Mods:
     - Install Mods: install.md
+    - Debug Mods: debug.md
     - Mod Profiles: profiles.md
   - External:
     - XPath Cheat Sheet: https://devhints.io/xpath

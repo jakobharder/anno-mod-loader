@@ -2,6 +2,8 @@
 
 ## Two Phases
 
+{{all}}
+
 Mods are loaded depending on their [ModInfo](./modinfo.md#dependencies) in two phases.
 
 ``` mermaid
@@ -11,6 +13,8 @@ graph LR
 ```
 
 ## Load After Dependency
+
+{{all}}
 
 Within a phase mods are ordered by their `LoadAfter` entry.
 
@@ -49,6 +53,8 @@ Circular dependencies result in undefined order.
     But this is unpredictable, because as soon as another mod depends on it, it will not be alphabetical anymore.
 
 ## Late Phase
+
+{{all}}
 
 ??? info "Only late phase mods can depend on other late phase mods."
     A mod without a `*` cannot load after a mod with a `*`.
