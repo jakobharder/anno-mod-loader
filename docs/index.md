@@ -66,6 +66,7 @@ Read the [full list of changes](./changes-117.md).
 
 <div class="grid cards" markdown>
 -   [__Install Mods__](./install.md)
+-   [__Debug Mods__](./debug.md)
 -   [__Mod Profiles__](./profiles.md)
 </div>
 

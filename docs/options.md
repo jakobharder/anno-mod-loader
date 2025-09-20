@@ -110,9 +110,12 @@ Option values can be used in `<ModValue Insert>` as values to insert.
       </Values>
     ```
 
-## Combined Example
+## Use in XPath Expressions
 
 {{a117}}
+
+Options act as XPath variables.
+They can be used in comparisons and [calculations](./modops/content.md#insert-calculations).
 
 This example uses the option value to compare in a condition, and only sets it when higher.
 
@@ -121,43 +124,54 @@ Also note that `mod-id` can be skipped if the variable comes from the same mod s
 === ":material-at: 117"
     ```xml
     <ModOps>
-      <ModOp GUID="123" Merge="Service/RangeOne"
-             Condition="Service/RangeOne &lt; $range">
+      <ModOp GUID="123" Merge="RangeOne"
+             Condition="RangeOne &lt; $range">
         <RangeOne><ModValue Insert="$range"/></RangeOne>
       </ModOp>
-      <ModOp GUID="123" Merge="Service/RangeTwo"
-             Condition="Service/RangeTwo &lt; $range">
+      <ModOp GUID="123" Merge="RangeTwo"
+             Condition="RangeTwo &lt; $range">
         <RangeTwo><ModValue Insert="$range"/></RangeTwo>
+      </ModOp>
+      <ModOp GUID="123" Merge="Amount">
+        <Amount><ModValue Insert="self::node() * $factor"/><!-- (2)! --></Amount>
       </ModOp>
     </ModOps>
     ```
+
+    1.  `$range` (10) is bigger than `RangeOne` (30). This ModOp is not applied.
+
+    2.  Read more about [calculations](./modops/content.md#insert-calculations).
 === ":material-cog-outline: Options"
     ```json
     {
       "mod-id": {
-        "range": "10"
+        "range": "10",
+        "factor": "2"
       }
     }
     ```
 === ":material-file-code-outline: Input"
-    ```xml hl_lines="5 6"
+    ```xml hl_lines="5-7"
       <Values>
         <Standard>
           <GUID>123</GUID>
         </Standard>
         <RangeOne>30</RangeOne>
         <RangeTwo>5</RangeTwo>
+        <Amount>3</Amount>
       </Values>
     ```
 === ":material-xml: Result"
-    ```diff hl_lines="5 6 7"
+    ```diff hl_lines="5-9"
       <Values>
         <Standard>
           <GUID>123</GUID>
         </Standard>
         <RangeOne>30</RangeOne>
     -   <RangeTwo>5</RangeTwo>
+    -   <Amount>3</Amount>
     +   <RangeTwo>10</RangeTwo>
+    +   <Amount>6</Amount>
       </Values>
     ```
 
