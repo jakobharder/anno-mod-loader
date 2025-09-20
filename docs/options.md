@@ -1,10 +1,11 @@
 # Options in Anno 117
 
-Options are comparable to iModYourAnno Tweaks.
+!!! note "Options are comparable to [iModYourAnno Tweaks](https://github.com/anno-mods/iModYourAnno/wiki/Setting-up-your-Mod-for-tweaking) in Anno 1800."
 
-Options can be defined in an external `options.jsonc` file.
-
+Options are values defined in a single file in the user documents.
 These options are accessible as `$mod-id.option-name` in XPath.
+
+Options allow a mod to be configured without changing any data in the mod folder making it more robust against updates.
 
 ## Options file
 
@@ -83,7 +84,9 @@ Option values can be used in `Condition` XPath.
 
 {{a117}}
 
-Option values can be used in `<ModValue Insert>` as values to insert.
+Option values can be used in `<ModValue Insert/>` as values to insert.
+
+<!-- --8<-- [start:use-as-value] -->
 
 === ":material-at: 117"
     ```xml hl_lines="2"
@@ -109,6 +112,8 @@ Option values can be used in `<ModValue Insert>` as values to insert.
     +   <PublicServiceRange>10</PublicServiceRange>
       </Values>
     ```
+
+<!-- --8<-- [end:use-as-value] -->
 
 ## Use in XPath Expressions
 

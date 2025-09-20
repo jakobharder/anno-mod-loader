@@ -203,3 +203,11 @@ Available operators: `+`, `-`, `*`, `div`, `mod`.
 Available calculation related XPath functions: `number()`, `count()`, `position()`, `round()`.
 
 !!! info "Checkout the [XPath Cheatsheet](https://devhints.io/xpath) to learn more about XPath."
+
+## Insert Options
+
+{{a117}}
+
+[Option values](../options.md) can be used in `<ModValue Insert/>` and `<ModOp Content/>` as values to insert.
+
+--8<-- "./options.md:use-as-value"
