@@ -5,7 +5,7 @@ A `modinfo.json` file is required in the top-level folder of your mod.
 !!! warning "Anno 117 mods and Anno 1800 mod.io mods won't load without a modinfo file."
 
 ??? tip "Auto-completion and Template in Visual Studio Code"
-    Use [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools) to get template, auto-completion and tooltips for `modinfo.json` files.
+    Use [Anno Modding Tools](https://anno-mods.github.io/vscode-anno/) to get template, auto-completion and tooltips for `modinfo.json` files.
 
     Ensure [anno.workspaceSchemas](vscode://settings/anno.workspaceSchemas) is enabled for auto-completion and tooltips.
 
@@ -114,7 +114,7 @@ Field | Description
 
 {{all}}
 
-Infos used by Visual Studio Code plugin [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools).
+Infos used by Visual Studio Code plugin [Anno Modding Tools](https://anno-mods.github.io/vscode-anno/).
 
 These don't depend on the game version, but tool version.
 
@@ -152,9 +152,9 @@ These don't depend on the game version, but tool version.
     |`bundle`|List of mods that should be included as a sub mod.
 
 ??? tip "Learn more about deploying mods."
-    The Visual Studio Code [modding tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools) can deploy your mods with automatic DDS generation, dependency downloads, etc.
+    The Visual Studio Code [modding tools](https://anno-mods.github.io/vscode-anno/) can deploy your mods with automatic DDS generation, dependency downloads, etc.
 
-    Check the [Build and Deploy](https://github.com/anno-mods/vscode-anno-modding-tools/blob/main/doc/utilities.md#build-and-deploy-mods) documentation.
+    Check the [Deploy Mods](https://anno-mods.github.io/vscode-anno/tools/deploy/) documentation.
 
 ## Localized Info
 

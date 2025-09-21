@@ -49,7 +49,7 @@ File | Description
 ??? tip "Templates in Visual Studio Code"
     Use a template to create the basic mod file structure with empty files.
 
-    Press key `F1` in [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools) and run `Anno: Create Mod from Template`.
+    Press ++f1++ in [Anno Modding Tools](https://anno-mods.github.io/vscode-anno/) and run `Anno: Create Mod from Template`.
 
 ## Nested Mods
 

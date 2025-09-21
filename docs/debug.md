@@ -19,8 +19,8 @@ It will simulate what the game will load.
 xmltest.exe c:\anno\all-rda\assets.xml patch.xml
 ```
 
-??? tip "Use [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools) for testing."
+??? tip "Use [Anno Modding Tools](https://anno-mods.github.io/vscode-anno/) for testing."
 
-    The plugin does [syntax and error checking](https://github.com/anno-mods/vscode-anno-modding-tools/blob/HEAD/doc/error-checking.md).
+    The plugin does [syntax and error checking](https://anno-mods.github.io/vscode-anno/editing/analysis/).
 
-    It also has commands to [show diffs](https://github.com/anno-mods/vscode-anno-modding-tools/blob/HEAD/doc/utilities.md#show-diff) of full mods, single files or selections.
+    It also has commands to [show diffs](https://anno-mods.github.io/vscode-anno/editing/analysis/) of full mods, single files or selections.

@@ -34,7 +34,7 @@
 Read the [full list of changes](./changes-117.md).
 
 ??? tip "Templates in Visual Studio Code"
-    Press ++f1++ in [Anno Modding Tools](https://marketplace.visualstudio.com/items?itemName=JakobHarder.anno-modding-tools) and run `Anno: Create Mod from Template` to generate a template.
+    Press ++f1++ in [Anno Modding Tools](https://anno-mods.github.io/vscode-anno/) and run `Anno: Create Mod from Template` to generate a template.
 
 ## Create Mods
 
