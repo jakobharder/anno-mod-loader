@@ -48,6 +48,7 @@
 - [Short ModOps](./modops/index.md#choose-type) (1)
 - [Add Asset without a ModOp](./modops/basics.md#asset) (2)
 - [Mod Profiles](./profiles.md) (3)
+- [Options](./options.md)
 - Lookups for [Property in Assets](./modops/index.md#lookup-helper) (4) and [GUID in InfoTips](./infotips.md#select-infotip) (5)
 - [Loop Groups with MaxRepeat](./modops/control.md#loop-condition) (6)
 - XPath [Functions](./modops/content.md#insert-calculations) (7) and [ModID Variables](./modops/control.md#modid-condition) (8)

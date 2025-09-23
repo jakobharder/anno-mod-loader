@@ -9,12 +9,12 @@ Options allow a mod to be configured without changing any data in the mod folder
 
 ## Options file
 
-{{a117}}
+{{a117r}}
 
-The `options.jsonc` file is read from the `mods/` folder with the following format:
+The `active-options.jsonc` file is read from the `mods/` folder with the following format:
 
 === ":material-pillar: 117"
-    ```json title="options.jsonc"
+    ```json title="active-options.jsonc"
     {
       "mod-id": {
         "range": "10",
@@ -23,7 +23,7 @@ The `options.jsonc` file is read from the `mods/` folder with the following form
     }
     ```
 
-!!! info "Future versions will generate the options.json from default values, but for now you have to create it yourself."
+!!! info "Future versions will generate the `active-options.jsonc` from default values, but for now you have to create it yourself."
 
 The `modinfo.json` file contains defaults:
 
@@ -31,7 +31,7 @@ The `modinfo.json` file contains defaults:
     ```json title="modinfo.json"
     {
       // ..
-      "options": {
+      "Options": {
         "range": {
           "default": "10"
         },
@@ -47,7 +47,7 @@ The `modinfo.json` file contains defaults:
 
 ## Use as Condition
 
-{{a117}}
+{{a117r}}
 
 Option values can be used in `Condition` XPath.
 
@@ -82,7 +82,7 @@ Option values can be used in `Condition` XPath.
 
 ## Use As Value
 
-{{a117}}
+{{a117r}}
 
 Option values can be used in `<ModValue Insert/>` as values to insert.
 
@@ -117,7 +117,7 @@ Option values can be used in `<ModValue Insert/>` as values to insert.
 
 ## Use in XPath Expressions
 
-{{a117}}
+{{a117r}}
 
 Options act as XPath variables.
 They can be used in comparisons and [calculations](./modops/content.md#insert-calculations).
@@ -184,7 +184,7 @@ Also note that `mod-id` can be skipped if the variable comes from the same mod s
 
 ## Additional Modinfos
 
-{{a117}}
+{{a117r}}
 
 Specify user customizable options of a mod (like iModYourAnno tweaks) in `modinfo.json`:
 
@@ -192,7 +192,7 @@ Specify user customizable options of a mod (like iModYourAnno tweaks) in `modinf
     ```json
     {
       // ..
-      "options": {
+      "Options": {
         "range": {
           "label": "Electricity Range",
           "type": "enum",
@@ -210,5 +210,5 @@ Specify user customizable options of a mod (like iModYourAnno tweaks) in `modinf
     ```
 
 !!! info "Only `default` is relevant for the actual mod loading process"
-    The rest is information for valid values and descriptions to be used by mod managers modifying the user values in `options.json`.
+    The rest is information for valid values and descriptions to be used by mod managers modifying the user values in `active-options.jsonc`.
 
