@@ -356,7 +356,7 @@ void XmlLookup::ReadPath(std::string prop_path,
 
     if (temp.empty()) {
         char g[256];
-        if (sscanf(prop_path.c_str(), "//Template[Name='%s']", g) > 0) {
+        if (sscanf(prop_path.c_str(), "//Template[Name='%255[^']']", g) == 1) {
             if (std::string("//Template[Name='" + std::string(g) + "']") == prop_path) {
                 temp                   = g;
                 template_              = g;
