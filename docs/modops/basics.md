@@ -512,7 +512,7 @@ A common situation is when you want to insert an item at a specific position.
 
     See also [Item Lists](./lists.md) for more details.
 
-??? tip "Use `Asset` to add full assets. {{a117r}}"
+??? tip "Use `Asset` to add full assets. {{a117}}"
     Directly drop assets into your file without `ModOp`.
     The order of `BaseAssetGUID` is automatically handled.
 
@@ -610,7 +610,7 @@ Prepend works the same as `Append` except that it adds the content before the se
 
 ## Asset
 
-{{a117r}}
+{{a117}}
 
 The fastest way to add assets is to directly drop them into your file without using a `ModOp` at all.
 The order of `BaseAssetGUID` is automatically handled.
@@ -628,6 +628,16 @@ The order of `BaseAssetGUID` is automatically handled.
       </Asset>
     </ModOps>
     ```
+
+    !!! warning "Required workaround in release version"
+
+        Due to an issue, the `Asset` ModOp only works if you copy this snippet once into your mod before using it.
+
+        ```xml
+        <!-- Asset ModOp workaround: use it once before you use asset modops -->
+        <ModOp Add="/AssetList/Groups[last()]"><Group><Assets /></Group></ModOp>
+        ```
+
 === ":material-animation-outline: 117 & 1800 ⚠️"
     ```xml
     <ModOps>

@@ -8,7 +8,7 @@ You can change the activation of a mod in the following ways:
 
 ## Profile File
 
-{{a117r}}
+{{a117}}
 
 Prefix an entry with `#` to disable it.
 

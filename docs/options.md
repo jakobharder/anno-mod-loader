@@ -9,7 +9,7 @@ Options allow a mod to be configured without changing any data in the mod folder
 
 ## Options file
 
-{{a117r}}
+{{a117}}
 
 The `active-options.jsonc` file is read from the `mods/` folder with the following format:
 
@@ -47,7 +47,7 @@ The `modinfo.json` file contains defaults:
 
 ## Use as Condition
 
-{{a117r}}
+{{a117}}
 
 Option values can be used in `Condition` XPath.
 
@@ -82,7 +82,7 @@ Option values can be used in `Condition` XPath.
 
 ## Use As Value
 
-{{a117r}}
+{{a117}}
 
 Option values can be used in `<ModValue Insert/>` as values to insert.
 
@@ -117,7 +117,7 @@ Option values can be used in `<ModValue Insert/>` as values to insert.
 
 ## Use in XPath Expressions
 
-{{a117r}}
+{{a117}}
 
 Options act as XPath variables.
 They can be used in comparisons and [calculations](./modops/content.md#insert-calculations).
@@ -184,7 +184,7 @@ Also note that `mod-id` can be skipped if the variable comes from the same mod s
 
 ## Additional Modinfos
 
-{{a117r}}
+{{a117}}
 
 Specify user customizable options of a mod (like iModYourAnno tweaks) in `modinfo.json`:
 

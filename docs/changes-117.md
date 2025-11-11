@@ -76,7 +76,7 @@
         </ModOp>
         ```
 
-2.  {{a117r}}
+2.  {{a117}}
 
     Directly drop assets into your file without `ModOp`.
     The order of `BaseAssetGUID` is automatically handled.
@@ -100,6 +100,15 @@
             </Asset>
           </ModOp>
         </ModOps>
+        ```
+
+    !!! warning "Required workaround in release version"
+
+        Due to an issue, the `Asset` ModOp only works if you copy this snippet once into your mod before using it.
+
+        ```xml
+        <!-- Asset ModOp workaround: use it once before you use asset modops -->
+        <ModOp Add="/AssetList/Groups[last()]"><Group><Assets /></Group></ModOp>
         ```
 
 3.  The game loads mod activations from a text file at `<user>/Anno 117/active-profile.txt`.
