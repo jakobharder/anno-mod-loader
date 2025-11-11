@@ -9,4 +9,9 @@
       <Range><ModValue Insert='$other-mod.rangeB' /></Range>
     </Building>
   </ModOp>
+
+  <ModOp Merge="@2">
+    <Amount><ModValue Insert='self::node() * $multiplier'/></Amount>
+    <Amount2><ModValue Insert='self::node() * $multiplier2'/></Amount2>
+  </ModOp>
 </ModOps>

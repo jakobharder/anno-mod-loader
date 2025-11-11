@@ -11,6 +11,8 @@
       <Standard>
         <GUID>2</GUID>
       </Standard>
+      <Amount>1.2</Amount>
+      <Amount2>1.7</Amount2>
     </Values>
   </Asset>
 </Test>

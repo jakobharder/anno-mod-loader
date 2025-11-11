@@ -2,7 +2,9 @@
     "name": "Content Options",
     "options": {
         "test-mod.rangeA": "10",
-        "other-mod.rangeB": "12"
+        "other-mod.rangeB": "12",
+        "test-mod.multiplier": 1.5,
+        "test-mod.multiplier2": "1.5"
     },
     "expected": [
         "/Test/Asset/Values[Standard/GUID='1']/Building[Range='10']",
