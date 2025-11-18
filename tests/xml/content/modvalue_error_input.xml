@@ -22,6 +22,9 @@
             <Storage>
               <Amount>3</Amount>
             </Storage>
+            <Empty />
+            <Multi>Enum1;Enum4;Enum2</Multi>
+            <Multi2>Enum1;Enum4;Enum2</Multi2>
           </Values>
         </Asset>
       </Assets>

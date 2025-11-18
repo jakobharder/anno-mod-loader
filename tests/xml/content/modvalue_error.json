@@ -5,6 +5,8 @@
     "//Values[Standard/GUID='14']/Storage[Amount='3']",
     "//Values[Standard/GUID='15']/Storage[Amount='3']",
     "!//ModOpEval",
-    "!//ModOpTemp"
+    "!//ModOpTemp",
+    "//Values[Standard/GUID='15']/Multi[text()='Enum4;Enum5;Enum3']",
+    "//Values[Standard/GUID='15']/Multi2[text()='Enum4;Enum3;Enum5']"
   ]
 }
