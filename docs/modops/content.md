@@ -144,6 +144,27 @@ Similarily use `Remove` to remove flags.
     <!-- a generic remove was not possible -->
     ```
 
+??? tip "Merge multiple flags at once"
+    `<ModValue />` with `Merge` and `Remove` can be used multiple times in any order.
+
+    === ":material-pillar: 117"
+        ```xml
+        <ModOp GUID="6626" Merge="Region/AllowedWeather">
+          <AllowedWeather>
+            <ModValue Remove="Rain;Snow" />
+            <ModValue Merge="Custom" />
+            <ModValue Remove="SnowRain" />
+          </AllowedWeather>
+        </ModOp>
+        ```
+    === ":material-xml: Result"
+        ```diff hl_lines="2-3"
+          <Region>
+        -   <AllowedWeather>Rain</AllowedWeather>
+        +   <AllowedWeather>Custom</AllowedWeather>
+          </Region>
+        ```
+
 ## Insert Calculations
 
 {{a117}}
