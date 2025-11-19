@@ -12,8 +12,12 @@ on:
 jobs:
   build-win:
     runs-on: windows-2022
+    defaults:
+      run:
+        shell: bash
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: "recursive"
 
@@ -22,23 +26,19 @@ jobs:
       - name: Build
         run: |
           bazel build //... -c opt
-          bazel build //cmd/xmltest:xmltest2 -c opt
 
       - name: Test
         run: bazel test //tests/xml:xml-tests -c opt
 
-      - name: Locate binary
-        run: bazel cquery --output=label_kind //cmd/xmltest:xmltest2
+      - name: Package
+        run: |
+          BIN_DIR=$(bazel info bazel-bin -c opt)
 
-      # - name: Package
-      #   run: |
-      #     tar -c -a -f xmltest.zip -C bazel-bin/cmd/xmltest *.exe
-
-      # - uses: actions/upload-artifact@v4
-      #   with:
-      #     name: package
-      #     path: |
-      #       xmltest.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: |
+            $BIN_DIR/cmd/xmltest/xmltest2.exe
 
   build-linux:
     runs-on: ubuntu-latest

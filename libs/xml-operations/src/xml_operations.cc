@@ -989,11 +989,12 @@ static void MergeFlags(pugi::xml_node node, const pugi::char_t* insert, bool rem
 
     for (const auto& insertFlag : insertFlags) {
         const auto iter = std::find(flags.begin(), flags.end(), insertFlag);
+        const auto found = iter != flags.end();
 
-        if (iter == flags.end() && !remove) {
+        if (!found && !remove) {
             flags.emplace_back(insertFlag);
         }
-        else if (remove) {
+        else if (found && remove) {
             flags.erase(iter);
         }
     }

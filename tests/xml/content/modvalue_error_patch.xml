@@ -5,4 +5,21 @@
   <ModOp Merge="@14/Storage">
     <Amount><ModValue Insert="../NoMatch" /></Amount>
   </ModOp>
+  <ModOp Merge="@15/Empty">
+    <Empty><ModValue Remove="Enum1" /></Empty>
+  </ModOp>
+  <ModOp Merge="@15/Multi">
+    <Multi>
+      <ModValue Merge="Enum5" />
+      <ModValue Remove="Enum2" />
+      <ModValue Remove="Enum1" />
+      <ModValue Merge="Enum3" />
+    </Multi>
+  </ModOp>
+  <ModOp Merge="@15/Multi2">
+    <Multi2>
+      <ModValue Remove="Enum2;Enum1" />
+      <ModValue Merge="Enum3;Enum5" />
+    </Multi2>
+  </ModOp>
 </ModOps>
