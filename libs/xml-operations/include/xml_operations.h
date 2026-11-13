@@ -88,12 +88,7 @@ public:
             pugi::xml_node wrapper_parent = {},
             std::optional<pugi::xml_node> temporary = {}) :
             wrapper_parent_(wrapper_parent), nodes_(nodes), temporary_(temporary) {};
-        ~Result()
-        {
-            if (temporary_ && wrapper_parent_) {
-                wrapper_parent_.remove_child(*temporary_);
-            }
-        };
+        void free();
 
         [[nodiscard]] bool IsEmpty() const { return nodes_.empty(); };
         [[nodiscard]] const pugi::xpath_node_set& Nodes() const { return nodes_; };
@@ -243,7 +238,7 @@ private:
     // Helpers
 
     /// @return false on no match found or parse errors
-    [[nodiscard]] bool FetchModOpContent(XmlLookup lookup,
+    [[nodiscard]] XmlLookup::Result FetchModOpContent(XmlLookup lookup,
         std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node> lookup_origin,
         std::optional<pugi::xml_object_range<pugi::xml_node_iterator>> wrapping_nodes,
         std::vector<pugi::xml_node>& output, std::optional<pugi::xml_node>& output_wrapper,
