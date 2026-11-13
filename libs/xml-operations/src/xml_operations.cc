@@ -156,6 +156,14 @@ XmlOperationContext::offset_data_t XmlOperationContext::BuildOffsetData(const ch
     return result;
 }
 
+void XmlLookup::Result::free()
+{
+    if (temporary_ && wrapper_parent_) {
+        wrapper_parent_.remove_child(*temporary_);
+        temporary_ = {};
+    }
+}
+
 XmlLookup::XmlLookup() { }
 
 XmlLookup::XmlLookup(const std::string& path,
@@ -813,13 +821,15 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
 
     std::optional<pugi::xml_node> wrapper;
     std::vector<pugi::xml_node> content_nodes;
+    XmlLookup::Result content_result;
     if (content_.IsEmpty() && nodes_) {
         content_nodes.insert(content_nodes.end(), nodes_->begin(), nodes_->end());
     }
-    else if (GetType() != XmlOperation::Type::Remove
-        && !content_.IsEmpty()
-        && !FetchModOpContent(content_, doc, {}, nodes_, content_nodes, wrapper, ".//ModOpContent")) {
-        return logTime(type_ == Type::Asset ? "Asset" : "ModOp");
+    else if (GetType() != XmlOperation::Type::Remove && !content_.IsEmpty()) {
+        content_result = FetchModOpContent(content_, doc, {}, nodes_, content_nodes, wrapper, ".//ModOpContent");
+        if (content_result.IsEmpty()) {
+            return logTime(type_ == Type::Asset ? "Asset" : "ModOp");
+        }
     }
 
     xmlops::XmlLookup::Result results;
@@ -829,6 +839,7 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
     }
     catch (const pugi::xpath_exception &e) {
         context_->Error("Failed to select path \"" + path_.GetPath() + "\": " + e.what());
+        content_result.free();
         if (wrapper) {
             doc->remove_child(*wrapper);
         }
@@ -842,6 +853,8 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
         else {
             context_->Warn("No matching node for Path \"" + path_.GetPath() + "\"", node_);
         }
+        results.free();
+        content_result.free();
         if (wrapper) {
             doc->remove_child(*wrapper);
         }
@@ -887,6 +900,9 @@ void XmlOperation::Apply(std::shared_ptr<pugi::xml_document> doc, XmlPatchType p
         doc->remove_child(*wrapper);
     }
     logTime(type_ == Type::Asset ? "Asset" : "ModOp");
+
+    results.free();
+    content_result.free();
 }
 
 std::vector<XmlOperation> XmlOperation::GetXmlOperations(
@@ -1048,8 +1064,11 @@ pugi::xml_node XmlOperation::ResolveModValue(std::shared_ptr<pugi::xml_document>
 
                 std::optional<pugi::xml_node> wrapper;
                 std::vector<pugi::xml_node> content_nodes;
+                auto content_result = FetchModOpContent(lookup, doc, game_node.parent(), game_node.children(),
+                    content_nodes, wrapper, ".//ModValueContent");
                 // TODO cached_node
-                if (!FetchModOpContent(lookup, doc, game_node.parent(), game_node.children(), content_nodes, wrapper, ".//ModValueContent")) {
+                if (content_result.IsEmpty()) {
+                    content_result.free();
                     return pugih::remove(game_node);
                 }
 
@@ -1076,6 +1095,7 @@ pugi::xml_node XmlOperation::ResolveModValue(std::shared_ptr<pugi::xml_document>
                     doc->remove_child(*wrapper);
                 }
 
+                content_result.free();
                 return pugih::remove(game_node);
             }
         }
@@ -1261,6 +1281,8 @@ void XmlOperation::ModOpAdd(std::shared_ptr<pugi::xml_document> doc,
                 auto result_node = pugih::copy_after(node, base_node.node());
                 ResolveModValue(doc, result_node, cached_node, patch_type);
             }
+
+            results.free();
         }
         else {
             auto result_node = game_node.append_copy(node);
@@ -1285,23 +1307,23 @@ void XmlOperation::ModOpMerge(std::shared_ptr<pugi::xml_document> doc,
     }
 }
 
-[[nodiscard]] bool XmlOperation::FetchModOpContent(XmlLookup lookup,
+[[nodiscard]] XmlLookup::Result XmlOperation::FetchModOpContent(XmlLookup lookup,
     std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node> lookup_origin,
     std::optional<pugi::xml_object_range<pugi::xml_node_iterator>> wrapping_nodes,
     std::vector<pugi::xml_node>& output, std::optional<pugi::xml_node>& output_wrapper,
-    const char* content_tag) {
-
+    const char* content_tag)
+{
     if (lookup.IsEmpty() || !content_tag) {
-        return false;
+        return XmlLookup::Result();
     }
 
     auto result = lookup.Select(doc, lookup_origin);
     if (result.IsEmpty()) {
         context_->Warn("Content \"" + lookup.GetPath() + "\" not found", node_); // TODO node_
-        return false;
+        return XmlLookup::Result();
     }
 
-    if (!wrapping_nodes || wrapping_nodes->begin() != wrapping_nodes->end()) {
+    if (wrapping_nodes && wrapping_nodes->begin() != wrapping_nodes->end()) {
         output_wrapper = doc->append_child("ModOpTemp");
         for (auto& node : result.Nodes()) {
             for (auto wrapper_node = wrapping_nodes->begin(); wrapper_node != wrapping_nodes->end(); wrapper_node++) {
@@ -1333,7 +1355,7 @@ void XmlOperation::ModOpMerge(std::shared_ptr<pugi::xml_document> doc,
         }
     }
 
-    return true;
+    return result;
 }
 
 bool XmlOperation::CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::optional<pugi::xml_node>& cachedNode)
@@ -1341,8 +1363,10 @@ bool XmlOperation::CheckCondition(std::shared_ptr<pugi::xml_document> doc, std::
     if (condition_.IsEmpty()) {
         return true;
     }
-
-    const bool matching = condition_.Select(doc, {}, &cachedNode).IsMatch();
+    
+    auto result = condition_.Select(doc, {}, &cachedNode);
+    const bool matching = result.IsMatch();
+    result.free();
     if (condition_.IsNegative() == matching) {
         context_->Debug("Condition {} ({}) doesn't match in {} ({}:{})", condition_.GetPath(), matching, context_->GetName(),
                    context_->GetGenericPath(), context_->GetLine(node_));
