@@ -4,6 +4,7 @@
 #include "str_helper.h"
 #include "xml_pugi_helper.h"
 
+#include <algorithm>
 #include <charconv>
 #include <cstdio>
 #include <cstring>
