@@ -67,3 +67,25 @@ cc_test(
         "//third_party:json",
     ],
 )
+
+# ANNO 117 InfoTip FileDB serializer preservation regression.
+cc_test(
+    name = "infotip-filedb-regression",
+    srcs = [
+        "main.cc",
+        "infotip_filedb_roundtrip_test.cc",
+    ],
+    includes = ["."],
+    linkopts = select({
+        "@bazel_tools//src/conditions:windows": [],
+        "//conditions:default": [
+            "-lstdc++fs",
+            "-ldl",
+        ],
+    }),
+    deps = [
+        "//libs/xml-operations",
+        "@catch2//:catch2",
+        "@pugixml",
+    ],
+)
