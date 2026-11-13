@@ -567,7 +567,7 @@ void XmlOperation::CreateQueries(const XmlPatchType patch_type)
     }
 
     if (type_ == Type::Assets || type_ == Type::Asset) {
-        path_ = XmlLookup{"/AssetList/Groups[last()]/Group[last()]/Assets[last()]", {}, {}, {}, &variables_, context_, node_, skip_values_, patch_type};
+        path_ = XmlLookup{"/AssetList/Groups[Group/Assets][last()]/Group[Assets][last()]/Assets[last()] | (/Group//Assets)[last()]", {}, {}, {}, &variables_, context_, node_, skip_values_, patch_type};
     }
     else {
         path_ = XmlLookup{path_attribute_, guid_, property_, template_, &variables_, context_, node_, skip_values_, patch_type};
