@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../images/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -29,10 +29,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -1450,7 +1450,7 @@
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOps&gt;</span>
 <span class="w">  </span><span class="cm">&lt;!-- ModOps applied before the include --&gt;</span>
 
-<span class="w">  </span><span class="nt">&lt;Include</span><span class="w"> </span><span class="na">File=</span><span class="s">&quot;feature.include.xml&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Include</span><span class="w"> </span><span class="na">File=</span><span class="s">"feature.include.xml"</span><span class="w"> </span><span class="nt">/&gt;</span>
 
 <span class="w">  </span><span class="cm">&lt;!-- ModOps applied after the include --&gt;</span>
 <span class="nt">&lt;/ModOps&gt;</span>
@@ -1473,22 +1473,22 @@ Conditions can be used with all ModOps: <code>ModOp</code>, <code>Group</code>, 
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="xpath" name="__tabbed_3" type="radio" /><input id="guid" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="xpath"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> XPath</label><label for="guid"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 15c.81 0 1.5-.3 2.11-.89.59-.61.89-1.3.89-2.11s-.3-1.5-.89-2.11C13.5 9.3 12.81 9 12 9s-1.5.3-2.11.89C9.3 10.5 9 11.19 9 12s.3 1.5.89 2.11c.61.59 1.3.89 2.11.89m0-13c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12v1.45c0 1-.35 1.85-1 2.55-.7.67-1.5 1-2.5 1-1.2 0-2.19-.5-2.94-1.5-1 1-2.18 1.5-3.56 1.5-1.37 0-2.55-.5-3.54-1.46C7.5 14.55 7 13.38 7 12c0-1.37.5-2.55 1.46-3.54C9.45 7.5 10.63 7 12 7c1.38 0 2.55.5 3.54 1.46C16.5 9.45 17 10.63 17 12v1.45c0 .41.16.77.46 1.08s.65.47 1.04.47c.42 0 .77-.16 1.07-.47s.43-.67.43-1.08V12c0-2.19-.77-4.07-2.35-5.65S14.19 4 12 4s-4.07.77-5.65 2.35S4 9.81 4 12s.77 4.07 2.35 5.65S9.81 20 12 20h5v2h-5c-2.75 0-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2"/></svg></span> GUID</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">&quot;//Values[Standard/GUID=&#39;1500010714&#39;]&quot;</span><span class="nt">&gt;</span>
+<p><div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">"//Values[Standard/GUID='1500010714']"</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="cm">&lt;!-- Apply ModOps if asset 1500010714 exists. --&gt;</span>
 <span class="nt">&lt;/Group&gt;</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">&quot;!//Values[Standard/GUID=&#39;1500010714&#39;]&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">"!//Values[Standard/GUID='1500010714']"</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="cm">&lt;!-- Apply ModOps if 1500010714 does NOT exist. --&gt;</span>
 <span class="nt">&lt;/Group&gt;</span>
 </code></pre></div>
 Any valid XPath is allowed.</p>
 </div>
 <div class="tabbed-block">
-<p><div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">&quot;@1500010714&quot;</span><span class="nt">&gt;</span>
+<p><div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">"@1500010714"</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="cm">&lt;!-- Apply ModOps if asset 1500010714 exists. --&gt;</span>
 <span class="nt">&lt;/Group&gt;</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">&quot;!@1500010714&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">"!@1500010714"</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="cm">&lt;!-- Apply ModOps if 1500010714 does NOT exist. --&gt;</span>
 <span class="nt">&lt;/Group&gt;</span>
 </code></pre></div>
@@ -1502,8 +1502,8 @@ Any valid XPath is allowed.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="117" name="__tabbed_4" type="radio" /><input id="117--1800_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="117"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label><label for="117--1800_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;800111&quot;</span><span class="w"> </span><span class="na">Add=</span><span class="s">&quot;Property/List&quot;</span>
-<span class="w">       </span><span class="na">Condition=</span><span class="s">&quot;!Property/List[Item/Product=&#39;1500010120&#39;]&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">"800111"</span><span class="w"> </span><span class="na">Add=</span><span class="s">"Property/List"</span>
+<span class="w">       </span><span class="na">Condition=</span><span class="s">"!Property/List[Item/Product='1500010120']"</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="nt">&lt;Item&gt;</span>
 <span class="w">    </span><span class="nt">&lt;Product&gt;</span>1500010120<span class="nt">&lt;/Product&gt;</span>
 <span class="w">  </span><span class="nt">&lt;/Item&gt;</span>
@@ -1511,8 +1511,8 @@ Any valid XPath is allowed.</p>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;800111&quot;</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;add&quot;</span><span class="w"> </span><span class="na">Path=</span><span class="s">&quot;/Values/Property/List&quot;</span>
-<span class="w">       </span><span class="na">Condition=</span><span class="s">&quot;!/Values/Property/List[Item/Product=&#39;1500010120&#39;]&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">"800111"</span><span class="w"> </span><span class="na">Type=</span><span class="s">"add"</span><span class="w"> </span><span class="na">Path=</span><span class="s">"/Values/Property/List"</span>
+<span class="w">       </span><span class="na">Condition=</span><span class="s">"!/Values/Property/List[Item/Product='1500010120']"</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="nt">&lt;Item&gt;</span>
 <span class="w">    </span><span class="nt">&lt;Product&gt;</span>1500010120<span class="nt">&lt;/Product&gt;</span>
 <span class="w">  </span><span class="nt">&lt;/Item&gt;</span>
@@ -1533,14 +1533,14 @@ Any valid XPath is allowed.</p>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- negative condition --&gt;</span>
-<span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;add&quot;</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;800111&quot;</span>
-<span class="w">       </span><span class="na">Condition=</span><span class="s">&quot;!/Values/Feature/Options[Item/Product=&#39;1500010120&#39;]&quot;</span>
-<span class="w">  </span><span class="na">Path=</span><span class="s">&quot;/Values/Feature/Options/FeedOptions&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Type=</span><span class="s">"add"</span><span class="w"> </span><span class="na">GUID=</span><span class="s">"800111"</span>
+<span class="w">       </span><span class="na">Condition=</span><span class="s">"!/Values/Feature/Options[Item/Product='1500010120']"</span>
+<span class="w">  </span><span class="na">Path=</span><span class="s">"/Values/Feature/Options/FeedOptions"</span><span class="w"> </span><span class="nt">/&gt;</span>
 
 <span class="cm">&lt;!-- positive condition --&gt;</span>
-<span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;add&quot;</span><span class="w"> </span><span class="na">GUID=</span><span class="s">&quot;800111&quot;</span>
-<span class="w">       </span><span class="na">Condition=</span><span class="s">&quot;/Values/Feature/Options[not(Item/Product=&#39;1500010120&#39;)]&quot;</span>
-<span class="w">  </span><span class="na">Path=</span><span class="s">&quot;/Values/Feature/Options&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Type=</span><span class="s">"add"</span><span class="w"> </span><span class="na">GUID=</span><span class="s">"800111"</span>
+<span class="w">       </span><span class="na">Condition=</span><span class="s">"/Values/Feature/Options[not(Item/Product='1500010120')]"</span>
+<span class="w">  </span><span class="na">Path=</span><span class="s">"/Values/Feature/Options"</span><span class="w"> </span><span class="nt">/&gt;</span>
 </code></pre></div>
 </div>
 </div>
@@ -1555,7 +1555,7 @@ The default <code>MaxRepeat=1</code> behaves like a normal <code>Group</code>.</
 <div class="tabbed-set tabbed-alternate" data-tabs="6:1"><input checked="checked" id="117_1" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="117_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">&quot;@123/List/Item&quot;</span><span class="w"> </span><span class="na">MaxRepeat=</span><span class="s">&quot;10&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">"@123/List/Item"</span><span class="w"> </span><span class="na">MaxRepeat=</span><span class="s">"10"</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="cm">&lt;!-- .. --&gt;</span>
 <span class="nt">&lt;/Group&gt;</span>
 </code></pre></div>
@@ -1570,11 +1570,11 @@ Use <code>LoadAfterIds</code> to ensure it's loaded before your mod.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="7:1"><input checked="checked" id="modid" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="modid"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m5.41 21 .71-4h-4l.35-2h4l1.06-6h-4l.35-2h4l.71-4h2l-.71 4h6l.71-4h2l-.71 4h4l-.35 2h-4l-1.06 6h4l-.35 2h-4l-.71 4h-2l.71-4h-6l-.71 4zM9.53 9l-1.06 6h6l1.06-6z"/></svg></span> ModID</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">&quot;#mod-id&quot;</span><span class="nt">&gt;</span>
+<p><div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">"#mod-id"</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="cm">&lt;!-- Apply ModOps if `mod-id` is active. --&gt;</span>
 <span class="nt">&lt;/Group&gt;</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">&quot;!#mod-id&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">"!#mod-id"</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="cm">&lt;!-- Apply ModOps if `mod-id` is NOT active. --&gt;</span>
 <span class="nt">&lt;/Group&gt;</span>
 </code></pre></div></p>
@@ -1588,26 +1588,26 @@ That means you can combine them like XPath expressions with <code>and</code> and
 <div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="checked" id="117_2" name="__tabbed_8" type="radio" /><input id="117--1800_4" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="117_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label><label for="117--1800_4"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">&quot;#mod-a and not(#mod-b)&quot;</span><span class="nt">&gt;</span>
+<p><div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">"#mod-a and not(#mod-b)"</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="cm">&lt;!-- .. --&gt;</span>
 <span class="nt">&lt;/Group&gt;</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">&quot;#mod-a or #mod-b&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">"#mod-a or #mod-b"</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="cm">&lt;!-- .. --&gt;</span>
 <span class="nt">&lt;/Group&gt;</span>
 </code></pre></div></p>
 </div>
 <div class="tabbed-block">
-<p><div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">&quot;#mod-a&quot;</span><span class="nt">&gt;</span>
-<span class="w">  </span><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">&quot;!#mod-b&quot;</span><span class="nt">&gt;</span>
+<p><div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">"#mod-a"</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">"!#mod-b"</span><span class="nt">&gt;</span>
 <span class="w">    </span><span class="cm">&lt;!-- .. --&gt;</span>
 <span class="w">  </span><span class="nt">&lt;/Group&gt;</span>
 <span class="nt">&lt;/Group&gt;</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">&quot;#mod-a&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">"#mod-a"</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="cm">&lt;!-- .. --&gt;</span>
 <span class="nt">&lt;/Group&gt;</span>
-<span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">&quot;#mod-b&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;Group</span><span class="w"> </span><span class="na">Condition=</span><span class="s">"#mod-b"</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="cm">&lt;!-- repeat --&gt;</span>
 <span class="nt">&lt;/Group&gt;</span>
 </code></pre></div></p>
@@ -1622,8 +1622,8 @@ That is useful if you have a complex or expensive path and don't want to repeat 
 <div class="tabbed-set tabbed-alternate" data-tabs="9:1"><input checked="checked" id="117--1800_5" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="117--1800_5"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Type=</span><span class="s">&quot;replace&quot;</span><span class="w"> </span><span class="na">AllowNoMatch=</span><span class="s">&quot;1&quot;</span>
-<span class="w">       </span><span class="na">Path=</span><span class="s">&quot;//EffectTargets/Item[GUID=&#39;1010346&#39; and (../../../../Template=&#39;TownhallBuff&#39;)]&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Type=</span><span class="s">"replace"</span><span class="w"> </span><span class="na">AllowNoMatch=</span><span class="s">"1"</span>
+<span class="w">       </span><span class="na">Path=</span><span class="s">"//EffectTargets/Item[GUID='1010346' and (../../../../Template='TownhallBuff')]"</span><span class="nt">&gt;</span>
 <span class="w">  </span><span class="nt">&lt;Item&gt;</span>
 <span class="w">    </span><span class="nt">&lt;GUID&gt;</span>193861<span class="nt">&lt;/GUID&gt;</span>
 <span class="w">  </span><span class="nt">&lt;/Item&gt;</span>
@@ -1649,7 +1649,7 @@ That is useful if you have a complex or expensive path and don't want to repeat 
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOps&gt;</span>
-<span class="w">  </span><span class="nt">&lt;Include</span><span class="w"> </span><span class="na">File=</span><span class="s">&quot;/feature.include.xml&quot;</span><span class="w"> </span><span class="na">Skip=</span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Include</span><span class="w"> </span><span class="na">File=</span><span class="s">"/feature.include.xml"</span><span class="w"> </span><span class="na">Skip=</span><span class="s">"1"</span><span class="w"> </span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/ModOps&gt;</span>
 </code></pre></div>
 </div>
@@ -1750,10 +1750,10 @@ It doesn't matter if you write <code>Skip="1"</code>, <code>Skip="True"</code> o
     
       
       
-      <script id="__config" type="application/json">{"annotate": {"xml": [".na", ".s", ".s2"]}, "base": "../..", "features": ["content.code.annotate", "content.code.copy", "content.tooltips", "header.autohide", "navigation.footer", "navigation.sections"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": {"xml": [".na", ".s", ".s2"]}, "base": "../..", "features": ["content.code.annotate", "content.code.copy", "content.tooltips", "header.autohide", "navigation.footer", "navigation.sections"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>
