@@ -1,0 +1,16 @@
+<ModOps>
+  <ModOp Replace="//Asset[Values/Standard/GUID='31750']/Values/ModuleOwner">
+    <ModuleOwner>
+      <ModuleLimit>3</ModuleLimit>
+    </ModuleOwner>
+  </ModOp>
+  <ModOp Merge="//Asset[Values/Standard/Name='Farm A' or Values/Standard/Name='Farm B']/Values/EffectSource">
+    <EffectSource>
+      <RadiusDistance>99</RadiusDistance>
+      <StreetDistance>98</StreetDistance>
+    </EffectSource>
+  </ModOp>
+  <ModOp Merge="//Asset[Values/Standard/Name='Farm A' or Values/Standard/Name='Farm B' or Values/Standard/Name='Farm C']/Values/FactoryBase/MaxTransporterRange">
+    <MaxTransporterRange><ModValue Insert="self::node() * 1.5" /></MaxTransporterRange>
+  </ModOp>
+</ModOps>

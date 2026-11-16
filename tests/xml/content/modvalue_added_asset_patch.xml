@@ -1,0 +1,18 @@
+<ModOps>
+  <ModOp Append="//Asset[Values/Standard/GUID='37724']">
+    <Asset>
+      <Template>Tech</Template>
+      <Values>
+        <Standard>
+          <GUID>1600000716</GUID>
+          <Name>added tech</Name>
+        </Standard>
+        <Tech>
+          <IsRepeatable><ModValue Insert="1" /></IsRepeatable>
+          <KnowledgeNeeded><ModValue Insert="3000000 + 2000000" /></KnowledgeNeeded>
+          <RepeatableCostFactor><ModValue Insert="1.2" /></RepeatableCostFactor>
+        </Tech>
+      </Values>
+    </Asset>
+  </ModOp>
+</ModOps>

@@ -1,0 +1,14 @@
+{
+  "name": "ModValue on multiple assets",
+  "expected": [
+    "//Asset[Values/Standard/GUID='31750']/Values/ModuleOwner[ModuleLimit='3']",
+    "//Asset[Values/Standard/GUID='31750']/Values/EffectSource[RadiusDistance='99' and StreetDistance='98']",
+    "//Asset[Values/Standard/GUID='31751']/Values/EffectSource[RadiusDistance='99' and StreetDistance='98']",
+    "//Asset[Values/Standard/GUID='31750']/Values/FactoryBase[MaxTransporterRange='45']",
+    "//Asset[Values/Standard/GUID='31751']/Values/FactoryBase[MaxTransporterRange='60']",
+    "//Asset[Values/Standard/GUID='31752']/Values/FactoryBase[MaxTransporterRange='75']",
+    "!//ModValue",
+    "!//ModOpEval",
+    "!//ModOpTemp"
+  ]
+}

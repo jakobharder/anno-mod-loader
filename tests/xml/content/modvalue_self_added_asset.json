@@ -1,0 +1,11 @@
+{
+  "name": "ModValue self in added asset",
+  "issuesExpected": "1",
+  "expected": [
+    "//Asset[Values/Standard/GUID='1600000717']/Values/Tech/KnowledgeNeeded",
+    "!//KnowledgeNeeded//KnowledgeNeeded",
+    "!//ModValue",
+    "!//ModOpEval",
+    "!//ModOpTemp"
+  ]
+}
