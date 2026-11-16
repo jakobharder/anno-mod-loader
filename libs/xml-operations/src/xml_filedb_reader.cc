@@ -97,6 +97,11 @@ public:
         return &enumInfo->second;
     }
 
+    static bool is_text_attribute(const std::string_view name) {
+        const auto conv = converter.find(name);
+        return conv != converter.end() && conv->second == FileDbAttributeType::Utf8;
+    }
+
     static bool is_nested(const ElementWithParent& element) {
         return nester.end() != nester.find(element);
     }
@@ -602,7 +607,9 @@ void FileDbWriter::_write_node(pugi::xml_node node, int32_t& node_id, int32_t& a
         _node_count++;
 
         auto has_children = child.begin() != child.end();
-        if (has_children && child.first_child().type() == pugi::node_pcdata) {
+        const bool is_text = has_children && child.first_child().type() == pugi::node_pcdata;
+        const bool is_empty_attribute = !has_children && FileDbConverter::is_text_attribute(child.name());
+        if (is_text || is_empty_attribute) {
             const auto element = ElementWithParent{child.name(), node.name()};
 
             std::vector<char> buffer;
