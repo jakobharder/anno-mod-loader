@@ -1,0 +1,17 @@
+<AssetList>
+  <Groups>
+    <Group>
+      <Assets>
+        <Asset>
+          <Template>Tech</Template>
+          <Values>
+            <Standard>
+              <GUID>37724</GUID>
+              <Name>base tech</Name>
+            </Standard>
+          </Values>
+        </Asset>
+      </Assets>
+    </Group>
+  </Groups>
+</AssetList>

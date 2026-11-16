@@ -1,0 +1,55 @@
+<AssetList>
+  <Groups>
+    <Group>
+      <Assets>
+        <Asset>
+          <Template>FarmBuilding</Template>
+          <Values>
+            <Standard>
+              <GUID>31750</GUID>
+              <Name>Farm A</Name>
+            </Standard>
+            <ModuleOwner>
+              <ModuleLimit>1</ModuleLimit>
+            </ModuleOwner>
+            <EffectSource>
+              <RadiusDistance>10</RadiusDistance>
+              <StreetDistance>5</StreetDistance>
+            </EffectSource>
+            <FactoryBase>
+              <MaxTransporterRange>30</MaxTransporterRange>
+            </FactoryBase>
+          </Values>
+        </Asset>
+        <Asset>
+          <Template>FarmBuilding</Template>
+          <Values>
+            <Standard>
+              <GUID>31751</GUID>
+              <Name>Farm B</Name>
+            </Standard>
+            <EffectSource>
+              <RadiusDistance>20</RadiusDistance>
+              <StreetDistance>6</StreetDistance>
+            </EffectSource>
+            <FactoryBase>
+              <MaxTransporterRange>40</MaxTransporterRange>
+            </FactoryBase>
+          </Values>
+        </Asset>
+        <Asset>
+          <Template>FarmBuilding</Template>
+          <Values>
+            <Standard>
+              <GUID>31752</GUID>
+              <Name>Farm C</Name>
+            </Standard>
+            <FactoryBase>
+              <MaxTransporterRange>50</MaxTransporterRange>
+            </FactoryBase>
+          </Values>
+        </Asset>
+      </Assets>
+    </Group>
+  </Groups>
+</AssetList>

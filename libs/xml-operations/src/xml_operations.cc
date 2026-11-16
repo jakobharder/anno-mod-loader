@@ -1073,6 +1073,21 @@ pugi::xml_node XmlOperation::ResolveModValue(std::shared_ptr<pugi::xml_document>
                     return pugih::remove(game_node);
                 }
 
+                bool selects_ancestor = false;
+                for (const auto& selected : content_result.Nodes()) {
+                    for (auto ancestor = game_node; ancestor && !selects_ancestor; ancestor = ancestor.parent()) {
+                        selects_ancestor = (selected.node() == ancestor);
+                    }
+                }
+                if (selects_ancestor) {
+                    context_->Warn("\"" + lookup.GetPath() + "\" selects the ModValue's own parent", node_);
+                    if (wrapper) {
+                        doc->remove_child(*wrapper);
+                    }
+                    content_result.free();
+                    return pugih::remove(game_node);
+                }
+
                 auto parent = game_node.parent();
 
                 pugih::remove_non_element_children(parent, "ModValue");

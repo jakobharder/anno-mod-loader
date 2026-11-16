@@ -1,0 +1,16 @@
+<ModOps>
+  <ModOp Append="//Asset[Values/Standard/GUID='37724']">
+    <Asset>
+      <Template>Tech</Template>
+      <Values>
+        <Standard>
+          <GUID>1600000717</GUID>
+          <Name>probe</Name>
+        </Standard>
+        <Tech>
+          <KnowledgeNeeded><ModValue Insert="self::node()" /></KnowledgeNeeded>
+        </Tech>
+      </Values>
+    </Asset>
+  </ModOp>
+</ModOps>

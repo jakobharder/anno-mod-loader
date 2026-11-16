@@ -1,0 +1,11 @@
+{
+  "name": "ModValue in added asset",
+  "expected": [
+    "//Asset[Values/Standard/GUID='1600000716']/Values/Tech[IsRepeatable='1']",
+    "//Asset[Values/Standard/GUID='1600000716']/Values/Tech[KnowledgeNeeded='5000000']",
+    "//Asset[Values/Standard/GUID='1600000716']/Values/Tech[RepeatableCostFactor='1.2']",
+    "!//ModValue",
+    "!//ModOpEval",
+    "!//ModOpTemp"
+  ]
+}
