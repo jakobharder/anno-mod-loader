@@ -11,6 +11,7 @@
 #include <sstream>
 #include <stack>
 #include <string_view>
+#include <system_error>
 
 #include <spdlog/fmt/fmt.h>
 #include <pugixml.hpp>
@@ -96,6 +97,11 @@ public:
         return &enumInfo->second;
     }
 
+    static bool is_text_attribute(const std::string_view name) {
+        const auto conv = converter.find(name);
+        return conv != converter.end() && conv->second == FileDbAttributeType::Utf8;
+    }
+
     static bool is_nested(const ElementWithParent& element) {
         return nester.end() != nester.find(element);
     }
@@ -107,8 +113,10 @@ public:
     static std::string read(const std::vector<char>& buffer, FileDbAttributeType converter, const EnumeratorInfo* enumerator) {
         if (enumerator) {
             int32_t number = *reinterpret_cast<const int32_t*>(buffer.data());
-            if (number < 0 || number >= enumerator->size()) {
-                number = 0;
+            if (number < 0 || number >= static_cast<int32_t>(enumerator->size())) {
+                // Preserve enum values introduced by newer game data.
+                // Example: native ANNO 117 InfoTip ElementType 26.
+                return fmt_alias::format("{}", number);
             }
             return enumerator->at(number);
         }
@@ -161,13 +169,30 @@ public:
 
     static void write(const std::string_view value, std::vector<char>& buffer,
         FileDbAttributeType converter, const EnumeratorInfo* enumerator) {
-
         if (enumerator) {
 
-            int index = 0; // default is 0
-            for (int i = 0; i < enumerator->size(); i++) {
+            int32_t index = 0; // legacy fallback for invalid symbolic input
+            bool matched = false;
+            for (size_t i = 0; i < enumerator->size(); i++) {
                 if (value.compare(enumerator->at(i)) == 0) {
-                    index = i;
+                    index = static_cast<int32_t>(i);
+                    matched = true;
+                    break;
+                }
+            }
+
+            // Unknown enum values are emitted numerically by read().
+            // Accept a full int32 decimal fallback and preserve it exactly.
+            if (!matched) {
+                int32_t numeric_value = 0;
+                const auto result = std::from_chars(
+                    value.data(),
+                    value.data() + value.size(),
+                    numeric_value
+                );
+                if (result.ec == std::errc{} &&
+                    result.ptr == value.data() + value.size()) {
+                    index = numeric_value;
                 }
             }
 
@@ -266,6 +291,10 @@ public:
             converter.emplace("SublineText", FileDbAttributeType::Utf8);
             converter.emplace("ColorText", FileDbAttributeType::Utf8);
             converter.emplace("Source", FileDbAttributeType::Utf8);
+            converter.emplace("ColorSource", FileDbAttributeType::Utf8);
+            converter.emplace("FirstValue", FileDbAttributeType::Utf8);
+            converter.emplace("SecondValue", FileDbAttributeType::Utf8);
+            converter.emplace("MaximumValue", FileDbAttributeType::Utf8);
             converter.emplace("Name", FileDbAttributeType::Utf8);
             converter.emplace("IsTemplate", FileDbAttributeType::Boolean);
             converter.emplace("IsWarning", FileDbAttributeType::Boolean);
@@ -519,6 +548,12 @@ void FileDbReader::_construct_xml(pugi::xml_node* xml_root, Node* db_node) {
             auto xml_child = xml_root->append_child((name.empty() ? ANONYMOUS_NODE : name).c_str());
             _construct_xml(&xml_child, &db_child);
         }
+        else {
+            // Preserve empty FileDB leaf nodes. Native ANNO 117 InfoTips contain
+            // empty placeholders such as Icon, LeftIcon and RightIcon. Dropping
+            // them makes an empty-patch round trip structurally lossy.
+            xml_root->append_child((name.empty() ? ANONYMOUS_NODE : name).c_str());
+        }
     }
 }
 
@@ -572,7 +607,9 @@ void FileDbWriter::_write_node(pugi::xml_node node, int32_t& node_id, int32_t& a
         _node_count++;
 
         auto has_children = child.begin() != child.end();
-        if (has_children && child.first_child().type() == pugi::node_pcdata) {
+        const bool is_text = has_children && child.first_child().type() == pugi::node_pcdata;
+        const bool is_empty_attribute = !has_children && FileDbConverter::is_text_attribute(child.name());
+        if (is_text || is_empty_attribute) {
             const auto element = ElementWithParent{child.name(), node.name()};
 
             std::vector<char> buffer;
