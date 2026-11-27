@@ -28,6 +28,7 @@
 
 # Executables
 *.exe
+!/release/anno1800/xmltest1800.exe
 *.out
 *.app
 
@@ -48,3 +49,4 @@
 compile_commands.json
 
 /docs/__pycache__
+/dist/

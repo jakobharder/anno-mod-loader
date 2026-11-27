@@ -1,0 +1,8 @@
+{
+  "filename": "xmltest1800.exe",
+  "sha256": "d977d9ad3ee1f2a446f3d62f5126e52811458552d4e8a63aefaa301fa51d751f",
+  "source_repository": "https://github.com/anno-mods/vscode-anno",
+  "source_commit": "c2a1aa01a5fcdf97f25fb42a1772ebc95fa84080",
+  "source_path": "external/xmltest.exe",
+  "note": "Existing distributed binary, renamed without modifying its bytes. The commit identifies the binary's source in vscode-anno, not the loader source used to compile it."
+}

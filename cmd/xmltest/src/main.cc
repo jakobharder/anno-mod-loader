@@ -6,6 +6,7 @@
 
 #include "anno_xml.h"
 #include "parse_args.h"
+#include "version.h"
 
 #include <cstdio>
 #include <cstring>
@@ -224,6 +225,11 @@ int command_patch(const XmltestParameters& params, const std::string& patch_cont
 
 int main(int argc, const char **argv)
 {
+    if (argc == 2 && std::strcmp(argv[1], "--version") == 0) {
+        std::cout << "xmltest117: " << kGameVersion << '\n';
+        return 0;
+    }
+
     XmltestParameters params;
     if (!parseArguments(argc, argv, params)) {
         return -1;
