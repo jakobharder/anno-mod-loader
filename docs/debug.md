@@ -12,12 +12,7 @@ It lists loading order, patch and dependency issues.
     <user documents>/Anno 1800/log/mod-loader.log
     ```
 
-To test what a patch does to the original game file, you can also use `xmltest.exe`.
-It will simulate what the game will load.
-
-```
-xmltest.exe c:\anno\all-rda\assets.xml patch.xml
-```
+To test a patch without starting the game, use [xmltest](./xmltest.md).
 
 ??? tip "Use [Anno Modding Tools](https://anno-mods.github.io/vscode-anno/) for testing."
 
