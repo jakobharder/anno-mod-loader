@@ -19,12 +19,12 @@ Mandatory fields are used by the modloader to correctly identify mods. Missing o
 
 !!! warning "Anno 117 won't load mods without the correct game version."
 
-```json title="modinfo.json"
+```json title="modinfo.jsonc"
 {
-  "Anno": 8,
-  "Version": "1.0.0",
-  "ModID": "first-mod-jakob"
-  // ..
+    "Anno": 8,
+    "Version": "1.0.0",
+    "ModID": "first-mod-jakob"
+    // ..
 }
 ```
 
@@ -38,16 +38,16 @@ Field | Description
 
 {{a117}}
 
-```json title="modinfo.json"
+```json title="modinfo.jsonc"
 {
-  // ..
-  "Difficulty": "harder",
-  "GameSetup": {
-    "RequiresNewGame": false,
-    "SafeToRemove": false,
-    "Multiplayer": true,
-    "Campaign": true
-  }
+    // ..
+    "Difficulty": "harder",
+    "GameSetup": {
+        "RequiresNewGame": false,
+        "SafeToRemove": false,
+        "Multiplayer": true,
+        "Campaign": true
+    }
 }
 ```
 
@@ -69,16 +69,16 @@ Field | Description
 {{all}}
 
 === ":material-pillar: 117"
-    ```json title="modinfo.json"
+    ```json title="modinfo.jsonc"
     {
-      // ..
-      "Dependencies": {
-        "Require": [],
-        "Optional": [],
-        "LoadAfter": [],
-        "Deprecate": [],
-        "Incompatible": []
-      }
+        // ..
+        "Dependencies": {
+            "Require": [],
+            "Optional": [],
+            "LoadAfter": [],
+            "Deprecate": [],
+            "Incompatible": []
+        }
     }
     ```
 
@@ -91,14 +91,14 @@ Field | Description
     |`Incompatible`|List incompatible mods.<br/>Active incompatible mods result in log warning.
 
 === ":material-factory: 1800"
-    ```json title="modinfo.json"
+    ```json title="modinfo.jsonc"
     {
-      // ..
-      "ModDependencies": [],
-      "OptionalDependencies": [],
-      "LoadAfterIds": [],
-      "DeprecateIds": [],
-      "IncompatibleIds": []
+        // ..
+        "ModDependencies": [],
+        "OptionalDependencies": [],
+        "LoadAfterIds": [],
+        "DeprecateIds": [],
+        "IncompatibleIds": []
     }
     ```
 
@@ -119,14 +119,14 @@ Infos used by Visual Studio Code plugin [Anno Modding Tools](https://anno-mods.g
 These don't depend on the game version, but tool version.
 
 === ":material-animation-outline: Current"
-    ```json title="modinfo.json"
+    ```json title="modinfo.jsonc"
     {
-      // ..
-      "Development": {
-        "Dependencies": [],
-        "DeployPath": "${annoMods}/${modName}",
-        "Bundle": []
-      }
+        // ..
+        "Development": {
+            "Dependencies": [],
+            "DeployPath": "${annoMods}/${modName}",
+            "Bundle": []
+        }
     }
     ```
 
@@ -136,12 +136,12 @@ These don't depend on the game version, but tool version.
     |`DeployPath`|Target path for mod deployment.
     |`Bundle`|List of mods that should be included as a sub mod.
 === ":material-close-octagon-outline: Deprecated"
-    ```json title="modinfo.json"
+    ```json title="modinfo.jsonc"
     {
-      // ..
-      "OptionalDependencies": [],
-      "out": "${annoMods}/${modName}",
-      "bundle": []
+        // ..
+        "OptionalDependencies": [],
+        "out": "${annoMods}/${modName}",
+        "bundle": []
     }
     ```
 
@@ -158,8 +158,56 @@ These don't depend on the game version, but tool version.
 
 ## Localized Info
 
-TBD
+{{all}}
+
+Use language-keyed objects for `Category`, `ModName`, and `Description`:
+
+```json title="modinfo.jsonc"
+{
+    // ..
+    "Category": {
+        "English": "Buildings",
+        "German": "Gebäude"
+    },
+    "ModName": {
+        "English": "My Mod",
+        "German": "Meine Mod"
+    },
+    "Description": {
+        "English": "Adds a building."
+    }
+}
+```
+
+The [VS Code schema](https://github.com/anno-mods/vscode-anno/blob/main/languages/modinfo-schema.json)
+requires `English` in these objects. Common language keys are `English`, `French`,
+`German`, `Italian`, `Japanese`, `Korean`, `Polish`, `Russian`, and `Spanish`.
+
+Language | Anno 117 | Anno 1800
+--- | --- | ---
+Simplified Chinese | `ChineseSimplified` | `Chinese`
+Traditional Chinese | `ChineseTraditional` | `Taiwanese`
+Brazilian Portuguese | `Brazilian` | —
+
+VS Code requires `Category` and `ModName`; `Description` is optional.
 
 ## Additional Info
 
-TBD
+Optional metadata fields:
+
+Field | Format
+--- | ---
+`CreatorName` | Creator name as a string.
+`CreatorContact` | Contact link as a string, e.g. a repository URL.
+`KnownIssues` | Array of localized text objects, e.g. `[ { "English": "Known issue." } ]`. {{a1800}}
+`DLCDependencies` | Array of objects with `DLC` and `Dependant` fields. Use auto-completion for DLC names; `Dependant` accepts `required`, `partly`, or `atLeastOneRequired`. {{a1800}}
+`ModioResourceId` | Numeric mod.io resource ID. {{a1800}}
+`Custom` | Object for custom metadata; its contents are not validated. {{a117}}
+
+```json title="modinfo.jsonc"
+{
+    // ..
+    "CreatorName": "Your Name",
+    "CreatorContact": "https://github.com/your-name/your-mod"
+}
+```

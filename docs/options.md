@@ -16,10 +16,10 @@ The `active-options.jsonc` file is read from the `mods/` folder with the followi
 === ":material-pillar: 117"
     ```json title="active-options.jsonc"
     {
-      "mod-id": {
-        "range": "10",
-        "useInfluence": "true"
-      }
+        "mod-id": {
+            "range": "10",
+            "useInfluence": "true"
+        }
     }
     ```
 
@@ -28,33 +28,35 @@ The `active-options.jsonc` file is read from the `mods/` folder with the followi
 The `modinfo.json` file contains defaults:
 
 === ":material-pillar: 117"
-    ```json title="modinfo.json"
+    ```json title="modinfo.jsonc"
     {
-      // ..
-      "Options": {
-        "range": {
-          "default": "10"
-        },
-        "useInfluence": {
-          "default": "true"
+        // ..
+        "Options": {
+            "range": {
+                "default": "10"
+            },
+            "useInfluence": {
+                "default": "true"
+            }
         }
-      }
     }
     ```
 
-!!! info "The mod loader only requires defaults"
-    Additional information like labels, allowed values, type, steps, etc. is not relevant here and thus omitted.
+!!! info "VS Code validation"
+    Each option requires `default`, accepting a string, number, or boolean.
 
 ## Use as Condition
 
 {{a117}}
 
 Option values can be used in `Condition` XPath.
+Use the same option name in the definition, user values, and XPath;
+the modinfo schema does not check XPath references.
 
 === ":material-at: 117"
     ```xml hl_lines="2"
     <ModOps>
-      <ModOp Condition="$mod-id.use-influence"
+      <ModOp Condition="$mod-id.useInfluence"
              Merge="@123/Costs">
         <Influence>3</Influence>
       </ModOp>
@@ -63,9 +65,9 @@ Option values can be used in `Condition` XPath.
 === ":material-cog-outline: Options"
     ```json hl_lines="3"
     {
-      "mod-id": {
-        "useInfluence": true
-      }
+        "mod-id": {
+            "useInfluence": "true"
+        }
     }
     ```
 === ":material-xml: Result"
@@ -97,9 +99,9 @@ Option values can be used in `<ModValue Insert/>` as values to insert.
 === ":material-cog-outline: Options"
     ```json hl_lines="3"
     {
-      "mod-id": {
-        "range": "10"
-      }
+        "mod-id": {
+            "range": "10"
+        }
     }
     ```
 === ":material-xml: Result"
@@ -131,7 +133,7 @@ Also note that `mod-id` can be skipped if the variable comes from the same mod s
     <ModOps>
       <ModOp GUID="123" Merge="RangeOne"
              Condition="RangeOne &lt; $range">
-        <RangeOne><ModValue Insert="$range"/></RangeOne>
+        <RangeOne><ModValue Insert="$range"/></RangeOne><!-- (1)! -->
       </ModOp>
       <ModOp GUID="123" Merge="RangeTwo"
              Condition="RangeTwo &lt; $range">
@@ -143,16 +145,16 @@ Also note that `mod-id` can be skipped if the variable comes from the same mod s
     </ModOps>
     ```
 
-    1.  `$range` (10) is bigger than `RangeOne` (30). This ModOp is not applied.
+    1.  `$range` (10) is smaller than `RangeOne` (30). This ModOp is not applied.
 
     2.  Read more about [calculations](./modops/content.md#insert-calculations).
 === ":material-cog-outline: Options"
     ```json
     {
-      "mod-id": {
-        "range": "10",
-        "factor": "2"
-      }
+        "mod-id": {
+            "range": "10",
+            "factor": "2"
+        }
     }
     ```
 === ":material-file-code-outline: Input"
@@ -189,26 +191,27 @@ Also note that `mod-id` can be skipped if the variable comes from the same mod s
 Specify user customizable options of a mod (like iModYourAnno tweaks) in `modinfo.json`:
 
 === ":material-pillar: 117"
-    ```json
+    ```json title="modinfo.jsonc"
     {
-      // ..
-      "Options": {
-        "range": {
-          "label": "Electricity Range",
-          "type": "enum",
-          "default": "10",
-          "values": [ "10", "20", "30" ],
-          "labels": [ "10 Street Range", "20 Street Range", "30 Street Range" ]
-        },
-        "useInfluence": {
-          "label": "Use Influence Cost",
-          "default": "true",
-          "type": "toggle"
+        // ..
+        "Options": {
+            "range": {
+                "label": "Electricity Range",
+                "type": "enum",
+                "default": "10",
+                "values": [ "10", "20", "30" ],
+                "labels": [ "10 Street Range", "20 Street Range", "30 Street Range" ]
+            },
+            "useInfluence": {
+                "label": "Use Influence Cost",
+                "default": "true",
+                "type": "toggle"
+            }
         }
-      }
     }
     ```
 
-!!! info "Only `default` is relevant for the actual mod loading process"
-    The rest is information for valid values and descriptions to be used by mod managers modifying the user values in `active-options.jsonc`.
+!!! info "Additional metadata"
+    The current VS Code schema allows extra option fields but does not validate
+    `label`, `type`, `values`, or `labels`.
 
