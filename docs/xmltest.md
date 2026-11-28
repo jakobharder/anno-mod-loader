@@ -69,4 +69,4 @@ Option | Description
 Run either tool without arguments to print usage.
 Check diagnostics and the result alongside the game's [mod-loader.log](./debug.md).
 
-Note: Game options and active-mod variables are not loaded automatically, so `$option` and `#mod-id` conditions may differ from the game.
+Note: The 117 tool uses [modinfo defaults](./options.md#options-file) and treats the main mod and explicit `-p` mods as active. It does not read the game's user options or activation list.

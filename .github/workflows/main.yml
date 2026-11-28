@@ -28,7 +28,7 @@ jobs:
           bazel build //... -c opt
 
       - name: Test
-        run: bazel test //tests/xml:xml-tests //cmd/xmltest:prepatch-tests -c opt --test_output=errors
+        run: bazel test //tests/xml:xml-tests //cmd/xmltest/... -c opt --test_output=errors
 
       - name: Package
         run: |
@@ -54,4 +54,4 @@ jobs:
           bazel --noworkspace_rc --bazelrc=.linux.bazelrc build //cmd/... //tests/... -c opt
 
       - name: Test
-        run: bazel --noworkspace_rc --bazelrc=.linux.bazelrc test //tests/xml:xml-tests //cmd/xmltest:prepatch-tests -c opt --test_output=errors
+        run: bazel --noworkspace_rc --bazelrc=.linux.bazelrc test //tests/xml:xml-tests //cmd/xmltest/... -c opt --test_output=errors

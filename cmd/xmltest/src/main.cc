@@ -6,9 +6,11 @@
 
 #include "anno_xml.h"
 #include "parse_args.h"
+#include "mod_defaults.h"
 
 #include <cstdio>
 #include <cstring>
+#include <exception>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -23,7 +25,8 @@ bool path_equal(const std::filesystem::path& a, const std::filesystem::path& b) 
     return stricmp(a.string().c_str(), b.string().c_str()) == 0;
 }
 
-void apply_patch(std::shared_ptr<pugi::xml_document> doc, const fs::path& modPath, const fs::path& patchPath)
+void apply_patch(std::shared_ptr<pugi::xml_document> doc, const fs::path& modPath, const fs::path& patchPath,
+    const ModEnvironment& environment)
 {
     XmlPatchType patch_type = XmlPatchType::Assets;
     fs::path mainPatchFile = patchPath;
@@ -50,13 +53,12 @@ void apply_patch(std::shared_ptr<pugi::xml_document> doc, const fs::path& modPat
     }
     spdlog::info("Prepatch: {}", fullPath.string());
 
-    const std::string mod_id = "";
-    std::map<std::string, std::string> variables;
+    const auto mod_id = environment.ModID(modPath);
 
     auto operations = XmlOperation::GetXmlOperationsFromFile(fullPath,
         mod_id,
         mod_id,
-        &variables,
+        &environment.variables,
         mainPatchFile,
         fs::absolute(modPath));
     for (auto& operation : operations) {
@@ -83,7 +85,8 @@ int command_show(const XmltestParameters& params, std::ostream& out) {
     return 0;
 }
 
-std::shared_ptr<pugi::xml_document> _get_prepatched(const XmltestParameters& params, bool hide = false) {
+std::shared_ptr<pugi::xml_document> _get_prepatched(const XmltestParameters& params,
+    const ModEnvironment& environment, bool hide = false) {
     // disable debug as we don't want that for prepatch files
     spdlog::set_level(hide ? spdlog::level::critical : spdlog::level::info);
     auto doc = xmlops::XmlAutoSerializer::read(params.targetPath);
@@ -93,21 +96,21 @@ std::shared_ptr<pugi::xml_document> _get_prepatched(const XmltestParameters& par
 
     auto patch_game_path = fs::relative(params.patchPath, params.modPaths.front());
     for (auto dep : params.prepatchPaths) {
-        apply_patch(doc, dep, patch_game_path);
+        apply_patch(doc, dep, patch_game_path, environment);
     }
     spdlog::set_level(params.verbose ? spdlog::level::debug : spdlog::level::info);
     return doc;
 }
 
 std::shared_ptr<pugi::xml_document> _patch(std::shared_ptr<pugi::xml_document> doc,
-    const XmltestParameters& params, const std::string& patch_content) {
+    const XmltestParameters& params, const std::string& patch_content, const ModEnvironment& environment) {
 
     const auto mod_path = fs::absolute(params.modPaths.front());
     const auto game_path = fs::absolute(params.patchPath).lexically_relative(mod_path);
     spdlog::debug("Game Path: {}", game_path.string());
     const auto mod_name = "xmltest";
-    const auto mod_id = "";
-    std::map<std::string, std::string> variables;
+    const auto mod_id = environment.ModID(mod_path);
+    const auto& variables = environment.variables;
 
     auto loader = [&mod_path, &mod_id, &variables, &mod_name, &patch_content, &game_path, &params](const fs::path& file_path) {
         std::vector<char> buffer;
@@ -166,14 +169,15 @@ int command_diff(const XmltestParameters& params, const std::string& patch_conte
         spdlog::debug("Mod path: {}", path.string());
     }
 
-    auto doc = _get_prepatched(params);
+    const auto environment = ReadModDefaults(params.modPaths.front(), params.prepatchPaths);
+    auto doc = _get_prepatched(params, environment);
     if (!doc) {
         out << "Could not find patch target" << std::endl;
         return 0;
     }
 
-    doc = _patch(doc, params, patch_content);
-    auto prepatched_doc = _get_prepatched(params, true);
+    doc = _patch(doc, params, patch_content, environment);
+    auto prepatched_doc = _get_prepatched(params, environment, true);
 
     const auto inner_extension = params.patchPath.stem().extension();
     if (inner_extension == L".cfg" || inner_extension == L".fc") {
@@ -210,8 +214,9 @@ int command_patch(const XmltestParameters& params, const std::string& patch_cont
         spdlog::debug("Mod path: {}", path.string());
     }
 
-    auto doc = _get_prepatched(params);
-    doc = _patch(doc, params, patch_content);
+    const auto environment = ReadModDefaults(params.modPaths.front(), params.prepatchPaths);
+    auto doc = _get_prepatched(params, environment);
+    doc = _patch(doc, params, patch_content, environment);
 
     if (!params.skipOutput) {
         if (!XmlAutoSerializer::write(doc.get(), params.outputFile, true)) {
@@ -238,14 +243,20 @@ int main(int argc, const char **argv)
 
     spdlog::set_level(params.verbose ? spdlog::level::debug : spdlog::level::info);
 
-    if (params.command == XmltestParameters::Command::Show) {
-        return command_show(params, std::cout);
+    try {
+        if (params.command == XmltestParameters::Command::Show) {
+            return command_show(params, std::cout);
+        }
+        else if (params.command == XmltestParameters::Command::Diff) {
+            return command_diff(params, patch_content, std::cout);
+        }
+        else {
+            return command_patch(params, patch_content);
+        }
     }
-    else if (params.command == XmltestParameters::Command::Diff) {
-        return command_diff(params, patch_content, std::cout);
-    }
-    else {
-        return command_patch(params, patch_content);
+    catch (const std::exception& error) {
+        spdlog::error("{}", error.what());
+        return 1;
     }
 
     return 0;
