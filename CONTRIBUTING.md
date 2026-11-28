@@ -9,14 +9,14 @@ On Windows, install the Visual Studio 2022 C++ tools, then run:
 
 ```sh
 bazel build //... -c opt
-bazel test //tests/xml/... -c opt --test_output=errors
+bazel test //tests/xml/... //cmd/xmltest:prepatch-tests -c opt --test_output=errors
 ```
 
 On Linux, use the Linux configuration:
 
 ```sh
 bazel --noworkspace_rc --bazelrc=.linux.bazelrc build //cmd/... //tests/... -c opt
-bazel --noworkspace_rc --bazelrc=.linux.bazelrc test //tests/xml/... -c opt --test_output=errors
+bazel --noworkspace_rc --bazelrc=.linux.bazelrc test //tests/xml/... //cmd/xmltest:prepatch-tests -c opt --test_output=errors
 ```
 
 ## Commit Messages

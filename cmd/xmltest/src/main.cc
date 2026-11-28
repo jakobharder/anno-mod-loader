@@ -35,10 +35,10 @@ void apply_patch(std::shared_ptr<pugi::xml_document> doc, const fs::path& modPat
         && patchPath.stem().extension() != ".fc"
         && patchPath.stem().extension() != ".cfg") {
         if (patchPath.filename().string().find("template") == std::string::npos) {
-            mainPatchFile = "data/config/export/main/asset/assets.xml";
+            mainPatchFile = "data/base/config/export/assets.xml";
         }
         else {
-            mainPatchFile = "data/config/export/main/asset/templates.xml";
+            mainPatchFile = "data/base/config/export/templates.xml";
         }
     }
     else if (patchPath.filename() == "export.bin.xml") {

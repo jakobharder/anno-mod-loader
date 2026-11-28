@@ -28,7 +28,7 @@ jobs:
           bazel build //... -c opt
 
       - name: Test
-        run: bazel test //tests/xml:xml-tests -c opt
+        run: bazel test //tests/xml:xml-tests //cmd/xmltest:prepatch-tests -c opt --test_output=errors
 
       - name: Package
         run: |
@@ -43,7 +43,7 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: "recursive"
 
@@ -54,4 +54,4 @@ jobs:
           bazel --noworkspace_rc --bazelrc=.linux.bazelrc build //cmd/... //tests/... -c opt
 
       - name: Test
-        run: bazel --noworkspace_rc --bazelrc=.linux.bazelrc test //tests/xml:xml-tests -c opt
+        run: bazel --noworkspace_rc --bazelrc=.linux.bazelrc test //tests/xml:xml-tests //cmd/xmltest:prepatch-tests -c opt --test_output=errors

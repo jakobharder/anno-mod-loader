@@ -15,3 +15,12 @@ cc_binary(
         "//third_party:spdlog",
     ],
 )
+
+py_test(
+    name = "prepatch-tests",
+    srcs = ["tests/prepatch_test.py"],
+    main = "tests/prepatch_test.py",
+    args = ["$(location :xmltest2)"],
+    data = [":xmltest2"],
+    python_version = "PY3",
+)
