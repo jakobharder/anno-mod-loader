@@ -1,3 +1,14 @@
+# Anno 1800 maintenance branch
+
+`release/1800` maintains loader 10 for Anno 1800. Its XML test target is
+`//cmd/xmltest:xmltest1800`, producing `xmltest1800.exe` on Windows.
+Run `xmltest1800.exe --version` for game and loader identification.
+The patch engine is unchanged from `stable/anno1800` at `8326b7c`.
+
+The companion `release/117` branch maintains loader 11 and packages both games'
+executables. Its preserved Windows 1800 executable is not automatically replaced
+by a build from this branch. Existing release tags remain unchanged.
+
 # Anno 1800 Mod Loader
 
 > [!NOTE]

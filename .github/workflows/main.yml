@@ -13,9 +13,11 @@ jobs:
   build-win:
     runs-on: windows-2022
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: "recursive"
+
+      - uses: bazelbuild/setup-bazelisk@v3
 
       - name: Build
         run: |
@@ -26,7 +28,7 @@ jobs:
 
       - name: Package
         run: |
-          tar -c -a -f xmltest.zip -C  bazel-bin/cmd/xmltest/ *.exe
+          tar -c -a -f xmltest.zip -C  bazel-bin/cmd/xmltest/ xmltest1800.exe
           tar -c -a -f loader.zip -C third_party/Python35/bin/ python35_ubi.dll -C ../../../bazel-bin/libs/python35/ *.dll
           tar -c -a -f loader-dbg.zip -C  bazel-bin/libs/python35/ *.pdb
 
@@ -41,9 +43,11 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: "recursive"
+
+      - uses: bazelbuild/setup-bazelisk@v3
 
       - name: Build
         run: |
