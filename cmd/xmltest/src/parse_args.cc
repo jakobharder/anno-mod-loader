@@ -1,5 +1,5 @@
 
-#define MODLOADER_VERSION "GU17.1"
+#include "version.h"
 
 #include "./parse_args.h"
 
@@ -10,9 +10,10 @@ using namespace std;
 
 static void printUsage(FILE* out)
 {
-    fprintf(out, "xmltest using modloader %s\n", MODLOADER_VERSION);
+    fprintf(out, "%s: Anno %s, loader %s\n", kToolName, kGameName, kLoaderVersion);
 
-    fprintf(out, "\nUsage: xmltest.exe [options] target-xml patch-xml|GUID\n\n");
+    fprintf(out, "\nUsage: xmltest117.exe [options] target-xml patch-xml|GUID\n\n");
+    fprintf(out, "--version     Print the game and loader version.\n");
     fprintf(out, "-c=<command>  patch (default): output target-xml with patch-xml applied.\n");
     fprintf(out, "              show: output asset with GUID from target-xml.\n");
     fprintf(out, "              diff: output assets before and after patching.\n");
@@ -52,7 +53,7 @@ bool parseArguments(int argc, const char* argv[], XmltestParameters& params)
     }
 
     if (params.verbose) {
-        printf("xmltest using modloader %s\n", MODLOADER_VERSION);
+        printf("%s: Anno %s, loader %s\n", kToolName, kGameName, kLoaderVersion);
     }
 
     char lastMode = 0;

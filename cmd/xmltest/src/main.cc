@@ -6,6 +6,7 @@
 
 #include "anno_xml.h"
 #include "parse_args.h"
+#include "version.h"
 #include "mod_defaults.h"
 
 #include <cstdio>
@@ -229,6 +230,11 @@ int command_patch(const XmltestParameters& params, const std::string& patch_cont
 
 int main(int argc, const char **argv)
 {
+    if (argc == 2 && std::strcmp(argv[1], "--version") == 0) {
+        std::printf("%s: Anno %s, loader %s\n", kToolName, kGameName, kLoaderVersion);
+        return 0;
+    }
+
     XmltestParameters params;
     if (!parseArguments(argc, argv, params)) {
         return -1;

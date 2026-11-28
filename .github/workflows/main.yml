@@ -31,14 +31,15 @@ jobs:
         run: bazel test //tests/xml:xml-tests //cmd/xmltest/... -c opt --test_output=errors
 
       - name: Package
-        run: |
-          BIN_DIR=$(bazel info bazel-bin -c opt)
+        run: python release/package.py --binary bazel-bin/cmd/xmltest/xmltest117.exe
 
       - uses: actions/upload-artifact@v4
         with:
           name: package
           path: |
-            $BIN_DIR/cmd/xmltest/xmltest2.exe
+            dist/xmltest.zip
+            dist/xmltest.zip.sha256
+          if-no-files-found: error
 
   build-linux:
     runs-on: ubuntu-latest

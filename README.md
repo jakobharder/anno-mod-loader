@@ -10,6 +10,13 @@ Many thanks to him for creating and maintaining that project for so long.
 >
 > You can find beginner friendly tutorials in the community [modding guide](https://github.com/anno-mods/modding-guide#readme).
 
+## Game-specific tools
+
+Use `xmltest1800.exe` for Anno 1800 and `xmltest117.exe` for Anno 117.
+The source branches are `release/1800` and `release/117`; loader versions remain
+10 and 11 respectively. xmltest has no separate version sequence.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for builds and local VS Code testing.
+
 ## For Developers
 
 You need Bazel, Visual Studio 2022 and that _should_ be it.

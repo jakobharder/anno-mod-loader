@@ -48,3 +48,7 @@
 compile_commands.json
 
 /docs/__pycache__
+# Local builds and release archives
+/build/
+/dist/
+!release/anno1800/xmltest1800.exe
