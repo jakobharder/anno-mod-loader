@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../images/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1161,6 +1161,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../xmltest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test Patches with xmltest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../profiles/" class="md-nav__link">
         
   
@@ -1391,10 +1419,10 @@ These options are accessible as <code>$mod-id.option-name</code> in XPath.</p>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><span class="filename">active-options.jsonc</span><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"mod-id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"range"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"useInfluence"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span>
-<span class="w">  </span><span class="p">}</span>
+<span class="w">    </span><span class="nt">"mod-id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"range"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"useInfluence"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 </div>
@@ -1407,33 +1435,35 @@ These options are accessible as <code>$mod-id.option-name</code> in XPath.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:1"><input checked="checked" id="117_1" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="117_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><span class="filename">modinfo.json</span><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="c1">// ..</span>
-<span class="w">  </span><span class="nt">"Options"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"range"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">"useInfluence"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span>
+<div class="highlight"><span class="filename">modinfo.jsonc</span><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ..</span>
+<span class="w">    </span><span class="nt">"Options"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"range"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">"useInfluence"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span>
+<span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 </div>
 </div>
 </div>
 <div class="admonition info">
-<p class="admonition-title">The mod loader only requires defaults</p>
-<p>Additional information like labels, allowed values, type, steps, etc. is not relevant here and thus omitted.</p>
+<p class="admonition-title">VS Code validation</p>
+<p>Each option requires <code>default</code>, accepting a string, number, or boolean.</p>
 </div>
 <h2 id="use-as-condition">Use as Condition<a class="headerlink" href="#use-as-condition" title="Permanent link">&para;</a></h2>
 <p><span class="version-tag" title="Only available in Anno 117"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</span></p>
-<p>Option values can be used in <code>Condition</code> XPath.</p>
+<p>Option values can be used in <code>Condition</code> XPath.
+Use the same option name in the definition, user values, and XPath;
+the modinfo schema does not check XPath references.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:3"><input checked="checked" id="117_2" name="__tabbed_3" type="radio" /><input id="options" name="__tabbed_3" type="radio" /><input id="result" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="117_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 15c.81 0 1.5-.3 2.11-.89.59-.61.89-1.3.89-2.11s-.3-1.5-.89-2.11C13.5 9.3 12.81 9 12 9s-1.5.3-2.11.89C9.3 10.5 9 11.19 9 12s.3 1.5.89 2.11c.61.59 1.3.89 2.11.89m0-13c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12v1.45c0 1-.35 1.85-1 2.55-.7.67-1.5 1-2.5 1-1.2 0-2.19-.5-2.94-1.5-1 1-2.18 1.5-3.56 1.5-1.37 0-2.55-.5-3.54-1.46C7.5 14.55 7 13.38 7 12c0-1.37.5-2.55 1.46-3.54C9.45 7.5 10.63 7 12 7c1.38 0 2.55.5 3.54 1.46C16.5 9.45 17 10.63 17 12v1.45c0 .41.16.77.46 1.08s.65.47 1.04.47c.42 0 .77-.16 1.07-.47s.43-.67.43-1.08V12c0-2.19-.77-4.07-2.35-5.65S14.19 4 12 4s-4.07.77-5.65 2.35S4 9.81 4 12s.77 4.07 2.35 5.65S9.81 20 12 20h5v2h-5c-2.75 0-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2"/></svg></span> 117</label><label for="options"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 2a2 2 0 0 0-2 2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0-2-2m-2 12c-.25 0-.46-.18-.5-.42l-.37-2.65c-.63-.25-1.17-.59-1.69-.99l-2.49 1.01c-.22.08-.49 0-.61-.22l-2-3.46a.493.493 0 0 1 .12-.64l2.11-1.66L4.5 12l.07-1-2.11-1.63a.493.493 0 0 1-.12-.64l2-3.46c.12-.22.39-.31.61-.22l2.49 1c.52-.39 1.06-.73 1.69-.98l.37-2.65c.04-.24.25-.42.5-.42h4c.25 0 .46.18.5.42l.37 2.65c.63.25 1.17.59 1.69.98l2.49-1c.22-.09.49 0 .61.22l2 3.46c.13.22.07.49-.12.64L19.43 11l.07 1-.07 1 2.11 1.63c.19.15.25.42.12.64l-2 3.46c-.12.22-.39.31-.61.22l-2.49-1c-.52.39-1.06.73-1.69.98l-.37 2.65c-.04.24-.25.42-.5.42zm1.25-18-.37 2.61c-1.2.25-2.26.89-3.03 1.78L5.44 7.35l-.75 1.3L6.8 10.2a5.55 5.55 0 0 0 0 3.6l-2.12 1.56.75 1.3 2.43-1.04c.77.88 1.82 1.52 3.01 1.76l.37 2.62h1.52l.37-2.61c1.19-.25 2.24-.89 3.01-1.77l2.43 1.04.75-1.3-2.12-1.55c.4-1.17.4-2.44 0-3.61l2.11-1.55-.75-1.3-2.41 1.04a5.42 5.42 0 0 0-3.03-1.77L12.75 4z"/></svg></span> Options</label><label for="result"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.89 3 1.96.4L11.11 21l-1.96-.4zm6.7 9L16 8.41V5.58L22.42 12 16 18.41v-2.83zM1.58 12 8 5.58v2.83L4.41 12 8 15.58v2.83z"/></svg></span> Result</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOps&gt;</span>
-<span class="hll"><span class="w">  </span><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Condition=</span><span class="s">"$mod-id.use-influence"</span>
+<span class="hll"><span class="w">  </span><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">Condition=</span><span class="s">"$mod-id.useInfluence"</span>
 </span><span class="w">         </span><span class="na">Merge=</span><span class="s">"@123/Costs"</span><span class="nt">&gt;</span>
 <span class="w">    </span><span class="nt">&lt;Influence&gt;</span>3<span class="nt">&lt;/Influence&gt;</span>
 <span class="w">  </span><span class="nt">&lt;/ModOp&gt;</span>
@@ -1442,9 +1472,9 @@ These options are accessible as <code>$mod-id.option-name</code> in XPath.</p>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"mod-id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="hll"><span class="w">    </span><span class="nt">"useInfluence"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-</span><span class="w">  </span><span class="p">}</span>
+<span class="w">    </span><span class="nt">"mod-id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="hll"><span class="w">        </span><span class="nt">"useInfluence"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span>
+</span><span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 </div>
@@ -1474,9 +1504,9 @@ These options are accessible as <code>$mod-id.option-name</code> in XPath.</p>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"mod-id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="hll"><span class="w">    </span><span class="nt">"range"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span>
-</span><span class="w">  </span><span class="p">}</span>
+<span class="w">    </span><span class="nt">"mod-id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="hll"><span class="w">        </span><span class="nt">"range"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span>
+</span><span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 </div>
@@ -1504,7 +1534,7 @@ They can be used in comparisons and <a href="../modops/content/#insert-calculati
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;ModOps&gt;</span>
 <span class="w">  </span><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">"123"</span><span class="w"> </span><span class="na">Merge=</span><span class="s">"RangeOne"</span>
 <span class="w">         </span><span class="na">Condition=</span><span class="s">"RangeOne &amp;lt; $range"</span><span class="nt">&gt;</span>
-<span class="w">    </span><span class="nt">&lt;RangeOne&gt;&lt;ModValue</span><span class="w"> </span><span class="na">Insert=</span><span class="s">"$range"</span><span class="nt">/&gt;&lt;/RangeOne&gt;</span>
+<span class="w">    </span><span class="nt">&lt;RangeOne&gt;&lt;ModValue</span><span class="w"> </span><span class="na">Insert=</span><span class="s">"$range"</span><span class="nt">/&gt;&lt;/RangeOne&gt;</span><span class="cm">&lt;!-- (1)! --&gt;</span>
 <span class="w">  </span><span class="nt">&lt;/ModOp&gt;</span>
 <span class="w">  </span><span class="nt">&lt;ModOp</span><span class="w"> </span><span class="na">GUID=</span><span class="s">"123"</span><span class="w"> </span><span class="na">Merge=</span><span class="s">"RangeTwo"</span>
 <span class="w">         </span><span class="na">Condition=</span><span class="s">"RangeTwo &amp;lt; $range"</span><span class="nt">&gt;</span>
@@ -1517,7 +1547,7 @@ They can be used in comparisons and <a href="../modops/content/#insert-calculati
 </code></pre></div>
 <ol>
 <li>
-<p><code>$range</code> (10) is bigger than <code>RangeOne</code> (30). This ModOp is not applied.</p>
+<p><code>$range</code> (10) is smaller than <code>RangeOne</code> (30). This ModOp is not applied.</p>
 </li>
 <li>
 <p>Read more about <a href="../modops/content/#insert-calculations">calculations</a>.</p>
@@ -1526,10 +1556,10 @@ They can be used in comparisons and <a href="../modops/content/#insert-calculati
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"mod-id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"range"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"factor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span>
-<span class="w">  </span><span class="p">}</span>
+<span class="w">    </span><span class="nt">"mod-id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"range"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"factor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 </div>
@@ -1568,30 +1598,31 @@ They can be used in comparisons and <a href="../modops/content/#insert-calculati
 <div class="tabbed-set tabbed-alternate" data-tabs="6:1"><input checked="checked" id="117_5" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="117_5"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="c1">// ..</span>
-<span class="w">  </span><span class="nt">"Options"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"range"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electricity Range"</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"enum"</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w"> </span><span class="s2">"20"</span><span class="p">,</span><span class="w"> </span><span class="s2">"30"</span><span class="w"> </span><span class="p">],</span>
-<span class="w">      </span><span class="nt">"labels"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"10 Street Range"</span><span class="p">,</span><span class="w"> </span><span class="s2">"20 Street Range"</span><span class="p">,</span><span class="w"> </span><span class="s2">"30 Street Range"</span><span class="w"> </span><span class="p">]</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">"useInfluence"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Use Influence Cost"</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"toggle"</span>
+<div class="highlight"><span class="filename">modinfo.jsonc</span><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ..</span>
+<span class="w">    </span><span class="nt">"Options"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"range"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electricity Range"</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"enum"</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">"values"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w"> </span><span class="s2">"20"</span><span class="p">,</span><span class="w"> </span><span class="s2">"30"</span><span class="w"> </span><span class="p">],</span>
+<span class="w">            </span><span class="nt">"labels"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"10 Street Range"</span><span class="p">,</span><span class="w"> </span><span class="s2">"20 Street Range"</span><span class="p">,</span><span class="w"> </span><span class="s2">"30 Street Range"</span><span class="w"> </span><span class="p">]</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">"useInfluence"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">"label"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Use Influence Cost"</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"toggle"</span>
+<span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 </div>
 </div>
 </div>
 <div class="admonition info">
-<p class="admonition-title">Only <code>default</code> is relevant for the actual mod loading process</p>
-<p>The rest is information for valid values and descriptions to be used by mod managers modifying the user values in <code>active-options.jsonc</code>.</p>
+<p class="admonition-title">Additional metadata</p>
+<p>The current VS Code schema allows extra option fields but does not validate
+<code>label</code>, <code>type</code>, <code>values</code>, or <code>labels</code>.</p>
 </div>
 
 

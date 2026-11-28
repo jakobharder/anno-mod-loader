@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../images/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -1174,6 +1174,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../xmltest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test Patches with xmltest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../profiles/" class="md-nav__link">
         
   
@@ -1418,11 +1446,11 @@
 <div class="admonition warning">
 <p class="admonition-title">Anno 117 won't load mods without the correct game version.</p>
 </div>
-<div class="highlight"><span class="filename">modinfo.json</span><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"Anno"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"Version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"ModID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"first-mod-jakob"</span>
-<span class="w">  </span><span class="c1">// ..</span>
+<div class="highlight"><span class="filename">modinfo.jsonc</span><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">"Anno"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"Version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"ModID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"first-mod-jakob"</span>
+<span class="w">    </span><span class="c1">// ..</span>
 <span class="p">}</span>
 </code></pre></div>
 <table>
@@ -1449,15 +1477,15 @@
 </table>
 <h2 id="game-setup">Game Setup<a class="headerlink" href="#game-setup" title="Permanent link">&para;</a></h2>
 <p><span class="version-tag" title="Only available in Anno 117"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</span></p>
-<div class="highlight"><span class="filename">modinfo.json</span><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="c1">// ..</span>
-<span class="w">  </span><span class="nt">"Difficulty"</span><span class="p">:</span><span class="w"> </span><span class="s2">"harder"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"GameSetup"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"RequiresNewGame"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"SafeToRemove"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"Multiplayer"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"Campaign"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">  </span><span class="p">}</span>
+<div class="highlight"><span class="filename">modinfo.jsonc</span><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ..</span>
+<span class="w">    </span><span class="nt">"Difficulty"</span><span class="p">:</span><span class="w"> </span><span class="s2">"harder"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"GameSetup"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"RequiresNewGame"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"SafeToRemove"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"Multiplayer"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"Campaign"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 <table>
@@ -1516,15 +1544,15 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="117" name="__tabbed_1" type="radio" /><input id="1800" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="117"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</label><label for="1800"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 18v2h4v-2zm0-4v2h10v-2zm6 4v2h4v-2zm6-4v2h4v-2zm0 4v2h4v-2zM2 22V8l5 4V8l5 4V8l5 4 1-10h3l1 10v10z"/></svg></span> 1800</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><span class="filename">modinfo.json</span><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="c1">// ..</span>
-<span class="w">  </span><span class="nt">"Dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"Require"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-<span class="w">    </span><span class="nt">"Optional"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-<span class="w">    </span><span class="nt">"LoadAfter"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-<span class="w">    </span><span class="nt">"Deprecate"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-<span class="w">    </span><span class="nt">"Incompatible"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
-<span class="w">  </span><span class="p">}</span>
+<div class="highlight"><span class="filename">modinfo.jsonc</span><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ..</span>
+<span class="w">    </span><span class="nt">"Dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"Require"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">        </span><span class="nt">"Optional"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">        </span><span class="nt">"LoadAfter"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">        </span><span class="nt">"Deprecate"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">        </span><span class="nt">"Incompatible"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 <table>
@@ -1559,13 +1587,13 @@
 </table>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><span class="filename">modinfo.json</span><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="c1">// ..</span>
-<span class="w">  </span><span class="nt">"ModDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-<span class="w">  </span><span class="nt">"OptionalDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-<span class="w">  </span><span class="nt">"LoadAfterIds"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-<span class="w">  </span><span class="nt">"DeprecateIds"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-<span class="w">  </span><span class="nt">"IncompatibleIds"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<div class="highlight"><span class="filename">modinfo.jsonc</span><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ..</span>
+<span class="w">    </span><span class="nt">"ModDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">"OptionalDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">"LoadAfterIds"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">"DeprecateIds"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">"IncompatibleIds"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
 <span class="p">}</span>
 </code></pre></div>
 <table>
@@ -1608,13 +1636,13 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="current" name="__tabbed_2" type="radio" /><input id="deprecated" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="current"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> Current</label><label for="deprecated"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.27 3 3 8.27v7.46L8.27 21h7.46C17.5 19.24 21 15.73 21 15.73V8.27L15.73 3M9.1 5h5.8L19 9.1v5.8L14.9 19H9.1L5 14.9V9.1m4.12-1.39L7.71 9.12 10.59 12l-2.88 2.88 1.41 1.41L12 13.41l2.88 2.88 1.41-1.41L13.41 12l2.88-2.88-1.41-1.41L12 10.59"/></svg></span> Deprecated</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><span class="filename">modinfo.json</span><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="c1">// ..</span>
-<span class="w">  </span><span class="nt">"Development"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"Dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-<span class="w">    </span><span class="nt">"DeployPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${annoMods}/${modName}"</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"Bundle"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
-<span class="w">  </span><span class="p">}</span>
+<div class="highlight"><span class="filename">modinfo.jsonc</span><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ..</span>
+<span class="w">    </span><span class="nt">"Development"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"Dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">        </span><span class="nt">"DeployPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${annoMods}/${modName}"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"Bundle"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 <table>
@@ -1641,11 +1669,11 @@
 </table>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><span class="filename">modinfo.json</span><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="c1">// ..</span>
-<span class="w">  </span><span class="nt">"OptionalDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-<span class="w">  </span><span class="nt">"out"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${annoMods}/${modName}"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"bundle"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<div class="highlight"><span class="filename">modinfo.jsonc</span><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ..</span>
+<span class="w">    </span><span class="nt">"OptionalDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">"out"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${annoMods}/${modName}"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"bundle"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
 <span class="p">}</span>
 </code></pre></div>
 <table>
@@ -1679,9 +1707,95 @@
 <p>Check the <a href="https://anno-mods.github.io/vscode-anno/tools/deploy/">Deploy Mods</a> documentation.</p>
 </details>
 <h2 id="localized-info">Localized Info<a class="headerlink" href="#localized-info" title="Permanent link">&para;</a></h2>
-<p>TBD</p>
+<p><span class="version-tag" title="Available in all supported Annos"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2a2 2 0 0 0-2 2v10h2V4h10V2zm4 4a2 2 0 0 0-2 2v10h2V8h10V6zm12 6v8h-8v-8zm0-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2"/></svg></span> 117 &amp; 1800</span></p>
+<p>Use language-keyed objects for <code>Category</code>, <code>ModName</code>, and <code>Description</code>:</p>
+<div class="highlight"><span class="filename">modinfo.jsonc</span><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ..</span>
+<span class="w">    </span><span class="nt">"Category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"English"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Buildings"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"German"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Gebäude"</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"ModName"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"English"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My Mod"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"German"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Meine Mod"</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"Description"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"English"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Adds a building."</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The <a href="https://github.com/anno-mods/vscode-anno/blob/main/languages/modinfo-schema.json">VS Code schema</a>
+requires <code>English</code> in these objects. Common language keys are <code>English</code>, <code>French</code>,
+<code>German</code>, <code>Italian</code>, <code>Japanese</code>, <code>Korean</code>, <code>Polish</code>, <code>Russian</code>, and <code>Spanish</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Language</th>
+<th>Anno 117</th>
+<th>Anno 1800</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Simplified Chinese</td>
+<td><code>ChineseSimplified</code></td>
+<td><code>Chinese</code></td>
+</tr>
+<tr>
+<td>Traditional Chinese</td>
+<td><code>ChineseTraditional</code></td>
+<td><code>Taiwanese</code></td>
+</tr>
+<tr>
+<td>Brazilian Portuguese</td>
+<td><code>Brazilian</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>VS Code requires <code>Category</code> and <code>ModName</code>; <code>Description</code> is optional.</p>
 <h2 id="additional-info">Additional Info<a class="headerlink" href="#additional-info" title="Permanent link">&para;</a></h2>
-<p>TBD</p>
+<p>Optional metadata fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CreatorName</code></td>
+<td>Creator name as a string.</td>
+</tr>
+<tr>
+<td><code>CreatorContact</code></td>
+<td>Contact link as a string, e.g. a repository URL.</td>
+</tr>
+<tr>
+<td><code>KnownIssues</code></td>
+<td>Array of localized text objects, e.g. <code>[ { "English": "Known issue." } ]</code>. <span class="version-tag" title="Only available in Anno 1800"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 18v2h4v-2zm0-4v2h10v-2zm6 4v2h4v-2zm6-4v2h4v-2zm0 4v2h4v-2zM2 22V8l5 4V8l5 4V8l5 4 1-10h3l1 10v10z"/></svg></span> 1800</span></td>
+</tr>
+<tr>
+<td><code>DLCDependencies</code></td>
+<td>Array of objects with <code>DLC</code> and <code>Dependant</code> fields. Use auto-completion for DLC names; <code>Dependant</code> accepts <code>required</code>, <code>partly</code>, or <code>atLeastOneRequired</code>. <span class="version-tag" title="Only available in Anno 1800"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 18v2h4v-2zm0-4v2h10v-2zm6 4v2h4v-2zm6-4v2h4v-2zm0 4v2h4v-2zM2 22V8l5 4V8l5 4V8l5 4 1-10h3l1 10v10z"/></svg></span> 1800</span></td>
+</tr>
+<tr>
+<td><code>ModioResourceId</code></td>
+<td>Numeric mod.io resource ID. <span class="version-tag" title="Only available in Anno 1800"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 18v2h4v-2zm0-4v2h10v-2zm6 4v2h4v-2zm6-4v2h4v-2zm0 4v2h4v-2zM2 22V8l5 4V8l5 4V8l5 4 1-10h3l1 10v10z"/></svg></span> 1800</span></td>
+</tr>
+<tr>
+<td><code>Custom</code></td>
+<td>Object for custom metadata; its contents are not validated. <span class="version-tag" title="Only available in Anno 117"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 5h12a1 1 0 0 1 1 1 1 1 0 0 1-1 1H6a1 1 0 0 1-1-1 1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z"/></svg></span> 117</span></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">modinfo.jsonc</span><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ..</span>
+<span class="w">    </span><span class="nt">"CreatorName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Your Name"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"CreatorContact"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://github.com/your-name/your-mod"</span>
+<span class="p">}</span>
+</code></pre></div>
 <div class="footnote">
 <hr />
 <ol>
