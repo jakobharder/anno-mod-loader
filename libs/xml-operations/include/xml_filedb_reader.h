@@ -3,6 +3,7 @@
 #include <map>
 #include <memory>
 #include <filesystem>
+#include <vector>
 
 namespace pugi {
     class xml_document;

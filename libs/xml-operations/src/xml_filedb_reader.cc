@@ -13,9 +13,9 @@
 #include <spdlog/fmt/fmt.h>
 #include <pugixml.hpp>
 
-namespace fs = std::filesystem;
-
 #include "xml_filedb_reader.h"
+
+namespace fs = std::filesystem;
 
 namespace xmlops {
 
