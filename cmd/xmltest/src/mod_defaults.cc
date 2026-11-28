@@ -81,10 +81,10 @@ std::string DefaultExpression(const json& option) {
         return XPathString(text);
     }
     if (!toggle && value.is_number()) {
-        return XPathNumber(value);
+        throw std::runtime_error("numeric default must be a quoted string");
     }
     throw std::runtime_error(toggle ? "toggle default must be true or false (lowercase), not a number or other string"
-                                    : "default must be a string, number, or boolean");
+                                    : "default must be a string or boolean");
 }
 
 void AddMod(ModEnvironment& environment, const fs::path& path) {

@@ -48,7 +48,7 @@ class DefaultsTests(unittest.TestCase):
 
     def test_defaults_local_and_qualified_names(self):
         self.write(self.mod / "active-options.jsonc", '{"my-mod":{"amount":99}}')
-        result = self.run_patch({"amount": {"default": "10"}, "factor": {"default": 1}},
+        result = self.run_patch({"amount": {"default": "10"}, "factor": {"default": "1"}},
             '<ModOp GUID="123" Merge="Storage"><Amount>'
             '<ModValue Insert="$amount * $my-mod.factor" /></Amount></ModOp>')
         self.assert_success(result)
@@ -81,7 +81,7 @@ class DefaultsTests(unittest.TestCase):
         self.assertEqual(ET.parse(self.output).findtext('.//Storage/Label'), value)
 
     def test_numeric_defaults_preserve_fraction_and_exponent(self):
-        for value in [1, -2.5, 1e-20, 1e20, "1e-20"]:
+        for value in ["1", "-2.5", "1e-20", "1e20"]:
             with self.subTest(value=value):
                 result = self.run_patch({"amount": {"default": value}},
                     '<ModOp GUID="123" Merge="Storage"><Amount>'
@@ -89,9 +89,18 @@ class DefaultsTests(unittest.TestCase):
                 self.assert_success(result)
                 self.assertEqual(float(ET.parse(self.output).findtext('.//Storage/Amount')), float(value))
 
+    def test_unquoted_numeric_defaults_fail_before_writing(self):
+        for value in [0, 1, -2.5, 1e-20, 1e20]:
+            with self.subTest(value=value):
+                result = self.run_patch({"amount": {"default": value}}, '')
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('my-mod.amount', result.stdout + result.stderr)
+                self.assertIn('numeric default must be a quoted string', result.stdout + result.stderr)
+                self.assertFalse(self.output.exists())
+
     def test_dependency_defaults_and_active_mod_ids(self):
         dependency = self.root / "dependency"
-        self.modinfo(dependency, "dep-mod", {"amount": {"default": 7}})
+        self.modinfo(dependency, "dep-mod", {"amount": {"default": "7"}})
         self.write(dependency / self.relative,
             '<ModOps><ModOp GUID="123" Merge="Storage"><Amount>'
             '<ModValue Insert="$amount" /></Amount></ModOp></ModOps>')
@@ -107,7 +116,7 @@ class DefaultsTests(unittest.TestCase):
     def test_defaults_in_diff_and_stdin(self):
         body = ('<ModOp GUID="123" Merge="Storage"><Amount>'
                 '<ModValue Insert="$amount" /></Amount></ModOp>')
-        options = {"amount": {"default": 8}}
+        options = {"amount": {"default": "8"}}
         result = self.run_patch(options, body, extra=["-c", "diff"])
         self.assert_success(result)
         sections = result.stdout.split('##annodiff##')
