@@ -31,9 +31,22 @@ jobs:
 
       - name: Package
         run: |
-          tar -c -a -f xmltest.zip -C  bazel-bin/cmd/xmltest/ xmltest1800.exe
-          tar -c -a -f loader.zip -C third_party/Python35/bin/ python35_ubi.dll -C ../../../bazel-bin/libs/python35/ *.dll
-          tar -c -a -f loader-dbg.zip -C  bazel-bin/libs/python35/ *.pdb
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile, ZIP_DEFLATED
+          binaries = Path('bazel-bin/libs/python35')
+          packages = {
+              'xmltest': [Path('bazel-bin/cmd/xmltest/xmltest1800.exe')],
+              'loader': [Path('third_party/Python35/bin/python35_ubi.dll'), *binaries.glob('*.dll')],
+              'loader-dbg': list(binaries.glob('*.pdb')),
+          }
+          assert list(binaries.glob('*.dll')), 'Missing loader DLL'
+          for name, files in packages.items():
+              assert files, f'Missing files for {name}'
+              with ZipFile(name + '.zip', 'w', ZIP_DEFLATED) as archive:
+                  for file in files:
+                      archive.write(file, file.name)
+          PY
 
       - uses: actions/upload-artifact@v4
         with:
