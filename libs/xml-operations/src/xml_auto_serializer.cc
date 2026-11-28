@@ -3,11 +3,11 @@
 
 #include <pugixml.hpp>
 
-namespace fs = std::filesystem;
-
 #include "xml_auto_serializer.h"
 #include "xml_filedb_reader.h"
 #include "xml_fc_reader.h"
+
+namespace fs = std::filesystem;
 
 namespace xmlops {
 

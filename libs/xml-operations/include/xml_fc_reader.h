@@ -1,3 +1,4 @@
+#include <vector>
 
 #include <fstream>
 #include <memory>
